@@ -4,10 +4,11 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<!--<NoWarn>$(NoWarn);1591</NoWarn>-->
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<ApiDocDir>wwwroot\ApiDocs</ApiDocDir>
-		<NoWarn>$(NoWarn);1591</NoWarn>
 		<DocumentationFile>bin\Debug\FlyFramework.WebHost.xml</DocumentationFile>
+		<ApiDocDir>wwwroot\ApiDocs</ApiDocDir>
+
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -16,10 +17,17 @@
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.8" />
 	</ItemGroup>
 
+	<!--在构建项目后，复制所有以FlyFramework开头的XML文档文件到指定的API文档目录。这通常用于将生成的XML文档文件（例如API注释）整理到一个目录中，便于进一步的处理或发布。这种做法可以适合于生成API文档如Swagger时的使用场景。-->
 	<Target Name="CopyXmlDocFileForBuild" AfterTargets="Build">
 		<ItemGroup>
+			<!--Include="@(ReferencePath->'%(RootDir)%(Directory)%(Filename).xml')"：这行表示从所有项目引用（ReferencePath）的路径中收集以.xml为扩展名的文件。这些文件通常是生成的XML文档文件。-->
+			<!--Condition="$([System.String]::new('%(FileName)').StartsWith('FlyFramework'))"：此条件用于过滤文件，仅包括文件名以FlyFramework开头的XML文档文件。这保证只有相关的文档文件被选择。-->
 			<XmlDocFiles Include="@(ReferencePath->'%(RootDir)%(Directory)%(Filename).xml')" Condition="$([System.String]::new('%(FileName)').StartsWith('FlyFramework'))" />
 		</ItemGroup>
+		<!--SourceFiles="@(XmlDocFiles)"：指定要复制的源文件为上一步中定义的XmlDocFiles集合。-->
+		<!--`Condition="Exists('%(FullPath)')"：确保复制前源文件存在，这是一种安全检查。-->
+		<!--DestinationFolder="$(ApiDocDir)"：目的地文件夹为$(ApiDocDir)，这个属性之前已经在项目文件中定义，指向存放API文档的目录。-->
+		<!--SkipUnchangedFiles="true"：此选项表示只有发生变化的文件会被复制，这可以提高效率，避免不必要的复制操作。-->
 		<Copy SourceFiles="@(XmlDocFiles)" Condition="Exists('%(FullPath)')" DestinationFolder="$(ApiDocDir)" SkipUnchangedFiles="true" />
 	</Target>
 

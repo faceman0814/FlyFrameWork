@@ -1,4 +1,5 @@
 using FlyFramework.Application.Extentions.DynamicWebAPI;
+using FlyFramework.WebCore.Extentions;
 
 using Microsoft.OpenApi.Models;
 
@@ -37,9 +38,6 @@ builder.Services.AddSwaggerGen(options =>
             Url = new Uri("https://github.com/faceman0814")
         }
     });
-    // 启用 XML 文档注释
-    //var xmlPath = Path.Combine($"{builder.Environment.WebRootPath}", "ApiDoc.xml");
-    //options.IncludeXmlComments(xmlPath, true);
 
     //遍历所有xml并加载
     var binXmlFiles =
@@ -62,19 +60,21 @@ builder.Services.AddControllers().AddDynamicWebApi(builder.Configuration);
 #region Configuration
 var app = builder.Build();
 
-app.UseRouting();
-//开发环境和测试环境才开启文档。
-if (app.Environment.IsDevelopment())
+//开发环境或测试环境才开启文档。
+if (app.Environment.IsDevelopment() || app.Environment.IsTesting())
 {
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
+        //配置Endpoint路径和文档标题
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1 Docs");
+        //配置路由前缀，RoutePrefix是Swagger UI的根路径。
         //options.RoutePrefix = String.Empty;
-        //options.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.List);
+        //设置默认模型展开深度。默认值为3，可以设置成-1以完全展开所有模型。
         //options.DefaultModelExpandDepth(-1);
-        //options.EnableDeepLinking(); //深链接功能
-        options.DocExpansion(DocExpansion.None); //swagger文档是否打开
+        // 启用深链接功能后，用户可以直接通过URL访问特定的API操作或模型，而不需要手动导航到相应的位置。
+        options.EnableDeepLinking();
+        options.DocExpansion(DocExpansion.None); //swagger文档展开方式，none为折叠，list为列表
         //options.IndexStream = () =>
         //{
         //    var path = Path.Join(builder.Environment.WebRootPath, "pages", "swagger.html");
@@ -84,11 +84,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 // 启用身份验证
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
 app.Run();
 #endregion

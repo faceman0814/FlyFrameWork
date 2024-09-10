@@ -1,6 +1,4 @@
-﻿using FlyFramework.Application.Extentions.DynamicWebAPI;
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace FlyFramework.Application.Extentions.DynamicWebAPI
 {
     /// <summary>
-    /// 动态属性
+    /// 动态WebAPI特性
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = true)]
     public class DynamicWebApiAttribute : Attribute

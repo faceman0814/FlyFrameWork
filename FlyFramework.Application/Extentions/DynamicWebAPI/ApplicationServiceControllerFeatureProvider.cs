@@ -21,18 +21,6 @@ namespace FlyFramework.Application.Extentions.DynamicWebAPI
             if (typeof(IApplicationService).IsAssignableFrom(typeInfo))
             {
                 // 检查类型是否满足以下条件：
-                // 1. 不是接口
-                // 2. 不是抽象类
-                // 3. 不是泛型类型
-                // 4. 是公共类型
-                //if (!typeInfo.IsInterface &&
-                //    !typeInfo.IsAbstract &&
-                //    !typeInfo.IsGenericType &&
-                //    typeInfo.IsPublic)
-                //{
-                //    return true;
-                //}
-
                 var type = typeInfo.AsType();
                 if ((typeof(IApplicationService).IsAssignableFrom(type) || //判断是否继承ICoreDynamicController接口
                     type.IsDefined(typeof(DynamicWebApiAttribute), true) ||// 判断是否标记了DynamicAPIAttribute特性

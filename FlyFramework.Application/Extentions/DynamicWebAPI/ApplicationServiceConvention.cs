@@ -18,6 +18,11 @@ namespace FlyFramework.Application.Extentions.DynamicWebAPI
             _configuration = configuration;
             httpMethods = _configuration.GetSection("HttpMethodInfo").Get<List<HttpMethodConfigure>>();
         }
+
+        /// <summary>
+        /// 应用约定
+        /// </summary>
+        /// <param name="application"></param>
         public void Apply(ApplicationModel application)
         {
             //循环每一个控制器信息
@@ -27,6 +32,7 @@ namespace FlyFramework.Application.Extentions.DynamicWebAPI
                 //是否继承IApplicationService接口
                 if (typeof(IApplicationService).IsAssignableFrom(controllerType))
                 {
+                    //Actions就是接口的方法
                     foreach (var item in controller.Actions)
                     {
                         ConfigureSelector(controller.ControllerName, item);
@@ -35,30 +41,49 @@ namespace FlyFramework.Application.Extentions.DynamicWebAPI
             }
         }
 
+        /// <summary>
+        /// 配置选择器
+        /// </summary>
+        /// <param name="controllerName"></param>
+        /// <param name="action"></param>
         private void ConfigureSelector(string controllerName, ActionModel action)
         {
+            //如果属性路由模型为空，则移除
             for (int i = 0; i < action.Selectors.Count; i++)
             {
                 if (action.Selectors[i].AttributeRouteModel is null)
+                {
                     action.Selectors.Remove(action.Selectors[i]);
+                }
             }
 
+            //如果有选择器，则遍历选择器，添加默认路由
             if (action.Selectors.Any())
             {
                 foreach (var item in action.Selectors)
                 {
                     var routePath = string.Concat("api/", controllerName + "/", action.ActionName).Replace("//", "/");
                     var routeModel = new AttributeRouteModel(new RouteAttribute(routePath));
-                    //如果没有路由属性
-                    if (item.AttributeRouteModel == null) item.AttributeRouteModel = routeModel;
+                    //如果没有设置路由，则添加路由
+                    if (item.AttributeRouteModel == null)
+                    {
+                        item.AttributeRouteModel = routeModel;
+                    }
                 }
             }
+            //如果没有选择器，则创建一个选择器并添加。
             else
             {
                 action.Selectors.Add(CreateActionSelector(controllerName, action));
             }
         }
 
+        /// <summary>
+        /// 创建Action选择器
+        /// </summary>
+        /// <param name="controllerName"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
         private SelectorModel CreateActionSelector(string controllerName, ActionModel action)
         {
             var selectorModel = new SelectorModel();
@@ -73,8 +98,9 @@ namespace FlyFramework.Application.Extentions.DynamicWebAPI
             }
             else
             {
+                //大写方法名
                 var methodName = action.ActionMethod.Name.ToUpper();
-
+                //遍历HttpMethodInfo配置，匹配方法名
                 foreach (var item in httpMethods)
                 {
                     foreach (var method in item.MethodVal)
@@ -87,18 +113,28 @@ namespace FlyFramework.Application.Extentions.DynamicWebAPI
 
                     }
                 }
+                //如果没有找到对应的HttpMethod，默认使用POST
                 if (httpMethod == string.Empty)
                 {
                     httpMethod = "POST";
                 }
             }
+
             return ConfigureSelectorModel(selectorModel, action, controllerName, httpMethod);
         }
 
+        /// <summary>
+        /// 配置选择器模型
+        /// </summary>
+        /// <param name="selectorModel"></param>
+        /// <param name="action"></param>
+        /// <param name="controllerName"></param>
+        /// <param name="httpMethod"></param>
+        /// <returns></returns>
         public SelectorModel ConfigureSelectorModel(SelectorModel selectorModel, ActionModel action, string controllerName, string httpMethod)
         {
             var routePath = string.Concat("api/", controllerName + "/", action.ActionName).Replace("//", "/");
-            //给此Action添加路由
+            //给此选择器添加路由
             selectorModel.AttributeRouteModel = new AttributeRouteModel(new RouteAttribute(routePath));
             //添加HttpMethod
             selectorModel.ActionConstraints.Add(new HttpMethodActionConstraint(new[] { httpMethod }));
