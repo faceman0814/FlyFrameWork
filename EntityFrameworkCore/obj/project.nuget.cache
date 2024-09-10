@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "VkcVec4Snxfp9luimmEuncvnYHmevVDFzSpQhPyfZjrMx1h2ylaBPHii1F/R2e3mmcB/UCObbl3zv7mrrmYGqg==",
+  "success": true,
+  "projectFilePath": "D:\\FaceMan\\FlyFrameWork\\EntityFrameworkCore\\FlyFramework.EntityFrameworkCore.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\10027\\.nuget\\packages\\fluentmigrator.abstractions\\5.2.0\\fluentmigrator.abstractions.5.2.0.nupkg.sha512",
+    "C:\\Users\\10027\\.nuget\\packages\\microsoft.openapi\\1.6.14\\microsoft.openapi.1.6.14.nupkg.sha512",
+    "C:\\Users\\10027\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.7.3\\swashbuckle.aspnetcore.swagger.6.7.3.nupkg.sha512",
+    "C:\\Users\\10027\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.7.3\\swashbuckle.aspnetcore.swaggergen.6.7.3.nupkg.sha512",
+    "C:\\Users\\10027\\.nuget\\packages\\system.componentmodel.annotations\\5.0.0\\system.componentmodel.annotations.5.0.0.nupkg.sha512",
+    "C:\\Users\\10027\\.nuget\\packages\\system.valuetuple\\4.5.0\\system.valuetuple.4.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}

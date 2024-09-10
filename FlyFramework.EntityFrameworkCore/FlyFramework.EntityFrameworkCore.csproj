@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<DocumentationFile>bin\Debug\FlyFramework.EntityFrameworkCore.xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\FlyFramework.Application\FlyFramework.Application.csproj" />
+		<ProjectReference Include="..\FlyFramework.Core\FlyFramework.Core.csproj" />
+	</ItemGroup>
+
+</Project>

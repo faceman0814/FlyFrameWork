@@ -2,14 +2,15 @@
 # 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
 ################################################################################
 
-/Application/obj
-/Application/bin
-/Core/obj
-/Core/bin
-/EntityFrameworkCore/obj
-/EntityFrameworkCore/bin
-/WebCore/obj
-/WebCore/bin
-/WebHost/obj
-/WebHost/bin
+/FlyFramework.Application/obj
+/FlyFramework.Application/bin
+/FlyFramework.Core/obj
+/FlyFramework.Core/bin
+/FlyFramework.EntityFrameworkCore/obj
+/FlyFramework.EntityFrameworkCore/bin
+/FlyFramework.WebCore/obj
+/FlyFramework.WebCore/bin
+/FlyFramework.WebHost/obj
+/FlyFramework.WebHost/bin
+/FlyFramework.WebHost/wwwroot/ApiDocs
 /.vs
