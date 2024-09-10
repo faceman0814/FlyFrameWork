@@ -1,0 +1,10 @@
+﻿################################################################################
+# 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
+################################################################################
+
+/Application/obj/Debug/net8.0
+/Core
+/EntityFrameworkCore/obj
+/WebCore/obj
+/WebHost/bin/Debug/net8.0
+/WebHost/obj
