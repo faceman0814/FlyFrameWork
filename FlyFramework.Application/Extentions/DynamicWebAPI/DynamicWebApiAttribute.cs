@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Core.Extentions.DynamicWebAPI
+namespace FlyFramework.Application.Extentions.DynamicWebAPI
 {
     /// <summary>
     /// 动态属性

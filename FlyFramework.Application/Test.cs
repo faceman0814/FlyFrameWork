@@ -1,8 +1,8 @@
-﻿using FlyFramework.Core.Extentions.DynamicWebAPI;
+﻿using FlyFramework.Application.Extentions.DynamicWebAPI;
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace FlyFramework.Core
+namespace FlyFramework.Application
 {
     public class Test : IApplicationService
     {

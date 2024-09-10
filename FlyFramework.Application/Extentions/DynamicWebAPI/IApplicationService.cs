@@ -1,4 +1,4 @@
-﻿namespace FlyFramework.Core.Extentions.DynamicWebAPI
+﻿namespace FlyFramework.Application.Extentions.DynamicWebAPI
 {
     /// <summary>
     /// 动态WebAPI接口

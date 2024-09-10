@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FlyFramework.Application.Extentions.DynamicWebAPI;
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FlyFramework.Core.Extentions.DynamicWebAPI
+namespace FlyFramework.Application.Extentions.DynamicWebAPI
 {
     /// <summary>
     /// 动态WebAPI扩展类，用于在ASP.NET Core应用程序中添加动态WebAPI功能。

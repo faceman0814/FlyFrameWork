@@ -1,4 +1,4 @@
-using FlyFramework.Core.Extentions.DynamicWebAPI;
+using FlyFramework.Application.Extentions.DynamicWebAPI;
 
 using Microsoft.OpenApi.Models;
 

@@ -8,9 +8,4 @@
     <DocumentationFile>bin\Debug\FlyFramework.Core.xml</DocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="FluentMigrator.Abstractions" Version="5.2.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.7.3" />
-  </ItemGroup>
-
 </Project>

@@ -7,9 +7,8 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <DocumentationFile>bin\Debug\FlyFramework.Application.xml</DocumentationFile>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\FlyFramework.Core\FlyFramework.Core.csproj" />
-  </ItemGroup>
-
+	<ItemGroup>
+		<PackageReference Include="FluentMigrator.Abstractions" Version="5.2.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.7.3" />
+	</ItemGroup>
 </Project>
