@@ -1,5 +1,6 @@
 using FlyFramework.Application.Extentions.DynamicWebAPI;
 using FlyFramework.WebCore.Extentions;
+using FlyFramework.WebCore.Filters;
 
 using Microsoft.OpenApi.Models;
 
@@ -25,7 +26,7 @@ builder.Services.AddSwaggerGen(options =>
     options.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
     //加安全需求信息。它会根据 API 的安全配置（如 OAuth2、JWT 等）自动生成相应的安全需求描述，帮助开发者了解哪些操作需要特定的安全配置。
     options.OperationFilter<SecurityRequirementsOperationFilter>();
-    //options.DocumentFilter<RemoveAppSuffixFilter>();
+    options.DocumentFilter<RemoveAppFilter>();
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "FlyFrameWork API",

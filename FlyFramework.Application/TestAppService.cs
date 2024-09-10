@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FlyFramework.Application
 {
-    public class Test : IApplicationService
+    public class TestAppService : IApplicationService
     {
         /// <summary>
         ///领域层注释测试接口
