@@ -10,6 +10,14 @@
 		<ApiDocDir>wwwroot\ApiDocs</ApiDocDir>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <NoWarn>1701;1702;1591</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <NoWarn>1701;1702;1591</NoWarn>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.2" />
@@ -21,7 +29,7 @@
 			<XmlDocFiles Include="$(OutDir)$(AssemblyName).xml" />
 			<!--Include="@(ReferencePath->'%(RootDir)%(Directory)%(Filename).xml')"：这行表示从所有项目引用（ReferencePath）的路径中收集以.xml为扩展名的文件。这些文件通常是生成的XML文档文件。-->
 			<!--Condition="$([System.String]::new('%(FileName)').StartsWith('FlyFramework'))"：此条件用于过滤文件，仅包括文件名以FlyFramework开头的XML文档文件。这保证只有相关的文档文件被选择。-->
-			<XmlDocFiles  Include=" @(ReferencePath->'%(RootDir)%(Directory)%(Filename).xml')" Condition="$([System.String]::new('%(FileName)').StartsWith('FlyFramework'))" />
+			<XmlDocFiles Include=" @(ReferencePath->'%(RootDir)%(Directory)%(Filename).xml')" Condition="$([System.String]::new('%(FileName)').StartsWith('FlyFramework'))" />
 		</ItemGroup>
 		<!--SourceFiles="@(XmlDocFiles)"：指定要复制的源文件为上一步中定义的XmlDocFiles集合。-->
 		<!--`Condition="Exists('%(FullPath)')"：确保复制前源文件存在，这是一种安全检查。-->

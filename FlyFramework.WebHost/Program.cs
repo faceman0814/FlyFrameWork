@@ -11,17 +11,13 @@ using FlyFramework.WebCore.JsonOptions;
 
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
-using System.Net;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
-
-using static System.Net.Mime.MediaTypeNames;
 
 var builder = WebApplication.CreateBuilder(args);
 // 配置文件读取
@@ -45,11 +41,6 @@ public static class AppConfig
     static WebApplication app;
     static IServiceCollection services;
 
-    /// <summary>
-    /// 配置服务集合
-    /// </summary>
-    /// <param name="_builder"></param>
-    /// <returns></returns>
     public static WebApplicationBuilder ConfigurationServices(this WebApplicationBuilder _builder)
     {
         builder = _builder;
@@ -71,7 +62,7 @@ public static class AppConfig
     }
 
     /// <summary>
-    /// 注册动态API
+    /// 配置动态API
     /// </summary>
     public static void AddDynamicApi()
     {
@@ -80,7 +71,7 @@ public static class AppConfig
     }
 
     /// <summary>
-    /// 注册Swagger
+    /// 配置Swagger
     /// </summary>
     public static void AddSwagger()
     {
@@ -119,7 +110,7 @@ public static class AppConfig
     }
 
     /// <summary>
-    /// 注册DbContext
+    /// 配置DbContext
     /// </summary>
     public static void AddDbContext()
     {
@@ -137,7 +128,7 @@ public static class AppConfig
     }
 
     /// <summary>
-    /// 自动注册依赖注入
+    /// 配置自动注册依赖注入
     /// </summary>
     public static void AddAutoDI()
     {
