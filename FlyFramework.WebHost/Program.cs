@@ -1,7 +1,9 @@
 using EntityFrameworkCore.Repository;
+using EntityFrameworkCore.Repository.Interfaces;
 using EntityFrameworkCore.UnitOfWork.Extensions;
 
 using FlyFramework.Application.Extentions.DynamicWebAPI;
+using FlyFramework.Common.Dependencys;
 using FlyFramework.EntityFrameworkCore;
 using FlyFramework.WebCore.Extentions;
 using FlyFramework.WebCore.Filters;
@@ -19,7 +21,9 @@ var config = new ConfigurationBuilder()
                 .SetBasePath(basePath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
+
 #region ConfigurationServices
+
 #region 添加Swagger文档服务
 
 builder.Services.AddEndpointsApiExplorer();
@@ -65,18 +69,63 @@ builder.Services.AddControllers().AddDynamicWebApi(builder.Configuration);
 #region 注册仓储服务
 //注册DbContext服务
 string connectionString = builder.Configuration.GetConnectionString("default");
-builder.Services.AddDbContext<FlyFrameworkDbContext>(
-    option => option.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)
-));
-builder.Services.AddScoped<DbContext, FlyFrameworkDbContext>();
 
+builder.Services.AddDbContext<FlyFrameworkDbContext>(
+    //option => option.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)
+    option => option.UseSqlServer(connectionString)
+);
+builder.Services.AddScoped<DbContext, FlyFrameworkDbContext>();
 // 注册工作单元
 builder.Services.AddUnitOfWork();
 //builder.Services.AddUnitOfWork<MyDbContext>(); // 多数据库支持
 //注册泛型仓储服务
-builder.Services.AddScoped(typeof(Repository<>));
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 #endregion 注册仓储服务
+
+#region 对应接口注册依赖注入服务
+
+// 获取当前应用程序域中已加载的以 "FlyFramework" 开头的程序集
+var assemblies = AppDomain.CurrentDomain.GetAssemblies()
+    .Where(t => t.FullName.StartsWith("FlyFramework")).ToArray();
+
+// 遍历符合条件的程序集
+foreach (var assembly in assemblies)
+{
+    Console.WriteLine("程序集名称: " + assembly.FullName);
+    // 扫描程序集中所有非抽象类类型
+    var types = assembly.GetTypes()
+        .Where(t => t.IsClass && !t.IsAbstract);
+
+    foreach (var type in types)
+    {
+        var interfaces = type.GetInterfaces();
+        var dependencyInterfaces = interfaces.Intersect(new[] { typeof(ITransientDependency), typeof(IScopedDependency), typeof(ISingletonDependency) });
+
+        if (!dependencyInterfaces.Any()) continue;
+
+        // 遍历符合条件的依赖接口并注册到服务容器中
+        foreach (var serviceType in dependencyInterfaces)
+        {
+            if (typeof(ITransientDependency).IsAssignableFrom(serviceType))
+            {
+                Console.WriteLine(type.AssemblyQualifiedName);
+                builder.Services.AddTransient(serviceType, type);
+            }
+            else if (typeof(IScopedDependency).IsAssignableFrom(serviceType))
+            {
+                builder.Services.AddScoped(serviceType, type);
+            }
+            else if (typeof(ISingletonDependency).IsAssignableFrom(serviceType))
+            {
+                builder.Services.AddSingleton(serviceType, type);
+            }
+        }
+    }
+}
+
+#endregion
+
 #endregion ConfigurationServices
 
 

@@ -16,7 +16,7 @@ namespace FlyFramework.Core.TestService
         }
 
         [Key]
-        public long Id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// 分类代码

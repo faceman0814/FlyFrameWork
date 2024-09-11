@@ -2,15 +2,19 @@
 # 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
 ################################################################################
 
-/FlyFramework.Application/obj
-/FlyFramework.Application/bin
-/FlyFramework.Core/obj
-/FlyFramework.Core/bin
-/FlyFramework.EntityFrameworkCore/obj
-/FlyFramework.EntityFrameworkCore/bin
-/FlyFramework.WebCore/obj
-/FlyFramework.WebCore/bin
-/FlyFramework.WebHost/obj
-/FlyFramework.WebHost/bin
-/FlyFramework.WebHost/wwwroot/ApiDocs
-/.vs
+# 忽略编译生成的文件夹
+**/bin/
+**/obj/
+
+# 忽略Visual Studio临时文件和设置
+/.vs/
+
+# 忽略Windows和MacOS系统生成的特定文件
+Thumbs.db
+.DS_Store
+
+# 忽略Node.js模块文件夹（如果使用）
+# node_modules/
+
+# 特定项目生成的内容
+/FlyFramework.WebHost/wwwroot/ApiDocs/

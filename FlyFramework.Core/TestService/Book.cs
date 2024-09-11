@@ -17,7 +17,7 @@ namespace FlyFramework.Core.TestService
         }
 
         [Key]
-        public long Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [MaxLength(100)]
@@ -27,7 +27,7 @@ namespace FlyFramework.Core.TestService
         [MaxLength(20)]
         public string ISBN { get; set; }
 
-        public long CategoryId { get; set; }
+        public string CategoryId { get; set; }
 
         //导航属性
         [ForeignKey("CategoryId")]
