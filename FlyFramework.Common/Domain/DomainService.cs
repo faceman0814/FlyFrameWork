@@ -1,4 +1,7 @@
-﻿using FlyFramework.Common.Dependencys;
+﻿using EntityFrameworkCore.UnitOfWork;
+using EntityFrameworkCore.UnitOfWork.Interfaces;
+
+using FlyFramework.Common.Dependencys;
 using FlyFramework.Common.Entities;
 using FlyFramework.Common.Repositories;
 
@@ -15,6 +18,7 @@ namespace FlyFramework.Common.Domain
 {
     public abstract class DomainService<TEntity, TPrimaryKey> : IDomainService<TEntity, TPrimaryKey>, ITransientDependency where TEntity : class, IEntity<TPrimaryKey>
     {
+        private readonly IUnitOfWork _unitOfWork;
         public virtual IServiceProvider ServiceProvider { get; private set; }
         public IRepository<TEntity, TPrimaryKey> Repo { get; }
         public IQueryable<TEntity> Query => Repo.GetAll();
@@ -23,6 +27,7 @@ namespace FlyFramework.Common.Domain
         {
             ServiceProvider = serviceProvider;
             Repo = serviceProvider.GetRequiredService<IRepository<TEntity, TPrimaryKey>>();
+            _unitOfWork = serviceProvider.GetRequiredService<IUnitOfWork>();
         }
 
         public abstract IQueryable<TEntity> GetIncludeQuery();
@@ -58,6 +63,7 @@ namespace FlyFramework.Common.Domain
         {
             await ValidateOnCreateOrUpdate(entity);
             await Repo.InsertAsync(entity);
+            await _unitOfWork.SaveChangesAsync();
             return entity;
         }
 

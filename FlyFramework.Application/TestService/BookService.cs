@@ -19,25 +19,25 @@ namespace FlyFramework.Application.TestService
     /// </summary>
     public class BookService : IApplicationService
     {
-        //private readonly IBookManager _bookManager;
+        private readonly IBookManager _bookManager;
 
-        //public BookService(IBookManager bookManager)
-        //{
-        //    _bookManager = bookManager;
-        //}
-
-        //泛型仓储
-        private readonly IRepository<Book> _bookRepository;
-        private readonly IRepository<Category> _categoryRepository;
-        //工作单元
-        private readonly IUnitOfWork _unitOfWork;
-
-        public BookService(IRepository<Book> bookRepository, IRepository<Category> categoryRepository, IUnitOfWork unitOfWork)
+        public BookService(IBookManager bookManager)
         {
-            _bookRepository = bookRepository;
-            _categoryRepository = categoryRepository;
-            _unitOfWork = unitOfWork;
+            _bookManager = bookManager;
         }
+
+        ////泛型仓储
+        //private readonly IRepository<Book> _bookRepository;
+        //private readonly IRepository<Category> _categoryRepository;
+        ////工作单元
+        //private readonly IUnitOfWork _unitOfWork;
+
+        //public BookService(IRepository<Book> bookRepository, IRepository<Category> categoryRepository, IUnitOfWork unitOfWork)
+        //{
+        //    _bookRepository = bookRepository;
+        //    _categoryRepository = categoryRepository;
+        //    _unitOfWork = unitOfWork;
+        //}
 
         //POST api/Books
         public async Task Add(BookAddOrUpdateInput input)
@@ -55,10 +55,10 @@ namespace FlyFramework.Application.TestService
                 Name = "默认分类",
                 Code = "DEFAULT"
             };
-            //await _bookManager.Create(book);
-            await _bookRepository.AddAsync(book);
-            await _categoryRepository.AddAsync(category);
-            await _unitOfWork.SaveChangesAsync();
+            await _bookManager.Create(book);
+            //await _bookRepository.AddAsync(book);
+            //await _categoryRepository.AddAsync(category);
+            //await _unitOfWork.SaveChangesAsync();
         }
 
 

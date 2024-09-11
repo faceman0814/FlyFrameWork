@@ -21,12 +21,12 @@ namespace FlyFramework.Core.TestService.Domain
 
         public override Task ValidateOnCreateOrUpdate(Book entity)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public override Task ValidateOnDelete(Book entity)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }
