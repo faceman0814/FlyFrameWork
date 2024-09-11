@@ -70,8 +70,8 @@ namespace FlyFramework.Application.TestService
                                   ISBN = b.ISBN,
                                   Title = b.Title,
                                   Id = b.Id
-                              });
-            //as IMultipleResultQuery<Book, BookOutput>; //转换类型
+                              })
+            as IMultipleResultQuery<Book, BookOutput>; //转换类型
 
             //执行查询
             var result = (await _bookRepository.SearchAsync(query))
