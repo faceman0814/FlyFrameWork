@@ -9,6 +9,7 @@ using FlyFramework.WebCore.Extentions;
 using FlyFramework.WebCore.Filters;
 using FlyFramework.WebCore.JsonOptions;
 
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -43,6 +44,12 @@ public static class AppConfig
     static WebApplicationBuilder builder;
     static WebApplication app;
     static IServiceCollection services;
+
+    /// <summary>
+    /// 配置服务集合
+    /// </summary>
+    /// <param name="_builder"></param>
+    /// <returns></returns>
     public static WebApplicationBuilder ConfigurationServices(this WebApplicationBuilder _builder)
     {
         builder = _builder;
@@ -62,6 +69,7 @@ public static class AppConfig
         AddFilters();
         return builder;
     }
+
     /// <summary>
     /// 注册动态API
     /// </summary>
@@ -70,6 +78,7 @@ public static class AppConfig
         //注册动态API服务
         services.AddControllers().AddDynamicWebApi(builder.Configuration);
     }
+
     /// <summary>
     /// 注册Swagger
     /// </summary>
@@ -108,6 +117,7 @@ public static class AppConfig
             }
         });
     }
+
     /// <summary>
     /// 注册DbContext
     /// </summary>
@@ -125,6 +135,7 @@ public static class AppConfig
         //注册泛型仓储服务
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
     }
+
     /// <summary>
     /// 自动注册依赖注入
     /// </summary>
@@ -188,6 +199,7 @@ public static class AppConfig
 
         });
     }
+
     /// <summary>
     /// 注册全局拦截器
     /// </summary>
@@ -206,6 +218,58 @@ public static class AppConfig
             //x.Filters.Add<TokenAttribute>();
         });
     }
+
+    /// <summary>
+    ///配置请求大小限制
+    /// </summary>
+    public static void AddKestrel()
+    {
+        builder.WebHost.UseKestrel(options =>
+        {
+            options.Limits.MaxRequestLineSize = int.MaxValue;//HTTP 请求行的最大允许大小。 默认为 8kb
+            options.Limits.MaxRequestBufferSize = int.MaxValue;//请求缓冲区的最大大小。 默认为 1M
+            //任何请求正文的最大允许大小（以字节为单位）,默认 30,000,000 字节，大约为 28.6MB
+            options.Limits.MaxRequestBodySize = int.MaxValue;//限制请求长度
+        });
+
+        /* ↓↓↓↓↓↓↓ 使用iis/nginx ↓↓↓↓↓↓ */
+        services.Configure<FormOptions>(x =>
+        {
+            x.ValueCountLimit = 1000000; // 设置表单键值对的最大数量
+            x.ValueLengthLimit = int.MaxValue;// 设置表单数据长度限制为int的最大值
+            x.MultipartBodyLengthLimit = int.MaxValue; // 设置多部分正文的长度限制为int的最大值
+                                                       //x.MultipartHeadersCountLimit = 100; // 设置多部分表单头的最大数量
+                                                       //x.MultipartHeadersLengthLimit = 16384; // 设置多部分表单头的最大长度（bytes）
+        });
+    }
+
+    /// <summary>
+    /// 配置跨域
+    /// </summary>
+    public static void AddCors()
+    {
+        services.AddCors(policy =>
+        {
+            /*
+             * 可以在控制器处添加
+             * [EnableCors("CorsPolicy")]
+             */
+            policy.AddPolicy("CorsPolicy", opt => opt
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            //#if !DEBUG
+            //                .WithOrigins(WithOrigins)//域名白名单
+            //#endif
+            .WithExposedHeaders("X-Pagination"));
+        });
+    }
+
+    /// <summary>
+    /// 启用服务集合
+    /// </summary>
+    /// <param name="_app"></param>
+    /// <returns></returns>
     public static WebApplication Configuration(this WebApplication _app)
     {
         app = _app;
@@ -246,4 +310,6 @@ public static class AppConfig
             });
         }
     }
+
+
 }
