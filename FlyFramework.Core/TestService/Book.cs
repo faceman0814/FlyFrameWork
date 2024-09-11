@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FlyFramework.Common.Entities;
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FlyFramework.Core.TestService
 {
-    public class Book
+    public class Book : IEntity<string>
     {
         public Book()
         {
@@ -32,6 +34,16 @@ namespace FlyFramework.Core.TestService
         //导航属性
         [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
+
+        public bool IsTransient()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEntity<string> JsonClone()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 

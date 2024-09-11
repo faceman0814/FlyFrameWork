@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.DomainBase
+namespace FlyFramework.Common.Domain
 {
     public class DomainBaseService : IDomainBaseService, ITransientDependency
     {

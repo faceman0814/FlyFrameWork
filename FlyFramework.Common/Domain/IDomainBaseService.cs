@@ -1,6 +1,6 @@
 ﻿using FlyFramework.Common.Dependencys;
 
-namespace FlyFramework.Common.DomainBase
+namespace FlyFramework.Common.Domain
 {
     public interface IDomainBaseService : ITransientDependency
     {

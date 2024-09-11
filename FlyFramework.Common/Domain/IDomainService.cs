@@ -1,5 +1,4 @@
 ﻿using FlyFramework.Common.Dependencys;
-using FlyFramework.Common.DomainBase;
 using FlyFramework.Common.Entities;
 using FlyFramework.Common.Repositories;
 
@@ -25,7 +24,7 @@ namespace FlyFramework.Common.Domain
         //
         // 摘要:
         //     获取 TEntity 并包含导航属性的查询器
-        IQueryable<TEntity> GetNdoIncludeQuery();
+        IQueryable<TEntity> GetIncludeQuery();
 
         //
         // 摘要:
@@ -33,12 +32,12 @@ namespace FlyFramework.Common.Domain
         //
         // 参数:
         //   id:
-        Task<TEntity> FindNdoByIdWithInclude(TPrimaryKey id);
+        Task<TEntity> FindByIdWithInclude(TPrimaryKey id);
 
         //
         // 摘要:
         //     获取一个 对象的新 Id
-        TPrimaryKey NewNdoId();
+        //TPrimaryKey NewId();
 
         //
         // 摘要:
@@ -47,7 +46,7 @@ namespace FlyFramework.Common.Domain
         // 参数:
         //   id:
         //     Id
-        Task<TEntity> FindNdoById(TPrimaryKey id);
+        Task<TEntity> FindById(TPrimaryKey id);
 
         //
         // 摘要:
@@ -55,24 +54,24 @@ namespace FlyFramework.Common.Domain
         //
         // 参数:
         //   id:
-        Task<TEntity> IsExistNdo(TPrimaryKey id);
+        Task<TEntity> IsExist(TPrimaryKey id);
 
         //
         // 摘要:
         //     直接将 对象新增到数据库，经过校验方法
         //
         // 参数:
-        //   ndo:
+        //   :
         //     实例
-        Task<TEntity> CreateNdo(TEntity ndo);
+        Task<TEntity> Create(TEntity entity);
 
         //
         // 摘要:
         //     直接将 对象更新到数据库，不经过校验方法
         //
         // 参数:
-        //   ndo:
-        Task<TEntity> UpdateNdo(TEntity ndo);
+        //   :
+        Task<TEntity> Update(TEntity entity);
 
         //
         // 摘要:
@@ -80,35 +79,35 @@ namespace FlyFramework.Common.Domain
         //
         // 参数:
         //   id:
-        Task DeleteNdo(TPrimaryKey id);
+        Task Delete(TPrimaryKey id);
 
         //
         // 摘要:
         //     根据对象删除
         //
         // 参数:
-        //   ndo:
-        Task DeleteNdo(TEntity ndo);
+        //   :
+        Task Delete(TEntity entity);
 
         //
         // 摘要:
-        //     判断Ndo是否可以删除
+        //     判断是否可以删除
         //
         // 参数:
-        //   ndo:
-        //     ndo对象
-        Task ValidateNdoOnDelete(TEntity ndo);
+        //   :
+        //     对象
+        Task ValidateOnDelete(TEntity entity);
 
         //
         // 摘要:
-        //     校验Ndo数据正确性 - 新增和修改
+        //     校验数据正确性 - 新增和修改
         //
         // 参数:
-        //   ndo:
-        //     TNdo 实例
+        //   :
+        //     T 实例
         //
-        //   NdoBase:
-        //     TNdoBase 实例
-        Task ValidateNdoOnCreateOrUpdate(TEntity ndo);
+        //   Base:
+        //     TBase 实例
+        Task ValidateOnCreateOrUpdate(TEntity entity);
     }
 }

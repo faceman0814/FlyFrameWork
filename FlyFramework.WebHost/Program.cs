@@ -4,6 +4,7 @@ using EntityFrameworkCore.UnitOfWork.Extensions;
 
 using FlyFramework.Application.Extentions.DynamicWebAPI;
 using FlyFramework.Common.Dependencys;
+using FlyFramework.Core.TestService.Domain;
 using FlyFramework.EntityFrameworkCore;
 using FlyFramework.WebCore.Extentions;
 using FlyFramework.WebCore.Filters;
@@ -51,11 +52,12 @@ public static class AppConfig
 
         //单独注册某个服务，特殊情况
         //_services.AddSingleton<Ixxx, xxx>();
+        services.AddTransient<IBookManager, BookManager>();
 
         AddSwagger();
         AddDynamicApi();
         AddDbContext();
-        AddAutoDI();
+        //AddAutoDI();
         AddJsonOptions();
         AddFilters();
         return builder;
