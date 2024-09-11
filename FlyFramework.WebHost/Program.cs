@@ -1,7 +1,12 @@
+using EntityFrameworkCore.Repository;
+using EntityFrameworkCore.UnitOfWork.Extensions;
+
 using FlyFramework.Application.Extentions.DynamicWebAPI;
+using FlyFramework.EntityFrameworkCore;
 using FlyFramework.WebCore.Extentions;
 using FlyFramework.WebCore.Filters;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 using Swashbuckle.AspNetCore.Filters;
@@ -51,9 +56,27 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 #endregion 添加Swagger文档服务
+
+#region 注册动态API服务
 //注册动态API服务
 builder.Services.AddControllers().AddDynamicWebApi(builder.Configuration);
+#endregion 注册动态API服务
 
+#region 注册仓储服务
+//注册DbContext服务
+string connectionString = builder.Configuration.GetConnectionString("default");
+builder.Services.AddDbContext<FlyFrameworkDbContext>(
+    option => option.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)
+));
+builder.Services.AddScoped<DbContext, FlyFrameworkDbContext>();
+
+// 注册工作单元
+builder.Services.AddUnitOfWork();
+//builder.Services.AddUnitOfWork<MyDbContext>(); // 多数据库支持
+//注册泛型仓储服务
+builder.Services.AddScoped(typeof(Repository<>));
+
+#endregion 注册仓储服务
 #endregion ConfigurationServices
 
 

@@ -1,0 +1,432 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "FlyFramework.Common/1.0.0": {
+        "dependencies": {
+          "EntityFrameworkCore.Data.UnitOfWork": "8.0.2"
+        },
+        "runtime": {
+          "FlyFramework.Common.dll": {}
+        }
+      },
+      "EntityFrameworkCore.Data.AutoHistory/8.0.2": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Relational": "8.0.7",
+          "Newtonsoft.Json": "13.0.3"
+        },
+        "runtime": {
+          "lib/net8.0/EntityFrameworkCore.AutoHistory.dll": {
+            "assemblyVersion": "8.0.2.0",
+            "fileVersion": "8.0.2.0"
+          }
+        }
+      },
+      "EntityFrameworkCore.Data.QueryBuilder/8.0.2": {
+        "dependencies": {
+          "EntityFrameworkCore.Data.QueryBuilder.Abstractions": "8.0.2",
+          "LinqKit.Microsoft.EntityFrameworkCore": "8.1.5"
+        },
+        "runtime": {
+          "lib/net8.0/EntityFrameworkCore.QueryBuilder.dll": {
+            "assemblyVersion": "8.0.2.0",
+            "fileVersion": "8.0.2.0"
+          }
+        }
+      },
+      "EntityFrameworkCore.Data.QueryBuilder.Abstractions/8.0.2": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Relational": "8.0.7"
+        },
+        "runtime": {
+          "lib/net8.0/EntityFrameworkCore.QueryBuilder.Abstractions.dll": {
+            "assemblyVersion": "8.0.2.0",
+            "fileVersion": "8.0.2.0"
+          }
+        }
+      },
+      "EntityFrameworkCore.Data.Repository/8.0.2": {
+        "dependencies": {
+          "EntityFrameworkCore.Data.QueryBuilder": "8.0.2",
+          "EntityFrameworkCore.Data.Repository.Abstractions": "8.0.2"
+        },
+        "runtime": {
+          "lib/net8.0/EntityFrameworkCore.Repository.dll": {
+            "assemblyVersion": "8.0.2.0",
+            "fileVersion": "8.0.2.0"
+          }
+        }
+      },
+      "EntityFrameworkCore.Data.Repository.Abstractions/8.0.2": {
+        "dependencies": {
+          "EntityFrameworkCore.Data.QueryBuilder.Abstractions": "8.0.2"
+        },
+        "runtime": {
+          "lib/net8.0/EntityFrameworkCore.Repository.Abstractions.dll": {
+            "assemblyVersion": "8.0.2.0",
+            "fileVersion": "8.0.2.0"
+          }
+        }
+      },
+      "EntityFrameworkCore.Data.UnitOfWork/8.0.2": {
+        "dependencies": {
+          "EntityFrameworkCore.Data.AutoHistory": "8.0.2",
+          "EntityFrameworkCore.Data.Repository": "8.0.2",
+          "EntityFrameworkCore.Data.UnitOfWork.Abstractions": "8.0.2"
+        },
+        "runtime": {
+          "lib/net8.0/EntityFrameworkCore.UnitOfWork.dll": {
+            "assemblyVersion": "8.0.2.0",
+            "fileVersion": "8.0.2.0"
+          }
+        }
+      },
+      "EntityFrameworkCore.Data.UnitOfWork.Abstractions/8.0.2": {
+        "dependencies": {
+          "EntityFrameworkCore.Data.Repository.Abstractions": "8.0.2"
+        },
+        "runtime": {
+          "lib/net8.0/EntityFrameworkCore.UnitOfWork.Abstractions.dll": {
+            "assemblyVersion": "8.0.2.0",
+            "fileVersion": "8.0.2.0"
+          }
+        }
+      },
+      "LinqKit.Core/1.2.5": {
+        "runtime": {
+          "lib/netstandard2.1/LinqKit.Core.dll": {
+            "assemblyVersion": "1.2.5.0",
+            "fileVersion": "1.2.5.0"
+          }
+        }
+      },
+      "LinqKit.Microsoft.EntityFrameworkCore/8.1.5": {
+        "dependencies": {
+          "LinqKit.Core": "1.2.5",
+          "Microsoft.EntityFrameworkCore": "8.0.7"
+        },
+        "runtime": {
+          "lib/net8.0/LinqKit.Microsoft.EntityFrameworkCore.dll": {
+            "assemblyVersion": "8.1.5.0",
+            "fileVersion": "8.1.5.0"
+          }
+        }
+      },
+      "Microsoft.EntityFrameworkCore/8.0.7": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Abstractions": "8.0.7",
+          "Microsoft.EntityFrameworkCore.Analyzers": "8.0.7",
+          "Microsoft.Extensions.Caching.Memory": "8.0.0",
+          "Microsoft.Extensions.Logging": "8.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.EntityFrameworkCore.dll": {
+            "assemblyVersion": "8.0.7.0",
+            "fileVersion": "8.0.724.31404"
+          }
+        }
+      },
+      "Microsoft.EntityFrameworkCore.Abstractions/8.0.7": {
+        "runtime": {
+          "lib/net8.0/Microsoft.EntityFrameworkCore.Abstractions.dll": {
+            "assemblyVersion": "8.0.7.0",
+            "fileVersion": "8.0.724.31404"
+          }
+        }
+      },
+      "Microsoft.EntityFrameworkCore.Analyzers/8.0.7": {},
+      "Microsoft.EntityFrameworkCore.Relational/8.0.7": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "8.0.7",
+          "Microsoft.Extensions.Configuration.Abstractions": "8.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.EntityFrameworkCore.Relational.dll": {
+            "assemblyVersion": "8.0.7.0",
+            "fileVersion": "8.0.724.31404"
+          }
+        }
+      },
+      "Microsoft.Extensions.Caching.Abstractions/8.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "8.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.Extensions.Caching.Abstractions.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
+      "Microsoft.Extensions.Caching.Memory/8.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Caching.Abstractions": "8.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.0",
+          "Microsoft.Extensions.Options": "8.0.0",
+          "Microsoft.Extensions.Primitives": "8.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.Extensions.Caching.Memory.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
+      "Microsoft.Extensions.Configuration.Abstractions/8.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "8.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.Extensions.Configuration.Abstractions.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection/8.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.Extensions.DependencyInjection.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.0": {
+        "runtime": {
+          "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
+      "Microsoft.Extensions.Logging/8.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection": "8.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.0",
+          "Microsoft.Extensions.Options": "8.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.Extensions.Logging.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
+      "Microsoft.Extensions.Logging.Abstractions/8.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.Extensions.Logging.Abstractions.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
+      "Microsoft.Extensions.Options/8.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0",
+          "Microsoft.Extensions.Primitives": "8.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.Extensions.Options.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
+      "Microsoft.Extensions.Primitives/8.0.0": {
+        "runtime": {
+          "lib/net8.0/Microsoft.Extensions.Primitives.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
+      "Newtonsoft.Json/13.0.3": {
+        "runtime": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "13.0.0.0",
+            "fileVersion": "13.0.3.27908"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "FlyFramework.Common/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "EntityFrameworkCore.Data.AutoHistory/8.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-8mabFZY6TTXpgMHX+n4EQwRokqAzHM65R/PSzc0Q+TzNVDnPQc8MSTkvLW/cVoHVfGDIxZ5cOBE1ZjHoHXkmGw==",
+      "path": "entityframeworkcore.data.autohistory/8.0.2",
+      "hashPath": "entityframeworkcore.data.autohistory.8.0.2.nupkg.sha512"
+    },
+    "EntityFrameworkCore.Data.QueryBuilder/8.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-MwSVOamcPkG4n0sAR40KKuq4o3ZWgyh5Z/22YuhR1ycRb85A6XPWDKkJUa1R4YGj5B4HUebGcQfpjPOD5yeBPQ==",
+      "path": "entityframeworkcore.data.querybuilder/8.0.2",
+      "hashPath": "entityframeworkcore.data.querybuilder.8.0.2.nupkg.sha512"
+    },
+    "EntityFrameworkCore.Data.QueryBuilder.Abstractions/8.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-+pPUw+7L55VM8xBNtJKsmQK9LK2L5zrQ/eidQidsdePMhjBp/sMovPn8dP3rhblQSRlsTzbT4u3VPeUXn3nK+A==",
+      "path": "entityframeworkcore.data.querybuilder.abstractions/8.0.2",
+      "hashPath": "entityframeworkcore.data.querybuilder.abstractions.8.0.2.nupkg.sha512"
+    },
+    "EntityFrameworkCore.Data.Repository/8.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-XDyDV14XM5I1RQvJhOQ/acnTQpzY1bImINXJ3tiZVNdXDTm9oqK53aZZjAyyFbB4h1oz6+MOdJbkMtDjBy1kYA==",
+      "path": "entityframeworkcore.data.repository/8.0.2",
+      "hashPath": "entityframeworkcore.data.repository.8.0.2.nupkg.sha512"
+    },
+    "EntityFrameworkCore.Data.Repository.Abstractions/8.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-F+J3owUdiC6dU7uhVjuLgWsbz3eUfaFsCkvGUqfPPp5KKqVQd6Bh+c5euOMzFPhEaUuI+qeMAJj6ixGyxYuAkQ==",
+      "path": "entityframeworkcore.data.repository.abstractions/8.0.2",
+      "hashPath": "entityframeworkcore.data.repository.abstractions.8.0.2.nupkg.sha512"
+    },
+    "EntityFrameworkCore.Data.UnitOfWork/8.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-RR+1Yz6EP9Omx1aG3wpK0Mx6HM1Jz8IO3tqL/85QkFv+UBNe21K1Q3ttoQt9fRb/IiS5ACFY3tYznzHRberTeg==",
+      "path": "entityframeworkcore.data.unitofwork/8.0.2",
+      "hashPath": "entityframeworkcore.data.unitofwork.8.0.2.nupkg.sha512"
+    },
+    "EntityFrameworkCore.Data.UnitOfWork.Abstractions/8.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ysYgBAGjiCxZ8ZcWXykLV+U6fmitEEAqAifCaGCBDbToFm/+WL5PU8pCgtQ6jHs0X91ChMfwzG31L+eNrO8NnQ==",
+      "path": "entityframeworkcore.data.unitofwork.abstractions/8.0.2",
+      "hashPath": "entityframeworkcore.data.unitofwork.abstractions.8.0.2.nupkg.sha512"
+    },
+    "LinqKit.Core/1.2.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-+5UKyagtVX33TSeOGorYzDXus/ypAISfM7HFfrix4BEmuuGF+nhSjf8P9csejLQ79ny5ms33M5/lQ2SkwC0Jxw==",
+      "path": "linqkit.core/1.2.5",
+      "hashPath": "linqkit.core.1.2.5.nupkg.sha512"
+    },
+    "LinqKit.Microsoft.EntityFrameworkCore/8.1.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2nTqWs9ZrxNoYrV7nNWjDvAquepoeOyHoJ80fJTAieIVINfZx7n2HVlNtWOGdN0uc7LcftKBFpIu4qua5r7ivQ==",
+      "path": "linqkit.microsoft.entityframeworkcore/8.1.5",
+      "hashPath": "linqkit.microsoft.entityframeworkcore.8.1.5.nupkg.sha512"
+    },
+    "Microsoft.EntityFrameworkCore/8.0.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-UOyPNAgyzw/E4hUCurqvZxi0WWVLQAGZuntFPzkTXtvJLTqRjKvokvhv+XazAUSODLsU1DZ67GjZ4mT9d82+0g==",
+      "path": "microsoft.entityframeworkcore/8.0.7",
+      "hashPath": "microsoft.entityframeworkcore.8.0.7.nupkg.sha512"
+    },
+    "Microsoft.EntityFrameworkCore.Abstractions/8.0.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-DHX6nxcg4/tpWfTjAleKrXveDiNFY/OGOK6nm27GipUXNI2Uofev9cH5SYXmtGIgHWxlvfn754TXN4WnrixOwg==",
+      "path": "microsoft.entityframeworkcore.abstractions/8.0.7",
+      "hashPath": "microsoft.entityframeworkcore.abstractions.8.0.7.nupkg.sha512"
+    },
+    "Microsoft.EntityFrameworkCore.Analyzers/8.0.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-nerD0vEOYJVhVapamRVH9DrUYbDNMJ5bPfWze4SibDDaDaekzgwQqBht97/tV+8pgdKoPAXmtiJsB+lDajwVrQ==",
+      "path": "microsoft.entityframeworkcore.analyzers/8.0.7",
+      "hashPath": "microsoft.entityframeworkcore.analyzers.8.0.7.nupkg.sha512"
+    },
+    "Microsoft.EntityFrameworkCore.Relational/8.0.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Hn86yScnW+VXb+A2LGrVGkGmjsQ9KLWR0T8GQBEcESWk8u9JYhBiRtdxz76Aq0ir82Ei48sLEZTN4VE0sJ3yIg==",
+      "path": "microsoft.entityframeworkcore.relational/8.0.7",
+      "hashPath": "microsoft.entityframeworkcore.relational.8.0.7.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Caching.Abstractions/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3KuSxeHoNYdxVYfg2IRZCThcrlJ1XJqIXkAWikCsbm5C/bCjv7G0WoKDyuR98Q+T607QT2Zl5GsbGRkENcV2yQ==",
+      "path": "microsoft.extensions.caching.abstractions/8.0.0",
+      "hashPath": "microsoft.extensions.caching.abstractions.8.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Caching.Memory/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7pqivmrZDzo1ADPkRwjy+8jtRKWRCPag9qPI+p7sgu7Q4QreWhcvbiWXsbhP+yY8XSiDvZpu2/LWdBv7PnmOpQ==",
+      "path": "microsoft.extensions.caching.memory/8.0.0",
+      "hashPath": "microsoft.extensions.caching.memory.8.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration.Abstractions/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3lE/iLSutpgX1CC0NOW70FJoGARRHbyKmG7dc0klnUZ9Dd9hS6N/POPWhKhMLCEuNN5nXEY5agmlFtH562vqhQ==",
+      "path": "microsoft.extensions.configuration.abstractions/8.0.0",
+      "hashPath": "microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.DependencyInjection/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-V8S3bsm50ig6JSyrbcJJ8bW2b9QLGouz+G1miK3UTaOWmMtFwNNNzUf4AleyDWUmTrWMLNnFSLEQtxmxgNQnNQ==",
+      "path": "microsoft.extensions.dependencyinjection/8.0.0",
+      "hashPath": "microsoft.extensions.dependencyinjection.8.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-cjWrLkJXK0rs4zofsK4bSdg+jhDLTaxrkXu4gS6Y7MAlCvRyNNgwY/lJi5RDlQOnSZweHqoyvgvbdvQsRIW+hg==",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/8.0.0",
+      "hashPath": "microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Logging/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-tvRkov9tAJ3xP51LCv3FJ2zINmv1P8Hi8lhhtcKGqM+ImiTCC84uOPEI4z8Cdq2C3o9e+Aa0Gw0rmrsJD77W+w==",
+      "path": "microsoft.extensions.logging/8.0.0",
+      "hashPath": "microsoft.extensions.logging.8.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Logging.Abstractions/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-arDBqTgFCyS0EvRV7O3MZturChstm50OJ0y9bDJvAcmEPJm0FFpFyjU/JLYyStNGGey081DvnQYlncNX5SJJGA==",
+      "path": "microsoft.extensions.logging.abstractions/8.0.0",
+      "hashPath": "microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Options/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-JOVOfqpnqlVLUzINQ2fox8evY2SKLYJ3BV8QDe/Jyp21u1T7r45x/R/5QdteURMR5r01GxeJSBBUOCOyaNXA3g==",
+      "path": "microsoft.extensions.options/8.0.0",
+      "hashPath": "microsoft.extensions.options.8.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Primitives/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-bXJEZrW9ny8vjMF1JV253WeLhpEVzFo1lyaZu1vQ4ZxWUlVvknZ/+ftFgVheLubb4eZPSwwxBeqS1JkCOjxd8g==",
+      "path": "microsoft.extensions.primitives/8.0.0",
+      "hashPath": "microsoft.extensions.primitives.8.0.0.nupkg.sha512"
+    },
+    "Newtonsoft.Json/13.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
+      "path": "newtonsoft.json/13.0.3",
+      "hashPath": "newtonsoft.json.13.0.3.nupkg.sha512"
+    }
+  }
+}

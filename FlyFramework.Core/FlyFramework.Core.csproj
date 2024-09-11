@@ -8,4 +8,8 @@
     <DocumentationFile>bin\Debug\FlyFramework.Core.xml</DocumentationFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FlyFramework.Common\FlyFramework.Common.csproj" />
+  </ItemGroup>
+
 </Project>
