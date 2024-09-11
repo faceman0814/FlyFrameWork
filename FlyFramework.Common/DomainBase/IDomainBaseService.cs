@@ -2,7 +2,7 @@
 
 namespace FlyFramework.Common.DomainBase
 {
-    public interface IDomainService : ITransientDependency
+    public interface IDomainBaseService : ITransientDependency
     {
     }
 }

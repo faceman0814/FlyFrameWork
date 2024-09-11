@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FlyFramework.Common.DomainBase
 {
-    public class DomainService : IDomainService, ITransientDependency
+    public class DomainBaseService : IDomainBaseService, ITransientDependency
     {
     }
 }
