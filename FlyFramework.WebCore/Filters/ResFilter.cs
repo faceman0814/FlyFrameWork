@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FlyFramework.Common.Extentions;
+
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 using System;
@@ -25,15 +28,29 @@ namespace FlyFramework.WebCore.Filters
             // 获取从 action 返回的结果对象
             var result = context.Result as ObjectResult;
 
+            if (result == null)
+            {
+                // Assume success if no result is provided
+                context.Result = new ObjectResult(new ApiResponse
+                {
+                    Success = true,
+                    Message = "请求成功",
+                    Data = null
+                })
+                {
+                    StatusCode = StatusCodes.Status200OK
+                };
+                goto end;
+            }
             // 根据业务需求，可以对 result 进行检测和修改
             if (result?.Value == null || result.StatusCode < 200 || result.StatusCode >= 300)
             {
                 // 可以处理错误或者不合适的返回状态码
-                context.Result = new ObjectResult(new
+                context.Result = new ObjectResult(new ApiResponse
                 {
-                    success = false,
-                    message = "Error or invalid response",
-                    data = result?.Value
+                    Success = false,
+                    Message = "Error or invalid response",
+                    Data = result?.Value
                 })
                 {
                     StatusCode = result?.StatusCode ?? 500
@@ -52,7 +69,7 @@ namespace FlyFramework.WebCore.Filters
                     StatusCode = result.StatusCode
                 };
             }
-
+        end:
             base.OnActionExecuted(context);
         }
     }
