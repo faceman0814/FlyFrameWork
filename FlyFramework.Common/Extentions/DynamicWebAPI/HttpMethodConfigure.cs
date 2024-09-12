@@ -1,4 +1,4 @@
-﻿namespace FlyFramework.Application.Extentions.DynamicWebAPI
+﻿namespace FlyFramework.Common.Extentions.DynamicWebAPI
 {
     public class HttpMethodConfigure
     {
