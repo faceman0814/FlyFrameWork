@@ -12,26 +12,12 @@ namespace FlyFramework.Application.TestService
     public class BookService : IApplicationService
     {
         private readonly IBookManager _bookManager;
-        private readonly IRepository<Book, string> _bookRepository;
 
 
-        public BookService(IDbContextProvider serviceProvider, IBookManager bookManager, IRepository<Book, string> bookRepository)
+        public BookService(IDbContextProvider serviceProvider, IBookManager bookManager)
         {
             _bookManager = bookManager;
-            _bookRepository = new Repository<Book, string>(serviceProvider);
         }
-
-        ////泛型仓储
-        //private readonly IRepository<Category> _categoryRepository;
-        ////工作单元
-        //private readonly IUnitOfWork _unitOfWork;
-
-        //public BookService(IRepository<Book> bookRepository, IRepository<Category> categoryRepository, IUnitOfWork unitOfWork)
-        //{
-        //    _bookRepository = bookRepository;
-        //    _categoryRepository = categoryRepository;
-        //    _unitOfWork = unitOfWork;
-        //}
 
         //POST api/Books
         public async Task Add(BookAddOrUpdateInput input)
@@ -50,8 +36,6 @@ namespace FlyFramework.Application.TestService
                 Code = "DEFAULT"
             };
             await _bookManager.Create(book);
-            //await _categoryRepository.AddAsync(category);
-            //await _unitOfWork.SaveChangesAsync();
         }
 
 
