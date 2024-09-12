@@ -5,22 +5,25 @@ using FlyFramework.Core.TestService;
 using FlyFramework.Core.TestService.Domain;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FlyFramework.Application.TestService
 {
     /// <summary>
     /// 测试注释
     /// </summary>
-    [Authorize]
+    //[Authorize]
     public class BookService : IApplicationService
     {
         private readonly IBookManager _bookManager;
+        private readonly IRepository<Book, string> _bookRepository;
 
-
-        public BookService(IDbContextProvider serviceProvider, IBookManager bookManager)
+        public BookService(IBookManager bookManager, IRepository<Book, string> bookRepository)
         {
             _bookManager = bookManager;
+            _bookRepository = bookRepository;
         }
+
         public async Task Add(BookAddOrUpdateInput input)
         {
             Book book = new Book
@@ -30,13 +33,9 @@ namespace FlyFramework.Application.TestService
                 ISBN = input.ISBN,
                 Title = input.Title
             };
-            Category category = new Category
-            {
-                Id = input.CategoryId,
-                Name = "默认分类",
-                Code = "DEFAULT"
-            };
-            await _bookManager.Create(book);
+
+            //await _bookManager.Create(book);
+            await _bookRepository.InsertAsync(book);
         }
 
         public string Gethelle()

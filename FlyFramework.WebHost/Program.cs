@@ -1,6 +1,8 @@
 using FlyFramework.Common.Dependencys;
 using FlyFramework.Common.Extentions.DynamicWebAPI;
+using FlyFramework.Common.Middlewares;
 using FlyFramework.Common.Repositories;
+using FlyFramework.Common.Uow;
 using FlyFramework.Core.TestService.Domain;
 using FlyFramework.EntityFrameworkCore;
 using FlyFramework.WebCore.Extentions;
@@ -52,6 +54,8 @@ public static class AppConfig
 
         //单独注册某个服务，特殊情况
         //_services.AddSingleton<Ixxx, xxx>();
+        // 注册UnitOfWork
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         AddJsonOptions();
 
@@ -300,6 +304,8 @@ public static class AppConfig
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
+        app.UseMiddleware<UnitOfWorkMiddleware>();
+
         return app;
     }
 
