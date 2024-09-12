@@ -1,20 +1,13 @@
-﻿using EntityFrameworkCore.Repository.Interfaces;
-
-using FlyFramework.Common.Dependencys;
-using FlyFramework.Common.Entities;
+﻿using FlyFramework.Common.Entities;
+using FlyFramework.Common.ErrorExceptions;
 
 using Microsoft.EntityFrameworkCore;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FlyFramework.Common.Repositories
 {
-    public class Repository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey>, IRepository, ITransientDependency where TEntity : class, IEntity<TPrimaryKey>
+    public class Repository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey>, IRepository where TEntity : class, IEntity<TPrimaryKey>
     {
         protected DbContext DbContext { get; }
         protected DbSet<TEntity> DbSet { get; }
@@ -24,10 +17,10 @@ namespace FlyFramework.Common.Repositories
             DbContext = dbContextProvider.GetDbContext();
             DbSet = DbContext.Set<TEntity>();
         }
-
+        #region
         public IQueryable<TEntity> GetAll()
         {
-            return DbContext.Set<TEntity>();
+            return DbSet.AsQueryable();
         }
 
 
@@ -73,14 +66,12 @@ namespace FlyFramework.Common.Repositories
 
         public virtual TEntity Get(TPrimaryKey id)
         {
-            return FirstOrDefault(id);
-            //?? throw new EntityNotFoundException(typeof(TEntity), id);
+            return FirstOrDefault(id) ?? throw new EntityNotFoundException(typeof(TEntity), id);
         }
 
         public virtual async Task<TEntity> GetAsync(TPrimaryKey id)
         {
-            return await FirstOrDefaultAsync(id).ConfigureAwait(continueOnCapturedContext: false);
-            //?? throw new EntityNotFoundException(typeof(TEntity), id);
+            return await FirstOrDefaultAsync(id).ConfigureAwait(continueOnCapturedContext: false) ?? throw new EntityNotFoundException(typeof(TEntity), id);
         }
 
         public virtual TEntity Single(Expression<Func<TEntity, bool>> predicate)
@@ -121,6 +112,7 @@ namespace FlyFramework.Common.Repositories
         public TEntity Insert(TEntity entity)
         {
             DbSet.Add(entity);
+            DbContext.SaveChanges();
             return entity;
         }
 
@@ -276,8 +268,7 @@ namespace FlyFramework.Common.Repositories
             return Expression.Lambda<Func<TEntity, bool>>(Expression.Equal(memberExpression, right), new ParameterExpression[1] { parameterExpression });
         }
 
-        public void Dispose()
-        {
-        }
+
+        #endregion
     }
 }

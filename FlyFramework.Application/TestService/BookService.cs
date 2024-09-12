@@ -1,16 +1,8 @@
-﻿using EntityFrameworkCore.QueryBuilder.Interfaces;
-using EntityFrameworkCore.Repository.Collections;
-using EntityFrameworkCore.Repository.Extensions;
-using EntityFrameworkCore.Repository.Interfaces;
-using EntityFrameworkCore.UnitOfWork.Interfaces;
-
-using FlyFramework.Application.Extentions.DynamicWebAPI;
+﻿using FlyFramework.Application.Extentions.DynamicWebAPI;
 using FlyFramework.Application.TestService.Dtos;
+using FlyFramework.Common.Repositories;
 using FlyFramework.Core.TestService;
 using FlyFramework.Core.TestService.Domain;
-
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace FlyFramework.Application.TestService
 {
@@ -20,14 +12,16 @@ namespace FlyFramework.Application.TestService
     public class BookService : IApplicationService
     {
         private readonly IBookManager _bookManager;
+        private readonly IRepository<Book, string> _bookRepository;
 
-        public BookService(IBookManager bookManager)
+
+        public BookService(IDbContextProvider serviceProvider, IBookManager bookManager, IRepository<Book, string> bookRepository)
         {
             _bookManager = bookManager;
+            _bookRepository = new Repository<Book, string>(serviceProvider);
         }
 
         ////泛型仓储
-        //private readonly IRepository<Book> _bookRepository;
         //private readonly IRepository<Category> _categoryRepository;
         ////工作单元
         //private readonly IUnitOfWork _unitOfWork;
@@ -56,7 +50,6 @@ namespace FlyFramework.Application.TestService
                 Code = "DEFAULT"
             };
             await _bookManager.Create(book);
-            //await _bookRepository.AddAsync(book);
             //await _categoryRepository.AddAsync(category);
             //await _unitOfWork.SaveChangesAsync();
         }

@@ -1,12 +1,6 @@
-using EntityFrameworkCore.Repository;
-using EntityFrameworkCore.Repository.Interfaces;
-using EntityFrameworkCore.UnitOfWork.Extensions;
-
 using FlyFramework.Application.Extentions.DynamicWebAPI;
 using FlyFramework.Common.Dependencys;
-using FlyFramework.Common.Domain;
 using FlyFramework.Common.Repositories;
-using FlyFramework.Core.TestService;
 using FlyFramework.Core.TestService.Domain;
 using FlyFramework.EntityFrameworkCore;
 using FlyFramework.WebCore.Extentions;
@@ -55,16 +49,14 @@ public static class AppConfig
 
         //单独注册某个服务，特殊情况
         //_services.AddSingleton<Ixxx, xxx>();
-        services.AddScoped<IDbContextProvider, DbContextProvider>();
-        services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+        AddAutoDI();
 
-        services.AddTransient<IBookManager, BookManager>();
+
         AddSwagger();
         AddDynamicApi();
         AddDbContext();
-        //AddAutoDI();
         AddJsonOptions();
-        AddFilters();
+        //AddFilters();
         return builder;
     }
 
@@ -127,11 +119,12 @@ public static class AppConfig
             option => option.UseSqlServer(builder.Configuration.GetConnectionString("default"))
         );
         services.AddScoped<DbContext, FlyFrameworkDbContext>();
-        // 注册工作单元
-        services.AddUnitOfWork();
+
         //services.AddUnitOfWork<FlyFrameworkDbContext>(); // 多数据库支持
         //注册泛型仓储服务
-        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+        services.AddScoped<IDbContextProvider, DbContextProvider>();
+        services.AddTransient<IBookManager, BookManager>();
     }
 
     /// <summary>

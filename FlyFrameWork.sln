@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyFramework.WebCore", "Fly
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyFramework.WebHost", "FlyFramework.WebHost\FlyFramework.WebHost.csproj", "{39EE8408-BF3D-4521-9847-EE2CEDFFA8C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlyFramework.Common", "FlyFramework.Common\FlyFramework.Common.csproj", "{2746F2A0-E907-4CBB-95FB-C84C9B460301}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyFramework.Common", "FlyFramework.Common\FlyFramework.Common.csproj", "{2746F2A0-E907-4CBB-95FB-C84C9B460301}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{89E86BF3-786D-4A26-9576-3556D701ED0D}"
 EndProject
