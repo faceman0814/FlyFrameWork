@@ -6,9 +6,13 @@ using FlyFramework.EntityFrameworkCore;
 using FlyFramework.WebCore.Extentions;
 using FlyFramework.WebCore.Filters;
 using FlyFramework.WebCore.JsonOptions;
+using FlyFramework.WebHost.Identitys;
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
 using Swashbuckle.AspNetCore.Filters;
@@ -16,7 +20,6 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
-
 var builder = WebApplication.CreateBuilder(args);
 // 配置文件读取
 //var basePath = AppContext.BaseDirectory;
@@ -43,18 +46,39 @@ public static class AppConfig
     {
         builder = _builder;
         services = _builder.Services;
-
         //添加 cookie 静态类
         //Cookies.serviceCollection = builder.Services;
 
         //单独注册某个服务，特殊情况
         //_services.AddSingleton<Ixxx, xxx>();
-        AddAutoDI();
-        AddSwagger();
-        AddDynamicApi();
-        AddDbContext();
+
         AddJsonOptions();
+
         AddFilters();
+
+        AddDbContext();
+
+        AddDynamicApi();
+
+        AddSwagger();
+
+        services.AddIdentityServer()
+            .AddDeveloperSigningCredential()
+            //扩展在每次启动时，为令牌签名创建了一个临时密钥。在生成环境需要一个持久化的密钥
+            .AddInMemoryClients(IdentityConfig.GetClients())             //验证方式
+            .AddInMemoryApiResources(IdentityConfig.GetApiResources())
+            .AddInMemoryIdentityResources(IdentityConfig.GetIdentityResources())     //创建接口返回格式
+            .AddTestUsers(IdentityConfig.GetUsers());                    //使用用户密码验证方式
+                                                                         //将身份验证服务添加到管道中
+        services.AddAuthentication("Bearer")
+        .AddJwtBearer("Bearer", options =>
+        {
+            options.Authority = "http://localhost:5134";   //你要请求验证的identity服务端的地址
+            options.RequireHttpsMetadata = false;
+            options.Audience = "api1";          //你选择的验证方式。 对应的GetClients中定义的作用域
+        });
+        AddAutoDI();
+
         return builder;
     }
 
@@ -263,9 +287,9 @@ public static class AppConfig
     {
         app = _app;
         UseSwagger();
+        app.UseAuthentication(); //使用验证方式 将身份认证中间件添加到管道中，因此将在每次调用API时自动执行身份验证。
+        app.UseIdentityServer();
         app.UseHttpsRedirection();
-        // 启用身份验证
-        app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
         return app;

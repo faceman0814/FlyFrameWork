@@ -19,6 +19,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.1.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.2" />
 	</ItemGroup>
@@ -37,12 +39,6 @@
 		<!--SkipUnchangedFiles="true"：此选项表示只有发生变化的文件会被复制，这可以提高效率，避免不必要的复制操作。-->
 		<Copy SourceFiles="@(XmlDocFiles)" Condition="Exists('%(FullPath)')" DestinationFolder="$(ApiDocDir)" SkipUnchangedFiles="true" />
 	</Target>
-
-	<ItemGroup>
-	  <Content Update="Views\Home\index.cshtml">
-	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-	  </Content>
-	</ItemGroup>
 
 	<ItemGroup>
 	  <Folder Include="wwwroot\ApiDocs\" />

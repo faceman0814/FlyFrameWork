@@ -43,7 +43,7 @@ namespace FlyFramework.EntityFrameworkCore.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Book");
+                    b.ToTable("Book", (string)null);
                 });
 
             modelBuilder.Entity("FlyFramework.Core.TestService.Category", b =>
@@ -63,7 +63,7 @@ namespace FlyFramework.EntityFrameworkCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Category", (string)null);
                 });
 
             modelBuilder.Entity("FlyFramework.Core.TestService.Book", b =>

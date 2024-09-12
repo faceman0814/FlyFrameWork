@@ -4,11 +4,14 @@ using FlyFramework.Common.Repositories;
 using FlyFramework.Core.TestService;
 using FlyFramework.Core.TestService.Domain;
 
+using Microsoft.AspNetCore.Authorization;
+
 namespace FlyFramework.Application.TestService
 {
     /// <summary>
     /// 测试注释
     /// </summary>
+    [Authorize]
     public class BookService : IApplicationService
     {
         private readonly IBookManager _bookManager;
@@ -18,8 +21,6 @@ namespace FlyFramework.Application.TestService
         {
             _bookManager = bookManager;
         }
-
-        //POST api/Books
         public async Task Add(BookAddOrUpdateInput input)
         {
             Book book = new Book
