@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FlyFramework.Common")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f0b0c983a58f0e7165cebbf923aba10053d91705")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5cb467ad39136becad685238e6bed8db39b1cfba")]
 [assembly: System.Reflection.AssemblyProductAttribute("FlyFramework.Common")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FlyFramework.Common")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Extentions
+namespace FlyFramework.Common.Extentions.Object
 {
     public interface IObjectExtensions
     {

@@ -50,13 +50,11 @@ public static class AppConfig
         //单独注册某个服务，特殊情况
         //_services.AddSingleton<Ixxx, xxx>();
         AddAutoDI();
-
-
         AddSwagger();
         AddDynamicApi();
         AddDbContext();
         AddJsonOptions();
-        //AddFilters();
+        AddFilters();
         return builder;
     }
 

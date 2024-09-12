@@ -3,7 +3,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace FlyFramework.Common.Extentions
+namespace FlyFramework.Common.Extentions.Object
 {
     /// <summary>
     /// 对象扩展类
