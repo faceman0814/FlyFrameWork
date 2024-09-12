@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 using Swashbuckle.AspNetCore.Filters;
@@ -68,14 +69,21 @@ public static class AppConfig
             .AddInMemoryClients(IdentityConfig.GetClients())             //验证方式
             .AddInMemoryApiResources(IdentityConfig.GetApiResources())
             .AddInMemoryIdentityResources(IdentityConfig.GetIdentityResources())     //创建接口返回格式
-            .AddTestUsers(IdentityConfig.GetUsers());                    //使用用户密码验证方式
+            .AddInMemoryApiScopes(IdentityConfig.ApiScopes)
+            .AddInMemoryPersistedGrants()
+            .AddInMemoryCaching()
+            .AddTestUsers(IdentityConfig.GetUsers());                    //使用用户密码验证方式Ad
                                                                          //将身份验证服务添加到管道中
         services.AddAuthentication("Bearer")
         .AddJwtBearer("Bearer", options =>
         {
             options.Authority = "http://localhost:5134";   //你要请求验证的identity服务端的地址
             options.RequireHttpsMetadata = false;
-            options.Audience = "api1";          //你选择的验证方式。 对应的GetClients中定义的作用域
+            options.Audience = "api";          //你选择的验证方式。 对应的GetClients中定义的作用域
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false
+            };
         });
         AddAutoDI();
 

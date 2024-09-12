@@ -38,7 +38,7 @@ namespace FlyFramework.WebHost.Identitys
                         new Secret("secret".Sha256())
                     },                     
                     //允许客户端访问的Scopes[作用域]
-                    AllowedScopes = { "api1" }
+                    AllowedScopes = { "api" }
                 }
             };
         }
@@ -77,6 +77,10 @@ namespace FlyFramework.WebHost.Identitys
 
             };
         }
-
+        public static IEnumerable<ApiScope> ApiScopes =>
+        new ApiScope[]
+        {
+            new ApiScope("api")
+        };
     }
 }

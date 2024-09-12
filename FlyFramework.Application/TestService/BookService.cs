@@ -39,7 +39,10 @@ namespace FlyFramework.Application.TestService
             await _bookManager.Create(book);
         }
 
-
+        public string Gethelle()
+        {
+            return "helle";
+        }
         ////分页查询（使用Include加载导航属性)
         //public async Task<IPagedList<BookOutput>> GetPageList(BookPageRequestInput input)
         //{
