@@ -34,8 +34,8 @@ namespace FlyFramework.Application.TestService
                 Title = input.Title
             };
 
-            //await _bookManager.Create(book);
-            await _bookRepository.InsertAsync(book);
+            await _bookManager.Create(book);
+            //await _bookRepository.InsertAsync(book);
         }
 
         public string Gethelle()

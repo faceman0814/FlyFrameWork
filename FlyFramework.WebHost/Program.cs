@@ -1,4 +1,5 @@
 using FlyFramework.Common.Dependencys;
+using FlyFramework.Common.Domain;
 using FlyFramework.Common.Extentions.DynamicWebAPI;
 using FlyFramework.Common.Middlewares;
 using FlyFramework.Common.Repositories;
@@ -8,6 +9,7 @@ using FlyFramework.EntityFrameworkCore;
 using FlyFramework.WebCore.Extentions;
 using FlyFramework.WebCore.Filters;
 using FlyFramework.WebCore.JsonOptions;
+using FlyFramework.WebHost.DI;
 using FlyFramework.WebHost.Identitys;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -21,6 +23,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
+using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 var builder = WebApplication.CreateBuilder(args);
@@ -158,7 +161,6 @@ public static class AppConfig
         //注册泛型仓储服务
         services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
         services.AddScoped<IDbContextProvider, DbContextProvider>();
-        services.AddTransient<IBookManager, BookManager>();
     }
 
     /// <summary>
@@ -166,44 +168,8 @@ public static class AppConfig
     /// </summary>
     public static void AddAutoDI()
     {
-        // 获取当前应用程序域中已加载的以 "FlyFramework" 开头的程序集
-        var assemblies = AppDomain.CurrentDomain.GetAssemblies()
-            .Where(t => t.FullName.StartsWith("FlyFramework")).ToArray();
-
-        // 遍历符合条件的程序集
-        foreach (var assembly in assemblies)
-        {
-            Console.WriteLine("程序集名称: " + assembly.FullName);
-            // 扫描程序集中所有非抽象类类型
-            var types = assembly.GetTypes()
-                .Where(t => t.IsClass && !t.IsAbstract);
-
-            foreach (var type in types)
-            {
-                var interfaces = type.GetInterfaces();
-                var dependencyInterfaces = interfaces.Intersect(new[] { typeof(ITransientDependency), typeof(IScopedDependency), typeof(ISingletonDependency) });
-
-                if (!dependencyInterfaces.Any()) continue;
-
-                // 遍历符合条件的依赖接口并注册到服务容器中
-                foreach (var serviceType in dependencyInterfaces)
-                {
-                    if (typeof(ITransientDependency).IsAssignableFrom(serviceType))
-                    {
-                        Console.WriteLine(type.AssemblyQualifiedName);
-                        services.AddTransient(serviceType, type);
-                    }
-                    else if (typeof(IScopedDependency).IsAssignableFrom(serviceType))
-                    {
-                        services.AddScoped(serviceType, type);
-                    }
-                    else if (typeof(ISingletonDependency).IsAssignableFrom(serviceType))
-                    {
-                        services.AddSingleton(serviceType, type);
-                    }
-                }
-            }
-        }
+        services.AddDependencyServices();
+        services.AddManagerRegisterServices();
     }
 
     /// <summary>
@@ -235,6 +201,8 @@ public static class AppConfig
         {
             //全局返回，统一返回格式
             x.Filters.Add<ResFilter>();
+            //全局事务
+            x.Filters.Add<UnitOfWorkFilter>();
 
             //全局日志，报错
             //x.Filters.Add<LogAttribute>();
@@ -298,14 +266,14 @@ public static class AppConfig
     public static WebApplication Configuration(this WebApplication _app)
     {
         app = _app;
+        //app.UseMiddleware<UnitOfWorkMiddleware>();
+
         UseSwagger();
         app.UseAuthentication(); //使用验证方式 将身份认证中间件添加到管道中，因此将在每次调用API时自动执行身份验证。
         app.UseIdentityServer();
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
-        app.UseMiddleware<UnitOfWorkMiddleware>();
-
         return app;
     }
 

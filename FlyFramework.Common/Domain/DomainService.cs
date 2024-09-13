@@ -47,7 +47,7 @@ namespace FlyFramework.Common.Domain
             TEntity val = await FindById(id);
             if (val == null)
             {
-                throw new UserFriendlyException("Error", "NullError" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                throw new UserFriendlyException("NullError" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             }
 
             return val;
