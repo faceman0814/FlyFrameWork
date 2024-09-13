@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Middlewares
+namespace FlyFramework.WebCore.Middlewares
 {
     public class UnitOfWorkMiddleware
     {
