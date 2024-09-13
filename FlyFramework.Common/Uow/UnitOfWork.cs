@@ -26,7 +26,7 @@ namespace FlyFramework.Common.Uow
             _transaction = await _context.Database.BeginTransactionAsync();
         }
 
-        public async Task CommitAsync()
+        public async Task CommitTransactionAsync()
         {
             try
             {
@@ -38,7 +38,7 @@ namespace FlyFramework.Common.Uow
             }
             catch (Exception ex)
             {
-                await RollbackAsync();
+                await RollbackTransactionAsync();
                 throw new UserFriendlyException(ex.InnerException.Message);
             }
             finally
@@ -51,7 +51,7 @@ namespace FlyFramework.Common.Uow
             }
         }
 
-        public async Task RollbackAsync()
+        public async Task RollbackTransactionAsync()
         {
             if (_transaction != null)
             {

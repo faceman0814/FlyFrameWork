@@ -4,9 +4,8 @@ using FlyFramework.Common.Uow;
 using FlyFramework.EntityFrameworkCore;
 using FlyFramework.WebCore.Extentions;
 using FlyFramework.WebCore.Filters;
+using FlyFramework.WebCore.Identitys;
 using FlyFramework.WebCore.JsonOptions;
-using FlyFramework.WebHost.DI;
-using FlyFramework.WebHost.Identitys;
 
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;

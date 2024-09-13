@@ -10,8 +10,8 @@ namespace FlyFramework.Common.Uow
 {
     public interface IUnitOfWork : ITransientDependency
     {
-        Task CommitAsync();
-        Task RollbackAsync();
+        Task CommitTransactionAsync();
+        Task RollbackTransactionAsync();
         Task BeginTransactionAsync();
     }
 }

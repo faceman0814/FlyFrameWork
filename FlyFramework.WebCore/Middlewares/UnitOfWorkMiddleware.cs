@@ -29,18 +29,18 @@ namespace FlyFramework.WebCore.Middlewares
                 if (httpContext.Response.StatusCode == 200)
                 {
                     // 提交数据库事务
-                    await unitOfWork.CommitAsync();
+                    await unitOfWork.CommitTransactionAsync();
                 }
                 else
                 {
                     // 如果在处理中发生了错误（例如业务逻辑错误导致的非200响应），则回滚事务
-                    await unitOfWork.RollbackAsync();
+                    await unitOfWork.RollbackTransactionAsync();
                 }
             }
             catch (Exception ex)
             {
                 // 如果抛出异常，则回滚事务
-                await unitOfWork.RollbackAsync();
+                await unitOfWork.RollbackTransactionAsync();
 
                 // 设置HTTP响应状态为500（服务器内部错误）
                 httpContext.Response.StatusCode = 500;

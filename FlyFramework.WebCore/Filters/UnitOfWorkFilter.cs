@@ -66,7 +66,7 @@ namespace FlyFramework.WebCore.Filters
                 foreach (var unitOfWork in unitOfWorks)
                 {
                     // 提交事务
-                    await unitOfWork.CommitAsync();
+                    await unitOfWork.CommitTransactionAsync();
                 }
 
                 _logger.LogInformation($@"{nameof(UnitOfWorkFilter)} Ending");
@@ -76,7 +76,7 @@ namespace FlyFramework.WebCore.Filters
                 foreach (var unitOfWork in unitOfWorks)
                 {
                     // 回滚事务
-                    await unitOfWork.RollbackAsync();
+                    await unitOfWork.RollbackTransactionAsync();
                 }
                 _logger.LogError($@"{nameof(UnitOfWorkFilter)} Error: {ex.Message}");
                 throw;

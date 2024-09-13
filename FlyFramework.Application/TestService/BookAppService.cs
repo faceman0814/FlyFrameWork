@@ -52,7 +52,7 @@ namespace FlyFramework.Application.TestService
                     Name = "测试分类"
                 };
                 await _categoryManager.Create(category);
-                await _unitOfWork.CommitAsync();
+                await _unitOfWork.CommitTransactionAsync();
             }
 
             await _bookManager.Create(book);
