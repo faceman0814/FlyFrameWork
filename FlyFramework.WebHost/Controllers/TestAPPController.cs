@@ -40,7 +40,7 @@ namespace FlyFramework.WebHost.Controllers
 
             client.SetBearerToken(tokenResponse.AccessToken);  //要将Token发送到API，通常使用HTTP Authorization标头。 这是使用SetBearerToken扩展方法完成的：
 
-            var response = await client.GetAsync("http://localhost:5134/api/BookService/Gethelle");  //需要请求接口/controller的地址
+            var response = await client.GetAsync("http://localhost:5134/api/Book/Gethelle");  //需要请求接口/controller的地址
             if (!response.IsSuccessStatusCode)
             {
                 return response.StatusCode.ToString();

@@ -13,7 +13,7 @@ namespace FlyFramework.Application.TestService
     /// <summary>
     /// 测试注释
     /// </summary>
-    //[Authorize]
+    [Authorize]
     public class BookAppService : IApplicationService
     {
         private readonly IBookManager _bookManager;
