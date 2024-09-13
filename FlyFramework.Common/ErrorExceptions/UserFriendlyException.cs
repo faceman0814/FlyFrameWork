@@ -8,12 +8,10 @@ namespace FlyFramework.Common.ErrorExceptions
 {
     public class UserFriendlyException : Exception
     {
-        public string UserMessage { get; private set; }
 
-        public UserFriendlyException(string message, string userMessage)
+        public UserFriendlyException(string message)
             : base(message)
         {
-            UserMessage = userMessage;
         }
     }
 }

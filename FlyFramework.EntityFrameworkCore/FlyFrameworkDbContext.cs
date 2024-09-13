@@ -21,5 +21,7 @@ namespace FlyFramework.EntityFrameworkCore
 
         public DbSet<Book> Book { get; set; }
         public DbSet<Category> Category { get; set; }
+        //public DbSet<IdentityUser> User { get; set; }
+        //public DbSet<User> User { get; set; }
     }
 }

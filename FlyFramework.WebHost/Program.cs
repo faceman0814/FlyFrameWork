@@ -1,22 +1,31 @@
 using FlyFramework.Common.Dependencys;
+using FlyFramework.Common.Domain;
 using FlyFramework.Common.Extentions.DynamicWebAPI;
+using FlyFramework.Common.Middlewares;
 using FlyFramework.Common.Repositories;
+using FlyFramework.Common.Uow;
 using FlyFramework.Core.TestService.Domain;
 using FlyFramework.EntityFrameworkCore;
 using FlyFramework.WebCore.Extentions;
 using FlyFramework.WebCore.Filters;
 using FlyFramework.WebCore.JsonOptions;
+using FlyFramework.WebHost.DI;
+using FlyFramework.WebHost.Identitys;
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
+using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
-
 var builder = WebApplication.CreateBuilder(args);
 // 配置文件读取
 //var basePath = AppContext.BaseDirectory;
@@ -43,18 +52,48 @@ public static class AppConfig
     {
         builder = _builder;
         services = _builder.Services;
-
         //添加 cookie 静态类
         //Cookies.serviceCollection = builder.Services;
 
         //单独注册某个服务，特殊情况
         //_services.AddSingleton<Ixxx, xxx>();
-        AddAutoDI();
-        AddSwagger();
-        AddDynamicApi();
-        AddDbContext();
+        // 注册UnitOfWork
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+
         AddJsonOptions();
+
         AddFilters();
+
+        AddDbContext();
+
+        AddDynamicApi();
+
+        AddSwagger();
+
+        services.AddIdentityServer()
+            .AddDeveloperSigningCredential()
+            //扩展在每次启动时，为令牌签名创建了一个临时密钥。在生成环境需要一个持久化的密钥
+            .AddInMemoryClients(IdentityConfig.GetClients())             //验证方式
+            .AddInMemoryApiResources(IdentityConfig.GetApiResources())
+            .AddInMemoryIdentityResources(IdentityConfig.GetIdentityResources())     //创建接口返回格式
+            .AddInMemoryApiScopes(IdentityConfig.ApiScopes)
+            .AddInMemoryPersistedGrants()
+            .AddInMemoryCaching()
+            .AddTestUsers(IdentityConfig.GetUsers());                    //使用用户密码验证方式Ad
+                                                                         //将身份验证服务添加到管道中
+        services.AddAuthentication("Bearer")
+        .AddJwtBearer("Bearer", options =>
+        {
+            options.Authority = "http://localhost:5134";   //你要请求验证的identity服务端的地址
+            options.RequireHttpsMetadata = false;
+            options.Audience = "api";          //你选择的验证方式。 对应的GetClients中定义的作用域
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false
+            };
+        });
+        AddAutoDI();
+
         return builder;
     }
 
@@ -122,7 +161,6 @@ public static class AppConfig
         //注册泛型仓储服务
         services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
         services.AddScoped<IDbContextProvider, DbContextProvider>();
-        services.AddTransient<IBookManager, BookManager>();
     }
 
     /// <summary>
@@ -130,44 +168,8 @@ public static class AppConfig
     /// </summary>
     public static void AddAutoDI()
     {
-        // 获取当前应用程序域中已加载的以 "FlyFramework" 开头的程序集
-        var assemblies = AppDomain.CurrentDomain.GetAssemblies()
-            .Where(t => t.FullName.StartsWith("FlyFramework")).ToArray();
-
-        // 遍历符合条件的程序集
-        foreach (var assembly in assemblies)
-        {
-            Console.WriteLine("程序集名称: " + assembly.FullName);
-            // 扫描程序集中所有非抽象类类型
-            var types = assembly.GetTypes()
-                .Where(t => t.IsClass && !t.IsAbstract);
-
-            foreach (var type in types)
-            {
-                var interfaces = type.GetInterfaces();
-                var dependencyInterfaces = interfaces.Intersect(new[] { typeof(ITransientDependency), typeof(IScopedDependency), typeof(ISingletonDependency) });
-
-                if (!dependencyInterfaces.Any()) continue;
-
-                // 遍历符合条件的依赖接口并注册到服务容器中
-                foreach (var serviceType in dependencyInterfaces)
-                {
-                    if (typeof(ITransientDependency).IsAssignableFrom(serviceType))
-                    {
-                        Console.WriteLine(type.AssemblyQualifiedName);
-                        services.AddTransient(serviceType, type);
-                    }
-                    else if (typeof(IScopedDependency).IsAssignableFrom(serviceType))
-                    {
-                        services.AddScoped(serviceType, type);
-                    }
-                    else if (typeof(ISingletonDependency).IsAssignableFrom(serviceType))
-                    {
-                        services.AddSingleton(serviceType, type);
-                    }
-                }
-            }
-        }
+        services.AddDependencyServices();
+        services.AddManagerRegisterServices();
     }
 
     /// <summary>
@@ -199,6 +201,8 @@ public static class AppConfig
         {
             //全局返回，统一返回格式
             x.Filters.Add<ResFilter>();
+            //全局事务
+            x.Filters.Add<UnitOfWorkFilter>();
 
             //全局日志，报错
             //x.Filters.Add<LogAttribute>();
@@ -262,10 +266,12 @@ public static class AppConfig
     public static WebApplication Configuration(this WebApplication _app)
     {
         app = _app;
+        //app.UseMiddleware<UnitOfWorkMiddleware>();
+
         UseSwagger();
+        app.UseAuthentication(); //使用验证方式 将身份认证中间件添加到管道中，因此将在每次调用API时自动执行身份验证。
+        app.UseIdentityServer();
         app.UseHttpsRedirection();
-        // 启用身份验证
-        app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
         return app;

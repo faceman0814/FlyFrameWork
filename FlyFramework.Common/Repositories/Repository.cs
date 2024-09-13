@@ -17,6 +17,7 @@ namespace FlyFramework.Common.Repositories
             DbContext = dbContextProvider.GetDbContext();
             DbSet = DbContext.Set<TEntity>();
         }
+
         #region
         public IQueryable<TEntity> GetAll()
         {
@@ -112,7 +113,6 @@ namespace FlyFramework.Common.Repositories
         public TEntity Insert(TEntity entity)
         {
             DbSet.Add(entity);
-            DbContext.SaveChanges();
             return entity;
         }
 
