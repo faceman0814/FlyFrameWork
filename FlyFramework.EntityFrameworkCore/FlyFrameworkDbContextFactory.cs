@@ -12,12 +12,6 @@ namespace FlyFramework.EntityFrameworkCore
 {
     public class FlyFrameworkDbContextFactory : IDesignTimeDbContextFactory<FlyFrameworkDbContext>
     {
-        private readonly IServiceProvider _serviceProvider;
-
-        public FlyFrameworkDbContextFactory()
-        {
-        }
-
         public FlyFrameworkDbContext CreateDbContext(string[] args)
         {
             // 设定配置文件路径
@@ -29,10 +23,8 @@ namespace FlyFramework.EntityFrameworkCore
                 .SetBasePath(path)
                 .AddJsonFile("appsettings.json")
                 .Build();
-
             // 从配置中读取连接字符串
             var connectionString = configuration.GetConnectionString("Default");
-
             Console.WriteLine("迁移使用数据库连接字符串：{0}", connectionString);
             var optionsBuilder = new DbContextOptionsBuilder<FlyFrameworkDbContext>();
             //获取appsettings配置
