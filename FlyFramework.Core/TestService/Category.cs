@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FlyFramework.Core.TestService
 {
-    public class Category : IEntity<string>
+    public class Category : FullAuditedEntity<string>
     {
         public Category()
         {
@@ -33,11 +33,6 @@ namespace FlyFramework.Core.TestService
 
         //导航属性
         public virtual IList<Book> Books { get; set; }
-        public string Id { get; set; }
 
-        public bool IsTransient()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

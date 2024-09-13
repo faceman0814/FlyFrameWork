@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -10,7 +11,10 @@ namespace FlyFramework.Common.Entities
     [Serializable]
     public abstract class Entity<TPrimaryKey> : IEntity<TPrimaryKey>
     {
+        [MaxLength(32)]
         public virtual TPrimaryKey Id { get; set; }
+        [MaxLength(32)]
+        public virtual string ConcurrencyToken { get; set; }
 
         //
         // 摘要:

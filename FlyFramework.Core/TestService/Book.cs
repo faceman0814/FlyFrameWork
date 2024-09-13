@@ -10,16 +10,13 @@ using System.Threading.Tasks;
 
 namespace FlyFramework.Core.TestService
 {
-    public class Book : IEntity<string>
+    public class Book : FullAuditedEntity<string>
     {
         public Book()
         {
             Title = string.Empty;
             ISBN = string.Empty;
         }
-
-        [Key]
-        public string Id { get; set; }
 
         [Required]
         [MaxLength(100)]
@@ -35,17 +32,5 @@ namespace FlyFramework.Core.TestService
         [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
 
-        public bool IsTransient()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEntity<string> JsonClone()
-        {
-            throw new NotImplementedException();
-        }
     }
-
-
-
 }

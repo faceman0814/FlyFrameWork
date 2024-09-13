@@ -13,6 +13,8 @@ namespace FlyFramework.Common.Entities
         /// </summary>
         TPrimaryKey Id { get; set; }
 
+        string ConcurrencyToken { get; set; }
+
         /// <summary>
         /// 检查该实体是否是瞬态（不持续到数据库）
         /// </summary>
