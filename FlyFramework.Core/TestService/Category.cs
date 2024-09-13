@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FlyFramework.Common.Entities;
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,16 +9,13 @@ using System.Threading.Tasks;
 
 namespace FlyFramework.Core.TestService
 {
-    public class Category
+    public class Category : IEntity<string>
     {
         public Category()
         {
             Name = string.Empty;
             Code = string.Empty;
         }
-
-        [Key]
-        public string Id { get; set; }
 
         /// <summary>
         /// 分类代码
@@ -34,5 +33,11 @@ namespace FlyFramework.Core.TestService
 
         //导航属性
         public virtual IList<Book> Books { get; set; }
+        public string Id { get; set; }
+
+        public bool IsTransient()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

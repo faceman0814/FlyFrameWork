@@ -1,4 +1,6 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using FlyFramework.Common.Extentions.Object;
+
+using Microsoft.OpenApi.Models;
 
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -14,21 +16,25 @@ namespace FlyFramework.WebCore.Filters
     {
         public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
         {
+            var newTags = new List<OpenApiTag>();
             // 去掉控制器分类中的 "App" 后缀
             foreach (var path in swaggerDoc.Paths.Values)
             {
                 foreach (var operation in path.Operations.Values)
                 {
-                    var tags = operation.Tags.Select(tag => new OpenApiTag
+                    if (operation.Tags.Any(tag => tag.Name.EndsWith("AppService", StringComparison.OrdinalIgnoreCase)))
                     {
-                        Name = tag.Name.Replace("AppService", "", StringComparison.OrdinalIgnoreCase),
-                        Description = tag.Description
-                    }).ToList();
+                        var tags = operation.Tags.Select(tag => new OpenApiTag
+                        {
+                            Name = tag.Name.Replace("AppService", "", StringComparison.OrdinalIgnoreCase),
+                            Description = tag.Description
+                        }).ToList();
 
-                    operation.Tags.Clear();
-                    foreach (var tag in tags)
-                    {
-                        operation.Tags.Add(tag);
+                        operation.Tags.Clear();
+                        foreach (var tag in tags)
+                        {
+                            operation.Tags.Add(tag);
+                        }
                     }
                 }
             }

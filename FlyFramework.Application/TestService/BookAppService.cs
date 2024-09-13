@@ -1,6 +1,7 @@
 ﻿using FlyFramework.Application.TestService.Dtos;
 using FlyFramework.Common.Extentions.DynamicWebAPI;
 using FlyFramework.Common.Repositories;
+using FlyFramework.Common.Uow;
 using FlyFramework.Core.TestService;
 using FlyFramework.Core.TestService.Domain;
 
@@ -13,26 +14,46 @@ namespace FlyFramework.Application.TestService
     /// 测试注释
     /// </summary>
     //[Authorize]
-    public class BookService : IApplicationService
+    public class BookAppService : IApplicationService
     {
         private readonly IBookManager _bookManager;
+        private readonly ICategoryManager _categoryManager;
         private readonly IRepository<Book, string> _bookRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public BookService(IBookManager bookManager, IRepository<Book, string> bookRepository)
+        public BookAppService(IBookManager bookManager, ICategoryManager categoryManager, IRepository<Book, string> bookRepository, IUnitOfWork unitOfWork)
         {
             _bookManager = bookManager;
             _bookRepository = bookRepository;
+            _categoryManager = categoryManager;
+            _unitOfWork = unitOfWork;
         }
 
+
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public async Task Add(BookAddOrUpdateInput input)
         {
             Book book = new Book
             {
                 Id = Guid.NewGuid().ToString("N"),
-                CategoryId = input.CategoryId,
                 ISBN = input.ISBN,
                 Title = input.Title
             };
+            using (_unitOfWork.BeginTransactionAsync())
+            {
+                var category = new Category
+                {
+                    Id = Guid.NewGuid().ToString("N"),
+                    Code = "123",
+                    Name = "测试分类"
+                };
+                await _categoryManager.Create(category);
+                await _unitOfWork.CommitAsync();
+            }
 
             await _bookManager.Create(book);
             //await _bookRepository.InsertAsync(book);
