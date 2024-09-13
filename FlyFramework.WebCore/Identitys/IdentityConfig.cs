@@ -3,7 +3,7 @@ using IdentityServer4.Test;
 
 using System.Security.Claims;
 
-namespace FlyFramework.WebHost.Identitys
+namespace FlyFramework.WebCore.Identitys
 {
     public class IdentityConfig
     {

@@ -1,9 +1,8 @@
 ﻿using FlyFramework.Common.Dependencys;
-using FlyFramework.Common.Domain;
 
-using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace FlyFramework.WebHost.DI
+namespace FlyFramework.WebCore.Extentions
 {
     public static class ServiceCollectionExtensions
     {

@@ -1,29 +1,20 @@
-using FlyFramework.Common.Dependencys;
-using FlyFramework.Common.Domain;
 using FlyFramework.Common.Extentions.DynamicWebAPI;
-using FlyFramework.Common.Middlewares;
 using FlyFramework.Common.Repositories;
 using FlyFramework.Common.Uow;
-using FlyFramework.Core.TestService.Domain;
 using FlyFramework.EntityFrameworkCore;
 using FlyFramework.WebCore.Extentions;
 using FlyFramework.WebCore.Filters;
+using FlyFramework.WebCore.Identitys;
 using FlyFramework.WebCore.JsonOptions;
-using FlyFramework.WebHost.DI;
-using FlyFramework.WebHost.Identitys;
 
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
-using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 var builder = WebApplication.CreateBuilder(args);

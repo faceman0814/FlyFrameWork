@@ -28,6 +28,11 @@ namespace FlyFramework.Common.Extentions.DynamicWebAPI
             //循环每一个控制器信息
             foreach (var controller in application.Controllers)
             {
+                //去除路径中的AppService后缀
+                if (controller.ControllerName.EndsWith("AppService"))
+                {
+                    controller.ControllerName = controller.ControllerName.Substring(0, controller.ControllerName.Length - 10);
+                }
                 var controllerType = controller.ControllerType.AsType();
                 //是否继承IApplicationService接口
                 if (typeof(IApplicationService).IsAssignableFrom(controllerType))
@@ -55,11 +60,6 @@ namespace FlyFramework.Common.Extentions.DynamicWebAPI
                 {
                     action.Selectors.Remove(action.Selectors[i]);
                 }
-            }
-            //去除路径中的AppService后缀
-            if (controllerName.EndsWith("AppService"))
-            {
-                controllerName = controllerName.Substring(0, controllerName.Length - 10);
             }
             //如果有选择器，则遍历选择器，添加默认路由
             if (action.Selectors.Any())

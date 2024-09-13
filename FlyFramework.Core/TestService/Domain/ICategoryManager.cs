@@ -2,7 +2,7 @@
 
 namespace FlyFramework.Core.TestService.Domain
 {
-    public interface IBookManager : IDomainService<Book, string>
+    public interface ICategoryManager : IDomainService<Category, string>
     {
     }
 }
