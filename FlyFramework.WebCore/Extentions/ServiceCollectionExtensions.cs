@@ -65,13 +65,11 @@ namespace FlyFramework.WebCore.Extentions
                     // 自动注册与接口名称匹配的服务实现
                     foreach (var interfaceType in interfaces)
                     {
-                        Console.WriteLine("扫描: {0}", interfaceType.Name);
                         if (!interfaceType.IsPublic || interfaceType == typeof(IDisposable))
                             continue;
 
                         if (interfaceType.Name.Equals($"I{type.Name}", StringComparison.OrdinalIgnoreCase))
                         {
-                            Console.WriteLine("AutoRegister: {0}", interfaceType.Name);
                             RegisterService(services, interfaceType, type);
                         }
                     }
