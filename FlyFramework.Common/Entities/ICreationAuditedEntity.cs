@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FlyFramework.Common.Entities
 {
-    public interface ICreationAuditedEntity<TPrimaryKey>
+    public interface ICreationAuditedEntity<TPrimaryKey> : IEntity<TPrimaryKey>
     {
         public DateTime CreationTime { get; set; }
         public string CreatorUserName { get; set; }

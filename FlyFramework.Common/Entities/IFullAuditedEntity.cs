@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace FlyFramework.Common.Entities
 {
-    public interface IFullAuditedEntity<TPrimaryKey> : IAuditedEntity<TPrimaryKey>
+    public interface IFullAuditedEntity<TPrimaryKey> : IAuditedEntity<TPrimaryKey>, ISoftDelete
     {
-        public bool IsDeleted { get; set; }
         public string DeleterUserId { get; set; }
         public DateTime? DeletionTime { get; set; }
         public string DeleterUserName { get; set; }

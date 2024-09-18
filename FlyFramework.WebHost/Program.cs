@@ -1,15 +1,20 @@
+using AutoMapper;
+
+using FlyFramework.Application.UserService.Mappers;
+using FlyFramework.Common.Extentions;
 using FlyFramework.Common.Extentions.DynamicWebAPI;
+using FlyFramework.Common.Extentions.JsonOptions;
+using FlyFramework.Common.Filters;
 using FlyFramework.Common.Repositories;
 using FlyFramework.Common.Uow;
+using FlyFramework.Core.RoleService;
+using FlyFramework.Core.UserService;
 using FlyFramework.EntityFrameworkCore;
-using FlyFramework.WebCore.Extentions;
-using FlyFramework.WebCore.Filters;
-using FlyFramework.WebCore.Identitys;
-using FlyFramework.WebCore.JsonOptions;
+using FlyFramework.WebHost.Extentions;
+using FlyFramework.WebHost.Identitys;
 
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -51,6 +56,8 @@ public static class AppConfig
         //_services.AddSingleton<Ixxx, xxx>();
         // 注册UnitOfWork
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        AddAutoMapper();
 
         AddJsonOptions();
 
@@ -113,6 +120,9 @@ public static class AppConfig
             //加安全需求信息。它会根据 API 的安全配置（如 OAuth2、JWT 等）自动生成相应的安全需求描述，帮助开发者了解哪些操作需要特定的安全配置。
             options.OperationFilter<SecurityRequirementsOperationFilter>();
             options.DocumentFilter<RemoveAppFilter>();
+            //使Post请求的Body参数在Swagger UI中以Json格式显示。
+            options.OperationFilter<JsonBodyOperationFilter>();
+
             options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "FlyFrameWork API",
@@ -145,7 +155,11 @@ public static class AppConfig
         //注册DbContext服务
         services.AddDbContext<FlyFrameworkDbContext>(
             //option => option.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)
-            option => option.UseSqlServer(builder.Configuration.GetConnectionString("default"))
+            option =>
+            {
+                option.UseSqlServer(builder.Configuration.GetConnectionString("default"));
+                option.AddInterceptors(new FlyFrameworkInterceptor());
+            }
         );
         services.AddScoped<DbContext, FlyFrameworkDbContext>();
 
@@ -153,6 +167,7 @@ public static class AppConfig
         //注册泛型仓储服务
         services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
         services.AddScoped<IDbContextProvider, DbContextProvider>();
+        services.AddIdentity<User, Role>().AddEntityFrameworkStores<FlyFrameworkDbContext>();
     }
 
     /// <summary>
@@ -173,10 +188,8 @@ public static class AppConfig
         {
             //时间格式化响应
             options.JsonSerializerOptions.Converters.Add(new JsonOptionsDate("yyyy-MM-dd HH:mm:ss"));
-
-            //int格式化响应
-            //options.JsonSerializerOptions.Converters.Add(new JsonOptionsInt());
-
+            // 使用PascalCase属性名,动态API才能拿到值。
+            options.JsonSerializerOptions.PropertyNamingPolicy = null;
             //禁止字符串被转义成Unicode
             options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
 
@@ -195,10 +208,12 @@ public static class AppConfig
             x.Filters.Add<ResFilter>();
             //全局事务
             x.Filters.Add<UnitOfWorkFilter>();
-
+            //配置请求类型
+            x.Filters.Add<EnsureJsonFilter>();
+            //解析Post请求参数，将json反序列化赋值参数
+            x.Filters.Add(new AutoFromBodyActionFilter());
             //全局日志，报错
             //x.Filters.Add<LogAttribute>();
-
             //全局身份验证
             //x.Filters.Add<TokenAttribute>();
         });
@@ -248,6 +263,18 @@ public static class AppConfig
             //#endif
             .WithExposedHeaders("X-Pagination"));
         });
+    }
+
+    public static void AddAutoMapper()
+    {
+        // AutoMapper 配置
+        var mapperConfig = new MapperConfiguration(mc =>
+        {
+            mc.AddProfile(new UserMapper());
+        });
+
+        IMapper mapper = mapperConfig.CreateMapper();
+        services.AddSingleton(mapper); // 注册 IMapper 接口
     }
 
     /// <summary>

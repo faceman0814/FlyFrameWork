@@ -21,6 +21,8 @@
 	<ItemGroup>
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.2" />
+		<PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.1.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
 	</ItemGroup>
 
 	<!--在构建项目后，复制所有以FlyFramework开头的XML文档文件到指定的API文档目录。这通常用于将生成的XML文档文件（例如API注释）整理到一个目录中，便于进一步的处理或发布。这种做法可以适合于生成API文档如Swagger时的使用场景。-->

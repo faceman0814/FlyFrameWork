@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FlyFramework.Common.Entities
 {
-    public interface IAuditedEntity<TPrimaryKey>
+    public interface IAuditedEntity<TPrimaryKey> : ICreationAuditedEntity<TPrimaryKey>
     {
         public DateTime? LastModificationTime { get; set; }
         public string LastModifierUserName { get; set; }

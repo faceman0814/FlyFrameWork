@@ -1,7 +1,9 @@
-﻿using FlyFramework.Common.ErrorExceptions;
+﻿using FlyFramework.Common.Entities;
+using FlyFramework.Common.ErrorExceptions;
 using FlyFramework.Common.Repositories;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 
 using System;
@@ -39,7 +41,7 @@ namespace FlyFramework.Common.Uow
             catch (Exception ex)
             {
                 await RollbackTransactionAsync();
-                throw new UserFriendlyException(ex.InnerException.Message);
+                throw new UserFriendlyException(ex.InnerException?.Message ?? ex.Message);
             }
             finally
             {
