@@ -15,7 +15,7 @@ namespace FlyFramework.Common.Filters
     {
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            if (context.HttpContext.Request.ContentType.Contains("application/json"))
+            if (context.HttpContext.Request.ContentType != null && context.HttpContext.Request.ContentType.Contains("application/json"))
             {
                 var body = await new StreamReader(context.HttpContext.Request.Body).ReadToEndAsync();
                 object obj = JsonSerializer.Deserialize(body, context.ActionDescriptor.Parameters[0].ParameterType);

@@ -41,10 +41,8 @@ namespace FlyFramework.EntityFrameworkCore.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeleterUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -211,17 +209,17 @@ namespace FlyFramework.EntityFrameworkCore.Migrations
             migrationBuilder.InsertData(
                 table: "Role",
                 columns: new[] { "Id", "ConcurrencyStamp", "ConcurrencyToken", "CreationTime", "CreatorUserId", "CreatorUserName", "DeleterUserId", "DeleterUserName", "DeletionTime", "IsDeleted", "LastModificationTime", "LastModifierUserId", "LastModifierUserName", "Name", "NormalizedName" },
-                values: new object[] { "41862ff0b33742ddaa091a1eea56bec9", null, null, new DateTime(2024, 9, 14, 14, 15, 39, 168, DateTimeKind.Local).AddTicks(9129), null, null, null, null, null, false, null, null, null, "管理员", null });
+                values: new object[] { "842d675503f84e059a096130e047bf92", null, null, new DateTime(2024, 9, 18, 20, 51, 46, 182, DateTimeKind.Local).AddTicks(6482), null, null, null, null, null, false, null, null, null, "管理员", null });
 
             migrationBuilder.InsertData(
                 table: "User",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "ConcurrencyToken", "CreationTime", "CreatorUserId", "CreatorUserName", "DeleterUserId", "DeleterUserName", "DeletionTime", "Email", "EmailConfirmed", "FullName", "IsActive", "IsDeleted", "LastModificationTime", "LastModifierUserId", "LastModifierUserName", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "Phone", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "b80778de3bca47c7bff9cc4e8dd844c4", 0, "2b7dc1ce-58a9-4431-86e4-dfeaff57ed63", null, new DateTime(2024, 9, 14, 14, 15, 39, 168, DateTimeKind.Local).AddTicks(9365), null, null, null, null, null, "1234567890@qq.com", true, "xxx", false, false, null, null, null, false, null, null, "1234567890@QQ.COM", "ADMIN", null, "AQAAAAIAAYagAAAAEAk/II84PG8PGe+6rWiONc3BeaVYkMGITLw333eCwb70pHvbw3N+SNJRZS0lC7P+EQ==", null, "1234567890", false, "Mecca", false, "admin" });
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "ConcurrencyToken", "CreationTime", "CreatorUserId", "CreatorUserName", "DeleterUserId", "DeleterUserName", "DeletionTime", "Email", "EmailConfirmed", "FullName", "IsActive", "IsDeleted", "LastModificationTime", "LastModifierUserId", "LastModifierUserName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "4957adb8870f4e79882231537ff5d3b9", 0, "42b70166-fd6f-4434-b2a8-dae121dcef49", null, new DateTime(2024, 9, 18, 20, 51, 46, 182, DateTimeKind.Local).AddTicks(6657), null, null, null, null, null, "1234567890@qq.com", true, "xxx", false, false, null, null, null, false, null, "1234567890@QQ.COM", "ADMIN", null, "AQAAAAIAAYagAAAAENSQGoGyv++K6hOMT40kotyPCmD8uIxbK8cKYOhBzpyee4LqLnuXWvPqRzwc8JZIPg==", "1234567890", false, "Mecca", false, "admin" });
 
             migrationBuilder.InsertData(
                 table: "UserRole",
                 columns: new[] { "Id", "RoleId", "UserId" },
-                values: new object[] { "14b4d47acd7141d79d6d9463cbe41a9c", "41862ff0b33742ddaa091a1eea56bec9", "b80778de3bca47c7bff9cc4e8dd844c4" });
+                values: new object[] { "4d753f683d364e0eaa1e7ec5fc466614", "842d675503f84e059a096130e047bf92", "4957adb8870f4e79882231537ff5d3b9" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

@@ -13,6 +13,7 @@ using FlyFramework.EntityFrameworkCore;
 using FlyFramework.WebHost.Extentions;
 using FlyFramework.WebHost.Identitys;
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -21,15 +22,11 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 var builder = WebApplication.CreateBuilder(args);
 // 配置文件读取
-//var basePath = AppContext.BaseDirectory;
-//var config = new ConfigurationBuilder()
-//                .SetBasePath(basePath)
-//                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-//                .Build();
 
 //批量注册服务并构建
 var app = builder.ConfigurationServices().Build();
@@ -49,6 +46,13 @@ public static class AppConfig
     {
         builder = _builder;
         services = _builder.Services;
+
+        var basePath = AppContext.BaseDirectory;
+        var config = new ConfigurationBuilder()
+                        .SetBasePath(basePath)
+                        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                        .Build();
+
         //添加 cookie 静态类
         //Cookies.serviceCollection = builder.Services;
 
@@ -80,15 +84,33 @@ public static class AppConfig
             .AddInMemoryCaching()
             .AddTestUsers(IdentityConfig.GetUsers());                    //使用用户密码验证方式Ad
                                                                          //将身份验证服务添加到管道中
-        services.AddAuthentication("Bearer")
-        .AddJwtBearer("Bearer", options =>
+
+        var jwtBearer = config.GetSection("Authentication").GetSection("JwtBearer");
+        services.AddAuthentication(options =>
         {
-            options.Authority = "http://localhost:5134";   //你要请求验证的identity服务端的地址
-            options.RequireHttpsMetadata = false;
-            options.Audience = "api";          //你选择的验证方式。 对应的GetClients中定义的作用域
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            //options.Authority = "http://localhost:5134";   //你要请求验证的identity服务端的地址
+            //options.RequireHttpsMetadata = false;
+            //options.Audience = jwtBearer.GetValue<string>("Audience");          //你选择的验证方式。 对应的GetClients中定义的作用域
             options.TokenValidationParameters = new TokenValidationParameters
             {
-                ValidateAudience = false
+                //验证Audience
+                ValidateAudience = true,
+                ValidAudience = jwtBearer.GetValue<string>("Audience"),
+                //验证Issuer
+                ValidateIssuer = true,
+                ValidIssuer = jwtBearer.GetValue<string>("Issuer"),
+                //验证签发时间
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.FromMinutes(5),
+                // 验证签名
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtBearer.GetValue<string>("SecurityKey"))),
             };
         });
         AddAutoDI();

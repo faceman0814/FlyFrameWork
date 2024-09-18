@@ -12,10 +12,8 @@ namespace FlyFramework.Core.UserService
 {
     public class User : IdentityUser<string>, IFullAuditedEntity<string>
     {
-        public string Name { get; set; }
         public string FullName { get; set; }
         public string Password { get; set; }
-        public string Phone { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public string DeleterUserId { get; set; }

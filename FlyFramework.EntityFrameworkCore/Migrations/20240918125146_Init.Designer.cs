@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlyFramework.EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(FlyFrameworkDbContext))]
-    [Migration("20240914061539_Init")]
+    [Migration("20240918125146_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -87,8 +87,8 @@ namespace FlyFramework.EntityFrameworkCore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "41862ff0b33742ddaa091a1eea56bec9",
-                            CreationTime = new DateTime(2024, 9, 14, 14, 15, 39, 168, DateTimeKind.Local).AddTicks(9129),
+                            Id = "842d675503f84e059a096130e047bf92",
+                            CreationTime = new DateTime(2024, 9, 18, 20, 51, 46, 182, DateTimeKind.Local).AddTicks(6482),
                             IsDeleted = false,
                             Name = "管理员"
                         });
@@ -116,9 +116,9 @@ namespace FlyFramework.EntityFrameworkCore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "14b4d47acd7141d79d6d9463cbe41a9c",
-                            RoleId = "41862ff0b33742ddaa091a1eea56bec9",
-                            UserId = "b80778de3bca47c7bff9cc4e8dd844c4"
+                            Id = "4d753f683d364e0eaa1e7ec5fc466614",
+                            RoleId = "842d675503f84e059a096130e047bf92",
+                            UserId = "4957adb8870f4e79882231537ff5d3b9"
                         });
                 });
 
@@ -186,9 +186,6 @@ namespace FlyFramework.EntityFrameworkCore.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -201,9 +198,6 @@ namespace FlyFramework.EntityFrameworkCore.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
@@ -237,10 +231,10 @@ namespace FlyFramework.EntityFrameworkCore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b80778de3bca47c7bff9cc4e8dd844c4",
+                            Id = "4957adb8870f4e79882231537ff5d3b9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2b7dc1ce-58a9-4431-86e4-dfeaff57ed63",
-                            CreationTime = new DateTime(2024, 9, 14, 14, 15, 39, 168, DateTimeKind.Local).AddTicks(9365),
+                            ConcurrencyStamp = "42b70166-fd6f-4434-b2a8-dae121dcef49",
+                            CreationTime = new DateTime(2024, 9, 18, 20, 51, 46, 182, DateTimeKind.Local).AddTicks(6657),
                             Email = "1234567890@qq.com",
                             EmailConfirmed = true,
                             FullName = "xxx",
@@ -249,7 +243,7 @@ namespace FlyFramework.EntityFrameworkCore.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "1234567890@QQ.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAk/II84PG8PGe+6rWiONc3BeaVYkMGITLw333eCwb70pHvbw3N+SNJRZS0lC7P+EQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENSQGoGyv++K6hOMT40kotyPCmD8uIxbK8cKYOhBzpyee4LqLnuXWvPqRzwc8JZIPg==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "Mecca",
