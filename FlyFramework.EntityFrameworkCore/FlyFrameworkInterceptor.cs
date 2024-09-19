@@ -1,4 +1,4 @@
-﻿using FlyFramework.Common.Entities;
+﻿using FlyFramework.Domain.Entities;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;

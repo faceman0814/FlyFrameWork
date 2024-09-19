@@ -1,4 +1,4 @@
-﻿using FlyFramework.Common.Domain;
+﻿using FlyFramework.Domain.Domains;
 
 namespace FlyFramework.Core.UserService.DomainService
 {

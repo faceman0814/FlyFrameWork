@@ -2,6 +2,7 @@
 
 using FlyFramework.Application.UserService.Dtos;
 using FlyFramework.Common.Extentions.DynamicWebAPI;
+using FlyFramework.Common.Helpers.JWTTokens;
 using FlyFramework.Core.UserService;
 using FlyFramework.Core.UserService.DomainService;
 
@@ -25,44 +26,40 @@ namespace FlyFramework.Application.UserService
         private readonly IMapper _mapper;
         private readonly SignInManager<User> _signInManager;
         private readonly IConfiguration _configuration;
+        private readonly IJWTTokenManager _jwtTokenManager;
 
-        public UserAppService(IUserManager userManager, IMapper mapper, IConfiguration configuration, SignInManager<User> signInManager)
+        public UserAppService(IUserManager userManager, IMapper mapper, IConfiguration configuration, SignInManager<User> signInManager, IJWTTokenManager jWTTokenManager)
         {
             _userManager = userManager;
             _mapper = mapper;
             _configuration = configuration;
             _signInManager = signInManager;
+            _jwtTokenManager = jWTTokenManager;
         }
 
         public async Task<User> GetUser(string id)
         {
             return await _userManager.FindById(id);
         }
-
         public async Task<string> LoginIn(UserDto input)
         {
             //用户名和密码校验
             var result = await _signInManager.PasswordSignInAsync(input.UserName, input.Password, false, false);
             if (result.Succeeded)
             {
-                //定义JWT的Playload部分
-                var claims = new[]
+                // 设置Token的Claims
+                List<Claim> claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name,input.UserName)
+                    //new Claim(LoginClaimTypes.UserName, userinfo.UserName!), //HttpContext.User.Identity.Name
+                    //new Claim(LoginClaimTypes.UserId, userinfo.Id!.ToString()),
+                    //new Claim(
+                    //    LoginClaimTypes.Expiration,
+                    //    DateTimeOffset
+                    //        .Now.AddMinutes(30)
+                    //        .ToString()
+                    //),
                 };
-                //生成token
-                var jwtBearer = _configuration.GetSection("Authentication").GetSection("JwtBearer");
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtBearer.GetValue<string>("SecurityKey")));
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-                var securityToken = new JwtSecurityToken(
-                    issuer: jwtBearer.GetValue<string>("Issuer"),
-                    audience: jwtBearer.GetValue<string>("Audience"),
-                    claims: claims,
-                    expires: DateTime.Now.AddDays(1),
-                    signingCredentials: creds
-                    );
-                var token = new JwtSecurityTokenHandler().WriteToken(securityToken);
-                return token;
+                return _jwtTokenManager.GenerateToken(claims);
             }
             else
             {

@@ -1,23 +1,27 @@
 using AutoMapper;
 
 using FlyFramework.Application.UserService.Mappers;
-using FlyFramework.Common.Extentions;
+using FlyFramework.Common.Attributes;
 using FlyFramework.Common.Extentions.DynamicWebAPI;
 using FlyFramework.Common.Extentions.JsonOptions;
-using FlyFramework.Common.Filters;
-using FlyFramework.Common.Repositories;
-using FlyFramework.Common.Uow;
+using FlyFramework.Common.Helpers.JWTTokens;
 using FlyFramework.Core.RoleService;
 using FlyFramework.Core.UserService;
 using FlyFramework.EntityFrameworkCore;
+using FlyFramework.Repositories.Repositories;
+using FlyFramework.Repositories.Uow;
 using FlyFramework.WebHost.Extentions;
+using FlyFramework.WebHost.Filters;
 using FlyFramework.WebHost.Identitys;
 
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+
+using Newtonsoft.Json;
 
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerUI;
@@ -53,13 +57,21 @@ public static class AppConfig
                         .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                         .Build();
 
+
         //添加 cookie 静态类
         //Cookies.serviceCollection = builder.Services;
 
         //单独注册某个服务，特殊情况
         //_services.AddSingleton<Ixxx, xxx>();
+
         // 注册UnitOfWork
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        services.AddHttpContextAccessor();
+
+        AddIdentity();
+
+        AddJWT(config);
 
         AddAutoMapper();
 
@@ -73,49 +85,93 @@ public static class AppConfig
 
         AddSwagger();
 
-        services.AddIdentityServer()
-            .AddDeveloperSigningCredential()
-            //扩展在每次启动时，为令牌签名创建了一个临时密钥。在生成环境需要一个持久化的密钥
-            .AddInMemoryClients(IdentityConfig.GetClients())             //验证方式
-            .AddInMemoryApiResources(IdentityConfig.GetApiResources())
-            .AddInMemoryIdentityResources(IdentityConfig.GetIdentityResources())     //创建接口返回格式
-            .AddInMemoryApiScopes(IdentityConfig.ApiScopes)
-            .AddInMemoryPersistedGrants()
-            .AddInMemoryCaching()
-            .AddTestUsers(IdentityConfig.GetUsers());                    //使用用户密码验证方式Ad
-                                                                         //将身份验证服务添加到管道中
+        AddAutoDI();
 
-        var jwtBearer = config.GetSection("Authentication").GetSection("JwtBearer");
+        return builder;
+    }
+    /// <summary>
+    /// 身份验证
+    /// </summary>
+    public static void AddIdentity()
+    {
+        services.AddIdentityServer()
+           .AddDeveloperSigningCredential()
+           //扩展在每次启动时，为令牌签名创建了一个临时密钥。在生成环境需要一个持久化的密钥
+           .AddInMemoryClients(IdentityConfig.GetClients())             //验证方式
+           .AddInMemoryApiResources(IdentityConfig.GetApiResources())
+           .AddInMemoryIdentityResources(IdentityConfig.GetIdentityResources())     //创建接口返回格式
+           .AddInMemoryApiScopes(IdentityConfig.ApiScopes)
+           .AddInMemoryPersistedGrants()
+           .AddInMemoryCaching()
+           .AddTestUsers(IdentityConfig.GetUsers());                    //使用用户密码验证方式Ad
+    }
+    /// <summary>
+    /// JWT配置
+    /// </summary>
+    /// <param name="config"></param>
+    public static void AddJWT(IConfigurationRoot config)
+    {
+        //将身份验证服务添加到管道中
+        var jwtBearer = config.GetSection("JwtBearer").Get<JwtBearerModel>();
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
         })
+        .AddCookie(options =>
+        {
+            options.Cookie.Name = "BearerCookie";
+            options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+            options.SlidingExpiration = false;
+            options.LogoutPath = "/Home/Index";
+            options.Events = new CookieAuthenticationEvents
+            {
+                OnSigningOut = async context =>
+                {
+                    context.Response.Cookies.Delete("access-token");
+                    await Task.CompletedTask;
+                }
+            };
+        })
         .AddJwtBearer(options =>
         {
-            //options.Authority = "http://localhost:5134";   //你要请求验证的identity服务端的地址
-            //options.RequireHttpsMetadata = false;
-            //options.Audience = jwtBearer.GetValue<string>("Audience");          //你选择的验证方式。 对应的GetClients中定义的作用域
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 //验证Audience
                 ValidateAudience = true,
-                ValidAudience = jwtBearer.GetValue<string>("Audience"),
+                ValidAudience = jwtBearer.Audience,
                 //验证Issuer
                 ValidateIssuer = true,
-                ValidIssuer = jwtBearer.GetValue<string>("Issuer"),
+                ValidIssuer = jwtBearer.Issuer,
                 //验证签发时间
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.FromMinutes(5),
                 // 验证签名
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtBearer.GetValue<string>("SecurityKey"))),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtBearer.SecretKey)),
+            };
+            options.Events = new JwtBearerEvents()
+            {
+                OnAuthenticationFailed = context =>
+                {
+                    if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                    {
+                        context.Response.Headers.Add("Token-Expired", "true");
+                    }
+                    return Task.CompletedTask;
+                },
+                OnChallenge = context =>
+                {
+                    context.HandleResponse();
+                    var payload = JsonConvert.SerializeObject(new { Code = "401", Message = "很抱歉，您无权访问该接口" });
+                    context.Response.ContentType = "application/json";
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    context.Response.WriteAsync(payload);
+                    return Task.CompletedTask;
+                }
             };
         });
-        AddAutoDI();
-
-        return builder;
     }
 
     /// <summary>
@@ -123,8 +179,15 @@ public static class AppConfig
     /// </summary>
     public static void AddDynamicApi()
     {
+        services.AddMvc(options => { })
+                .AddRazorPagesOptions((options) => { })
+                .AddRazorRuntimeCompilation()
+                .AddDynamicWebApi(builder.Configuration);
+
+        services.AddScoped<IJWTTokenManager, JWTTokenManager>();
+        services.AddScoped<IJwtBearerModel, JwtBearerModel>();
         //注册动态API服务
-        services.AddControllers().AddDynamicWebApi(builder.Configuration);
+        //services.AddControllers().AddDynamicWebApi(builder.Configuration);
     }
 
     /// <summary>
@@ -144,7 +207,7 @@ public static class AppConfig
             options.DocumentFilter<RemoveAppFilter>();
             //使Post请求的Body参数在Swagger UI中以Json格式显示。
             options.OperationFilter<JsonBodyOperationFilter>();
-
+            //添加自定义文档信息
             options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "FlyFrameWork API",
@@ -166,6 +229,30 @@ public static class AppConfig
             {
                 options.IncludeXmlComments(filePath, true);
             }
+
+            //添加JWT认证
+            //options.AddSecurityDefinition("JWTBearer", new OpenApiSecurityScheme()
+            //{
+            //    Description = "这是方式一(直接在输入框中输入认证信息，不需要在开头添加Bearer) ",
+            //    Name = "Authorization",        //jwt默认的参数名称
+            //    In = ParameterLocation.Header,  //jwt默认存放Authorization信息的位置(请求头中)
+            //    Type = SecuritySchemeType.Http,
+            //    Scheme = "Bearer"
+            //});
+
+            //var scheme = new OpenApiSecurityScheme
+            //{
+            //    Reference = new OpenApiReference()
+            //    {
+            //        Id = "JWTBearer",
+            //        Type = ReferenceType.SecurityScheme
+            //    }
+            //};
+
+            //options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            //    {
+            //        { scheme, Array.Empty<string>() }
+            //    });
         });
     }
 
@@ -227,18 +314,18 @@ public static class AppConfig
         services.AddControllersWithViews(x =>
         {
             //全局返回，统一返回格式
-            x.Filters.Add<ResFilter>();
+            x.Filters.Add<ApiResultFilterAttribute>();
             //全局事务
             x.Filters.Add<UnitOfWorkFilter>();
             //配置请求类型
-            x.Filters.Add<EnsureJsonFilter>();
+            x.Filters.Add<EnsureJsonFilterAttribute>();
             //解析Post请求参数，将json反序列化赋值参数
             x.Filters.Add(new AutoFromBodyActionFilter());
             //全局日志，报错
             //x.Filters.Add<LogAttribute>();
             //全局身份验证
             //x.Filters.Add<TokenAttribute>();
-        });
+        }).AddRazorRuntimeCompilation();
     }
 
     /// <summary>
@@ -308,13 +395,21 @@ public static class AppConfig
     {
         app = _app;
         //app.UseMiddleware<UnitOfWorkMiddleware>();
-
+        app.UseRouting();
         UseSwagger();
         app.UseAuthentication(); //使用验证方式 将身份认证中间件添加到管道中，因此将在每次调用API时自动执行身份验证。
         app.UseIdentityServer();
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapDefaultControllerRoute();
+            //endpoints.MapControllerRoute(
+            //name: "default",
+            //pattern: "{controller=Home}/{action=Index}/{id?}");
+            //endpoints.MapRazorPages();
+        });
         return app;
     }
 
@@ -338,12 +433,13 @@ public static class AppConfig
                 // 启用深链接功能后，用户可以直接通过URL访问特定的API操作或模型，而不需要手动导航到相应的位置。
                 options.EnableDeepLinking();
                 options.DocExpansion(DocExpansion.None); //swagger文档展开方式，none为折叠，list为列表
-                                                         //options.IndexStream = () =>
-                                                         //{
-                                                         //    var path = Path.Join(builder.Environment.WebRootPath, "pages", "swagger.html");
-                                                         //    return new FileInfo(path).OpenRead();
-                                                         //};
+                options.IndexStream = () =>
+                {
+                    var path = Path.Join(builder.Environment.WebRootPath, "pages", "swagger.html");
+                    return new FileInfo(path).OpenRead();
+                };
             });
+
         }
     }
 

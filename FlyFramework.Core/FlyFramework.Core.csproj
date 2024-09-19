@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FlyFramework.Common\FlyFramework.Common.csproj" />
+    <ProjectReference Include="..\FlyFramework.Domain\FlyFramework.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,6 @@
-﻿using FlyFramework.Common.Entities;
-using FlyFramework.Common.Extentions;
-using FlyFramework.Core.RoleService;
+﻿using FlyFramework.Core.RoleService;
 using FlyFramework.Core.UserService;
+using FlyFramework.Domain.Entities;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
