@@ -3,23 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34601.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyFramework.Application", "FlyFramework.Application\FlyFramework.Application.csproj", "{2073A8EF-CE3C-4853-B016-A38C2FEC8237}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyFramework.Application", "src\aspnet-core\FlyFramework.Application\FlyFramework.Application.csproj", "{2073A8EF-CE3C-4853-B016-A38C2FEC8237}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyFramework.Core", "FlyFramework.Core\FlyFramework.Core.csproj", "{AFFFE06F-0841-4C81-A704-E7288A2F23E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyFramework.Core", "src\aspnet-core\FlyFramework.Core\FlyFramework.Core.csproj", "{AFFFE06F-0841-4C81-A704-E7288A2F23E6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyFramework.EntityFrameworkCore", "FlyFramework.EntityFrameworkCore\FlyFramework.EntityFrameworkCore.csproj", "{4E226707-1D9E-4D4F-9C85-C89E2EEEC911}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyFramework.EntityFrameworkCore", "src\aspnet-core\FlyFramework.EntityFrameworkCore\FlyFramework.EntityFrameworkCore.csproj", "{4E226707-1D9E-4D4F-9C85-C89E2EEEC911}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyFramework.WebCore", "FlyFramework.WebCore\FlyFramework.WebCore.csproj", "{5AED8460-019E-4588-BF12-3E3302CC547B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyFramework.WebCore", "src\aspnet-core\FlyFramework.WebCore\FlyFramework.WebCore.csproj", "{5AED8460-019E-4588-BF12-3E3302CC547B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyFramework.WebHost", "FlyFramework.WebHost\FlyFramework.WebHost.csproj", "{39EE8408-BF3D-4521-9847-EE2CEDFFA8C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyFramework.WebHost", "src\aspnet-core\FlyFramework.WebHost\FlyFramework.WebHost.csproj", "{39EE8408-BF3D-4521-9847-EE2CEDFFA8C9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyFramework.Common", "FlyFramework.Common\FlyFramework.Common.csproj", "{2746F2A0-E907-4CBB-95FB-C84C9B460301}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyFramework.Common", "src\aspnet-core\FlyFramework.Common\FlyFramework.Common.csproj", "{2746F2A0-E907-4CBB-95FB-C84C9B460301}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{89E86BF3-786D-4A26-9576-3556D701ED0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlyFramework.Repositories", "FlyFramework.Repositories\FlyFramework.Repositories.csproj", "{6C1F401C-07A6-42F8-BF04-18987082D5F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlyFramework.Repositories", "src\aspnet-core\FlyFramework.Repositories\FlyFramework.Repositories.csproj", "{6C1F401C-07A6-42F8-BF04-18987082D5F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlyFramework.Domain", "FlyFramework.Domain\FlyFramework.Domain.csproj", "{8AFB1B9F-A489-48A5-BA1D-FDE1BE921A4C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlyFramework.Domain", "src\aspnet-core\FlyFramework.Domain\FlyFramework.Domain.csproj", "{8AFB1B9F-A489-48A5-BA1D-FDE1BE921A4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
