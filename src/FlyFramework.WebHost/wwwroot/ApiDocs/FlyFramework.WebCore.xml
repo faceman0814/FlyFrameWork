@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FlyFramework.WebCore</name>
+    </assembly>
+    <members>
+        <member name="M:FlyFramework.WebCore.Controllers.FileController.GetFile">
+            <summary>
+            文件控制器
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

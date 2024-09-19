@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FlyFramework.EntityFrameworkCore</name>
+    </assembly>
+    <members>
+        <member name="T:FlyFramework.EntityFrameworkCore.Migrations.Init">
+            <inheritdoc />
+        </member>
+        <member name="M:FlyFramework.EntityFrameworkCore.Migrations.Init.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:FlyFramework.EntityFrameworkCore.Migrations.Init.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:FlyFramework.EntityFrameworkCore.Migrations.Init.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

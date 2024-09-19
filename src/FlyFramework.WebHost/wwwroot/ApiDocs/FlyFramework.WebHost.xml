@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FlyFramework.WebHost</name>
+    </assembly>
+    <members>
+        <member name="F:FlyFramework.WebHost.Extentions.EnvironmentExs.Development">
+            <summary>
+            指定开发环境。
+            </summary>
+            <remarks>开发环境可以实现不应在生产中暴露的功能。由于性能成本，范围验证和依赖验证仅发生在开发中。</remarks>
+        </member>
+        <member name="F:FlyFramework.WebHost.Extentions.EnvironmentExs.Staging">
+            <summary>
+            指定预发布环境。
+            </summary>
+            <remarks>预发布环境可用于在更改生产环境之前验证应用程序更改。</remarks>
+        </member>
+        <member name="F:FlyFramework.WebHost.Extentions.EnvironmentExs.Production">
+            <summary>
+            指定生产环境
+            </summary>
+            <remarks>生产环境应配置为最大化安全性，性能和应用程序可用性。</remarks>
+        </member>
+        <member name="F:FlyFramework.WebHost.Extentions.EnvironmentExs.Testing">
+            <summary>
+            指定测试环境
+            </summary>
+        </member>
+        <member name="F:FlyFramework.WebHost.Filters.UnitOfWorkFilter.FilterOrder">
+            <summary>
+            过滤器排序
+            </summary>
+        </member>
+        <member name="P:FlyFramework.WebHost.Filters.UnitOfWorkFilter.Order">
+            <summary>
+            排序属性
+            </summary>
+        </member>
+        <member name="M:FlyFramework.WebHost.Filters.UnitOfWorkFilter.OnActionExecutionAsync(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext,Microsoft.AspNetCore.Mvc.Filters.ActionExecutionDelegate)">
+            <summary>
+            拦截请求
+            </summary>
+            <param name="context">动作方法上下文</param>
+            <param name="next">中间件委托</param>
+        </member>
+        <member name="M:FlyFramework.WebHost.Identitys.IdentityConfig.GetApiResources">
+            <summary>
+            这个方法是来描述和阐述，提供外部选择的作用域
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.WebHost.Identitys.IdentityConfig.GetClients">
+            <summary>
+            作用域的名称和验证规则
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.WebHost.Identitys.IdentityConfig.GetIdentityResources">
+            <summary>
+            这个方法是来规范tooken生成的规则和方法的。一般不进行设置，直接采用默认的即可。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.WebHost.Identitys.IdentityConfig.GetUsers">
+            <summary>
+            针对用户密码验证方式需要比对的账户
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:AppConfig">
+            <summary>
+            配置类
+            </summary>
+        </member>
+        <member name="M:AppConfig.AddIdentity">
+            <summary>
+            身份验证
+            </summary>
+        </member>
+        <member name="M:AppConfig.AddJWT(Microsoft.Extensions.Configuration.IConfigurationRoot)">
+            <summary>
+            JWT配置
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="M:AppConfig.AddDynamicApi">
+            <summary>
+            配置动态API
+            </summary>
+        </member>
+        <member name="M:AppConfig.AddSwagger">
+            <summary>
+            配置Swagger
+            </summary>
+        </member>
+        <member name="M:AppConfig.AddDbContext">
+            <summary>
+            配置DbContext
+            </summary>
+        </member>
+        <member name="M:AppConfig.AddAutoDI">
+            <summary>
+            配置自动注册依赖注入
+            </summary>
+        </member>
+        <member name="M:AppConfig.AddJsonOptions">
+            <summary>
+            配置格式化响应
+            </summary>
+        </member>
+        <member name="M:AppConfig.AddFilters">
+            <summary>
+            注册全局拦截器
+            </summary>
+        </member>
+        <member name="M:AppConfig.AddKestrel">
+             <summary>
+            配置请求大小限制
+             </summary>
+        </member>
+        <member name="M:AppConfig.AddCors">
+            <summary>
+            配置跨域
+            </summary>
+        </member>
+        <member name="M:AppConfig.Configuration(Microsoft.AspNetCore.Builder.WebApplication)">
+            <summary>
+            启用服务集合
+            </summary>
+            <param name="_app"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AppConfig.UseSwagger">
+            <summary>
+            启用Swagger
+            </summary>
+        </member>
+    </members>
+</doc>
