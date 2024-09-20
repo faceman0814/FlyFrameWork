@@ -11,6 +11,7 @@ using FlyFramework.Core.UserService;
 using FlyFramework.EntityFrameworkCore;
 using FlyFramework.Repositories.Repositories;
 using FlyFramework.Repositories.Uow;
+using FlyFramework.WebHost;
 using FlyFramework.WebHost.Extentions;
 using FlyFramework.WebHost.Filters;
 using FlyFramework.WebHost.Identitys;
@@ -18,15 +19,19 @@ using FlyFramework.WebHost.Identitys;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json;
 
+using ServiceStack.Redis;
+
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
+using System.Data.Common;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
@@ -66,15 +71,9 @@ public static class AppConfig
         //_services.AddSingleton<Ixxx, xxx>();
 
         // 注册UnitOfWork
-        services.AddSingleton<ICacheManager, CacheManager>();
-
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddHttpContextAccessor();
-
-        AddIdentity();
-
-        AddJWT(config);
 
         AddAutoMapper();
 
@@ -84,29 +83,87 @@ public static class AppConfig
 
         AddDbContext();
 
+        AddIdentity();
+
+        AddJWT(config);
+
         AddDynamicApi();
 
         AddSwagger();
 
         AddAutoDI();
 
+        AddRedis(config);
+
         return builder;
     }
+
+    public static void AddRedis(IConfigurationRoot config)
+    {
+        // 获取缓存相关配置
+        var cacheConfig = config.GetSection("Redis").Get<RedisOptionsConfig>();
+
+        // 判断是否启用Redis缓存
+        if (cacheConfig.Enable)
+        {
+            // 创建Redis连接字符串构建器
+            var redisEndpoint = new RedisEndpoint()
+            {
+                Host = cacheConfig.Host, // Redis主机地址
+                Port = cacheConfig.Port, // Redis端口
+                Password = cacheConfig.Password, // Redis密码
+                Db = cacheConfig.Db, // Db端口
+                //Ssl = cacheConfig.SSL // 是否启用SSL
+            };
+
+            // 创建Redis客户端实例
+            var redis = new RedisClient(redisEndpoint);
+
+            // 注册Redis客户端实例为单例服务
+            //services.AddSingleton(redis);
+            services.AddSingleton<IRedisClient>(redis);
+
+            // 注册Redis缓存工具为单例服务
+            services.AddSingleton<ICacheManager, RedisCacheManager>();
+
+            //// 配置客户端缓存选项
+            //var options = new ClientSideCachingOptions();
+            //redis.UseClientSideCaching(options);
+        }
+        else
+        {
+            // 注册内存缓存服务
+            services.AddMemoryCache();
+
+            // 注册内存缓存工具为单例服务
+            services.AddSingleton<ICacheManager, MemoryCacheManager>();
+
+            // 注册分布式内存缓存服务
+            services.AddDistributedMemoryCache();
+        }
+    }
+
     /// <summary>
     /// 身份验证
     /// </summary>
     public static void AddIdentity()
     {
+        services.AddIdentity<User, Role>()
+       .AddEntityFrameworkStores<FlyFrameworkDbContext>()
+        .AddDefaultTokenProviders();
+
         services.AddIdentityServer()
-           .AddDeveloperSigningCredential()
-           //扩展在每次启动时，为令牌签名创建了一个临时密钥。在生成环境需要一个持久化的密钥
-           .AddInMemoryClients(IdentityConfig.GetClients())             //验证方式
-           .AddInMemoryApiResources(IdentityConfig.GetApiResources())
-           .AddInMemoryIdentityResources(IdentityConfig.GetIdentityResources())     //创建接口返回格式
-           .AddInMemoryApiScopes(IdentityConfig.ApiScopes)
-           .AddInMemoryPersistedGrants()
-           .AddInMemoryCaching()
-           .AddTestUsers(IdentityConfig.GetUsers());                    //使用用户密码验证方式Ad
+         .AddAspNetIdentity<User>()
+         .AddDeveloperSigningCredential()
+         //扩展在每次启动时，为令牌签名创建了一个临时密钥。在生成环境需要一个持久化的密钥
+         .AddInMemoryClients(IdentityConfig.GetClients())             //验证方式
+         .AddInMemoryApiResources(IdentityConfig.GetApiResources())
+         .AddInMemoryIdentityResources(IdentityConfig.GetIdentityResources())     //创建接口返回格式
+         .AddInMemoryApiScopes(IdentityConfig.ApiScopes)
+         .AddInMemoryPersistedGrants()
+         .AddInMemoryCaching()
+         .AddTestUsers(IdentityConfig.GetUsers());
+
     }
     /// <summary>
     /// JWT配置
@@ -233,29 +290,53 @@ public static class AppConfig
                 options.IncludeXmlComments(filePath, true);
             }
 
-            //添加JWT认证
-            options.AddSecurityDefinition("JWTBearer", new OpenApiSecurityScheme()
-            {
-                Description = "这是方式一(直接在输入框中输入认证信息，不需要在开头添加Bearer) ",
-                Name = "Authorization",        //jwt默认的参数名称
-                In = ParameterLocation.Header,  //jwt默认存放Authorization信息的位置(请求头中)
-                Type = SecuritySchemeType.Http,
-                Scheme = "Bearer"
-            });
+            //开启Authorize权限按钮——方式一
+            //options.AddSecurityDefinition("JWTBearer", new OpenApiSecurityScheme()
+            //{
+            //    Description = "这是方式一(直接在输入框中输入认证信息，不需要在开头添加Bearer) ",
+            //    Name = "Authorization",        //jwt默认的参数名称
+            //    In = ParameterLocation.Header,  //jwt默认存放Authorization信息的位置(请求头中)
+            //    Type = SecuritySchemeType.Http,
+            //    Scheme = "Bearer"
+            //});
+            //var scheme = new OpenApiSecurityScheme
+            //{
+            //    Reference = new OpenApiReference()
+            //    {
+            //        Id = "JWTBearer",
+            //        Type = ReferenceType.SecurityScheme
+            //    }
+            //};
+            ////开启Authorize权限按钮——方式二
 
-            var scheme = new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference()
-                {
-                    Id = "JWTBearer",
-                    Type = ReferenceType.SecurityScheme
-                }
-            };
+            //options.AddSecurityDefinition("JwtBearer", new OpenApiSecurityScheme()
+            //{
+            //    Description = "这是方式二(JWT授权(数据将在请求头中进行传输) 直接在下框中输入Bearer {token}（注意两者之间是一个空格）)",
+            //    Name = "Authorization",//jwt默认的参数名称
+            //    In = ParameterLocation.Header,//jwt默认存放Authorization信息的位置(请求头中)
+            //    Type = SecuritySchemeType.ApiKey
+            //});
 
-            options.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    { scheme, Array.Empty<string>() }
-                });
+            ////开启Authorize权限按钮——默认
+            //options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+            //{
+            //    {
+            //        new OpenApiSecurityScheme
+            //        {
+            //            Reference = new OpenApiReference
+            //            {
+            //                Type = ReferenceType.SecurityScheme,
+            //                Id = "Bearer"
+            //            },Scheme = "oauth2",Name = "Bearer",In=ParameterLocation.Header,
+            //        },new List<string>()
+            //    }
+            //});
+
+            //声明一个Scheme，注意下面的Id要和上面AddSecurityDefinition中的参数name一致
+            //options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            //    {
+            //        { scheme, Array.Empty<string>() }
+            //    });
         });
     }
 
@@ -279,7 +360,7 @@ public static class AppConfig
         //注册泛型仓储服务
         services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
         services.AddScoped<IDbContextProvider, DbContextProvider>();
-        services.AddIdentity<User, Role>().AddEntityFrameworkStores<FlyFrameworkDbContext>();
+
     }
 
     /// <summary>

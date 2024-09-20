@@ -50,7 +50,17 @@ namespace FlyFramework.WebHost.Controllers
                     new Claim(ClaimTypes.Name,input.UserName),
                 };
                 var token = _jWTTokenManager.GenerateToken(claims.ToList());
-                await _cacheManager.SetCache(input.UserName, token);
+                await _cacheManager.SetCacheAsync(input.UserName, token);
+                Response.Cookies.Append(
+               "access-token",
+               token,
+               new CookieOptions()
+               {
+                   Expires = DateTimeOffset.UtcNow.AddMinutes(
+                       30
+                   )
+               }
+           );
                 return token;
             }
             else

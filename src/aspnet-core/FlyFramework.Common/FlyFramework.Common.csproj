@@ -17,7 +17,7 @@
 		<!--<PackageReference Include="EntityFrameworkCore.Data.UnitOfWork" Version="8.0.2" />-->
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
-		<PackageReference Include="StackExchange.Redis" Version="2.8.16" />
+		<PackageReference Include="ServiceStack.Redis" Version="8.4.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.7.3" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.1.2" />
