@@ -5,6 +5,7 @@ using FlyFramework.Common.Attributes;
 using FlyFramework.Common.Extentions.DynamicWebAPI;
 using FlyFramework.Common.Extentions.JsonOptions;
 using FlyFramework.Common.Helpers.JWTTokens;
+using FlyFramework.Common.Helpers.Redis;
 using FlyFramework.Core.RoleService;
 using FlyFramework.Core.UserService;
 using FlyFramework.EntityFrameworkCore;
@@ -65,6 +66,8 @@ public static class AppConfig
         //_services.AddSingleton<Ixxx, xxx>();
 
         // 注册UnitOfWork
+        services.AddSingleton<ICacheManager, CacheManager>();
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddHttpContextAccessor();
@@ -231,28 +234,28 @@ public static class AppConfig
             }
 
             //添加JWT认证
-            //options.AddSecurityDefinition("JWTBearer", new OpenApiSecurityScheme()
-            //{
-            //    Description = "这是方式一(直接在输入框中输入认证信息，不需要在开头添加Bearer) ",
-            //    Name = "Authorization",        //jwt默认的参数名称
-            //    In = ParameterLocation.Header,  //jwt默认存放Authorization信息的位置(请求头中)
-            //    Type = SecuritySchemeType.Http,
-            //    Scheme = "Bearer"
-            //});
+            options.AddSecurityDefinition("JWTBearer", new OpenApiSecurityScheme()
+            {
+                Description = "这是方式一(直接在输入框中输入认证信息，不需要在开头添加Bearer) ",
+                Name = "Authorization",        //jwt默认的参数名称
+                In = ParameterLocation.Header,  //jwt默认存放Authorization信息的位置(请求头中)
+                Type = SecuritySchemeType.Http,
+                Scheme = "Bearer"
+            });
 
-            //var scheme = new OpenApiSecurityScheme
-            //{
-            //    Reference = new OpenApiReference()
-            //    {
-            //        Id = "JWTBearer",
-            //        Type = ReferenceType.SecurityScheme
-            //    }
-            //};
+            var scheme = new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference()
+                {
+                    Id = "JWTBearer",
+                    Type = ReferenceType.SecurityScheme
+                }
+            };
 
-            //options.AddSecurityRequirement(new OpenApiSecurityRequirement
-            //    {
-            //        { scheme, Array.Empty<string>() }
-            //    });
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    { scheme, Array.Empty<string>() }
+                });
         });
     }
 
