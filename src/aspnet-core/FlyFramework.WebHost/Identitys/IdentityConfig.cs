@@ -38,7 +38,7 @@ namespace FlyFramework.WebHost.Identitys
                         new Secret("secret".Sha256())
                     },                     
                     //允许客户端访问的Scopes[作用域]
-                    AllowedScopes = { "api" }
+                    AllowedScopes = { "club", "api" }
                 }
             };
         }

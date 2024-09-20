@@ -125,7 +125,7 @@ public static class AppConfig
         .AddCookie(options =>
         {
             options.Cookie.Name = "BearerCookie";
-            options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+            options.ExpireTimeSpan = TimeSpan.FromMinutes(jwtBearer.AccessTokenExpiresMinutes);
             options.SlidingExpiration = false;
             options.LogoutPath = "/Home/Index";
             options.Events = new CookieAuthenticationEvents
@@ -187,8 +187,8 @@ public static class AppConfig
                 .AddRazorRuntimeCompilation()
                 .AddDynamicWebApi(builder.Configuration);
 
-        services.AddScoped<IJWTTokenManager, JWTTokenManager>();
-        services.AddScoped<IJwtBearerModel, JwtBearerModel>();
+        services.AddSingleton<IJWTTokenManager, JWTTokenManager>();
+        services.AddSingleton<IJwtBearerModel, JwtBearerModel>();
         //注册动态API服务
         //services.AddControllers().AddDynamicWebApi(builder.Configuration);
     }
@@ -328,7 +328,7 @@ public static class AppConfig
             //x.Filters.Add<LogAttribute>();
             //全局身份验证
             //x.Filters.Add<TokenAttribute>();
-        }).AddRazorRuntimeCompilation();
+        });
     }
 
     /// <summary>

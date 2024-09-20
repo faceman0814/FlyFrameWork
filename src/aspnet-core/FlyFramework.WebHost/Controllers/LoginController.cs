@@ -47,10 +47,10 @@ namespace FlyFramework.WebHost.Controllers
                 //定义JWT的Playload部分
                 var claims = new[]
                 {
-                    new Claim(ClaimTypes.Name,input.UserName)
+                    new Claim(ClaimTypes.Name,input.UserName),
                 };
                 var token = _jWTTokenManager.GenerateToken(claims.ToList());
-                await _cacheManager.SetCache(token, input.UserName);
+                await _cacheManager.SetCache(input.UserName, token);
                 return token;
             }
             else
