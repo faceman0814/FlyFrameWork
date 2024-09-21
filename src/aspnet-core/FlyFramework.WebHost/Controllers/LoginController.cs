@@ -1,23 +1,13 @@
-﻿using FlyFramework.Application.UserService.Dtos;
-using FlyFramework.Common.Attributes;
-using FlyFramework.Common.Helpers.JWTTokens;
-using FlyFramework.Common.Helpers.Redis;
+﻿using FlyFramework.Common.Attributes;
+using FlyFramework.Common.Utilities.JWTTokens;
+using FlyFramework.Common.Utilities.Redis;
 using FlyFramework.Core.UserService;
-using FlyFramework.Core.UserService.DomainService;
 using FlyFramework.WebHost.Models;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.Net.Http.Headers;
-
-using System.IdentityModel.Tokens.Jwt;
 
 using System.Security.Claims;
-
-using System.Text;
-
-using SameSiteMode = Microsoft.AspNetCore.Http.SameSiteMode;
 
 namespace FlyFramework.WebHost.Controllers
 {

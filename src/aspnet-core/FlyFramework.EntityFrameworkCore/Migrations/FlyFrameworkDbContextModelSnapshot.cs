@@ -84,8 +84,8 @@ namespace FlyFramework.EntityFrameworkCore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "842d675503f84e059a096130e047bf92",
-                            CreationTime = new DateTime(2024, 9, 18, 20, 51, 46, 182, DateTimeKind.Local).AddTicks(6482),
+                            Id = "f782747be4e2456facdfa5fc36280118",
+                            CreationTime = new DateTime(2024, 9, 21, 18, 31, 28, 234, DateTimeKind.Local).AddTicks(9312),
                             IsDeleted = false,
                             Name = "管理员"
                         });
@@ -113,9 +113,9 @@ namespace FlyFramework.EntityFrameworkCore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4d753f683d364e0eaa1e7ec5fc466614",
-                            RoleId = "842d675503f84e059a096130e047bf92",
-                            UserId = "4957adb8870f4e79882231537ff5d3b9"
+                            Id = "387ade8e84204031be9915b82b74db1c",
+                            RoleId = "f782747be4e2456facdfa5fc36280118",
+                            UserId = "eb4d30090bdd489e8becd10ab88d69d3"
                         });
                 });
 
@@ -228,10 +228,10 @@ namespace FlyFramework.EntityFrameworkCore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4957adb8870f4e79882231537ff5d3b9",
+                            Id = "eb4d30090bdd489e8becd10ab88d69d3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "42b70166-fd6f-4434-b2a8-dae121dcef49",
-                            CreationTime = new DateTime(2024, 9, 18, 20, 51, 46, 182, DateTimeKind.Local).AddTicks(6657),
+                            ConcurrencyStamp = "d384dc94-f3d6-4527-8222-a844d0e639a2",
+                            CreationTime = new DateTime(2024, 9, 21, 18, 31, 28, 234, DateTimeKind.Local).AddTicks(9498),
                             Email = "1234567890@qq.com",
                             EmailConfirmed = true,
                             FullName = "xxx",
@@ -240,7 +240,7 @@ namespace FlyFramework.EntityFrameworkCore.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "1234567890@QQ.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAENSQGoGyv++K6hOMT40kotyPCmD8uIxbK8cKYOhBzpyee4LqLnuXWvPqRzwc8JZIPg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJ+SwbfezD+Y5+oq0gkDBGV/LkAMHwmPHYQxYXGPI8vZ0KvYXdMyZpbcGaWSpfOixw==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "Mecca",

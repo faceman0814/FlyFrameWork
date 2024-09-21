@@ -1,7 +1,7 @@
 ﻿using Minio;
 using Minio.DataModel.Result;
 
-namespace FlyFramework.Common.Helpers.Minios
+namespace FlyFramework.Common.Utilities.Minios
 {
     public interface IMinioManager
     {

@@ -38,7 +38,7 @@
 </head>
 <body>
     <div class="button-container">
-        <!--<button id="hangfireButton">跳转到 Hangfire</button>-->
+        <button id="hangfireButton">跳转到 Hangfire</button>
         <button id="logoutButton">退出登录</button>
     </div>
     <div id="swagger-ui"></div>
@@ -53,9 +53,9 @@
 
             const cookie = Cookies.get('access-token');
 
-            //if (!cookie) {
-            //    window.location.href = '/home/index';
-            //}
+            if (!cookie) {
+                window.location.href = '/home/index';
+            }
 
             // 配置 SwaggerUI
             configObject.dom_id = "#swagger-ui";

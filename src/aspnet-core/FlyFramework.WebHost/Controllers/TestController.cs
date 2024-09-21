@@ -1,5 +1,5 @@
 ﻿using FlyFramework.Common.Attributes;
-using FlyFramework.Common.Helpers.Minios;
+using FlyFramework.Common.Utilities.Minios;
 using FlyFramework.WebHost.Models;
 
 using Microsoft.AspNetCore.Mvc;

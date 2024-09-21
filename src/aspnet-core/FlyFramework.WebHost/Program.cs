@@ -4,30 +4,34 @@ using FlyFramework.Application.UserService.Mappers;
 using FlyFramework.Common.Attributes;
 using FlyFramework.Common.Extentions.DynamicWebAPI;
 using FlyFramework.Common.Extentions.JsonOptions;
-using FlyFramework.Common.Helpers.JWTTokens;
-using FlyFramework.Common.Helpers.Minios;
-using FlyFramework.Common.Helpers.Redis;
+using FlyFramework.Common.Utilities.HangFires;
+using FlyFramework.Common.Utilities.JWTTokens;
+using FlyFramework.Common.Utilities.Minios;
+using FlyFramework.Common.Utilities.Redis;
 using FlyFramework.Core.RoleService;
 using FlyFramework.Core.UserService;
 using FlyFramework.EntityFrameworkCore;
+using FlyFramework.EntityFrameworkCore.Extensions;
 using FlyFramework.Repositories.Repositories;
 using FlyFramework.Repositories.Uow;
-using FlyFramework.WebHost;
 using FlyFramework.WebHost.Extentions;
 using FlyFramework.WebHost.Filters;
 using FlyFramework.WebHost.Identitys;
+
+using Hangfire;
+using Hangfire.MySql;
+using Hangfire.SqlServer;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 using Minio;
-
-using MongoDB.Driver;
 
 using Newtonsoft.Json;
 
@@ -36,12 +40,9 @@ using ServiceStack.Redis;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
-using System.Data.Common;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
-
-using static ServiceStack.Diagnostics.Events;
 var builder = WebApplication.CreateBuilder(args);
 // 配置文件读取
 
@@ -65,7 +66,7 @@ public static class AppConfig
         services = _builder.Services;
 
         var basePath = AppContext.BaseDirectory;
-        var config = new ConfigurationBuilder()
+        var configuration = new ConfigurationBuilder()
                         .SetBasePath(basePath)
                         .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                         .Build();
@@ -88,11 +89,13 @@ public static class AppConfig
 
         AddFilters();
 
-        AddDbContext();
+        AddDbContext(configuration);
+
+        AddHangfire(configuration);
 
         AddIdentity();
 
-        AddJWT(config);
+        AddJWT(configuration);
 
         AddDynamicApi();
 
@@ -100,17 +103,48 @@ public static class AppConfig
 
         AddAutoDI();
 
-        AddRedis(config);
+        AddRedis(configuration);
 
-        AddMinio(config);
+        AddMinio(configuration);
 
         return builder;
     }
 
-    public static void AddMinio(IConfigurationRoot config)
+    /// <summary>
+    /// 配置Hangfire
+    /// </summary>
+    /// <param name="configuration"></param>
+    /// <param name="optionsAction"></param>
+    public static void AddHangfire(IConfigurationRoot configuration, Action<BackgroundJobServerOptions> optionsAction = null)
     {
         // 获取缓存相关配置
-        var minioConfig = config.GetSection("Minio").Get<MinioOptionsConfig>();
+        var hangFireConfig = configuration.GetSection("HangFire").Get<HangFireOptionsConfig>();
+        if (!hangFireConfig.Enable) return;
+
+        var options = new BackgroundJobServerOptions()
+        {
+            ShutdownTimeout = TimeSpan.FromMinutes(30),
+            Queues = new string[] { "default", "jobs" }, //队列名称，只能为小写
+            WorkerCount = 3, //Environment.ProcessorCount * 5, //并发任务数 Math.Max(Environment.ProcessorCount, 20)
+            ServerName = "fantasy.hangfire",
+        };
+        optionsAction?.Invoke(options);
+        services.AddHangfire(config => config
+            .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)//向前兼容
+            .UseSimpleAssemblyNameTypeSerializer()//使用简单的程序集名称类型序列化器
+            .UseRecommendedSerializerSettings()// 使用推荐的序列化器设置
+            .UseHangfireStorage(configuration)
+        ).AddHangfireServer(optionsAction: c => c = options);
+    }
+
+    /// <summary>
+    /// 配置Minio
+    /// </summary>
+    /// <param name="configuration"></param>
+    public static void AddMinio(IConfigurationRoot configuration)
+    {
+        // 获取缓存相关配置
+        var minioConfig = configuration.GetSection("Minio").Get<MinioOptionsConfig>();
         if (minioConfig.Enable)
         {
             var minioClient = new MinioClient()
@@ -128,10 +162,15 @@ public static class AppConfig
 
 
     }
-    public static void AddRedis(IConfigurationRoot config)
+
+    /// <summary>
+    /// 配置Redis缓存
+    /// </summary>
+    /// <param name="configuration"></param>
+    public static void AddRedis(IConfigurationRoot configuration)
     {
         // 获取缓存相关配置
-        var cacheConfig = config.GetSection("Redis").Get<RedisOptionsConfig>();
+        var cacheConfig = configuration.GetSection("Redis").Get<RedisOptionsConfig>();
 
         // 判断是否启用Redis缓存
         if (cacheConfig.Enable)
@@ -190,14 +229,15 @@ public static class AppConfig
          .AddTestUsers(IdentityConfig.GetUsers());
 
     }
+
     /// <summary>
     /// JWT配置
     /// </summary>
     /// <param name="config"></param>
-    public static void AddJWT(IConfigurationRoot config)
+    public static void AddJWT(IConfigurationRoot configuration)
     {
         //将身份验证服务添加到管道中
-        var jwtBearer = config.GetSection("JwtBearer").Get<JwtBearerModel>();
+        var jwtBearer = configuration.GetSection("JwtBearer").Get<JwtBearerModel>();
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -368,18 +408,20 @@ public static class AppConfig
     /// <summary>
     /// 配置DbContext
     /// </summary>
-    public static void AddDbContext()
+    public static void AddDbContext(IConfigurationRoot configuration)
     {
-        //注册DbContext服务
-        services.AddDbContext<FlyFrameworkDbContext>(
-            //option => option.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)
-            option =>
-            {
-                option.UseSqlServer(builder.Configuration.GetConnectionString("default"));
-                option.AddInterceptors(new FlyFrameworkInterceptor());
-            }
-        );
-        services.AddScoped<DbContext, FlyFrameworkDbContext>();
+        ////注册DbContext服务
+        //services.AddDbContext<FlyFrameworkDbContext>(
+        //    //option => option.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)
+        //    option =>
+        //    {
+        //        option.UseSqlServer(builder.Configuration.GetConnectionString("default"));
+        //        option.AddInterceptors(new FlyFrameworkInterceptor());
+        //    }
+        //);
+        // 添加DbContext服务
+        services.UsingDatabaseServices(configuration);
+        //services.AddScoped<DbContext, FlyFrameworkDbContext>();
 
         //services.AddUnitOfWork<FlyFrameworkDbContext>(); // 多数据库支持
         //注册泛型仓储服务
@@ -496,6 +538,59 @@ public static class AppConfig
     }
 
     /// <summary>
+    /// 使用 Hangfire Storage
+    /// </summary>
+    /// <param name="configuration"></param>
+    /// <returns></returns>
+    public static IGlobalConfiguration UseHangfireStorage(this IGlobalConfiguration globalConfiguration, IConfigurationRoot configuration)
+    {
+        var databaseType = configuration.GetSection("ConnectionStrings:DatabaseType").Get<DatabaseType>();
+        var connectionString = configuration.GetSection("ConnectionStrings:Default").Get<string>();
+        switch (databaseType)
+        {
+            case DatabaseType.SqlServer:
+                globalConfiguration.UseSqlServerStorage(connectionString, new SqlServerStorageOptions
+                {
+                    PrepareSchemaIfNecessary = true,
+                    SchemaName = "FlyFramework_HangFire_",
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5), // 批处理作业的最大超时时间为 5 分钟
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5), // 作业的可见性超时时间为 5 分钟
+                    QueuePollInterval = TimeSpan.FromSeconds(5), // 检查作业队列的间隔时间为 5 秒
+                    JobExpirationCheckInterval = TimeSpan.FromHours(1),//- 作业到期检查间隔（管理过期记录）。默认值为1小时。
+                    CountersAggregateInterval = TimeSpan.FromMinutes(5),//- 聚合计数器的间隔。默认为5分钟。
+                    DashboardJobListLimit = 5000,//- 仪表板作业列表限制。默认值为50000。
+                    TransactionTimeout = TimeSpan.FromMinutes(1),//- 交易超时。默认为1分钟。
+                    UseRecommendedIsolationLevel = true, // 使用推荐的事务隔离级别
+                    DisableGlobalLocks = true // 禁用全局锁定机制
+                });
+                break;
+
+            case DatabaseType.MySql:
+                globalConfiguration.UseStorage(new MySqlStorage(connectionString, new MySqlStorageOptions()
+                {
+                    QueuePollInterval = TimeSpan.FromSeconds(15),
+                    JobExpirationCheckInterval = TimeSpan.FromHours(1),
+                    CountersAggregateInterval = TimeSpan.FromMinutes(5),
+                    PrepareSchemaIfNecessary = true,
+                    DashboardJobListLimit = 50000,
+                    TransactionTimeout = TimeSpan.FromMinutes(1),
+                    TablesPrefix = "FlyFramework_HangFire_"
+                }));
+                break;
+
+            case DatabaseType.Psotgre:
+                break;
+
+            case DatabaseType.Sqlite:
+                break;
+
+            default:
+                throw new Exception("不支持的数据库类型");
+        }
+        return globalConfiguration;
+    }
+
+    /// <summary>
     /// 启用服务集合
     /// </summary>
     /// <param name="_app"></param>
@@ -519,6 +614,8 @@ public static class AppConfig
             //pattern: "{controller=Home}/{action=Index}/{id?}");
             //endpoints.MapRazorPages();
         });
+        // 启用Hangfire仪表盘
+        app.UseHangfireDashboard();
         return app;
     }
 

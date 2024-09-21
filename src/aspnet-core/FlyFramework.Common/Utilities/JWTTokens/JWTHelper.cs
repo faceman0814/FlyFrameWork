@@ -6,7 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Security.Claims;
 
-namespace FlyFramework.Common.Helpers.JWTTokens
+namespace FlyFramework.Common.Utilities.JWTTokens
 {
     /// <summary>
     /// 单例

@@ -4,7 +4,7 @@ using Minio;
 using Minio.DataModel.Args;
 using Minio.DataModel.Result;
 
-namespace FlyFramework.Common.Helpers.Minios
+namespace FlyFramework.Common.Utilities.Minios
 {
     public class MinioManager : IMinioManager
     {

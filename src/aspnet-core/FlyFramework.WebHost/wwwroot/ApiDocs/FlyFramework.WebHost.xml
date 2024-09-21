@@ -139,6 +139,25 @@
             配置类
             </summary>
         </member>
+        <member name="M:AppConfig.AddHangfire(Microsoft.Extensions.Configuration.IConfigurationRoot,System.Action{Hangfire.BackgroundJobServerOptions})">
+            <summary>
+            配置Hangfire
+            </summary>
+            <param name="configuration"></param>
+            <param name="optionsAction"></param>
+        </member>
+        <member name="M:AppConfig.AddMinio(Microsoft.Extensions.Configuration.IConfigurationRoot)">
+            <summary>
+            配置Minio
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="M:AppConfig.AddRedis(Microsoft.Extensions.Configuration.IConfigurationRoot)">
+            <summary>
+            配置Redis缓存
+            </summary>
+            <param name="configuration"></param>
+        </member>
         <member name="M:AppConfig.AddIdentity">
             <summary>
             身份验证
@@ -160,7 +179,7 @@
             配置Swagger
             </summary>
         </member>
-        <member name="M:AppConfig.AddDbContext">
+        <member name="M:AppConfig.AddDbContext(Microsoft.Extensions.Configuration.IConfigurationRoot)">
             <summary>
             配置DbContext
             </summary>
@@ -189,6 +208,13 @@
             <summary>
             配置跨域
             </summary>
+        </member>
+        <member name="M:AppConfig.UseHangfireStorage(Hangfire.IGlobalConfiguration,Microsoft.Extensions.Configuration.IConfigurationRoot)">
+            <summary>
+            使用 Hangfire Storage
+            </summary>
+            <param name="configuration"></param>
+            <returns></returns>
         </member>
         <member name="M:AppConfig.Configuration(Microsoft.AspNetCore.Builder.WebApplication)">
             <summary>

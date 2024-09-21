@@ -1,5 +1,4 @@
-﻿
-namespace FlyFramework.Common.Helpers.Redis
+﻿namespace FlyFramework.Common.Utilities.Redis
 {
     public interface ICacheManager
     {
