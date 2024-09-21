@@ -14,6 +14,7 @@ using FlyFramework.EntityFrameworkCore;
 using FlyFramework.EntityFrameworkCore.Extensions;
 using FlyFramework.Repositories.Repositories;
 using FlyFramework.Repositories.Uow;
+using FlyFramework.WebHost.Controllers;
 using FlyFramework.WebHost.Extentions;
 using FlyFramework.WebHost.Filters;
 using FlyFramework.WebHost.Identitys;
@@ -80,6 +81,7 @@ public static class AppConfig
 
         // ×¢²áUnitOfWork
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddTransient<IMessageService, MessageService>();
 
         services.AddHttpContextAccessor();
 

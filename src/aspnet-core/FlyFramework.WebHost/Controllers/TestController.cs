@@ -2,10 +2,14 @@
 using FlyFramework.Common.Utilities.Minios;
 using FlyFramework.WebHost.Models;
 
+using Hangfire;
+
 using Microsoft.AspNetCore.Mvc;
 
 using Minio.DataModel;
 using Minio.DataModel.Result;
+
+using ServiceStack.Messaging;
 
 namespace FlyFramework.WebHost.Controllers
 {
@@ -118,5 +122,39 @@ namespace FlyFramework.WebHost.Controllers
             return await _minioManager.GetFileUrl(objectName);
         }
 
+        [HttpPost]
+        public void HangFireTest()
+        {
+            #region Hangfire延时执行作业
+
+            BackgroundJob.Schedule<IMessageService>(x => x.SendMessage("Delayed Message"), TimeSpan.FromMinutes(5));
+
+            #endregion Hangfire延时执行作业
+
+            #region Hangfire周期性作业
+
+            RecurringJob.AddOrUpdate<IMessageService>("sendMessageJob", x => x.SendMessage("Hello Message"), "0 2 * * *");
+
+            #endregion Hangfire周期性作业
+        }
+    }
+    public interface IMessageService
+    {
+        void SendMessage(string message);
+
+        void ReceivedMessage(string message);
+    }
+
+    public class MessageService : IMessageService
+    {
+        public void ReceivedMessage(string message)
+        {
+            Console.WriteLine($"接收消息{message}");
+        }
+
+        public void SendMessage(string message)
+        {
+            Console.WriteLine($"发送消息{message}");
+        }
     }
 }
