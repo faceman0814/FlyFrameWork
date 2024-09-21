@@ -28,7 +28,7 @@ namespace FlyFramework.WebHost.Controllers
         }
 
         [HttpPost]
-        public async Task<string> LoginIn(LoginDto input)
+        public async Task LoginIn(LoginDto input)
         {
             //用户名和密码校验
             var result = await _signInManager.PasswordSignInAsync(input.UserName, input.Password, false, false);
@@ -41,21 +41,11 @@ namespace FlyFramework.WebHost.Controllers
                 };
                 var token = _jWTTokenManager.GenerateToken(claims.ToList());
                 await _cacheManager.SetCacheAsync(input.UserName, token);
-                Response.Cookies.Append(
-               "access-token",
-               token,
-               new CookieOptions()
-               {
-                   Expires = DateTimeOffset.UtcNow.AddMinutes(
-                           30
-                       )
-               }
+                Response.Cookies.Append("access-token", token, new CookieOptions()
+                {
+                    Expires = DateTimeOffset.UtcNow.AddMinutes(30)
+                }
                 );
-                return token;
-            }
-            else
-            {
-                return "登录失败";
             }
         }
     }
