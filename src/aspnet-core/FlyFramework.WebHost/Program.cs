@@ -5,6 +5,7 @@ using FlyFramework.Common.Attributes;
 using FlyFramework.Common.Extentions.DynamicWebAPI;
 using FlyFramework.Common.Extentions.JsonOptions;
 using FlyFramework.Common.Helpers.JWTTokens;
+using FlyFramework.Common.Helpers.Minios;
 using FlyFramework.Common.Helpers.Redis;
 using FlyFramework.Core.RoleService;
 using FlyFramework.Core.UserService;
@@ -24,6 +25,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
+using Minio;
+
+using MongoDB.Driver;
+
 using Newtonsoft.Json;
 
 using ServiceStack.Redis;
@@ -35,6 +40,8 @@ using System.Data.Common;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+
+using static ServiceStack.Diagnostics.Events;
 var builder = WebApplication.CreateBuilder(args);
 // 配置文件读取
 
@@ -95,9 +102,32 @@ public static class AppConfig
 
         AddRedis(config);
 
+        AddMinio(config);
+
         return builder;
     }
 
+    public static void AddMinio(IConfigurationRoot config)
+    {
+        // 获取缓存相关配置
+        var minioConfig = config.GetSection("Minio").Get<MinioOptionsConfig>();
+        if (minioConfig.Enable)
+        {
+            var minioClient = new MinioClient()
+               .WithEndpoint(minioConfig.EndPoint)
+               .WithCredentials(minioConfig.AccessKey, minioConfig.SecretKey)
+                .WithSSL(minioConfig.Secure)
+                .Build();
+
+            // 注册Redis客户端实例为单例服务
+            services.AddSingleton(minioClient);
+
+            // 注册Redis缓存工具为单例服务
+            services.AddSingleton<IMinioManager, MinioManager>();
+        }
+
+
+    }
     public static void AddRedis(IConfigurationRoot config)
     {
         // 获取缓存相关配置
@@ -120,15 +150,10 @@ public static class AppConfig
             var redis = new RedisClient(redisEndpoint);
 
             // 注册Redis客户端实例为单例服务
-            //services.AddSingleton(redis);
             services.AddSingleton<IRedisClient>(redis);
 
             // 注册Redis缓存工具为单例服务
             services.AddSingleton<ICacheManager, RedisCacheManager>();
-
-            //// 配置客户端缓存选项
-            //var options = new ClientSideCachingOptions();
-            //redis.UseClientSideCaching(options);
         }
         else
         {

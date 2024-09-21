@@ -57,10 +57,10 @@ namespace FlyFramework.WebHost.Controllers
                new CookieOptions()
                {
                    Expires = DateTimeOffset.UtcNow.AddMinutes(
-                       30
-                   )
+                           30
+                       )
                }
-           );
+                );
                 return token;
             }
             else
