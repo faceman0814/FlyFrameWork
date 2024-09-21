@@ -1,9 +1,16 @@
 using AutoMapper;
 
+using DotNetCore.CAP.Internal;
+
 using FlyFramework.Application.UserService.Mappers;
 using FlyFramework.Common.Attributes;
 using FlyFramework.Common.Extentions.DynamicWebAPI;
 using FlyFramework.Common.Extentions.JsonOptions;
+using FlyFramework.Common.Utilities.EventBus;
+using FlyFramework.Common.Utilities.EventBus.Distributed;
+using FlyFramework.Common.Utilities.EventBus.Distributed.Cap;
+using FlyFramework.Common.Utilities.EventBus.Local;
+using FlyFramework.Common.Utilities.EventBus.MediatR;
 using FlyFramework.Common.Utilities.HangFires;
 using FlyFramework.Common.Utilities.JWTTokens;
 using FlyFramework.Common.Utilities.Minios;
@@ -84,6 +91,7 @@ public static class AppConfig
         //hangfire≤‚ ‘”√
         services.AddTransient<IMessageService, MessageService>();
 
+
         services.AddHttpContextAccessor();
 
         AddAutoMapper();
@@ -110,7 +118,27 @@ public static class AppConfig
 
         AddMinio(configuration);
 
+        AddEventBus(builder.Configuration);
         return builder;
+    }
+    public static void AddEventBus(IConfiguration configuration)
+    {
+        services.AddLocalEventBus();
+        services.AddTransient<ILocalEventBus, MediatREventBus>();
+        services.AddTransient<IDistributedEventBus, CapDistributedEventBus>();
+        services.AddSingleton<IConsumerServiceSelector, FlyFrameworkConsumerServiceSelector>();
+        services.AddCap(x =>
+        {
+            x.UseEntityFramework<FlyFrameworkDbContext>();
+
+            x.UseSqlServer(configuration.GetConnectionString("Default"));
+            //x.UseRabbitMQ(builder.Configuration["RabbitMq:Host"]);
+            x.UseRabbitMQ(o => o.ConnectionFactoryOptions = factory =>
+            {
+                factory.Uri = new Uri(builder.Configuration["RabbitMq:Host"]);
+            });
+            //x.UseRedis(configuration["Cache:Redis"]);
+        });
     }
 
     /// <summary>
