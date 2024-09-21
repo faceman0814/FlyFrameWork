@@ -19,11 +19,11 @@
 		</EmbeddedResource>
 	</ItemGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-	  <NoWarn>1701;1702;1591;8600</NoWarn>
+	  <NoWarn>1701;1702;1591;8600;8602</NoWarn>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-	  <NoWarn>1701;1702;1591;8600</NoWarn>
+	  <NoWarn>1701;1702;1591;8600;8602</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -31,6 +31,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.8" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.8" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.5" />
+		<!--<PackageReference Include="ServiceStack.Redis" Version="8.4.0" />-->
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.2" />
 		<PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.1.2" />

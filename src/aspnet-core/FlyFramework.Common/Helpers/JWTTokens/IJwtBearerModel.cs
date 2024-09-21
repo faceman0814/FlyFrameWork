@@ -26,6 +26,6 @@ namespace FlyFramework.Common.Helpers.JWTTokens
         /// <summary>
         /// 过期时间（分钟）
         /// </summary>
-        public double AccessTokenExpiresMinutes { get; set; }
+        public int AccessTokenExpiresMinutes { get; set; }
     }
 }

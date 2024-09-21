@@ -13,14 +13,14 @@ namespace FlyFramework.Common.Helpers.JWTTokens
 {
     public class JWTTokenManager : IJWTTokenManager
     {
-        private IJwtBearerModel jwtModel;
+        private readonly IJwtBearerModel _jwtModel;
         private readonly IConfiguration _configuration;
 
-        public JWTTokenManager(IJwtBearerModel jwtModel, IConfiguration configuration)
+        public JWTTokenManager(IConfiguration configuration)
         {
-            this.jwtModel = jwtModel;
             _configuration = configuration;
-            jwtModel = _configuration.GetSection("JwtBearer").Get<JwtBearerModel>();
+            _jwtModel = _configuration.GetSection("JwtBearer").Get<JwtBearerModel>();
+
         }
 
         public string GenerateToken(List<Claim> claims)
@@ -36,16 +36,16 @@ namespace FlyFramework.Common.Helpers.JWTTokens
         private string CreateTokenString(List<Claim> claims)
         {
             //过期时间
-            DateTime expires = DateTime.Now.AddMinutes(jwtModel.AccessTokenExpiresMinutes);
+            DateTime expires = DateTime.Now.AddMinutes(_jwtModel.AccessTokenExpiresMinutes);
 
             var token = new JwtSecurityToken(
-                issuer: jwtModel.Issuer,
-                audience: jwtModel.Audience,
+                issuer: _jwtModel.Issuer,
+                audience: _jwtModel.Audience,
                 claims: claims,           //携带的荷载
                 notBefore: DateTime.Now,  //token生成时间
                 expires: expires,         //token过期时间
                 signingCredentials: new SigningCredentials(
-                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtModel.SecretKey)), SecurityAlgorithms.HmacSha256
+                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtModel.SecretKey)), SecurityAlgorithms.HmacSha256
                     )
                 );
 

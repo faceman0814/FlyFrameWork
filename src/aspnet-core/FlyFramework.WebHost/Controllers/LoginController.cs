@@ -1,5 +1,7 @@
 ﻿using FlyFramework.Application.UserService.Dtos;
 using FlyFramework.Common.Attributes;
+using FlyFramework.Common.Helpers.JWTTokens;
+using FlyFramework.Common.Helpers.Redis;
 using FlyFramework.Core.UserService;
 using FlyFramework.Core.UserService.DomainService;
 using FlyFramework.WebHost.Models;
@@ -25,14 +27,14 @@ namespace FlyFramework.WebHost.Controllers
     public class LoginController : ControllerBase
     {
         private readonly SignInManager<User> _signInManager;
-        private readonly IConfiguration _configuration;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ICacheManager _cacheManager;
+        private readonly IJWTTokenManager _jWTTokenManager;
 
-        public LoginController(SignInManager<User> signInManager, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public LoginController(SignInManager<User> signInManager, ICacheManager cacheManager, IJWTTokenManager jWTTokenManager)
         {
             _signInManager = signInManager;
-            _configuration = configuration;
-            _httpContextAccessor = httpContextAccessor;
+            _cacheManager = cacheManager;
+            _jWTTokenManager = jWTTokenManager;
         }
 
         [HttpPost]
@@ -45,29 +47,19 @@ namespace FlyFramework.WebHost.Controllers
                 //定义JWT的Playload部分
                 var claims = new[]
                 {
-                    new Claim(ClaimTypes.Name,input.UserName)
+                    new Claim(ClaimTypes.Name,input.UserName),
                 };
-                //生成token
-                var jwtBearer = _configuration.GetSection("Authentication").GetSection("JwtBearer");
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtBearer.GetValue<string>("SecurityKey")));
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-                var securityToken = new JwtSecurityToken(
-                    issuer: jwtBearer.GetValue<string>("Issuer"),
-                    audience: jwtBearer.GetValue<string>("Audience"),
-                    claims: claims,
-                    expires: DateTime.Now.AddDays(1),
-                    signingCredentials: creds
-                    );
-                var token = new JwtSecurityTokenHandler().WriteToken(securityToken);
+                var token = _jWTTokenManager.GenerateToken(claims.ToList());
+                await _cacheManager.SetCacheAsync(input.UserName, token);
                 Response.Cookies.Append(
-                  "access-token",
-                  token,
-                  new CookieOptions()
-                  {
-                      Expires = DateTimeOffset.UtcNow.AddMinutes(
-                          30
-                      )
-                  }
+               "access-token",
+               token,
+               new CookieOptions()
+               {
+                   Expires = DateTimeOffset.UtcNow.AddMinutes(
+                           30
+                       )
+               }
                 );
                 return token;
             }
@@ -75,7 +67,6 @@ namespace FlyFramework.WebHost.Controllers
             {
                 return "登录失败";
             }
-
         }
     }
 }

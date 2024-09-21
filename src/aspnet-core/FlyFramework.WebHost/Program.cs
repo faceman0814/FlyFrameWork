@@ -5,11 +5,14 @@ using FlyFramework.Common.Attributes;
 using FlyFramework.Common.Extentions.DynamicWebAPI;
 using FlyFramework.Common.Extentions.JsonOptions;
 using FlyFramework.Common.Helpers.JWTTokens;
+using FlyFramework.Common.Helpers.Minios;
+using FlyFramework.Common.Helpers.Redis;
 using FlyFramework.Core.RoleService;
 using FlyFramework.Core.UserService;
 using FlyFramework.EntityFrameworkCore;
 using FlyFramework.Repositories.Repositories;
 using FlyFramework.Repositories.Uow;
+using FlyFramework.WebHost;
 using FlyFramework.WebHost.Extentions;
 using FlyFramework.WebHost.Filters;
 using FlyFramework.WebHost.Identitys;
@@ -17,18 +20,28 @@ using FlyFramework.WebHost.Identitys;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
+using Minio;
+
+using MongoDB.Driver;
+
 using Newtonsoft.Json;
+
+using ServiceStack.Redis;
 
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
+using System.Data.Common;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+
+using static ServiceStack.Diagnostics.Events;
 var builder = WebApplication.CreateBuilder(args);
 // 配置文件读取
 
@@ -69,10 +82,6 @@ public static class AppConfig
 
         services.AddHttpContextAccessor();
 
-        AddIdentity();
-
-        AddJWT(config);
-
         AddAutoMapper();
 
         AddJsonOptions();
@@ -81,29 +90,105 @@ public static class AppConfig
 
         AddDbContext();
 
+        AddIdentity();
+
+        AddJWT(config);
+
         AddDynamicApi();
 
         AddSwagger();
 
         AddAutoDI();
 
+        AddRedis(config);
+
+        AddMinio(config);
+
         return builder;
     }
+
+    public static void AddMinio(IConfigurationRoot config)
+    {
+        // 获取缓存相关配置
+        var minioConfig = config.GetSection("Minio").Get<MinioOptionsConfig>();
+        if (minioConfig.Enable)
+        {
+            var minioClient = new MinioClient()
+               .WithEndpoint(minioConfig.EndPoint)
+               .WithCredentials(minioConfig.AccessKey, minioConfig.SecretKey)
+                .WithSSL(minioConfig.Secure)
+                .Build();
+
+            // 注册Redis客户端实例为单例服务
+            services.AddSingleton(minioClient);
+
+            // 注册Redis缓存工具为单例服务
+            services.AddSingleton<IMinioManager, MinioManager>();
+        }
+
+
+    }
+    public static void AddRedis(IConfigurationRoot config)
+    {
+        // 获取缓存相关配置
+        var cacheConfig = config.GetSection("Redis").Get<RedisOptionsConfig>();
+
+        // 判断是否启用Redis缓存
+        if (cacheConfig.Enable)
+        {
+            // 创建Redis连接字符串构建器
+            var redisEndpoint = new RedisEndpoint()
+            {
+                Host = cacheConfig.Host, // Redis主机地址
+                Port = cacheConfig.Port, // Redis端口
+                Password = cacheConfig.Password, // Redis密码
+                Db = cacheConfig.Db, // Db端口
+                //Ssl = cacheConfig.SSL // 是否启用SSL
+            };
+
+            // 创建Redis客户端实例
+            var redis = new RedisClient(redisEndpoint);
+
+            // 注册Redis客户端实例为单例服务
+            services.AddSingleton<IRedisClient>(redis);
+
+            // 注册Redis缓存工具为单例服务
+            services.AddSingleton<ICacheManager, RedisCacheManager>();
+        }
+        else
+        {
+            // 注册内存缓存服务
+            services.AddMemoryCache();
+
+            // 注册内存缓存工具为单例服务
+            services.AddSingleton<ICacheManager, MemoryCacheManager>();
+
+            // 注册分布式内存缓存服务
+            services.AddDistributedMemoryCache();
+        }
+    }
+
     /// <summary>
     /// 身份验证
     /// </summary>
     public static void AddIdentity()
     {
+        services.AddIdentity<User, Role>()
+       .AddEntityFrameworkStores<FlyFrameworkDbContext>()
+        .AddDefaultTokenProviders();
+
         services.AddIdentityServer()
-           .AddDeveloperSigningCredential()
-           //扩展在每次启动时，为令牌签名创建了一个临时密钥。在生成环境需要一个持久化的密钥
-           .AddInMemoryClients(IdentityConfig.GetClients())             //验证方式
-           .AddInMemoryApiResources(IdentityConfig.GetApiResources())
-           .AddInMemoryIdentityResources(IdentityConfig.GetIdentityResources())     //创建接口返回格式
-           .AddInMemoryApiScopes(IdentityConfig.ApiScopes)
-           .AddInMemoryPersistedGrants()
-           .AddInMemoryCaching()
-           .AddTestUsers(IdentityConfig.GetUsers());                    //使用用户密码验证方式Ad
+         .AddAspNetIdentity<User>()
+         .AddDeveloperSigningCredential()
+         //扩展在每次启动时，为令牌签名创建了一个临时密钥。在生成环境需要一个持久化的密钥
+         .AddInMemoryClients(IdentityConfig.GetClients())             //验证方式
+         .AddInMemoryApiResources(IdentityConfig.GetApiResources())
+         .AddInMemoryIdentityResources(IdentityConfig.GetIdentityResources())     //创建接口返回格式
+         .AddInMemoryApiScopes(IdentityConfig.ApiScopes)
+         .AddInMemoryPersistedGrants()
+         .AddInMemoryCaching()
+         .AddTestUsers(IdentityConfig.GetUsers());
+
     }
     /// <summary>
     /// JWT配置
@@ -122,7 +207,7 @@ public static class AppConfig
         .AddCookie(options =>
         {
             options.Cookie.Name = "BearerCookie";
-            options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+            options.ExpireTimeSpan = TimeSpan.FromMinutes(jwtBearer.AccessTokenExpiresMinutes);
             options.SlidingExpiration = false;
             options.LogoutPath = "/Home/Index";
             options.Events = new CookieAuthenticationEvents
@@ -184,8 +269,8 @@ public static class AppConfig
                 .AddRazorRuntimeCompilation()
                 .AddDynamicWebApi(builder.Configuration);
 
-        services.AddScoped<IJWTTokenManager, JWTTokenManager>();
-        services.AddScoped<IJwtBearerModel, JwtBearerModel>();
+        services.AddSingleton<IJWTTokenManager, JWTTokenManager>();
+        services.AddSingleton<IJwtBearerModel, JwtBearerModel>();
         //注册动态API服务
         //services.AddControllers().AddDynamicWebApi(builder.Configuration);
     }
@@ -230,7 +315,7 @@ public static class AppConfig
                 options.IncludeXmlComments(filePath, true);
             }
 
-            //添加JWT认证
+            //开启Authorize权限按钮——方式一
             //options.AddSecurityDefinition("JWTBearer", new OpenApiSecurityScheme()
             //{
             //    Description = "这是方式一(直接在输入框中输入认证信息，不需要在开头添加Bearer) ",
@@ -239,7 +324,6 @@ public static class AppConfig
             //    Type = SecuritySchemeType.Http,
             //    Scheme = "Bearer"
             //});
-
             //var scheme = new OpenApiSecurityScheme
             //{
             //    Reference = new OpenApiReference()
@@ -248,7 +332,32 @@ public static class AppConfig
             //        Type = ReferenceType.SecurityScheme
             //    }
             //};
+            ////开启Authorize权限按钮——方式二
 
+            //options.AddSecurityDefinition("JwtBearer", new OpenApiSecurityScheme()
+            //{
+            //    Description = "这是方式二(JWT授权(数据将在请求头中进行传输) 直接在下框中输入Bearer {token}（注意两者之间是一个空格）)",
+            //    Name = "Authorization",//jwt默认的参数名称
+            //    In = ParameterLocation.Header,//jwt默认存放Authorization信息的位置(请求头中)
+            //    Type = SecuritySchemeType.ApiKey
+            //});
+
+            ////开启Authorize权限按钮——默认
+            //options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+            //{
+            //    {
+            //        new OpenApiSecurityScheme
+            //        {
+            //            Reference = new OpenApiReference
+            //            {
+            //                Type = ReferenceType.SecurityScheme,
+            //                Id = "Bearer"
+            //            },Scheme = "oauth2",Name = "Bearer",In=ParameterLocation.Header,
+            //        },new List<string>()
+            //    }
+            //});
+
+            //声明一个Scheme，注意下面的Id要和上面AddSecurityDefinition中的参数name一致
             //options.AddSecurityRequirement(new OpenApiSecurityRequirement
             //    {
             //        { scheme, Array.Empty<string>() }
@@ -276,7 +385,7 @@ public static class AppConfig
         //注册泛型仓储服务
         services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
         services.AddScoped<IDbContextProvider, DbContextProvider>();
-        services.AddIdentity<User, Role>().AddEntityFrameworkStores<FlyFrameworkDbContext>();
+
     }
 
     /// <summary>
@@ -325,7 +434,7 @@ public static class AppConfig
             //x.Filters.Add<LogAttribute>();
             //全局身份验证
             //x.Filters.Add<TokenAttribute>();
-        }).AddRazorRuntimeCompilation();
+        });
     }
 
     /// <summary>
