@@ -81,6 +81,7 @@ public static class AppConfig
 
         // ◊¢≤·UnitOfWork
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        //hangfire≤‚ ‘”√
         services.AddTransient<IMessageService, MessageService>();
 
         services.AddHttpContextAccessor();
