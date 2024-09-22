@@ -36,7 +36,7 @@ namespace FlyFramework.Application.UserService
             _signInManager = signInManager;
             _jwtTokenManager = jWTTokenManager;
         }
-
+        [AllowAnonymous]
         public async Task<User> GetUser(string id)
         {
             return await _userManager.FindById(id);

@@ -131,7 +131,7 @@ public static class AppConfig
         {
             x.UseEntityFramework<FlyFrameworkDbContext>();
 
-            x.UseSqlServer(configuration.GetConnectionString("Default"));
+            //x.UseSqlServer(configuration.GetConnectionString("Default"));
             //x.UseRabbitMQ(builder.Configuration["RabbitMq:Host"]);
             x.UseRabbitMQ(o => o.ConnectionFactoryOptions = factory =>
             {
@@ -150,22 +150,23 @@ public static class AppConfig
     {
         // 获取缓存相关配置
         var hangFireConfig = configuration.GetSection("HangFire").Get<HangFireOptionsConfig>();
-        if (!hangFireConfig.Enable) return;
-
-        var options = new BackgroundJobServerOptions()
+        if (hangFireConfig.Enable)
         {
-            ShutdownTimeout = TimeSpan.FromMinutes(30),
-            Queues = new string[] { "default", "jobs" }, //队列名称，只能为小写
-            WorkerCount = 3, //Environment.ProcessorCount * 5, //并发任务数 Math.Max(Environment.ProcessorCount, 20)
-            ServerName = "fantasy.hangfire",
-        };
-        optionsAction?.Invoke(options);
-        services.AddHangfire(config => config
-            .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)//向前兼容
-            .UseSimpleAssemblyNameTypeSerializer()//使用简单的程序集名称类型序列化器
-            .UseRecommendedSerializerSettings()// 使用推荐的序列化器设置
-            .UseHangfireStorage(configuration)
-        ).AddHangfireServer(optionsAction: c => c = options);
+            var options = new BackgroundJobServerOptions()
+            {
+                ShutdownTimeout = TimeSpan.FromMinutes(30),
+                Queues = new string[] { "default", "jobs" }, //队列名称，只能为小写
+                WorkerCount = 3, //Environment.ProcessorCount * 5, //并发任务数 Math.Max(Environment.ProcessorCount, 20)
+                ServerName = "fantasy.hangfire",
+            };
+            optionsAction?.Invoke(options);
+            services.AddHangfire(config => config
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)//向前兼容
+                .UseSimpleAssemblyNameTypeSerializer()//使用简单的程序集名称类型序列化器
+                .UseRecommendedSerializerSettings()// 使用推荐的序列化器设置
+                .UseHangfireStorage(configuration)
+            ).AddHangfireServer(optionsAction: c => c = options);
+        }
     }
 
     /// <summary>

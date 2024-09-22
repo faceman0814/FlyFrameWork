@@ -1,4 +1,6 @@
-﻿using FlyFramework.Common.Attributes;
+﻿using DotNetCore.CAP;
+
+using FlyFramework.Common.Attributes;
 using FlyFramework.Common.Dependencys;
 using FlyFramework.Common.Utilities.EventBus;
 using FlyFramework.Common.Utilities.EventBus.Distributed;
@@ -173,15 +175,22 @@ namespace FlyFramework.WebHost.Controllers
             //文档：https://www.bookstack.cn/read/Hangfire-zh-official/3.md
         }
         [HttpGet("Local")]
-        public async Task Local()
+        public async Task LocalPublish()
         {
-            await _localEventBus.PublishAsync(new TestEventData { TestStr = Guid.NewGuid().ToString() });
+            await _localEventBus.PublishAsync(new TestEventData { TestStr = "LocalEventBus" + Guid.NewGuid().ToString() });
         }
 
         [HttpGet("Distributed")]
         public async Task Distributed()
         {
-            await _distributedEventBus.PublishAsync(new TestEventData { TestStr = Guid.NewGuid().ToString() });
+            await _distributedEventBus.PublishAsync(new TestEventData { TestStr = "DistributedEventBus" + Guid.NewGuid().ToString() });
+        }
+
+        [HttpGet]
+        [CapSubscribe("Test")]
+        public void CheckReceivedMessage(TestEventData test)
+        {
+            Console.WriteLine("~~~~~~~~" + test.TestStr);
         }
     }
     public interface IMessageService
