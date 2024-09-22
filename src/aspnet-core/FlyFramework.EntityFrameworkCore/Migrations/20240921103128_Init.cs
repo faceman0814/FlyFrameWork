@@ -209,17 +209,17 @@ namespace FlyFramework.EntityFrameworkCore.Migrations
             migrationBuilder.InsertData(
                 table: "Role",
                 columns: new[] { "Id", "ConcurrencyStamp", "ConcurrencyToken", "CreationTime", "CreatorUserId", "CreatorUserName", "DeleterUserId", "DeleterUserName", "DeletionTime", "IsDeleted", "LastModificationTime", "LastModifierUserId", "LastModifierUserName", "Name", "NormalizedName" },
-                values: new object[] { "842d675503f84e059a096130e047bf92", null, null, new DateTime(2024, 9, 18, 20, 51, 46, 182, DateTimeKind.Local).AddTicks(6482), null, null, null, null, null, false, null, null, null, "管理员", null });
+                values: new object[] { "f782747be4e2456facdfa5fc36280118", null, null, new DateTime(2024, 9, 21, 18, 31, 28, 234, DateTimeKind.Local).AddTicks(9312), null, null, null, null, null, false, null, null, null, "管理员", null });
 
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "ConcurrencyToken", "CreationTime", "CreatorUserId", "CreatorUserName", "DeleterUserId", "DeleterUserName", "DeletionTime", "Email", "EmailConfirmed", "FullName", "IsActive", "IsDeleted", "LastModificationTime", "LastModifierUserId", "LastModifierUserName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "4957adb8870f4e79882231537ff5d3b9", 0, "42b70166-fd6f-4434-b2a8-dae121dcef49", null, new DateTime(2024, 9, 18, 20, 51, 46, 182, DateTimeKind.Local).AddTicks(6657), null, null, null, null, null, "1234567890@qq.com", true, "xxx", false, false, null, null, null, false, null, "1234567890@QQ.COM", "ADMIN", null, "AQAAAAIAAYagAAAAENSQGoGyv++K6hOMT40kotyPCmD8uIxbK8cKYOhBzpyee4LqLnuXWvPqRzwc8JZIPg==", "1234567890", false, "Mecca", false, "admin" });
+                values: new object[] { "eb4d30090bdd489e8becd10ab88d69d3", 0, "d384dc94-f3d6-4527-8222-a844d0e639a2", null, new DateTime(2024, 9, 21, 18, 31, 28, 234, DateTimeKind.Local).AddTicks(9498), null, null, null, null, null, "1234567890@qq.com", true, "xxx", false, false, null, null, null, false, null, "1234567890@QQ.COM", "ADMIN", null, "AQAAAAIAAYagAAAAEJ+SwbfezD+Y5+oq0gkDBGV/LkAMHwmPHYQxYXGPI8vZ0KvYXdMyZpbcGaWSpfOixw==", "1234567890", false, "Mecca", false, "admin" });
 
             migrationBuilder.InsertData(
                 table: "UserRole",
                 columns: new[] { "Id", "RoleId", "UserId" },
-                values: new object[] { "4d753f683d364e0eaa1e7ec5fc466614", "842d675503f84e059a096130e047bf92", "4957adb8870f4e79882231537ff5d3b9" });
+                values: new object[] { "387ade8e84204031be9915b82b74db1c", "f782747be4e2456facdfa5fc36280118", "eb4d30090bdd489e8becd10ab88d69d3" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

@@ -2,7 +2,7 @@
 
 using FlyFramework.Application.UserService.Dtos;
 using FlyFramework.Common.Extentions.DynamicWebAPI;
-using FlyFramework.Common.Helpers.JWTTokens;
+using FlyFramework.Common.Utilities.JWTTokens;
 using FlyFramework.Core.UserService;
 using FlyFramework.Core.UserService.DomainService;
 
@@ -36,7 +36,7 @@ namespace FlyFramework.Application.UserService
             _signInManager = signInManager;
             _jwtTokenManager = jWTTokenManager;
         }
-
+        [AllowAnonymous]
         public async Task<User> GetUser(string id)
         {
             return await _userManager.FindById(id);

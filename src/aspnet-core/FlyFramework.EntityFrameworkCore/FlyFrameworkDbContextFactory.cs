@@ -2,9 +2,13 @@
 // The .NET YoyoBoot licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using FlyFramework.EntityFrameworkCore.Extensions;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+
+using ServiceStack;
 
 using System.IO;
 
@@ -25,11 +29,32 @@ namespace FlyFramework.EntityFrameworkCore
                 .Build();
             // 从配置中读取连接字符串
             var connectionString = configuration.GetConnectionString("Default");
+            var databaseType = configuration.GetSection("ConnectionStrings:DatabaseType").Get<DatabaseType>();
             Console.WriteLine("迁移使用数据库连接字符串：{0}", connectionString);
-            var optionsBuilder = new DbContextOptionsBuilder<FlyFrameworkDbContext>();
+            Console.WriteLine("迁移使用数据库类型：{0}", databaseType.ToDescription());
+            var option = new DbContextOptionsBuilder<FlyFrameworkDbContext>();
+            switch (databaseType)
+            {
+                case DatabaseType.SqlServer:
+                    option.UseSqlServer(connectionString);
+                    break;
+                case DatabaseType.MySql:
+                    option.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 31)));
+                    break;
+
+                case DatabaseType.Sqlite:
+                    option.UseSqlite(connectionString);
+                    break;
+
+                case DatabaseType.Psotgre:
+                    option.UseNpgsql(connectionString);
+                    break;
+
+                default:
+                    throw new Exception("不支持的数据库类型");
+            }
             //获取appsettings配置
-            optionsBuilder.UseSqlServer(connectionString);
-            return new FlyFrameworkDbContext(optionsBuilder.Options);
+            return new FlyFrameworkDbContext(option.Options);
         }
     }
 }

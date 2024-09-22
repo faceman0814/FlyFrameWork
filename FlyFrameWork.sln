@@ -17,9 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyFramework.Common", "src\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{89E86BF3-786D-4A26-9576-3556D701ED0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlyFramework.Repositories", "src\aspnet-core\FlyFramework.Repositories\FlyFramework.Repositories.csproj", "{6C1F401C-07A6-42F8-BF04-18987082D5F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyFramework.Repositories", "src\aspnet-core\FlyFramework.Repositories\FlyFramework.Repositories.csproj", "{6C1F401C-07A6-42F8-BF04-18987082D5F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlyFramework.Domain", "src\aspnet-core\FlyFramework.Domain\FlyFramework.Domain.csproj", "{8AFB1B9F-A489-48A5-BA1D-FDE1BE921A4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyFramework.Domain", "src\aspnet-core\FlyFramework.Domain\FlyFramework.Domain.csproj", "{8AFB1B9F-A489-48A5-BA1D-FDE1BE921A4C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{EBEF8CA0-9930-4B9A-99A1-00BF0858AEAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

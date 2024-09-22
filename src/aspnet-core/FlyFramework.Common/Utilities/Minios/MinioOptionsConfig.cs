@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Helpers.Minios
+namespace FlyFramework.Common.Utilities.Minios
 {
     public class MinioOptionsConfig
     {

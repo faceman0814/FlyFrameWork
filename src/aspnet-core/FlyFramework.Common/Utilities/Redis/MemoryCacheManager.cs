@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 
-namespace FlyFramework.Common.Helpers.Redis
+namespace FlyFramework.Common.Utilities.Redis
 {
     public class MemoryCacheManager : ICacheManager
     {

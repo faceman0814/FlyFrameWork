@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Helpers.JWTTokens
+namespace FlyFramework.Common.Utilities.JWTTokens
 {
     public interface IJWTTokenManager
     {

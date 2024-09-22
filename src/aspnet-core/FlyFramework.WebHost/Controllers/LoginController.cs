@@ -1,23 +1,13 @@
-﻿using FlyFramework.Application.UserService.Dtos;
-using FlyFramework.Common.Attributes;
-using FlyFramework.Common.Helpers.JWTTokens;
-using FlyFramework.Common.Helpers.Redis;
+﻿using FlyFramework.Common.Attributes;
+using FlyFramework.Common.Utilities.JWTTokens;
+using FlyFramework.Common.Utilities.Redis;
 using FlyFramework.Core.UserService;
-using FlyFramework.Core.UserService.DomainService;
 using FlyFramework.WebHost.Models;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.Net.Http.Headers;
-
-using System.IdentityModel.Tokens.Jwt;
 
 using System.Security.Claims;
-
-using System.Text;
-
-using SameSiteMode = Microsoft.AspNetCore.Http.SameSiteMode;
 
 namespace FlyFramework.WebHost.Controllers
 {
@@ -38,7 +28,7 @@ namespace FlyFramework.WebHost.Controllers
         }
 
         [HttpPost]
-        public async Task<string> LoginIn(LoginDto input)
+        public async Task LoginIn(LoginDto input)
         {
             //用户名和密码校验
             var result = await _signInManager.PasswordSignInAsync(input.UserName, input.Password, false, false);
@@ -51,21 +41,11 @@ namespace FlyFramework.WebHost.Controllers
                 };
                 var token = _jWTTokenManager.GenerateToken(claims.ToList());
                 await _cacheManager.SetCacheAsync(input.UserName, token);
-                Response.Cookies.Append(
-               "access-token",
-               token,
-               new CookieOptions()
-               {
-                   Expires = DateTimeOffset.UtcNow.AddMinutes(
-                           30
-                       )
-               }
+                Response.Cookies.Append("access-token", token, new CookieOptions()
+                {
+                    Expires = DateTimeOffset.UtcNow.AddMinutes(30)
+                }
                 );
-                return token;
-            }
-            else
-            {
-                return "登录失败";
             }
         }
     }

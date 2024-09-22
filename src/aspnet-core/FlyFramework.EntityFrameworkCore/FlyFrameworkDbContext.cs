@@ -23,31 +23,6 @@ namespace FlyFramework.EntityFrameworkCore
             //OnBeforeSaving();
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
-        private void OnBeforeSaving()
-        {
-            foreach (var entry in ChangeTracker.Entries())
-            {
-                if (typeof(ISoftDelete).IsAssignableFrom(entry.Entity.GetType()))
-                {
-                    switch (entry.State)
-                    {
-                        case EntityState.Deleted:
-                            entry.State = EntityState.Modified;
-                            entry.CurrentValues["IsDeleted"] = true;
-                            entry.CurrentValues["DeletionTime"] = DateTime.Now;
-                            break;
-                        case EntityState.Modified:
-                            entry.CurrentValues["LastModificationTime"] = DateTime.Now;
-                            break;
-                        case EntityState.Added:
-                            entry.CurrentValues["CreationTime"] = DateTime.Now;
-                            entry.CurrentValues["Id"] = Guid.NewGuid().ToString("N");
-                            break;
-
-                    }
-                }
-            }
-        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
