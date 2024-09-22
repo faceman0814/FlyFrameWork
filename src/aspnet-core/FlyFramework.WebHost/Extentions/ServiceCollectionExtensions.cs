@@ -591,6 +591,10 @@ namespace FlyFramework.WebHost.Extentions
             });
         }
 
+        /// <summary>
+        /// 配置AutoMapper
+        /// </summary>
+        /// <param name="services"></param>
         public static void AddAutoMapper(this IServiceCollection services)
         {
             // AutoMapper 配置
