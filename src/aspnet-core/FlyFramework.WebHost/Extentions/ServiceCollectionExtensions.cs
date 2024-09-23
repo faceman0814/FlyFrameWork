@@ -70,50 +70,9 @@ namespace FlyFramework.WebHost.Extentions
         /// <returns></returns>
         public static IServiceCollection AddDependencyServices(this IServiceCollection services)
         {
-            // 获取当前应用程序域中已加载的以 "FlyFramework" 开头的程序集
             var assemblies = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(t => t.FullName.StartsWith("FlyFramework")).ToArray();
-
-            // 遍历符合条件的程序集
-            foreach (var assembly in assemblies)
-            {
-                // 扫描程序集中所有非抽象类类型
-                var types = assembly.GetTypes()
-                    .Where(t => t.IsClass && !t.IsAbstract);
-
-                foreach (var type in types)
-                {
-                    var interfaces = type.GetInterfaces();
-                    var dependencyInterfaces = interfaces.Intersect(new[] { typeof(ITransientDependency), typeof(IScopedDependency), typeof(ISingletonDependency) });
-
-                    if (!dependencyInterfaces.Any()) continue;
-
-                    // 遍历符合条件的依赖接口并注册到服务容器中
-                    foreach (var serviceType in dependencyInterfaces)
-                    {
-                        if (typeof(ITransientDependency).IsAssignableFrom(serviceType))
-                        {
-                            services.AddTransient(serviceType, type);
-                        }
-                        else if (typeof(IScopedDependency).IsAssignableFrom(serviceType))
-                        {
-                            services.AddScoped(serviceType, type);
-                        }
-                        else if (typeof(ISingletonDependency).IsAssignableFrom(serviceType))
-                        {
-                            services.AddSingleton(serviceType, type);
-                        }
-                    }
-                }
-            }
-            return services;
-        }
-
-        public static IServiceCollection AddManagerRegisterServices(this IServiceCollection services)
-        {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies()
-               .Where(t => t.FullName.StartsWith("FlyFramework"))
-               .ToArray();
+                .Where(t => t.FullName.StartsWith("FlyFramework"))
+                .ToArray();
 
             foreach (var assembly in assemblies)
             {
@@ -122,7 +81,7 @@ namespace FlyFramework.WebHost.Extentions
 
                 foreach (var type in types)
                 {
-                    var interfaces = type.GetInterfaces().Where(t => t.Name.EndsWith("Manager")).Distinct();
+                    var interfaces = type.GetInterfaces().Where(t => t.Name.EndsWith("Manager") || t.Name.EndsWith("AppService")).Distinct();
 
                     // 自动注册与接口名称匹配的服务实现
                     foreach (var interfaceType in interfaces)
@@ -132,19 +91,23 @@ namespace FlyFramework.WebHost.Extentions
 
                         if (interfaceType.Name.Equals($"I{type.Name}", StringComparison.OrdinalIgnoreCase))
                         {
-                            RegisterService(services, interfaceType, type);
+                            if (typeof(ITransientDependency).IsAssignableFrom(interfaceType))
+                            {
+                                services.AddTransient(interfaceType, type);
+                            }
+                            else if (typeof(IScopedDependency).IsAssignableFrom(interfaceType))
+                            {
+                                services.AddScoped(interfaceType, type);
+                            }
+                            else if (typeof(ISingletonDependency).IsAssignableFrom(interfaceType))
+                            {
+                                services.AddSingleton(interfaceType, type);
+                            }
                         }
                     }
                 }
             }
-
             return services;
-        }
-
-        private static void RegisterService(IServiceCollection services, Type interfaceType, Type implementationType)
-        {
-            // 默认注册为 Scoped，可根据需要调整
-            services.AddScoped(interfaceType, implementationType);
         }
 
         public static void AddRabbitMq(this IServiceCollection services, IConfiguration configuration)
@@ -246,7 +209,7 @@ namespace FlyFramework.WebHost.Extentions
                 services.AddSingleton(minioClient);
 
                 // 注册Redis缓存工具为单例服务
-                services.AddSingleton<IMinioManager, MinioManager>();
+                //services.AddSingleton<IMinioManager, MinioManager>();
             }
 
 
@@ -399,7 +362,7 @@ namespace FlyFramework.WebHost.Extentions
                     .AddRazorRuntimeCompilation()
                     .AddDynamicWebApi(builder.Configuration);
 
-            services.AddSingleton<IJWTTokenManager, JWTTokenManager>();
+            //services.AddSingleton<IJWTTokenManager, JWTTokenManager>();
             services.AddSingleton<IJwtBearerModel, JwtBearerModel>();
         }
 
@@ -519,17 +482,8 @@ namespace FlyFramework.WebHost.Extentions
             // 注册IDbConnection，使用Scoped生命周期
             services.AddScoped<IDbConnection>(provider =>
                 new SqlConnection(configuration.GetConnectionString("Default")));
-            services.AddScoped(typeof(IDapperManager<>), typeof(DapperManager<>));
+            //services.AddScoped(typeof(IDapperManager<>), typeof(DapperManager<>));
 
-        }
-
-        /// <summary>
-        /// 配置自动注册依赖注入
-        /// </summary>
-        public static void AddAutoDI(this IServiceCollection services)
-        {
-            services.AddDependencyServices();
-            services.AddManagerRegisterServices();
         }
 
         /// <summary>

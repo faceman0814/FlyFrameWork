@@ -1,6 +1,7 @@
 using FlyFramework.Application.Test;
 using FlyFramework.Common.Extentions;
 using FlyFramework.Repositories.Uow;
+using FlyFramework.Repositories.UserSessions;
 using FlyFramework.WebHost.Extentions;
 
 using Hangfire;
@@ -40,6 +41,8 @@ public static class AppConfig
             Log4Extention.InitLog4(loggingBuilder);
         });
 
+        //注入用户Session
+        builder.Services.AddTransient<IUserSession, UserSession>();
         //单独注册某个服务，特殊情况
         //_services.AddSingleton<Ixxx, xxx>();
         // 注册UnitOfWork
@@ -67,7 +70,7 @@ public static class AppConfig
 
         services.AddSwagger(builder);
 
-        services.AddAutoDI();
+        services.AddDependencyServices();
 
         services.AddRedis(configuration);
 

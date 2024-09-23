@@ -80,11 +80,6 @@
             配置DbContext
             </summary>
         </member>
-        <member name="M:FlyFramework.WebHost.Extentions.ServiceCollectionExtensions.AddAutoDI(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            配置自动注册依赖注入
-            </summary>
-        </member>
         <member name="M:FlyFramework.WebHost.Extentions.ServiceCollectionExtensions.AddJsonOptions(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
             配置格式化响应

@@ -1,11 +1,18 @@
 ﻿using FlyFramework.Domain.Domains;
 
+using Microsoft.EntityFrameworkCore;
+
 namespace FlyFramework.Core.UserService.DomainService
 {
     public class UserManager : GuidDomainService<User>, IUserManager
     {
         public UserManager(IServiceProvider serviceProvider) : base(serviceProvider)
         {
+        }
+
+        public Task<User> FindByNameAsync(string userName)
+        {
+            return this.QueryAsNoTracking.FirstOrDefaultAsync(t => t.UserName == userName);
         }
 
         public override IQueryable<User> GetIncludeQuery()

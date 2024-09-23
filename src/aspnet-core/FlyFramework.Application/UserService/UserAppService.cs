@@ -57,5 +57,13 @@ namespace FlyFramework.Application.UserService
             user.PhoneNumberConfirmed = false;
             await _userManager.Create(user);
         }
+
+        [HttpPost]
+        public async Task UpdateUser(UserDto input)
+        {
+            var user = await _userManager.FindById(input.Id);
+            user.Password = input.Password;
+            await _userManager.Update(user);
+        }
     }
 }

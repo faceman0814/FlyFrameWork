@@ -1,4 +1,6 @@
-﻿using RabbitMQ.Client;
+﻿using FlyFramework.Common.Dependencys;
+
+using RabbitMQ.Client;
 
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FlyFramework.Common.Utilities.RabbitMqs
 {
-    public interface IRabbitMqManager
+    public interface IRabbitMqManager : ISingletonDependency
     {
         /// <summary>
         /// 获取连接

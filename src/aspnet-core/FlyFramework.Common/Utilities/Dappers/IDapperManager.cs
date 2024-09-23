@@ -1,5 +1,7 @@
 ﻿using Dapper;
 
+using FlyFramework.Common.Dependencys;
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,7 +13,7 @@ using static Dapper.SqlMapper;
 
 namespace FlyFramework.Common.Utilities.Dappers
 {
-    public interface IDapperManager<T>
+    public interface IDapperManager<T> : IScopedDependency
     {
         /// <summary>
         /// 获取指定表所有数据

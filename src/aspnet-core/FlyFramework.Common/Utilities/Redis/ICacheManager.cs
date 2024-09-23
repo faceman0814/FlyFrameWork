@@ -1,6 +1,8 @@
-﻿namespace FlyFramework.Common.Utilities.Redis
+﻿using FlyFramework.Common.Dependencys;
+
+namespace FlyFramework.Common.Utilities.Redis
 {
-    public interface ICacheManager
+    public interface ICacheManager : ISingletonDependency
     {
         /// <summary>
         /// 设置缓存
