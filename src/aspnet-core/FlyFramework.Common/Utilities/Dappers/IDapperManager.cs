@@ -48,25 +48,25 @@ namespace FlyFramework.Common.Utilities.Dappers
         Task DeleteAsync(string id);
 
         /// <summary>
-        /// 执行SQL语句
+        /// 异步执行指定的 SQL 命令，并可选取特定的列
         /// </summary>
-        /// <param name="sql"></param>
-        /// <param name="param"></param>
-        /// <param name="commandType"></param>
-        /// <param name="commandTimeout"></param>
-        /// <param name="transaction"></param>
-        /// <param name="buffered"></param>
-        /// <param name="columns"></param>
+        /// <param name="sql">sql语句</param>
+        /// <param name="param">参数</param>
+        /// <param name="commandType">命令类型</param>
+        /// <param name="commandTimeout">命令超时</param>
+        /// <param name="transaction">事务</param>
+        /// <param name="buffered">是否开启缓存</param>
+        /// <param name="columns">是否选取特定的列，查询使用</param>
         /// <returns></returns>
         Task ExecuteAsync(string sql, object param = null, CommandType commandType = CommandType.Text, int? commandTimeout = null, IDbTransaction transaction = null, bool buffered = true, IEnumerable<string> columns = null);
 
         /// <summary>
         /// 执行查询SQL语句并返回结果
         /// </summary>
-        /// <param name="sql"></param>
-        /// <param name="param"></param>
-        /// <param name="commandTimeout"></param>
-        /// <param name="commandType"></param>
+        /// <param name="sql">sql语句</param>
+        /// <param name="param">参数</param>
+        /// <param name="commandType">命令类型</param>
+        /// <param name="commandTimeout">命令超时</param>
         /// <returns></returns>
         Task<IEnumerable<T>> QueryAsync(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null);
     }

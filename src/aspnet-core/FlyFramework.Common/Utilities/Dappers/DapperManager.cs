@@ -134,12 +134,8 @@ namespace FlyFramework.Common.Utilities.Dappers
             ));
         }
 
-        public async Task<IEnumerable<T>> QueryAsync<T>(string sql,
-                                                object param = null,
-                                                int? commandTimeout = null,
-                                                CommandType? commandType = null)
+        public async Task<IEnumerable<T>> QueryAsync(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            // 执行 SQL 查询并返回结果集
             var result = await _dbConnection.QueryAsync<T>(
                 sql: sql,
                 param: param,
