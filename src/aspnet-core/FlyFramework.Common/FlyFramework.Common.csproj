@@ -16,11 +16,13 @@
 	<ItemGroup>
 		<!--<PackageReference Include="EntityFrameworkCore.Data.UnitOfWork" Version="8.0.2" />-->
 		<!--<PackageReference Include="DotNetCore.CAP" Version="8.2.0" />-->
+		<PackageReference Include="Dapper" Version="2.1.35" />
 		<PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="8.2.0" />
 		<PackageReference Include="DotNetCore.CAP.SqlServer" Version="8.2.0" />
 		<PackageReference Include="Hangfire.AspNetCore" Version="1.8.14" />
 		<PackageReference Include="Hangfire.MySqlStorage" Version="2.0.3" />
 		<PackageReference Include="Hangfire.SqlServer" Version="1.8.14" />
+		<PackageReference Include="Masuit.Tools.Core" Version="2024.5.6" />
 		<PackageReference Include="MediatR" Version="12.4.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 
+using FlyFramework.Application.DynamicWebAPI;
 using FlyFramework.Application.UserService.Dtos;
-using FlyFramework.Common.Extentions.DynamicWebAPI;
 using FlyFramework.Common.Utilities.JWTTokens;
 using FlyFramework.Core.UserService;
 using FlyFramework.Core.UserService.DomainService;
@@ -36,38 +36,8 @@ namespace FlyFramework.Application.UserService
             _signInManager = signInManager;
             _jwtTokenManager = jWTTokenManager;
         }
+
         [AllowAnonymous]
-        public async Task<User> GetUser(string id)
-        {
-            return await _userManager.FindById(id);
-        }
-        public async Task<string> LoginIn(UserDto input)
-        {
-            //用户名和密码校验
-            var result = await _signInManager.PasswordSignInAsync(input.UserName, input.Password, false, false);
-            if (result.Succeeded)
-            {
-                // 设置Token的Claims
-                List<Claim> claims = new List<Claim>
-                {
-                    //new Claim(LoginClaimTypes.UserName, userinfo.UserName!), //HttpContext.User.Identity.Name
-                    //new Claim(LoginClaimTypes.UserId, userinfo.Id!.ToString()),
-                    //new Claim(
-                    //    LoginClaimTypes.Expiration,
-                    //    DateTimeOffset
-                    //        .Now.AddMinutes(30)
-                    //        .ToString()
-                    //),
-                };
-                return _jwtTokenManager.GenerateToken(claims);
-            }
-            else
-            {
-                return "登录失败";
-            }
-
-        }
-
         public string GenerateSecureKey()
         {
             using (var aesAlg = Aes.Create())
