@@ -4,6 +4,8 @@ using FlyFramework.WebHost.Extentions;
 
 using Hangfire;
 
+using Microsoft.AspNetCore.SignalR;
+
 using Minio;
 var builder = WebApplication.CreateBuilder(args);
 // 配置文件读取
@@ -71,6 +73,8 @@ public static class AppConfig
         services.AddRabbitMq(configuration);
 
         services.AddLocalCors(configuration);
+
+        services.AddSignalR();
         return builder;
     }
 
@@ -82,6 +86,7 @@ public static class AppConfig
     public static WebApplication Configuration(this WebApplication _app)
     {
         app = _app;
+
         //app.UseMiddleware<UnitOfWorkMiddleware>();
         app.UseRouting();
         app.UseSwagger(builder);
@@ -97,6 +102,9 @@ public static class AppConfig
             //name: "default",
             //pattern: "{controller=Home}/{action=Index}/{id?}");
             //endpoints.MapRazorPages();
+            //添加 SignalR 端点
+            //endpoints.MapHub<SignalRTestHub>("/Hubs");
+
         });
         // 启用Hangfire仪表盘
         app.UseHangfireDashboard();
