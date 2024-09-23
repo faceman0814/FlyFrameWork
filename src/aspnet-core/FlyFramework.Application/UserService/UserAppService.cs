@@ -28,7 +28,7 @@ namespace FlyFramework.Application.UserService
         private readonly IConfiguration _configuration;
         private readonly IJWTTokenManager _jwtTokenManager;
 
-        public UserAppService(IUserManager userManager, IMapper mapper, IConfiguration configuration, SignInManager<User> signInManager, IJWTTokenManager jWTTokenManager)
+        public UserAppService(IServiceProvider serviceProvider, IUserManager userManager, IMapper mapper, IConfiguration configuration, SignInManager<User> signInManager, IJWTTokenManager jWTTokenManager) : base(serviceProvider)
         {
             _userManager = userManager;
             _mapper = mapper;

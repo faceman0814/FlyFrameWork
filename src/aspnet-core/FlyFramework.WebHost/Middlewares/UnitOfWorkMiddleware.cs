@@ -11,7 +11,7 @@ namespace FlyFramework.WebHost.Middlewares
             _next = next;
         }
 
-        public async Task Invoke(HttpContext httpContext, IUnitOfWork unitOfWork)
+        public async Task Invoke(HttpContext httpContext, IUnitOfWorkManager unitOfWork)
         {
             try
             {

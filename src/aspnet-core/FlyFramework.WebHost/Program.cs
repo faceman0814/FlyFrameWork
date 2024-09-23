@@ -46,7 +46,7 @@ public static class AppConfig
         //单独注册某个服务，特殊情况
         //_services.AddSingleton<Ixxx, xxx>();
         // 注册UnitOfWork
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        //services.AddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
         //hangfire测试用
         services.AddTransient<IMessageService, MessageService>();
 

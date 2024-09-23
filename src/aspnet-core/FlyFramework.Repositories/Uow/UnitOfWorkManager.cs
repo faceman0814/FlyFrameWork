@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace FlyFramework.Repositories.Uow
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWorkManager : IUnitOfWorkManager
     {
         protected DbContext _context { get; }
         private IDbContextTransaction _transaction;
 
-        public UnitOfWork(IDbContextProvider dbContextProvider)
+        public UnitOfWorkManager(IDbContextProvider dbContextProvider)
         {
             _context = dbContextProvider.GetDbContext();
         }

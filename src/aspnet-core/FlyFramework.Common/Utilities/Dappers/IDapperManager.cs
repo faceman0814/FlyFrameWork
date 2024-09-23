@@ -13,7 +13,7 @@ using static Dapper.SqlMapper;
 
 namespace FlyFramework.Common.Utilities.Dappers
 {
-    public interface IDapperManager<T> : IScopedDependency
+    public interface IDapperManager<T>
     {
         /// <summary>
         /// 获取指定表所有数据

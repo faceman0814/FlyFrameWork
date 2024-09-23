@@ -24,7 +24,7 @@ namespace FlyFramework.Application.Test
         private readonly ILocalEventBus _localEventBus;
         private readonly IDistributedEventBus _distributedEventBus;
 
-        public EventBusAppService(ILocalEventBus localEventBus, IDistributedEventBus distributedEventBus)
+        public EventBusAppService(IServiceProvider serviceProvider, ILocalEventBus localEventBus, IDistributedEventBus distributedEventBus) : base(serviceProvider)
         {
             _localEventBus = localEventBus;
             _distributedEventBus = distributedEventBus;

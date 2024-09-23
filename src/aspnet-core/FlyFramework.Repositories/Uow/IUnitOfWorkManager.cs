@@ -2,7 +2,7 @@
 
 namespace FlyFramework.Repositories.Uow
 {
-    public interface IUnitOfWork : ITransientDependency
+    public interface IUnitOfWorkManager : IScopedDependency
     {
         Task CommitTransactionAsync();
         Task RollbackTransactionAsync();

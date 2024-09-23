@@ -14,7 +14,6 @@ namespace FlyFramework.Repositories.UserSessions
     public class UserSession : IUserSession
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-
         public UserSession(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;

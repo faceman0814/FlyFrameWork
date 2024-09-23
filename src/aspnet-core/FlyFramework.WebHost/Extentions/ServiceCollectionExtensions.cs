@@ -482,7 +482,7 @@ namespace FlyFramework.WebHost.Extentions
             // 注册IDbConnection，使用Scoped生命周期
             services.AddScoped<IDbConnection>(provider =>
                 new SqlConnection(configuration.GetConnectionString("Default")));
-            //services.AddScoped(typeof(IDapperManager<>), typeof(DapperManager<>));
+            services.AddScoped(typeof(IDapperManager<>), typeof(DapperManager<>));
 
         }
 

@@ -1,7 +1,10 @@
 ﻿using FlyFramework.Common.Enums;
 using FlyFramework.Common.ErrorExceptions;
+using FlyFramework.Repositories.Uow;
+using FlyFramework.Repositories.UserSessions;
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 using System;
 using System.Collections.Generic;
@@ -13,6 +16,15 @@ namespace FlyFramework.Application.DynamicWebAPI
 {
     public class ApplicationService
     {
+        public IUserSession UserSession { get; set; }
+        private readonly IUnitOfWorkManager _unitOfWorkManager;
+
+        public ApplicationService(IServiceProvider serviceProvider)
+        {
+            _unitOfWorkManager = serviceProvider.GetService<IUnitOfWorkManager>();
+        }
+
+        //private ILocalizationSource _localizationSource;
         //
         // 摘要:
         //     名称重复错误 传入多语言

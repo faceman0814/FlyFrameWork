@@ -51,7 +51,7 @@ namespace FlyFramework.WebHost.Filters
             }
 
             // 解析工作单元服务
-            var unitOfWorks = httpContext.RequestServices.GetServices<IUnitOfWork>();
+            var unitOfWorks = httpContext.RequestServices.GetServices<IUnitOfWorkManager>();
             foreach (var unitOfWork in unitOfWorks)
             {
                 // 开启事务

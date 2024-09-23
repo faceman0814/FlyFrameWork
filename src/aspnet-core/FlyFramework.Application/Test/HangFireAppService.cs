@@ -13,6 +13,9 @@ namespace FlyFramework.Application.Test
 {
     public class HangFireAppService : ApplicationService, IApplicationService
     {
+        public HangFireAppService(IServiceProvider serviceProvider) : base(serviceProvider)
+        {
+        }
 
         [HttpPost]
         public void HangFireTest()
