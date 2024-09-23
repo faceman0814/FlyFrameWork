@@ -13,6 +13,8 @@ namespace FlyFramework.EntityFrameworkCore
             var databaseType = configuration.GetSection("ConnectionStrings:DatabaseType").Get<DatabaseType>();
             string? connectionString = string.Empty;
             connectionString = configuration.GetSection("ConnectionStrings:Default").Get<string>();
+            Console.WriteLine($"数据库类型：{databaseType}");
+            Console.WriteLine($"连接字符串：{connectionString}");
             services.AddDbContext<FlyFrameworkDbContext>(option =>
             {
                 switch (databaseType)

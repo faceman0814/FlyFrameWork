@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 
 using System.Reflection;
 
-namespace FlyFramework.Common.Extentions.DynamicWebAPI
+namespace FlyFramework.Application.DynamicWebAPI
 {
     /// <summary>
     /// 自定义控制器特性提供程序，用于将实现了 IApplicationService 接口的类识别为控制器。

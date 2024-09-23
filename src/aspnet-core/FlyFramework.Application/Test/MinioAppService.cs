@@ -1,4 +1,4 @@
-﻿using FlyFramework.Common.Extentions.DynamicWebAPI;
+﻿using FlyFramework.Application.DynamicWebAPI;
 using FlyFramework.Common.Utilities.Minios;
 
 using Microsoft.AspNetCore.Mvc;

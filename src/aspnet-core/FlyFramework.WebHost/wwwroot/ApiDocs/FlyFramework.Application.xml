@@ -4,6 +4,83 @@
         <name>FlyFramework.Application</name>
     </assembly>
     <members>
+        <member name="T:FlyFramework.Application.DynamicWebAPI.ApplicationServiceControllerFeatureProvider">
+            <summary>
+            自定义控制器特性提供程序，用于将实现了 IApplicationService 接口的类识别为控制器。
+            </summary>
+        </member>
+        <member name="M:FlyFramework.Application.DynamicWebAPI.ApplicationServiceControllerFeatureProvider.IsController(System.Reflection.TypeInfo)">
+            <summary>
+            判断给定的类型是否为控制器。
+            </summary>
+            <param name="typeInfo">要判断的类型信息。</param>
+            <returns>如果类型是控制器，则返回 true；否则返回 false。</returns>
+        </member>
+        <member name="T:FlyFramework.Application.DynamicWebAPI.ApplicationServiceConvention">
+            <summary>
+            自定义应用程序模型约定，用于配置实现了 IApplicationService 接口的控制器。
+            </summary>
+        </member>
+        <member name="M:FlyFramework.Application.DynamicWebAPI.ApplicationServiceConvention.Apply(Microsoft.AspNetCore.Mvc.ApplicationModels.ApplicationModel)">
+            <summary>
+            应用约定
+            </summary>
+            <param name="application"></param>
+        </member>
+        <member name="M:FlyFramework.Application.DynamicWebAPI.ApplicationServiceConvention.ConfigureSelector(System.String,Microsoft.AspNetCore.Mvc.ApplicationModels.ActionModel)">
+            <summary>
+            配置选择器
+            </summary>
+            <param name="controllerName"></param>
+            <param name="action"></param>
+        </member>
+        <member name="M:FlyFramework.Application.DynamicWebAPI.ApplicationServiceConvention.CreateActionSelector(System.String,Microsoft.AspNetCore.Mvc.ApplicationModels.ActionModel)">
+            <summary>
+            创建Action选择器
+            </summary>
+            <param name="controllerName"></param>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.Application.DynamicWebAPI.ApplicationServiceConvention.ConfigureSelectorModel(Microsoft.AspNetCore.Mvc.ApplicationModels.SelectorModel,Microsoft.AspNetCore.Mvc.ApplicationModels.ActionModel,System.String,System.String)">
+            <summary>
+            配置选择器模型
+            </summary>
+            <param name="selectorModel"></param>
+            <param name="action"></param>
+            <param name="controllerName"></param>
+            <param name="httpMethod"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FlyFramework.Application.DynamicWebAPI.DynamicWebApiAttribute">
+            <summary>
+            动态WebAPI特性
+            </summary>
+        </member>
+        <member name="T:FlyFramework.Application.DynamicWebAPI.DynamicWebApiExtensions">
+            <summary>
+            动态WebAPI扩展类，用于在ASP.NET Core应用程序中添加动态WebAPI功能。
+            </summary>
+        </member>
+        <member name="M:FlyFramework.Application.DynamicWebAPI.DynamicWebApiExtensions.AddDynamicWebApi(Microsoft.Extensions.DependencyInjection.IMvcBuilder,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            为IMvcBuilder添加动态WebAPI功能。
+            </summary>
+            <param name="builder">IMvcBuilder实例。</param>
+            <returns>IMvcBuilder实例。</returns>
+        </member>
+        <member name="M:FlyFramework.Application.DynamicWebAPI.DynamicWebApiExtensions.AddDynamicWebApi(Microsoft.Extensions.DependencyInjection.IMvcCoreBuilder,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            为IMvcCoreBuilder添加动态WebAPI功能。
+            </summary>
+            <param name="builder">IMvcCoreBuilder实例。</param>
+            <returns>IMvcCoreBuilder实例。</returns>
+        </member>
+        <member name="T:FlyFramework.Application.DynamicWebAPI.IApplicationService">
+            <summary>
+            动态WebAPI接口
+            </summary>
+        </member>
         <member name="M:FlyFramework.Application.Test.MinioAppService.IsBucketExit">
             <summary>
             1、判断指定bucket是否存在

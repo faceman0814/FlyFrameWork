@@ -1,6 +1,6 @@
 ﻿using DotNetCore.CAP;
 
-using FlyFramework.Common.Extentions.DynamicWebAPI;
+using FlyFramework.Application.DynamicWebAPI;
 using FlyFramework.Common.Utilities.EventBus.Distributed;
 using FlyFramework.Common.Utilities.EventBus.Local;
 using FlyFramework.Common.Utilities.Minios;

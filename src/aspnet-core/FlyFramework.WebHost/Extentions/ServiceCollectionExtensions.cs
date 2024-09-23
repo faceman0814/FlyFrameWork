@@ -2,11 +2,13 @@
 
 using DotNetCore.CAP.Internal;
 
+using FlyFramework.Application.DynamicWebAPI;
 using FlyFramework.Application.UserService.Mappers;
 using FlyFramework.Common.Attributes;
 using FlyFramework.Common.Dependencys;
-using FlyFramework.Common.Extentions.DynamicWebAPI;
+using FlyFramework.Common.Extentions;
 using FlyFramework.Common.Extentions.JsonOptions;
+using FlyFramework.Common.Utilities.Dappers;
 using FlyFramework.Common.Utilities.EventBus;
 using FlyFramework.Common.Utilities.EventBus.Distributed;
 using FlyFramework.Common.Utilities.EventBus.Distributed.Cap;
@@ -33,7 +35,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -49,6 +51,7 @@ using ServiceStack.Redis;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
+using System.Data;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
@@ -56,6 +59,12 @@ namespace FlyFramework.WebHost.Extentions
 {
     public static class ServiceCollectionExtensions
     {
+        private const string DefaultCorsPolicyName = "FlyFrameworkCorsPolicy";
+        /// <summary>
+        /// 动态依赖注入
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
         public static IServiceCollection AddDependencyServices(this IServiceCollection services)
         {
             // 获取当前应用程序域中已加载的以 "FlyFramework" 开头的程序集
@@ -139,40 +148,49 @@ namespace FlyFramework.WebHost.Extentions
         {
             // 获取配置
             var rabbitMqConfig = configuration.GetSection("RabbitMq").Get<RabbitMqOptionsConfig>();
-            var factory = new ConnectionFactory
+            Console.WriteLine($"RabbitMq:{rabbitMqConfig.Enable},Host:{rabbitMqConfig.HostName}:{rabbitMqConfig.Port}");
+            if (rabbitMqConfig.Enable)
             {
-                HostName = rabbitMqConfig.HostName,
-                Port = 5672,
-                UserName = rabbitMqConfig.UserName,
-                Password = rabbitMqConfig.Password
-            };
+                var factory = new ConnectionFactory
+                {
+                    HostName = rabbitMqConfig.HostName,
+                    Port = 5672,
+                    UserName = rabbitMqConfig.UserName,
+                    Password = rabbitMqConfig.Password
+                };
 
-            // 注册到依赖注入系统
-            services.AddSingleton<IConnectionFactory>(_ => factory);
-            services.AddSingleton<IRabbitMqManager, RabbitMqManager>();
+                // 注册到依赖注入系统
+                services.AddSingleton<IConnectionFactory>(_ => factory);
+                services.AddSingleton<IRabbitMqManager, RabbitMqManager>();
+            }
         }
 
 
         public static void AddEventBus(this IServiceCollection services, IConfiguration configuration)
         {
-            // 获取缓存相关配置
-            var rabbitMqConfig = configuration.GetSection("RabbitMq").Get<RabbitMqOptionsConfig>();
             services.AddLocalEventBus();
             services.AddTransient<ILocalEventBus, MediatREventBus>();
+            var rabbitMqConfig = configuration.GetSection("RabbitMq").Get<RabbitMqOptionsConfig>();
+            if (rabbitMqConfig.Enable)
+            {
+                services.AddCap(x =>
+                {
+                    x.UseEntityFramework<FlyFrameworkDbContext>();
+                    //x.UseSqlServer(configuration.GetConnectionString("Default"));
+                    //x.UseRabbitMQ(builder.Configuration["RabbitMq:Host"]);
+                    x.UseRabbitMQ(o => o.ConnectionFactoryOptions = factory =>
+                    {
+                        factory.Uri = new Uri("amqp://" + rabbitMqConfig.UserName + ":" + rabbitMqConfig.Password + "@" + rabbitMqConfig.HostName + ":" + rabbitMqConfig.Port);
+                    });
+                    //x.UseRedis(configuration["Cache:Redis"]);
+                });
+            }
+            else
+            {
+                return;
+            }
             services.AddTransient<IDistributedEventBus, CapDistributedEventBus>();
             services.AddSingleton<IConsumerServiceSelector, FlyFrameworkConsumerServiceSelector>();
-            services.AddCap(x =>
-            {
-                x.UseEntityFramework<FlyFrameworkDbContext>();
-
-                //x.UseSqlServer(configuration.GetConnectionString("Default"));
-                //x.UseRabbitMQ(builder.Configuration["RabbitMq:Host"]);
-                x.UseRabbitMQ(o => o.ConnectionFactoryOptions = factory =>
-                {
-                    factory.Uri = new Uri("amqp://" + rabbitMqConfig.UserName + ":" + rabbitMqConfig.Password + "@" + rabbitMqConfig.HostName + ":" + rabbitMqConfig.Port);
-                });
-                //x.UseRedis(configuration["Cache:Redis"]);
-            });
         }
 
         /// <summary>
@@ -184,6 +202,7 @@ namespace FlyFramework.WebHost.Extentions
         {
             // 获取缓存相关配置
             var hangFireConfig = configuration.GetSection("HangFire").Get<HangFireOptionsConfig>();
+            Console.WriteLine($"HangFire:{hangFireConfig.Enable}");
             if (hangFireConfig.Enable)
             {
                 var options = new BackgroundJobServerOptions()
@@ -211,6 +230,7 @@ namespace FlyFramework.WebHost.Extentions
         {
             // 获取缓存相关配置
             var minioConfig = configuration.GetSection("Minio").Get<MinioOptionsConfig>();
+            Console.WriteLine($"Minio:{minioConfig.Enable},Host:{minioConfig.EndPoint}");
             if (minioConfig.Enable)
             {
                 var minioClient = new MinioClient()
@@ -237,7 +257,7 @@ namespace FlyFramework.WebHost.Extentions
         {
             // 获取缓存相关配置
             var cacheConfig = configuration.GetSection("Redis").Get<RedisOptionsConfig>();
-
+            Console.WriteLine($"Redis:{cacheConfig.Enable},Host:{cacheConfig.Host}:{cacheConfig.Port}");
             // 判断是否启用Redis缓存
             if (cacheConfig.Enable)
             {
@@ -299,7 +319,8 @@ namespace FlyFramework.WebHost.Extentions
         /// <summary>
         /// JWT配置
         /// </summary>
-        /// <param name="config"></param>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
         public static void AddJWT(this IServiceCollection services, IConfigurationRoot configuration)
         {
             //将身份验证服务添加到管道中
@@ -377,8 +398,6 @@ namespace FlyFramework.WebHost.Extentions
 
             services.AddSingleton<IJWTTokenManager, JWTTokenManager>();
             services.AddSingleton<IJwtBearerModel, JwtBearerModel>();
-            //注册动态API服务
-            //services.AddControllers().AddDynamicWebApi(builder.Configuration);
         }
 
         /// <summary>
@@ -494,6 +513,11 @@ namespace FlyFramework.WebHost.Extentions
             services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
             services.AddScoped<IDbContextProvider, DbContextProvider>();
 
+            // 注册IDbConnection，使用Scoped生命周期
+            services.AddScoped<IDbConnection>(provider =>
+                new SqlConnection(configuration.GetConnectionString("Default")));
+            services.AddScoped(typeof(IDapperManager<>), typeof(DapperManager<>));
+
         }
 
         /// <summary>
@@ -570,28 +594,6 @@ namespace FlyFramework.WebHost.Extentions
         }
 
         /// <summary>
-        /// 配置跨域
-        /// </summary>
-        public static void AddCors(this IServiceCollection services)
-        {
-            services.AddCors(policy =>
-            {
-                /*
-                 * 可以在控制器处添加
-                 * [EnableCors("CorsPolicy")]
-                 */
-                policy.AddPolicy("CorsPolicy", opt => opt
-                .AllowAnyOrigin()
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                //#if !DEBUG
-                //                .WithOrigins(WithOrigins)//域名白名单
-                //#endif
-                .WithExposedHeaders("X-Pagination"));
-            });
-        }
-
-        /// <summary>
         /// 配置AutoMapper
         /// </summary>
         /// <param name="services"></param>
@@ -606,6 +608,32 @@ namespace FlyFramework.WebHost.Extentions
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper); // 注册 IMapper 接口
         }
+
+        /// <summary>
+        /// CORS策略
+        /// </summary>
+        /// <returns></returns>
+        public static void AddLocalCors(this IServiceCollection services, IConfigurationRoot configuration)
+        {
+            var corsOrigins = configuration["CorsOrigins"]
+               .Split(",", StringSplitOptions.RemoveEmptyEntries)
+               .Select(o => o.RemovePostFix("/"))
+               .Distinct()
+               .ToArray();
+
+            services.AddCors(
+                options => options.AddPolicy(
+                    DefaultCorsPolicyName,
+                    builder => builder
+                        .WithOrigins(corsOrigins)
+                        .SetIsOriginAllowedToAllowWildcardSubdomains()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                )
+            );
+        }
+
 
         /// <summary>
         /// 使用 Hangfire Storage

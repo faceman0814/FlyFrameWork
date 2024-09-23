@@ -35,7 +35,6 @@ public static class AppConfig
 
         //单独注册某个服务，特殊情况
         //_services.AddSingleton<Ixxx, xxx>();
-
         // 注册UnitOfWork
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         //hangfire测试用
@@ -70,6 +69,8 @@ public static class AppConfig
         services.AddEventBus(configuration);
 
         services.AddRabbitMq(configuration);
+
+        services.AddLocalCors(configuration);
         return builder;
     }
 

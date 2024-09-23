@@ -20,5 +20,9 @@ namespace FlyFramework.Common.Utilities.RabbitMqs
         /// </summary>
         /// <returns></returns>
         IModel GetChannel();
+        /// <summary>
+        /// 关闭连接
+        /// </summary>
+        void Dispose();
     }
 }

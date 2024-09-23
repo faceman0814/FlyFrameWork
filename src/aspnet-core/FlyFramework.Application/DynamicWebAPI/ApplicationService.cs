@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Extentions.DynamicWebAPI
+namespace FlyFramework.Application.DynamicWebAPI
 {
     public class ApplicationService
     {
