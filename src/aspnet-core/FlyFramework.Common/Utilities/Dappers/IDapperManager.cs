@@ -65,10 +65,9 @@ namespace FlyFramework.Common.Utilities.Dappers
         /// </summary>
         /// <param name="sql"></param>
         /// <param name="param"></param>
-        /// <param name="buffered"></param>
         /// <param name="commandTimeout"></param>
         /// <param name="commandType"></param>
         /// <returns></returns>
-        Task<IEnumerable<T>> QueryAsync(string sql, object param = null, bool buffered = true, int? commandTimeout = null, CommandType? commandType = null);
+        Task<IEnumerable<T>> QueryAsync(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null);
     }
 }

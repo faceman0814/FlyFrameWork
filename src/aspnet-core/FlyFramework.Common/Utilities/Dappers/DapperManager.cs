@@ -136,7 +136,6 @@ namespace FlyFramework.Common.Utilities.Dappers
 
         public async Task<IEnumerable<T>> QueryAsync<T>(string sql,
                                                 object param = null,
-                                                bool buffered = true,
                                                 int? commandTimeout = null,
                                                 CommandType? commandType = null)
         {
