@@ -1,10 +1,9 @@
 using FlyFramework.Application.Test;
+using FlyFramework.Common.Extentions;
 using FlyFramework.Repositories.Uow;
 using FlyFramework.WebHost.Extentions;
 
 using Hangfire;
-
-using Microsoft.AspNetCore.SignalR;
 
 using Minio;
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +33,12 @@ public static class AppConfig
                         .SetBasePath(basePath)
                         .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                         .Build();
+
+        // 配置日志
+        builder.Host.ConfigureLogging((context, loggingBuilder) =>
+        {
+            Log4Extention.InitLog4(loggingBuilder);
+        });
 
         //单独注册某个服务，特殊情况
         //_services.AddSingleton<Ixxx, xxx>();

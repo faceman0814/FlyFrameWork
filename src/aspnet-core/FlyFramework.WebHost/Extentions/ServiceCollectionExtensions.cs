@@ -31,6 +31,8 @@ using Hangfire;
 using Hangfire.MySql;
 using Hangfire.SqlServer;
 
+using log4net;
+
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
@@ -60,6 +62,7 @@ namespace FlyFramework.WebHost.Extentions
     public static class ServiceCollectionExtensions
     {
         private const string DefaultCorsPolicyName = "FlyFrameworkCorsPolicy";
+        private static readonly ILog log = LogManager.GetLogger("程序启动配置：");
         /// <summary>
         /// 动态依赖注入
         /// </summary>
@@ -148,7 +151,7 @@ namespace FlyFramework.WebHost.Extentions
         {
             // 获取配置
             var rabbitMqConfig = configuration.GetSection("RabbitMq").Get<RabbitMqOptionsConfig>();
-            Console.WriteLine($"RabbitMq:{rabbitMqConfig.Enable},Host:{rabbitMqConfig.HostName}:{rabbitMqConfig.Port}");
+            log.Info($"RabbitMq:{rabbitMqConfig.Enable},Host:{rabbitMqConfig.HostName}:{rabbitMqConfig.Port}");
             if (rabbitMqConfig.Enable)
             {
                 var factory = new ConnectionFactory
@@ -202,7 +205,7 @@ namespace FlyFramework.WebHost.Extentions
         {
             // 获取缓存相关配置
             var hangFireConfig = configuration.GetSection("HangFire").Get<HangFireOptionsConfig>();
-            Console.WriteLine($"HangFire:{hangFireConfig.Enable}");
+            log.Info($"HangFire:{hangFireConfig.Enable}");
             if (hangFireConfig.Enable)
             {
                 var options = new BackgroundJobServerOptions()
@@ -230,7 +233,7 @@ namespace FlyFramework.WebHost.Extentions
         {
             // 获取缓存相关配置
             var minioConfig = configuration.GetSection("Minio").Get<MinioOptionsConfig>();
-            Console.WriteLine($"Minio:{minioConfig.Enable},Host:{minioConfig.EndPoint}");
+            log.Info($"Minio:{minioConfig.Enable},Host:{minioConfig.EndPoint}");
             if (minioConfig.Enable)
             {
                 var minioClient = new MinioClient()
@@ -257,7 +260,7 @@ namespace FlyFramework.WebHost.Extentions
         {
             // 获取缓存相关配置
             var cacheConfig = configuration.GetSection("Redis").Get<RedisOptionsConfig>();
-            Console.WriteLine($"Redis:{cacheConfig.Enable},Host:{cacheConfig.Host}:{cacheConfig.Port}");
+            log.Info($"Redis:{cacheConfig.Enable},Host:{cacheConfig.Host}:{cacheConfig.Port}");
             // 判断是否启用Redis缓存
             if (cacheConfig.Enable)
             {
@@ -505,7 +508,7 @@ namespace FlyFramework.WebHost.Extentions
             //    }
             //);
             // 添加DbContext服务
-            services.UsingDatabaseServices(configuration);
+            services.UsingDatabaseServices(configuration, log);
             //services.AddScoped<DbContext, FlyFrameworkDbContext>();
 
             //services.AddUnitOfWork<FlyFrameworkDbContext>(); // 多数据库支持

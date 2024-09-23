@@ -54,7 +54,12 @@
 	</Target>
 
 	<ItemGroup>
+	  <Folder Include="App_Data\Log\LogDebug\" />
+	  <Folder Include="App_Data\Log\LogError\" />
+	  <Folder Include="App_Data\Log\LogInfo\" />
+	  <Folder Include="App_Data\Log\LogWarn\" />
 	  <Folder Include="wwwroot\ApiDocs\" />
+	  <Folder Include="App_Data\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\FlyFramework.WebCore\FlyFramework.WebCore.csproj" />
