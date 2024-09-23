@@ -18,10 +18,15 @@ namespace FlyFramework.Application.Test
             _dapperManager = dapperManager;
         }
 
-        public async Task<User> GetAsync()
+        public async Task<User> GetAsync(string Id)
         {
-            var result = await _dapperManager.GetByIdAsync("4957adb8870f4e79882231537ff5d3b9");
+            var result = await _dapperManager.GetByIdAsync(Id);
             return result;
+        }
+
+        public async Task ExecuteAsync(string Id)
+        {
+            await _dapperManager.ExecuteAsync($"Update  [User] Set FullName='Admin' where Id='{Id}'");
         }
     }
 }
