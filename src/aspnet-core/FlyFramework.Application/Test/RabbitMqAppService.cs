@@ -1,5 +1,5 @@
-﻿using FlyFramework.Application.DynamicWebAPI;
-using FlyFramework.Common.Utilities.RabbitMqs;
+﻿using FlyFramework.Common.Utilities.RabbitMqs;
+using FlyFramework.Domain.ApplicationServices;
 
 using RabbitMQ.Client.Events;
 

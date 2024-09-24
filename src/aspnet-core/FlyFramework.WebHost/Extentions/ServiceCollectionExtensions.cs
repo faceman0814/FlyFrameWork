@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
+
+using AutoMapper;
 
 using DotNetCore.CAP.Internal;
 
@@ -24,6 +27,7 @@ using FlyFramework.Core.UserService;
 using FlyFramework.EntityFrameworkCore;
 using FlyFramework.EntityFrameworkCore.Extensions;
 using FlyFramework.Repositories.Repositories;
+using FlyFramework.WebHost.Autofac;
 using FlyFramework.WebHost.Filters;
 using FlyFramework.WebHost.Identitys;
 
@@ -43,6 +47,8 @@ using Microsoft.OpenApi.Models;
 
 using Minio;
 
+using MongoDB.Driver;
+
 using Newtonsoft.Json;
 
 using RabbitMQ.Client;
@@ -57,11 +63,14 @@ using System.Data;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+
+using IContainer = Autofac.IContainer;
 namespace FlyFramework.WebHost.Extentions
 {
     public static class ServiceCollectionExtensions
     {
         private const string DefaultCorsPolicyName = "FlyFrameworkCorsPolicy";
+        public static string[] InterfacePostfixes { get; set; } = { "Manager", "AppService", "Service" };
         private static readonly ILog log = LogManager.GetLogger("程序启动配置：");
         /// <summary>
         /// 动态依赖注入
@@ -81,8 +90,9 @@ namespace FlyFramework.WebHost.Extentions
 
                 foreach (var type in types)
                 {
-                    var interfaces = type.GetInterfaces().Where(t => t.Name.EndsWith("Manager") || t.Name.EndsWith("AppService")).Distinct();
-
+                    var interfaces = type.GetInterfaces()
+                                         .Where(t => InterfacePostfixes.Any(postfix => t.Name.EndsWith(postfix)))
+                                         .Distinct();
                     // 自动注册与接口名称匹配的服务实现
                     foreach (var interfaceType in interfaces)
                     {
@@ -107,6 +117,7 @@ namespace FlyFramework.WebHost.Extentions
                     }
                 }
             }
+
             return services;
         }
 
@@ -115,20 +126,20 @@ namespace FlyFramework.WebHost.Extentions
             // 获取配置
             var rabbitMqConfig = configuration.GetSection("RabbitMq").Get<RabbitMqOptionsConfig>();
             log.Info($"RabbitMq:{rabbitMqConfig.Enable},Host:{rabbitMqConfig.HostName}:{rabbitMqConfig.Port}");
+            ConnectionFactory factory = default;
             if (rabbitMqConfig.Enable)
             {
-                var factory = new ConnectionFactory
+                factory = new ConnectionFactory
                 {
                     HostName = rabbitMqConfig.HostName,
                     Port = 5672,
                     UserName = rabbitMqConfig.UserName,
                     Password = rabbitMqConfig.Password
                 };
-
-                // 注册到依赖注入系统
-                services.AddSingleton<IConnectionFactory>(_ => factory);
-                services.AddSingleton<IRabbitMqManager, RabbitMqManager>();
             }
+            // 注册到依赖注入系统
+            services.AddSingleton<IConnectionFactory>(_ => factory);
+            //services.AddSingleton<IRabbitMqManager, RabbitMqManager>();
         }
 
 
@@ -197,22 +208,22 @@ namespace FlyFramework.WebHost.Extentions
             // 获取缓存相关配置
             var minioConfig = configuration.GetSection("Minio").Get<MinioOptionsConfig>();
             log.Info($"Minio:{minioConfig.Enable},Host:{minioConfig.EndPoint}");
+            IMinioClient minioClient = new MinioClient();
             if (minioConfig.Enable)
             {
-                var minioClient = new MinioClient()
-                   .WithEndpoint(minioConfig.EndPoint)
-                   .WithCredentials(minioConfig.AccessKey, minioConfig.SecretKey)
-                    .WithSSL(minioConfig.Secure)
-                    .Build();
+                minioClient = new MinioClient()
+                  .WithEndpoint(minioConfig.EndPoint)
+                  .WithCredentials(minioConfig.AccessKey, minioConfig.SecretKey)
+                   .WithSSL(minioConfig.Secure)
+                   .Build();
 
                 // 注册Redis客户端实例为单例服务
                 services.AddSingleton(minioClient);
 
                 // 注册Redis缓存工具为单例服务
-                //services.AddSingleton<IMinioManager, MinioManager>();
             }
-
-
+            services.AddSingleton(minioClient);
+            //services.AddSingleton<IMinioManager, MinioManager>();
         }
 
         /// <summary>
@@ -461,24 +472,11 @@ namespace FlyFramework.WebHost.Extentions
         /// </summary>
         public static void AddDbContext(this IServiceCollection services, IConfigurationRoot configuration)
         {
-            ////注册DbContext服务
-            //services.AddDbContext<FlyFrameworkDbContext>(
-            //    //option => option.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)
-            //    option =>
-            //    {
-            //        option.UseSqlServer(builder.Configuration.GetConnectionString("default"));
-            //        option.AddInterceptors(new FlyFrameworkInterceptor());
-            //    }
-            //);
             // 添加DbContext服务
             services.UsingDatabaseServices(configuration, log);
-            //services.AddScoped<DbContext, FlyFrameworkDbContext>();
-
-            //services.AddUnitOfWork<FlyFrameworkDbContext>(); // 多数据库支持
             //注册泛型仓储服务
             services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
             services.AddScoped<IDbContextProvider, DbContextProvider>();
-
             // 注册IDbConnection，使用Scoped生命周期
             services.AddScoped<IDbConnection>(provider =>
                 new SqlConnection(configuration.GetConnectionString("Default")));
@@ -591,6 +589,24 @@ namespace FlyFramework.WebHost.Extentions
             );
         }
 
+        /// <summary>
+        /// AutoFac 配置
+        /// </summary>
+        /// <param name="hostBuilder"></param>
+        /// <returns></returns>
+        public static IHostBuilder UseAutoFac(this IHostBuilder hostBuilder)
+        {
+            return hostBuilder.UseServiceProviderFactory(
+                new AutofacServiceProviderFactory())
+                    .ConfigureContainer<ContainerBuilder>(builder =>
+                    {
+                        builder.RegisterModule(new AutofacModule());
+                        builder.RegisterBuildCallback(scope =>
+                        {
+                            IOCManager.Current = (IContainer)scope;
+                        });
+                    });
+        }
 
         /// <summary>
         /// 使用 Hangfire Storage

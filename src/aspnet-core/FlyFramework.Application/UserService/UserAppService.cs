@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 
-using FlyFramework.Application.DynamicWebAPI;
 using FlyFramework.Application.UserService.Dtos;
 using FlyFramework.Common.Utilities.JWTTokens;
 using FlyFramework.Core.UserService;
 using FlyFramework.Core.UserService.DomainService;
+using FlyFramework.Domain.ApplicationServices;
+using FlyFramework.Repositories.UserSessions;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -27,19 +28,29 @@ namespace FlyFramework.Application.UserService
         private readonly SignInManager<User> _signInManager;
         private readonly IConfiguration _configuration;
         private readonly IJWTTokenManager _jwtTokenManager;
+        private readonly IUserSession _userSession;
 
-        public UserAppService(IServiceProvider serviceProvider, IUserManager userManager, IMapper mapper, IConfiguration configuration, SignInManager<User> signInManager, IJWTTokenManager jWTTokenManager) : base(serviceProvider)
+        public UserAppService(IServiceProvider serviceProvider,
+            IUserManager userManager,
+            IMapper mapper,
+            IConfiguration configuration,
+            SignInManager<User> signInManager,
+            IUserSession userSession,
+            IJWTTokenManager jWTTokenManager) : base(serviceProvider)
         {
             _userManager = userManager;
             _mapper = mapper;
             _configuration = configuration;
             _signInManager = signInManager;
             _jwtTokenManager = jWTTokenManager;
+            _userSession = userSession;
         }
 
         [AllowAnonymous]
         public string GenerateSecureKey()
         {
+            Console.WriteLine(_userSession.UserId);
+            Console.WriteLine(UserSession.UserId);
             using (var aesAlg = Aes.Create())
             {
                 aesAlg.KeySize = 128;  // 设置密钥长度为128位
@@ -49,7 +60,7 @@ namespace FlyFramework.Application.UserService
         }
         public async Task CreateUser(UserDto input)
         {
-            var user = _mapper.Map<User>(input);
+            var user = ObjectMapper.Map<User>(input);
             user.NormalizedUserName = input.UserName.ToUpper();
             user.NormalizedEmail = input.Email.ToUpper();
             user.TwoFactorEnabled = false;

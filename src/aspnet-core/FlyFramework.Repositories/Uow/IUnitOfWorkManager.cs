@@ -4,8 +4,11 @@ namespace FlyFramework.Repositories.Uow
 {
     public interface IUnitOfWorkManager : IScopedDependency
     {
-        Task CommitTransactionAsync();
-        Task RollbackTransactionAsync();
-        Task BeginTransactionAsync();
+        IUnitOfWork? Current { get; }
+
+        IUnitOfWork Begin();
+
+        IUnitOfWork Reserve();
+
     }
 }

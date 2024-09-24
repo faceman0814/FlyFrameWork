@@ -1,5 +1,5 @@
-﻿using FlyFramework.Application.DynamicWebAPI;
-using FlyFramework.Common.Dependencys;
+﻿using FlyFramework.Common.Dependencys;
+using FlyFramework.Domain.ApplicationServices;
 
 using System;
 using System.Collections.Generic;

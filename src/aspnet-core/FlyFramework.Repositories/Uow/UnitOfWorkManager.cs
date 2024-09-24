@@ -1,58 +1,48 @@
-﻿using FlyFramework.Common.ErrorExceptions;
-using FlyFramework.Repositories.Repositories;
+﻿using FlyFramework.Repositories.Repositories;
 
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace FlyFramework.Repositories.Uow
 {
     public class UnitOfWorkManager : IUnitOfWorkManager
     {
-        protected DbContext _context { get; }
-        private IDbContextTransaction _transaction;
-
+        private IUnitOfWork? _currentUnitOfWork;
+        private readonly IDbContextProvider _dbContextProvider;
         public UnitOfWorkManager(IDbContextProvider dbContextProvider)
         {
-            _context = dbContextProvider.GetDbContext();
+            _dbContextProvider = dbContextProvider;
         }
-        public async Task BeginTransactionAsync()
+        // 获取当前的工作单元，如果不存在，则返回null。
+        public IUnitOfWork? Current => _currentUnitOfWork;
+
+        /// <summary>
+        /// 开始一个新的工作单元，并设置为当前工作单元。
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public IUnitOfWork Begin()
         {
-            _transaction = await _context.Database.BeginTransactionAsync();
+            if (_currentUnitOfWork != null)
+            {
+                throw new InvalidOperationException("There is already an active unit of work.");
+            }
+
+            _currentUnitOfWork = new UnitOfWork(_dbContextProvider);
+            return _currentUnitOfWork;
         }
 
-        public async Task CommitTransactionAsync()
+        /// <summary>
+        /// 创建一个新的工作单元，但不设置为当前工作单元。
+        /// </summary>
+        /// <returns></returns>
+        public IUnitOfWork Reserve()
         {
-            try
-            {
-                await _context.SaveChangesAsync();
-                if (_transaction != null)
-                {
-                    await _transaction.CommitAsync();
-                }
-            }
-            catch (Exception ex)
-            {
-                await RollbackTransactionAsync();
-                throw new UserFriendlyException(ex.InnerException?.Message ?? ex.Message);
-            }
-            finally
-            {
-                if (_transaction != null)
-                {
-                    await _transaction.DisposeAsync();
-                    _transaction = null;
-                }
-            }
-        }
-
-        public async Task RollbackTransactionAsync()
-        {
-            if (_transaction != null)
-            {
-                await _transaction.RollbackAsync();
-                await _transaction.DisposeAsync();
-                _transaction = null;
-            }
+            // 创建一个新的UnitOfWork实例但不设置为当前工作单元
+            return new UnitOfWork(_dbContextProvider);
         }
     }
 }

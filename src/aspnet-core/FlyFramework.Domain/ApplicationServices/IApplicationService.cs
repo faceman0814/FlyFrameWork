@@ -1,6 +1,6 @@
 ﻿using FlyFramework.Common.Dependencys;
 
-namespace FlyFramework.Application.DynamicWebAPI
+namespace FlyFramework.Domain.ApplicationServices
 {
     /// <summary>
     /// 动态WebAPI接口

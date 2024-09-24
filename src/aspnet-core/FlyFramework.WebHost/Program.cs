@@ -1,12 +1,12 @@
 using FlyFramework.Application.Test;
 using FlyFramework.Common.Extentions;
-using FlyFramework.Repositories.Uow;
 using FlyFramework.Repositories.UserSessions;
 using FlyFramework.WebHost.Extentions;
 
 using Hangfire;
 
 using Minio;
+
 var builder = WebApplication.CreateBuilder(args);
 // 配置文件读取
 
@@ -23,6 +23,7 @@ public static class AppConfig
     static WebApplicationBuilder builder;
     static WebApplication app;
     static IServiceCollection services;
+    static IConfigurationRoot configuration;
 
     public static WebApplicationBuilder ConfigurationServices(this WebApplicationBuilder _builder)
     {
@@ -30,10 +31,10 @@ public static class AppConfig
         services = _builder.Services;
 
         var basePath = AppContext.BaseDirectory;
-        var configuration = new ConfigurationBuilder()
-                        .SetBasePath(basePath)
-                        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                        .Build();
+        configuration = new ConfigurationBuilder()
+                       .SetBasePath(basePath)
+                       .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                       .Build();
 
         // 配置日志
         builder.Host.ConfigureLogging((context, loggingBuilder) =>
@@ -43,14 +44,14 @@ public static class AppConfig
 
         //注入用户Session
         builder.Services.AddTransient<IUserSession, UserSession>();
+
         //单独注册某个服务，特殊情况
         //_services.AddSingleton<Ixxx, xxx>();
-        // 注册UnitOfWork
-        //services.AddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
-        //hangfire测试用
-        services.AddTransient<IMessageService, MessageService>();
 
         services.AddHttpContextAccessor();
+
+        // 添加Autofac依赖注入
+        //builder.Host.UseAutoFac();
 
         services.AddAutoMapper();
 
@@ -83,6 +84,7 @@ public static class AppConfig
         services.AddLocalCors(configuration);
 
         services.AddSignalR();
+
         return builder;
     }
 
@@ -95,7 +97,6 @@ public static class AppConfig
     {
         app = _app;
 
-        //app.UseMiddleware<UnitOfWorkMiddleware>();
         app.UseRouting();
         app.UseSwagger(builder);
         app.UseAuthentication(); //使用验证方式 将身份认证中间件添加到管道中，因此将在每次调用API时自动执行身份验证。
@@ -114,8 +115,13 @@ public static class AppConfig
             //endpoints.MapHub<SignalRTestHub>("/Hubs");
 
         });
-        // 启用Hangfire仪表盘
-        app.UseHangfireDashboard();
+
+        if (configuration.GetSection("HangFire:Enable").Get<bool>())
+        {
+            // 启用Hangfire仪表盘
+            app.UseHangfireDashboard();
+        }
+
         return app;
     }
 

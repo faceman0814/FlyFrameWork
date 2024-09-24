@@ -1,6 +1,6 @@
-﻿using FlyFramework.Application.DynamicWebAPI;
-using FlyFramework.Common.Utilities.Dappers;
+﻿using FlyFramework.Common.Utilities.Dappers;
 using FlyFramework.Core.UserService;
+using FlyFramework.Domain.ApplicationServices;
 
 namespace FlyFramework.Application.Test
 {

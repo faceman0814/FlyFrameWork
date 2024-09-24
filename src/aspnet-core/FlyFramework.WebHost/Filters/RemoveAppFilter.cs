@@ -1,4 +1,9 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using FlyFramework.Common.Extentions;
+using FlyFramework.Domain.ApplicationServices;
+
+using Masuit.Tools;
+
+using Microsoft.OpenApi.Models;
 
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -14,11 +19,11 @@ namespace FlyFramework.WebHost.Filters
             {
                 foreach (var operation in path.Operations.Values)
                 {
-                    if (operation.Tags.Any(tag => tag.Name.EndsWith("AppService", StringComparison.OrdinalIgnoreCase)))
+                    if (operation.Tags.Any(tag => ApplicationService.CommonPostfixes.Any(postfix => tag.Name.EndsWith(postfix, StringComparison.OrdinalIgnoreCase))))
                     {
                         var tags = operation.Tags.Select(tag => new OpenApiTag
                         {
-                            Name = tag.Name.Replace("AppService", "", StringComparison.OrdinalIgnoreCase),
+                            Name = tag.Name.RemovePostFix(ApplicationService.CommonPostfixes.FirstOrDefault(postfix => tag.Name.EndsWith(postfix, StringComparison.OrdinalIgnoreCase))), // 根据需要选择合适的后缀
                             Description = tag.Description
                         }).ToList();
 

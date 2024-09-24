@@ -1,10 +1,10 @@
 ﻿using DotNetCore.CAP;
 
-using FlyFramework.Application.DynamicWebAPI;
 using FlyFramework.Common.Dependencys;
 using FlyFramework.Common.Utilities.EventBus;
 using FlyFramework.Common.Utilities.EventBus.Distributed;
 using FlyFramework.Common.Utilities.EventBus.Local;
+using FlyFramework.Domain.ApplicationServices;
 
 using MediatR;
 

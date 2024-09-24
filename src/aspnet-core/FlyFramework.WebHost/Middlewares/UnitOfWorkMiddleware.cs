@@ -11,7 +11,7 @@ namespace FlyFramework.WebHost.Middlewares
             _next = next;
         }
 
-        public async Task Invoke(HttpContext httpContext, IUnitOfWorkManager unitOfWork)
+        public async Task Invoke(HttpContext httpContext, IUnitOfWork unitOfWork)
         {
             try
             {
@@ -21,18 +21,18 @@ namespace FlyFramework.WebHost.Middlewares
                 if (httpContext.Response.StatusCode == 200)
                 {
                     // 提交数据库事务
-                    await unitOfWork.CommitTransactionAsync();
+                    await unitOfWork.SaveChangesAsync();
                 }
                 else
                 {
                     // 如果在处理中发生了错误（例如业务逻辑错误导致的非200响应），则回滚事务
-                    await unitOfWork.RollbackTransactionAsync();
+                    await unitOfWork.RollbackAsync();
                 }
             }
             catch (Exception ex)
             {
                 // 如果抛出异常，则回滚事务
-                await unitOfWork.RollbackTransactionAsync();
+                await unitOfWork.RollbackAsync();
 
                 // 设置HTTP响应状态为500（服务器内部错误）
                 httpContext.Response.StatusCode = 500;

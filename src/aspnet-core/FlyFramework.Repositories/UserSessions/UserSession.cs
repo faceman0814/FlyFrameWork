@@ -22,17 +22,18 @@ namespace FlyFramework.Repositories.UserSessions
         /// <summary>
         /// 用户id
         /// </summary>
-        public virtual string UserId => FindClaim(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+        public string UserId => FindClaim(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
 
         /// <summary>
         /// 用户名称
         /// </summary>
-        public virtual string UserName => FindClaim(ClaimTypes.Name)?.Value ?? string.Empty;
+        public string UserName => FindClaim(ClaimTypes.Name)?.Value ?? string.Empty;
 
         /// <summary>
         /// 是否是超级管理员
         /// </summary>
         public bool IsAdmin => UserId == "4957adb8870f4e79882231537ff5d3b9";
+
 
         //public virtual IEnumerable<string> RoleName => FindClaims(LoginClaimTypes.Role).Select(c => c.Value).Distinct().ToArray();
 
