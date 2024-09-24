@@ -24,40 +24,13 @@ namespace FlyFramework.Application.UserService
     public class UserAppService : ApplicationService, IUserAppService
     {
         private readonly IUserManager _userManager;
-        private readonly IMapper _mapper;
-        private readonly SignInManager<User> _signInManager;
-        private readonly IConfiguration _configuration;
-        private readonly IJWTTokenManager _jwtTokenManager;
-        private readonly IUserSession _userSession;
 
         public UserAppService(IServiceProvider serviceProvider,
-            IUserManager userManager,
-            IMapper mapper,
-            IConfiguration configuration,
-            SignInManager<User> signInManager,
-            IUserSession userSession,
-            IJWTTokenManager jWTTokenManager) : base(serviceProvider)
+            IUserManager userManager) : base(serviceProvider)
         {
             _userManager = userManager;
-            _mapper = mapper;
-            _configuration = configuration;
-            _signInManager = signInManager;
-            _jwtTokenManager = jWTTokenManager;
-            _userSession = userSession;
         }
 
-        [AllowAnonymous]
-        public string GenerateSecureKey()
-        {
-            Console.WriteLine(_userSession.UserId);
-            Console.WriteLine(UserSession.UserId);
-            using (var aesAlg = Aes.Create())
-            {
-                aesAlg.KeySize = 128;  // 设置密钥长度为128位
-                aesAlg.GenerateKey();  // 自动生成密钥
-                return Convert.ToBase64String(aesAlg.Key);  // 将密钥转换为Base64字符串
-            }
-        }
         public async Task CreateUser(UserDto input)
         {
             var user = ObjectMapper.Map<User>(input);

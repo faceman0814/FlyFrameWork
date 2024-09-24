@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace FlyFramework.Domain.ApplicationServices
 {
-    public class ApplicationService : ApplicationServiceBase, IApplicationService
+    public abstract class ApplicationService : ApplicationServiceBase, IApplicationService
     {
         /// <summary>
         /// API 通用后缀
