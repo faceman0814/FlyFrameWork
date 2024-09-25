@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 
+using FlyFramework.Domain.Localizations;
 using FlyFramework.Repositories.UserSessions;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -20,10 +21,12 @@ namespace FlyFramework.Domain.ApplicationServices
         public IUserSession UserSession { get; set; }
 
 
-        public ApplicationService(IServiceProvider serviceProvider)
+        public ApplicationService(IServiceProvider serviceProvider, string localizationSourceName = null)
         {
             ObjectMapper = serviceProvider.GetRequiredService<IMapper>();
             UserSession = serviceProvider.GetRequiredService<IUserSession>();
+            LocalizationManager = serviceProvider.GetRequiredService<ILocalizationManager>();
+            base.LocalizationSourceName = localizationSourceName ?? FlyFrameworkConsts.LocalizationSourceName;
         }
         //private ILocalizationSource _localizationSource;
 

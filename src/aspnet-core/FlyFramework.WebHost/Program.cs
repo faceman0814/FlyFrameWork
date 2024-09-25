@@ -1,6 +1,6 @@
 using FlyFramework.Common.Extentions;
 using FlyFramework.Common.FlyFrameworkModules.Extensions;
-using FlyFramework.Common.Localizations;
+using FlyFramework.Domain.Localizations;
 using FlyFramework.Repositories.UserSessions;
 using FlyFramework.WebHost;
 using FlyFramework.WebHost.Extentions;
@@ -52,7 +52,7 @@ public static class AppConfig
         // 添加Autofac依赖注入
         //builder.Host.UseAutoFac();
         //// 添加应用程序模块
-        builder.Services.AddApplication<FlyFrameworkWebHostModule>();
+        //builder.Services.AddApplication<FlyFrameworkWebHostModule>();
 
         // 配置日志
         builder.Host.ConfigureLogging((context, loggingBuilder) =>
@@ -99,7 +99,9 @@ public static class AppConfig
         services.AddJsonLocalization(options =>
         {
             options.ResourcesPath = "Localizations";
-        });
+
+        }, typeof(FlyFrameworkWebHostModule));
+
         return builder;
     }
 

@@ -23,23 +23,23 @@ namespace FlyFramework.WebHost.Controllers
         private readonly ICacheManager _cacheManager;
         private readonly IJWTTokenManager _jWTTokenManager;
         private readonly IUserManager _userManager;
-        private readonly IStringLocalizer<Language> _sharedLocalizer;
+        private readonly IStringLocalizer _sharedLocalizer;
         public LoginController(SignInManager<User> signInManager,
             ICacheManager cacheManager,
             IJWTTokenManager jWTTokenManager,
-            IUserManager userManager,
-             IStringLocalizer<Language> sharedLocalizer)
+            IStringLocalizerFactory factory,
+            IUserManager userManager)
         {
             _signInManager = signInManager;
             _cacheManager = cacheManager;
             _jWTTokenManager = jWTTokenManager;
             _userManager = userManager;
-            _sharedLocalizer = sharedLocalizer;
+            _sharedLocalizer = factory.Create("FlyFramework", typeof(Program).Assembly.GetName().Name);
         }
         [HttpGet]
         public string GetString()
         {
-            var ss = _sharedLocalizer["Name"].SearchedLocation;
+            Console.WriteLine("资源地址：{0}", _sharedLocalizer["Name"].SearchedLocation);
             var content = _sharedLocalizer.GetString("Name").Value;
             return content;
         }

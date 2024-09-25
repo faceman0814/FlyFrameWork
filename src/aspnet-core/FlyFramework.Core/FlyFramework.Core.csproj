@@ -17,15 +17,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Localizations\Language.en-US.json" />
-    <None Remove="Localizations\Language.zh-CN.json" />
+    <None Remove="Localizations\FlyFramework.en-US.json" />
+    <None Remove="Localizations\FlyFramework.zh-CN.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Localizations\Language.en-US.json">
+    <EmbeddedResource Include="Localizations\FlyFramework.en-US.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <Content Include="Localizations\Language.zh-CN.json">
+    <Content Include="Localizations\FlyFramework.zh-CN.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

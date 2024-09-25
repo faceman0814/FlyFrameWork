@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 using System.Collections.Concurrent;
 using System.Reflection;
 
-namespace FlyFramework.Common.Localizations;
+namespace FlyFramework.Domain.Localizations;
 
 internal sealed class JsonStringLocalizerFactory : IStringLocalizerFactory
 {

@@ -24,6 +24,8 @@ using FlyFramework.Common.Utilities.RabbitMqs;
 using FlyFramework.Common.Utilities.Redis;
 using FlyFramework.Core.RoleService;
 using FlyFramework.Core.UserService;
+using FlyFramework.Domain;
+using FlyFramework.Domain.Localizations;
 using FlyFramework.EntityFrameworkCore;
 using FlyFramework.EntityFrameworkCore.Extensions;
 using FlyFramework.Repositories.Repositories;
@@ -42,6 +44,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -606,6 +610,12 @@ namespace FlyFramework.WebHost.Extentions
                             IOCManager.Current = (IContainer)scope;
                         });
                     });
+        }
+
+
+        public static void AddLocalizations(this IServiceCollection services)
+        {
+
         }
 
         /// <summary>

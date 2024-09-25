@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
 
-namespace FlyFramework.Common.Localizations;
+namespace FlyFramework.Domain.Localizations;
 
 public static class JsonLocalizationExtensions
 {
@@ -34,7 +34,7 @@ public static class JsonLocalizationExtensions
     /// An <see cref="Action{LocalizationOptions}"/> to configure the <see cref="JsonLocalizationOptions"/>.
     /// </param>
     /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
-    public static IServiceCollection AddJsonLocalization(this IServiceCollection services, Action<JsonLocalizationOptions> setupAction)
+    public static IServiceCollection AddJsonLocalization(this IServiceCollection services, Action<JsonLocalizationOptions> setupAction, Type type)
     {
         if (services == null || setupAction == null)
         {
@@ -42,7 +42,14 @@ public static class JsonLocalizationExtensions
         }
         services.Configure(setupAction);
         services.AddJsonLocalization();
+        // 注册LocalizationSource作为单例
+        services.AddSingleton<ILocalizationSource, LocalizationSource>((serviceProvider) =>
+        {
+            var factory = serviceProvider.GetRequiredService<IStringLocalizerFactory>();
+            return new LocalizationSource(FlyFrameworkConsts.LocalizationSourceName, factory, type);
+        });
 
+        services.AddSingleton<ILocalizationManager, LocalizationManager>();
         return services;
     }
 }

@@ -1,22 +1,10 @@
-﻿using AutoMapper;
-
-using FlyFramework.Application.UserService.Dtos;
-using FlyFramework.Common.Utilities.JWTTokens;
+﻿using FlyFramework.Application.UserService.Dtos;
 using FlyFramework.Core.UserService;
 using FlyFramework.Core.UserService.DomainService;
 using FlyFramework.Domain.ApplicationServices;
-using FlyFramework.Repositories.UserSessions;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace FlyFramework.Application.UserService
 {
@@ -31,6 +19,10 @@ namespace FlyFramework.Application.UserService
             _userManager = userManager;
         }
 
+        public void test()
+        {
+            Console.WriteLine(L("Name"));
+        }
         public async Task CreateUser(UserDto input)
         {
             var user = ObjectMapper.Map<User>(input);

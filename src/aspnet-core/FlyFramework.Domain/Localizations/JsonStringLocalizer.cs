@@ -6,7 +6,7 @@ using System.Collections.Concurrent;
 using System.Globalization;
 using System.Text.Json;
 
-namespace FlyFramework.Common.Localizations;
+namespace FlyFramework.Domain.Localizations;
 
 internal sealed class JsonStringLocalizer : IStringLocalizer
 {
