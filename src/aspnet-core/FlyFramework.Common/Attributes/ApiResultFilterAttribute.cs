@@ -1,6 +1,8 @@
 ﻿using FlyFramework.Common.ErrorExceptions;
 using FlyFramework.Common.Extentions;
 
+using log4net;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -20,6 +22,7 @@ namespace FlyFramework.Common.Attributes
 {
     public class ApiResultFilterAttribute : ActionFilterAttribute
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(ApiResultFilterAttribute));
         /// <summary>
         /// 在操作方法执行后被调用
         /// </summary>
@@ -51,7 +54,7 @@ namespace FlyFramework.Common.Attributes
                     Message = context.Exception.Message + ": " + errorDetails,
                     Data = null
                 };
-
+                log.Info(apiResponse.Message);
                 SetContentResult(context, apiResponse, StatusCodes.Status500InternalServerError);
                 context.ExceptionHandled = true;
                 return true;

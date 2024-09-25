@@ -513,7 +513,7 @@ namespace FlyFramework.WebHost.Extentions
             // 注册全局拦截器
             services.AddControllersWithViews(x =>
             {
-                //全局返回，统一返回格式
+                //全局返回，异常处理，统一返回格式。
                 x.Filters.Add<ApiResultFilterAttribute>();
                 //全局事务
                 x.Filters.Add<UnitOfWorkFilter>();
@@ -521,12 +521,6 @@ namespace FlyFramework.WebHost.Extentions
                 //x.Filters.Add<EnsureJsonFilterAttribute>();
                 //解析Post请求参数，将json反序列化赋值参数
                 x.Filters.Add(new AutoFromBodyActionFilter());
-                ////全局异常
-                //x.Filters.Add(new ErrorExceptionFilter());
-                //全局日志，报错
-                //x.Filters.Add<LogAttribute>();
-                //全局身份验证
-                //x.Filters.Add<TokenAttribute>();
             });
         }
 
