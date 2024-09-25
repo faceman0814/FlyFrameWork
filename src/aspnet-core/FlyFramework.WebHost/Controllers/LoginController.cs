@@ -24,10 +24,12 @@ namespace FlyFramework.WebHost.Controllers
         private readonly IJWTTokenManager _jWTTokenManager;
         private readonly IUserManager _userManager;
         private readonly IStringLocalizer _sharedLocalizer;
+        private readonly IConfiguration _configuration;
         public LoginController(SignInManager<User> signInManager,
             ICacheManager cacheManager,
             IJWTTokenManager jWTTokenManager,
             IStringLocalizerFactory factory,
+            IConfiguration configuration,
             IUserManager userManager)
         {
             _signInManager = signInManager;
@@ -35,6 +37,7 @@ namespace FlyFramework.WebHost.Controllers
             _jWTTokenManager = jWTTokenManager;
             _userManager = userManager;
             _sharedLocalizer = factory.Create("FlyFramework", typeof(Program).Assembly.GetName().Name);
+            _configuration = configuration;
         }
         [HttpGet]
         public string GetString()
@@ -59,9 +62,11 @@ namespace FlyFramework.WebHost.Controllers
                 };
                 var token = _jWTTokenManager.GenerateToken(claims.ToList());
                 await _cacheManager.SetCacheAsync(input.UserName, token);
+
+                var jwtBearer = _configuration.GetSection("JwtBearer").Get<JwtBearerModel>();
                 Response.Cookies.Append("access-token", token, new CookieOptions()
                 {
-                    Expires = DateTimeOffset.UtcNow.AddMinutes(30)
+                    Expires = DateTimeOffset.UtcNow.AddMinutes(jwtBearer.AccessTokenExpiresMinutes)
                 }
                 );
             }

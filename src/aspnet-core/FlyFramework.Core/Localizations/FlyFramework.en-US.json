@@ -1,5 +1,11 @@
 {
-  "Name": "Name1",
-  "Gender": "Gender1",
-  "Age": "Age1"
+  "UserFriendlyError": "{0}, operate in {1}",
+  "Error": "Error",
+  "Success": "Success",
+  "InvalidRequest": "Invalid Request",
+  "Unauthorized": "Unauthorized",
+  "Forbidden": "Forbidden",
+  "NotFound": "Not Found",
+  "InternalServerError": "Internal Server Error",
+  "ServiceUnavailable": "Service Unavailable"
 }

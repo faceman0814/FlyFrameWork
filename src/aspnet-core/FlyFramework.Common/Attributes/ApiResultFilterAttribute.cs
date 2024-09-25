@@ -1,12 +1,17 @@
-﻿using FlyFramework.Common.Extentions;
+﻿using FlyFramework.Common.ErrorExceptions;
+using FlyFramework.Common.Extentions;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
+
+using Newtonsoft.Json;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,70 +25,77 @@ namespace FlyFramework.Common.Attributes
         /// </summary>
         public override void OnActionExecuted(ActionExecutedContext context)
         {
-            var action = context.ActionDescriptor as ControllerActionDescriptor;
-            if (action == null)
-            {
-                return;
-            }
-
-            var controllerType = context.Controller.GetType();
-            if (controllerType.GetCustomAttributes(typeof(SkipActionFilterAttribute), true).Any())
-            {
-                return;
-            }
-
-            // 检查是否存在异常, 如果有，则不处理数据
             if (context.Exception != null)
             {
-                return;
-            }
-
-            // 获取从 action 返回的结果对象
-            var result = context.Result as ObjectResult;
-
-            if (result == null)
-            {
-                // Assume success if no result is provided
-                context.Result = new ObjectResult(new ApiResponse
+                if (!HandleException(context))
                 {
-                    Success = true,
-                    Message = "请求成功",
-                    Data = null
-                })
-                {
-                    StatusCode = StatusCodes.Status200OK
-                };
-                goto end;
-            }
-            // 根据业务需求，可以对 result 进行检测和修改
-            if (result?.Value == null || result.StatusCode < 200 || result.StatusCode >= 300)
-            {
-                // 可以处理错误或者不合适的返回状态码
-                context.Result = new ObjectResult(new ApiResponse
-                {
-                    Success = false,
-                    Message = "Error or invalid response",
-                    Data = result?.Value
-                })
-                {
-                    StatusCode = result?.StatusCode ?? 500
-                };
+                    return;
+                }
             }
             else
             {
-                // 包装原始结果为统一的返回格式
-                context.Result = new ObjectResult(new
-                {
-                    success = true,
-                    message = "Success",
-                    data = result.Value
-                })
-                {
-                    StatusCode = result.StatusCode
-                };
+                ProcessResult(context);
             }
-        end:
+
             base.OnActionExecuted(context);
+        }
+
+        private bool HandleException(ActionExecutedContext context)
+        {
+            if (!context.ExceptionHandled && context.Exception is UserFriendlyException userFriendlyException)
+            {
+                var errorDetails = userFriendlyException.Details;
+                var apiResponse = new ApiResponse
+                {
+                    Success = false,
+                    Message = context.Exception.Message + ": " + errorDetails,
+                    Data = null
+                };
+
+                SetContentResult(context, apiResponse, StatusCodes.Status500InternalServerError);
+                context.ExceptionHandled = true;
+                return true;
+            }
+            return false;
+        }
+
+        private void ProcessResult(ActionExecutedContext context)
+        {
+            if (context.Result is ObjectResult result)
+            {
+                if (result.StatusCode < 200 || result.StatusCode >= 300)
+                {
+                    var apiResponse = new ApiResponse
+                    {
+                        Success = false,
+                        Message = "错误或无效响应",
+                        Data = result.Value
+                    };
+
+                    SetContentResult(context, apiResponse, result.StatusCode ?? StatusCodes.Status500InternalServerError);
+                }
+                else
+                {
+                    var apiResponse = new ApiResponse
+                    {
+                        Success = true,
+                        Message = "请求成功",
+                        Data = result.Value // 改为使用原始数据，避免数据丢失
+                    };
+
+                    SetContentResult(context, apiResponse, StatusCodes.Status200OK);
+                }
+            }
+        }
+
+        private static void SetContentResult(ActionExecutedContext context, ApiResponse response, int statusCode)
+        {
+            context.Result = new ContentResult
+            {
+                StatusCode = statusCode,
+                ContentType = "application/json;charset=utf-8",
+                Content = JsonConvert.SerializeObject(response)
+            };
         }
     }
 }

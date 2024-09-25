@@ -1,5 +1,11 @@
 {
-  "Name": "姓名",
-  "Gender": "性别",
-  "Age": "年龄"
+  "UserFriendlyError": "{0}, 操作于{1}",
+  "Error": "错误",
+  "Success": "成功",
+  "InvalidRequest": "无效的请求",
+  "Unauthorized": "未授权",
+  "Forbidden": "禁止访问",
+  "NotFound": "未找到",
+  "InternalServerError": "服务器内部错误",
+  "ServiceUnavailable": "服务不可用"
 }

@@ -1,4 +1,5 @@
 ﻿using FlyFramework.Application.UserService.Dtos;
+using FlyFramework.Common.ErrorExceptions;
 using FlyFramework.Core.UserService;
 using FlyFramework.Core.UserService.DomainService;
 using FlyFramework.Domain.ApplicationServices;
@@ -19,10 +20,12 @@ namespace FlyFramework.Application.UserService
             _userManager = userManager;
         }
 
+        [AllowAnonymous]
         public void test()
         {
-            Console.WriteLine(L("Name"));
+            ThrowUserFriendlyError("test");
         }
+
         public async Task CreateUser(UserDto input)
         {
             var user = ObjectMapper.Map<User>(input);
@@ -34,7 +37,6 @@ namespace FlyFramework.Application.UserService
             await _userManager.Create(user);
         }
 
-        [HttpPost]
         public async Task UpdateUser(UserDto input)
         {
             var user = await _userManager.FindById(input.Id);

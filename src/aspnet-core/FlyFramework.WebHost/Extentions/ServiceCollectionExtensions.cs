@@ -518,9 +518,11 @@ namespace FlyFramework.WebHost.Extentions
                 //全局事务
                 x.Filters.Add<UnitOfWorkFilter>();
                 //配置请求类型
-                x.Filters.Add<EnsureJsonFilterAttribute>();
+                //x.Filters.Add<EnsureJsonFilterAttribute>();
                 //解析Post请求参数，将json反序列化赋值参数
                 x.Filters.Add(new AutoFromBodyActionFilter());
+                ////全局异常
+                //x.Filters.Add(new ErrorExceptionFilter());
                 //全局日志，报错
                 //x.Filters.Add<LogAttribute>();
                 //全局身份验证

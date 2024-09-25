@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 
+using FlyFramework.Common.ErrorExceptions;
 using FlyFramework.Domain.Localizations;
 using FlyFramework.Repositories.UserSessions;
 
@@ -28,7 +29,10 @@ namespace FlyFramework.Domain.ApplicationServices
             LocalizationManager = serviceProvider.GetRequiredService<ILocalizationManager>();
             base.LocalizationSourceName = localizationSourceName ?? FlyFrameworkConsts.LocalizationSourceName;
         }
-        //private ILocalizationSource _localizationSource;
 
+        protected virtual void ThrowUserFriendlyError(string reason)
+        {
+            throw new UserFriendlyException(L("Error"), L("UserFriendlyError", reason, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")));
+        }
     }
 }
