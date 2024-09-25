@@ -1,5 +1,5 @@
-﻿using FlyFramework.Application.DynamicWebAPI;
-using FlyFramework.Common.Utilities.RabbitMqs;
+﻿using FlyFramework.Common.Utilities.RabbitMqs;
+using FlyFramework.Domain.ApplicationServices;
 
 using RabbitMQ.Client.Events;
 
@@ -15,7 +15,7 @@ namespace FlyFramework.Application.Test
     {
         private readonly IRabbitMqManager _rabbitMqManager;
 
-        public RabbitMqAppService(IRabbitMqManager rabbitMqManager)
+        public RabbitMqAppService(IServiceProvider serviceProvider, IRabbitMqManager rabbitMqManager) : base(serviceProvider)
         {
             _rabbitMqManager = rabbitMqManager;
         }

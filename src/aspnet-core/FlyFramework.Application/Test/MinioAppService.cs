@@ -1,5 +1,5 @@
-﻿using FlyFramework.Application.DynamicWebAPI;
-using FlyFramework.Common.Utilities.Minios;
+﻿using FlyFramework.Common.Utilities.Minios;
+using FlyFramework.Domain.ApplicationServices;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +11,7 @@ namespace FlyFramework.Application.Test
     {
         private readonly IMinioManager _minioManager;
 
-        public MinioAppService(IMinioManager minioManager)
+        public MinioAppService(IServiceProvider serviceProvider, IMinioManager minioManager) : base(serviceProvider)
         {
             _minioManager = minioManager;
         }

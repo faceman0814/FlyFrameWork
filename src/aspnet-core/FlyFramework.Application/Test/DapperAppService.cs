@@ -1,19 +1,13 @@
-﻿using FlyFramework.Application.DynamicWebAPI;
-using FlyFramework.Common.Utilities.Dappers;
+﻿using FlyFramework.Common.Utilities.Dappers;
 using FlyFramework.Core.UserService;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FlyFramework.Domain.ApplicationServices;
 
 namespace FlyFramework.Application.Test
 {
     public class DapperAppService : ApplicationService, IApplicationService
     {
         private readonly IDapperManager<User> _dapperManager;
-        public DapperAppService(IDapperManager<User> dapperManager)
+        public DapperAppService(IServiceProvider serviceProvider, IDapperManager<User> dapperManager) : base(serviceProvider)
         {
             _dapperManager = dapperManager;
         }

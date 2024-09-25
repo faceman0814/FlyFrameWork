@@ -1,10 +1,10 @@
 ﻿using DotNetCore.CAP;
 
-using FlyFramework.Application.DynamicWebAPI;
 using FlyFramework.Common.Dependencys;
 using FlyFramework.Common.Utilities.EventBus;
 using FlyFramework.Common.Utilities.EventBus.Distributed;
 using FlyFramework.Common.Utilities.EventBus.Local;
+using FlyFramework.Domain.ApplicationServices;
 
 using MediatR;
 
@@ -24,7 +24,7 @@ namespace FlyFramework.Application.Test
         private readonly ILocalEventBus _localEventBus;
         private readonly IDistributedEventBus _distributedEventBus;
 
-        public EventBusAppService(ILocalEventBus localEventBus, IDistributedEventBus distributedEventBus)
+        public EventBusAppService(IServiceProvider serviceProvider, ILocalEventBus localEventBus, IDistributedEventBus distributedEventBus) : base(serviceProvider)
         {
             _localEventBus = localEventBus;
             _distributedEventBus = distributedEventBus;

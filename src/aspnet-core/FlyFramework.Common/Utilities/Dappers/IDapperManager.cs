@@ -1,5 +1,7 @@
 ﻿using Dapper;
 
+using FlyFramework.Common.Dependencys;
+
 using System;
 using System.Collections.Generic;
 using System.Data;

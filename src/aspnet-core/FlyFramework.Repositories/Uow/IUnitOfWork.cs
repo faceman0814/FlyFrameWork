@@ -2,10 +2,10 @@
 
 namespace FlyFramework.Repositories.Uow
 {
-    public interface IUnitOfWork : ITransientDependency
+    public interface IUnitOfWork : IScopedDependency
     {
-        Task CommitTransactionAsync();
-        Task RollbackTransactionAsync();
-        Task BeginTransactionAsync();
+        Task SaveChangesAsync(CancellationToken cancellationToken = default);
+        Task RollbackAsync(CancellationToken cancellationToken = default);
+        Task BeginAsync(CancellationToken cancellationToken = default);
     }
 }

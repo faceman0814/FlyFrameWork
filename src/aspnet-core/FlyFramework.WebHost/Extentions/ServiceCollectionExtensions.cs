@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
+
+using AutoMapper;
 
 using DotNetCore.CAP.Internal;
 
@@ -21,9 +24,12 @@ using FlyFramework.Common.Utilities.RabbitMqs;
 using FlyFramework.Common.Utilities.Redis;
 using FlyFramework.Core.RoleService;
 using FlyFramework.Core.UserService;
+using FlyFramework.Domain;
+using FlyFramework.Domain.Localizations;
 using FlyFramework.EntityFrameworkCore;
 using FlyFramework.EntityFrameworkCore.Extensions;
 using FlyFramework.Repositories.Repositories;
+using FlyFramework.WebHost.Autofac;
 using FlyFramework.WebHost.Filters;
 using FlyFramework.WebHost.Identitys;
 
@@ -31,15 +37,21 @@ using Hangfire;
 using Hangfire.MySql;
 using Hangfire.SqlServer;
 
+using log4net;
+
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 using Minio;
+
+using MongoDB.Driver;
 
 using Newtonsoft.Json;
 
@@ -55,11 +67,15 @@ using System.Data;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+
+using IContainer = Autofac.IContainer;
 namespace FlyFramework.WebHost.Extentions
 {
     public static class ServiceCollectionExtensions
     {
         private const string DefaultCorsPolicyName = "FlyFrameworkCorsPolicy";
+        public static string[] InterfacePostfixes { get; set; } = { "Manager", "AppService", "Service" };
+        private static readonly ILog log = LogManager.GetLogger("程序启动配置：");
         /// <summary>
         /// 动态依赖注入
         /// </summary>
@@ -67,50 +83,9 @@ namespace FlyFramework.WebHost.Extentions
         /// <returns></returns>
         public static IServiceCollection AddDependencyServices(this IServiceCollection services)
         {
-            // 获取当前应用程序域中已加载的以 "FlyFramework" 开头的程序集
             var assemblies = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(t => t.FullName.StartsWith("FlyFramework")).ToArray();
-
-            // 遍历符合条件的程序集
-            foreach (var assembly in assemblies)
-            {
-                // 扫描程序集中所有非抽象类类型
-                var types = assembly.GetTypes()
-                    .Where(t => t.IsClass && !t.IsAbstract);
-
-                foreach (var type in types)
-                {
-                    var interfaces = type.GetInterfaces();
-                    var dependencyInterfaces = interfaces.Intersect(new[] { typeof(ITransientDependency), typeof(IScopedDependency), typeof(ISingletonDependency) });
-
-                    if (!dependencyInterfaces.Any()) continue;
-
-                    // 遍历符合条件的依赖接口并注册到服务容器中
-                    foreach (var serviceType in dependencyInterfaces)
-                    {
-                        if (typeof(ITransientDependency).IsAssignableFrom(serviceType))
-                        {
-                            services.AddTransient(serviceType, type);
-                        }
-                        else if (typeof(IScopedDependency).IsAssignableFrom(serviceType))
-                        {
-                            services.AddScoped(serviceType, type);
-                        }
-                        else if (typeof(ISingletonDependency).IsAssignableFrom(serviceType))
-                        {
-                            services.AddSingleton(serviceType, type);
-                        }
-                    }
-                }
-            }
-            return services;
-        }
-
-        public static IServiceCollection AddManagerRegisterServices(this IServiceCollection services)
-        {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies()
-               .Where(t => t.FullName.StartsWith("FlyFramework"))
-               .ToArray();
+                .Where(t => t.FullName.StartsWith("FlyFramework"))
+                .ToArray();
 
             foreach (var assembly in assemblies)
             {
@@ -119,8 +94,9 @@ namespace FlyFramework.WebHost.Extentions
 
                 foreach (var type in types)
                 {
-                    var interfaces = type.GetInterfaces().Where(t => t.Name.EndsWith("Manager")).Distinct();
-
+                    var interfaces = type.GetInterfaces()
+                                         .Where(t => InterfacePostfixes.Any(postfix => t.Name.EndsWith(postfix)))
+                                         .Distinct();
                     // 自动注册与接口名称匹配的服务实现
                     foreach (var interfaceType in interfaces)
                     {
@@ -129,7 +105,18 @@ namespace FlyFramework.WebHost.Extentions
 
                         if (interfaceType.Name.Equals($"I{type.Name}", StringComparison.OrdinalIgnoreCase))
                         {
-                            RegisterService(services, interfaceType, type);
+                            if (typeof(ITransientDependency).IsAssignableFrom(interfaceType))
+                            {
+                                services.AddTransient(interfaceType, type);
+                            }
+                            else if (typeof(IScopedDependency).IsAssignableFrom(interfaceType))
+                            {
+                                services.AddScoped(interfaceType, type);
+                            }
+                            else if (typeof(ISingletonDependency).IsAssignableFrom(interfaceType))
+                            {
+                                services.AddSingleton(interfaceType, type);
+                            }
                         }
                     }
                 }
@@ -138,31 +125,25 @@ namespace FlyFramework.WebHost.Extentions
             return services;
         }
 
-        private static void RegisterService(IServiceCollection services, Type interfaceType, Type implementationType)
-        {
-            // 默认注册为 Scoped，可根据需要调整
-            services.AddScoped(interfaceType, implementationType);
-        }
-
         public static void AddRabbitMq(this IServiceCollection services, IConfiguration configuration)
         {
             // 获取配置
             var rabbitMqConfig = configuration.GetSection("RabbitMq").Get<RabbitMqOptionsConfig>();
-            Console.WriteLine($"RabbitMq:{rabbitMqConfig.Enable},Host:{rabbitMqConfig.HostName}:{rabbitMqConfig.Port}");
+            log.Info($"RabbitMq:{rabbitMqConfig.Enable},Host:{rabbitMqConfig.HostName}:{rabbitMqConfig.Port}");
+            ConnectionFactory factory = default;
             if (rabbitMqConfig.Enable)
             {
-                var factory = new ConnectionFactory
+                factory = new ConnectionFactory
                 {
                     HostName = rabbitMqConfig.HostName,
                     Port = 5672,
                     UserName = rabbitMqConfig.UserName,
                     Password = rabbitMqConfig.Password
                 };
-
-                // 注册到依赖注入系统
-                services.AddSingleton<IConnectionFactory>(_ => factory);
-                services.AddSingleton<IRabbitMqManager, RabbitMqManager>();
             }
+            // 注册到依赖注入系统
+            services.AddSingleton<IConnectionFactory>(_ => factory);
+            //services.AddSingleton<IRabbitMqManager, RabbitMqManager>();
         }
 
 
@@ -202,7 +183,7 @@ namespace FlyFramework.WebHost.Extentions
         {
             // 获取缓存相关配置
             var hangFireConfig = configuration.GetSection("HangFire").Get<HangFireOptionsConfig>();
-            Console.WriteLine($"HangFire:{hangFireConfig.Enable}");
+            log.Info($"HangFire:{hangFireConfig.Enable}");
             if (hangFireConfig.Enable)
             {
                 var options = new BackgroundJobServerOptions()
@@ -230,23 +211,23 @@ namespace FlyFramework.WebHost.Extentions
         {
             // 获取缓存相关配置
             var minioConfig = configuration.GetSection("Minio").Get<MinioOptionsConfig>();
-            Console.WriteLine($"Minio:{minioConfig.Enable},Host:{minioConfig.EndPoint}");
+            log.Info($"Minio:{minioConfig.Enable},Host:{minioConfig.EndPoint}");
+            IMinioClient minioClient = new MinioClient();
             if (minioConfig.Enable)
             {
-                var minioClient = new MinioClient()
-                   .WithEndpoint(minioConfig.EndPoint)
-                   .WithCredentials(minioConfig.AccessKey, minioConfig.SecretKey)
-                    .WithSSL(minioConfig.Secure)
-                    .Build();
+                minioClient = new MinioClient()
+                  .WithEndpoint(minioConfig.EndPoint)
+                  .WithCredentials(minioConfig.AccessKey, minioConfig.SecretKey)
+                   .WithSSL(minioConfig.Secure)
+                   .Build();
 
                 // 注册Redis客户端实例为单例服务
                 services.AddSingleton(minioClient);
 
                 // 注册Redis缓存工具为单例服务
-                services.AddSingleton<IMinioManager, MinioManager>();
             }
-
-
+            services.AddSingleton(minioClient);
+            //services.AddSingleton<IMinioManager, MinioManager>();
         }
 
         /// <summary>
@@ -257,7 +238,7 @@ namespace FlyFramework.WebHost.Extentions
         {
             // 获取缓存相关配置
             var cacheConfig = configuration.GetSection("Redis").Get<RedisOptionsConfig>();
-            Console.WriteLine($"Redis:{cacheConfig.Enable},Host:{cacheConfig.Host}:{cacheConfig.Port}");
+            log.Info($"Redis:{cacheConfig.Enable},Host:{cacheConfig.Host}:{cacheConfig.Port}");
             // 判断是否启用Redis缓存
             if (cacheConfig.Enable)
             {
@@ -396,7 +377,7 @@ namespace FlyFramework.WebHost.Extentions
                     .AddRazorRuntimeCompilation()
                     .AddDynamicWebApi(builder.Configuration);
 
-            services.AddSingleton<IJWTTokenManager, JWTTokenManager>();
+            //services.AddSingleton<IJWTTokenManager, JWTTokenManager>();
             services.AddSingleton<IJwtBearerModel, JwtBearerModel>();
         }
 
@@ -495,38 +476,16 @@ namespace FlyFramework.WebHost.Extentions
         /// </summary>
         public static void AddDbContext(this IServiceCollection services, IConfigurationRoot configuration)
         {
-            ////注册DbContext服务
-            //services.AddDbContext<FlyFrameworkDbContext>(
-            //    //option => option.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)
-            //    option =>
-            //    {
-            //        option.UseSqlServer(builder.Configuration.GetConnectionString("default"));
-            //        option.AddInterceptors(new FlyFrameworkInterceptor());
-            //    }
-            //);
             // 添加DbContext服务
-            services.UsingDatabaseServices(configuration);
-            //services.AddScoped<DbContext, FlyFrameworkDbContext>();
-
-            //services.AddUnitOfWork<FlyFrameworkDbContext>(); // 多数据库支持
+            services.UsingDatabaseServices(configuration, log);
             //注册泛型仓储服务
             services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
             services.AddScoped<IDbContextProvider, DbContextProvider>();
-
             // 注册IDbConnection，使用Scoped生命周期
             services.AddScoped<IDbConnection>(provider =>
                 new SqlConnection(configuration.GetConnectionString("Default")));
             services.AddScoped(typeof(IDapperManager<>), typeof(DapperManager<>));
 
-        }
-
-        /// <summary>
-        /// 配置自动注册依赖注入
-        /// </summary>
-        public static void AddAutoDI(this IServiceCollection services)
-        {
-            services.AddDependencyServices();
-            services.AddManagerRegisterServices();
         }
 
         /// <summary>
@@ -559,9 +518,11 @@ namespace FlyFramework.WebHost.Extentions
                 //全局事务
                 x.Filters.Add<UnitOfWorkFilter>();
                 //配置请求类型
-                x.Filters.Add<EnsureJsonFilterAttribute>();
+                //x.Filters.Add<EnsureJsonFilterAttribute>();
                 //解析Post请求参数，将json反序列化赋值参数
                 x.Filters.Add(new AutoFromBodyActionFilter());
+                ////全局异常
+                //x.Filters.Add(new ErrorExceptionFilter());
                 //全局日志，报错
                 //x.Filters.Add<LogAttribute>();
                 //全局身份验证
@@ -634,6 +595,30 @@ namespace FlyFramework.WebHost.Extentions
             );
         }
 
+        /// <summary>
+        /// AutoFac 配置
+        /// </summary>
+        /// <param name="hostBuilder"></param>
+        /// <returns></returns>
+        public static IHostBuilder UseAutoFac(this IHostBuilder hostBuilder)
+        {
+            return hostBuilder.UseServiceProviderFactory(
+                new AutofacServiceProviderFactory())
+                    .ConfigureContainer<ContainerBuilder>(builder =>
+                    {
+                        builder.RegisterModule(new AutofacModule());
+                        builder.RegisterBuildCallback(scope =>
+                        {
+                            IOCManager.Current = (IContainer)scope;
+                        });
+                    });
+        }
+
+
+        public static void AddLocalizations(this IServiceCollection services)
+        {
+
+        }
 
         /// <summary>
         /// 使用 Hangfire Storage

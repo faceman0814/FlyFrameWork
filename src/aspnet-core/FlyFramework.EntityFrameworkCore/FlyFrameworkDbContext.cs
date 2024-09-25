@@ -58,7 +58,7 @@ namespace FlyFramework.EntityFrameworkCore
             });
 
             //2.添加用户
-            var adminUserId = Guid.NewGuid().ToString("N");
+            var adminUserId = "4957adb8870f4e79882231537ff5d3b9";
             User adminUser = new User
             {
                 Id = adminUserId,

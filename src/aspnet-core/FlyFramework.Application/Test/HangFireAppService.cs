@@ -1,9 +1,9 @@
 ﻿using DotNetCore.CAP;
 
-using FlyFramework.Application.DynamicWebAPI;
 using FlyFramework.Common.Utilities.EventBus.Distributed;
 using FlyFramework.Common.Utilities.EventBus.Local;
 using FlyFramework.Common.Utilities.Minios;
+using FlyFramework.Domain.ApplicationServices;
 
 using Hangfire;
 
@@ -13,6 +13,9 @@ namespace FlyFramework.Application.Test
 {
     public class HangFireAppService : ApplicationService, IApplicationService
     {
+        public HangFireAppService(IServiceProvider serviceProvider) : base(serviceProvider)
+        {
+        }
 
         [HttpPost]
         public void HangFireTest()

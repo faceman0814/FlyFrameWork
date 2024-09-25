@@ -1,9 +1,11 @@
-﻿using Minio;
+﻿using FlyFramework.Common.Dependencys;
+
+using Minio;
 using Minio.DataModel.Result;
 
 namespace FlyFramework.Common.Utilities.Minios
 {
-    public interface IMinioManager
+    public interface IMinioManager : ISingletonDependency
     {
         /// <summary>
         /// 判断指定bucket是否存在

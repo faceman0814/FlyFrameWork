@@ -1,10 +1,18 @@
-using FlyFramework.Application.Test;
-using FlyFramework.Repositories.Uow;
+using FlyFramework.Common.Extentions;
+using FlyFramework.Common.FlyFrameworkModules.Extensions;
+using FlyFramework.Domain.Localizations;
+using FlyFramework.Repositories.UserSessions;
+using FlyFramework.WebHost;
 using FlyFramework.WebHost.Extentions;
 
 using Hangfire;
 
+using Microsoft.AspNetCore.Localization;
+
 using Minio;
+
+using System.Globalization;
+
 var builder = WebApplication.CreateBuilder(args);
 // 配置文件读取
 
@@ -21,6 +29,7 @@ public static class AppConfig
     static WebApplicationBuilder builder;
     static WebApplication app;
     static IServiceCollection services;
+    static IConfigurationRoot configuration;
 
     public static WebApplicationBuilder ConfigurationServices(this WebApplicationBuilder _builder)
     {
@@ -28,19 +37,31 @@ public static class AppConfig
         services = _builder.Services;
 
         var basePath = AppContext.BaseDirectory;
-        var configuration = new ConfigurationBuilder()
-                        .SetBasePath(basePath)
-                        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                        .Build();
+        configuration = new ConfigurationBuilder()
+                       .SetBasePath(basePath)
+                       .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                       .Build();
+
+
 
         //单独注册某个服务，特殊情况
         //_services.AddSingleton<Ixxx, xxx>();
-        // 注册UnitOfWork
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
-        //hangfire测试用
-        services.AddTransient<IMessageService, MessageService>();
 
         services.AddHttpContextAccessor();
+
+        // 添加Autofac依赖注入
+        //builder.Host.UseAutoFac();
+        //// 添加应用程序模块
+        //builder.Services.AddApplication<FlyFrameworkWebHostModule>();
+
+        // 配置日志
+        builder.Host.ConfigureLogging((context, loggingBuilder) =>
+        {
+            Log4Extention.InitLog4(loggingBuilder);
+        });
+
+        //注入用户Session
+        builder.Services.AddTransient<IUserSession, UserSession>();
 
         services.AddAutoMapper();
 
@@ -60,7 +81,7 @@ public static class AppConfig
 
         services.AddSwagger(builder);
 
-        services.AddAutoDI();
+        services.AddDependencyServices();
 
         services.AddRedis(configuration);
 
@@ -71,6 +92,16 @@ public static class AppConfig
         services.AddRabbitMq(configuration);
 
         services.AddLocalCors(configuration);
+
+        services.AddSignalR();
+
+        // 添加JSON多语言
+        services.AddJsonLocalization(options =>
+        {
+            options.ResourcesPath = "Localizations";
+
+        }, typeof(FlyFrameworkWebHostModule));
+
         return builder;
     }
 
@@ -82,7 +113,19 @@ public static class AppConfig
     public static WebApplication Configuration(this WebApplication _app)
     {
         app = _app;
-        //app.UseMiddleware<UnitOfWorkMiddleware>();
+
+        // 启用中间件
+        app.UseRequestLocalization(options =>
+        {
+            var cultures = new[] { "zh-CN", "en-US", "zh-TW" };
+            options.AddSupportedCultures(cultures);
+            options.AddSupportedUICultures(cultures);
+            options.SetDefaultCulture(cultures[0]);
+
+            // 当Http响应时，将 当前区域信息 设置到 Response Header：Content-Language 中
+            options.ApplyCurrentCultureToResponseHeaders = true;
+        });
+
         app.UseRouting();
         app.UseSwagger(builder);
         app.UseAuthentication(); //使用验证方式 将身份认证中间件添加到管道中，因此将在每次调用API时自动执行身份验证。
@@ -97,9 +140,18 @@ public static class AppConfig
             //name: "default",
             //pattern: "{controller=Home}/{action=Index}/{id?}");
             //endpoints.MapRazorPages();
+            //添加 SignalR 端点
+            //endpoints.MapHub<SignalRTestHub>("/Hubs");
+
         });
-        // 启用Hangfire仪表盘
-        app.UseHangfireDashboard();
+
+        if (configuration.GetSection("HangFire:Enable").Get<bool>())
+        {
+            // 启用Hangfire仪表盘
+            app.UseHangfireDashboard();
+        }
+
+
         return app;
     }
 

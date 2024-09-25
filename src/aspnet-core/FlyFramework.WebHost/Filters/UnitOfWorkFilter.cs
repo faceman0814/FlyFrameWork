@@ -55,7 +55,7 @@ namespace FlyFramework.WebHost.Filters
             foreach (var unitOfWork in unitOfWorks)
             {
                 // 开启事务
-                await unitOfWork.BeginTransactionAsync();
+                await unitOfWork.BeginAsync();
             }
             try
             {
@@ -63,7 +63,7 @@ namespace FlyFramework.WebHost.Filters
                 foreach (var unitOfWork in unitOfWorks)
                 {
                     // 提交事务
-                    await unitOfWork.CommitTransactionAsync();
+                    await unitOfWork.SaveChangesAsync();
                 }
 
             }
@@ -72,7 +72,7 @@ namespace FlyFramework.WebHost.Filters
                 foreach (var unitOfWork in unitOfWorks)
                 {
                     // 回滚事务
-                    await unitOfWork.RollbackTransactionAsync();
+                    await unitOfWork.RollbackAsync();
                 }
                 _logger.LogError($@"{nameof(UnitOfWorkFilter)} Error: {ex.Message}");
                 throw;

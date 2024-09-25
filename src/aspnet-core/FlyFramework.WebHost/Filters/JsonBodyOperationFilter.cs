@@ -15,7 +15,7 @@ namespace FlyFramework.WebHost.Filters
             var apiDescription = context.ApiDescription;
 
             // 确认是否是POST方法并且操作定义中还没有RequestBody
-            if (apiDescription.HttpMethod.Equals("POST", StringComparison.OrdinalIgnoreCase) && operation.RequestBody == null)
+            if ((!apiDescription.HttpMethod.Equals("Get", StringComparison.OrdinalIgnoreCase)) && operation.RequestBody == null)
             {
                 var anyFromBody = apiDescription.ParameterDescriptions.Any(pd => pd.Source.Id.Equals("Body"));
                 var controllerParameterInfo = apiDescription.ActionDescriptor.Parameters.OfType<ControllerParameterDescriptor>();
