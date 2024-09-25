@@ -1,12 +1,14 @@
 ﻿using FlyFramework.Common.Attributes;
 using FlyFramework.Common.Utilities.JWTTokens;
 using FlyFramework.Common.Utilities.Redis;
+using FlyFramework.Core;
 using FlyFramework.Core.UserService;
 using FlyFramework.Core.UserService.DomainService;
 using FlyFramework.WebHost.Models;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 using System.Security.Claims;
 
@@ -21,18 +23,26 @@ namespace FlyFramework.WebHost.Controllers
         private readonly ICacheManager _cacheManager;
         private readonly IJWTTokenManager _jWTTokenManager;
         private readonly IUserManager _userManager;
-
+        private readonly IStringLocalizer<Language> _sharedLocalizer;
         public LoginController(SignInManager<User> signInManager,
             ICacheManager cacheManager,
             IJWTTokenManager jWTTokenManager,
-            IUserManager userManager)
+            IUserManager userManager,
+             IStringLocalizer<Language> sharedLocalizer)
         {
             _signInManager = signInManager;
             _cacheManager = cacheManager;
             _jWTTokenManager = jWTTokenManager;
             _userManager = userManager;
+            _sharedLocalizer = sharedLocalizer;
         }
-
+        [HttpGet]
+        public string GetString()
+        {
+            var ss = _sharedLocalizer["Name"].SearchedLocation;
+            var content = _sharedLocalizer.GetString("Name").Value;
+            return content;
+        }
         [HttpPost]
         public async Task LoginIn(LoginDto input)
         {

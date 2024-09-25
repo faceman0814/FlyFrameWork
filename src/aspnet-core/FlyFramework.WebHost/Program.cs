@@ -1,11 +1,17 @@
-using FlyFramework.Application.Test;
 using FlyFramework.Common.Extentions;
+using FlyFramework.Common.FlyFrameworkModules.Extensions;
+using FlyFramework.Common.Localizations;
 using FlyFramework.Repositories.UserSessions;
+using FlyFramework.WebHost;
 using FlyFramework.WebHost.Extentions;
 
 using Hangfire;
 
+using Microsoft.AspNetCore.Localization;
+
 using Minio;
+
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 // 配置文件读取
@@ -36,14 +42,7 @@ public static class AppConfig
                        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                        .Build();
 
-        // 配置日志
-        builder.Host.ConfigureLogging((context, loggingBuilder) =>
-        {
-            Log4Extention.InitLog4(loggingBuilder);
-        });
 
-        //注入用户Session
-        builder.Services.AddTransient<IUserSession, UserSession>();
 
         //单独注册某个服务，特殊情况
         //_services.AddSingleton<Ixxx, xxx>();
@@ -52,6 +51,17 @@ public static class AppConfig
 
         // 添加Autofac依赖注入
         //builder.Host.UseAutoFac();
+        //// 添加应用程序模块
+        builder.Services.AddApplication<FlyFrameworkWebHostModule>();
+
+        // 配置日志
+        builder.Host.ConfigureLogging((context, loggingBuilder) =>
+        {
+            Log4Extention.InitLog4(loggingBuilder);
+        });
+
+        //注入用户Session
+        builder.Services.AddTransient<IUserSession, UserSession>();
 
         services.AddAutoMapper();
 
@@ -85,6 +95,11 @@ public static class AppConfig
 
         services.AddSignalR();
 
+        // 添加JSON多语言
+        services.AddJsonLocalization(options =>
+        {
+            options.ResourcesPath = "Localizations";
+        });
         return builder;
     }
 
@@ -96,6 +111,18 @@ public static class AppConfig
     public static WebApplication Configuration(this WebApplication _app)
     {
         app = _app;
+
+        // 启用中间件
+        app.UseRequestLocalization(options =>
+        {
+            var cultures = new[] { "zh-CN", "en-US", "zh-TW" };
+            options.AddSupportedCultures(cultures);
+            options.AddSupportedUICultures(cultures);
+            options.SetDefaultCulture(cultures[0]);
+
+            // 当Http响应时，将 当前区域信息 设置到 Response Header：Content-Language 中
+            options.ApplyCurrentCultureToResponseHeaders = true;
+        });
 
         app.UseRouting();
         app.UseSwagger(builder);
@@ -121,6 +148,7 @@ public static class AppConfig
             // 启用Hangfire仪表盘
             app.UseHangfireDashboard();
         }
+
 
         return app;
     }

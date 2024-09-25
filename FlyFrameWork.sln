@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyFramework.Domain", "src\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{EBEF8CA0-9930-4B9A-99A1-00BF0858AEAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlyFramework.Test", "src\aspnet-core\FlyFramework.Test\FlyFramework.Test.csproj", "{5698F37A-41FA-4257-9E25-62C8748A24F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyFramework.Test", "src\aspnet-core\FlyFramework.Test\FlyFramework.Test.csproj", "{5698F37A-41FA-4257-9E25-62C8748A24F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

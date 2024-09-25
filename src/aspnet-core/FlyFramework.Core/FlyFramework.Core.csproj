@@ -17,6 +17,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Localizations\Language.en-US.json" />
+    <None Remove="Localizations\Language.zh-CN.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Localizations\Language.en-US.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Content Include="Localizations\Language.zh-CN.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\FlyFramework.Domain\FlyFramework.Domain.csproj" />
   </ItemGroup>
 
