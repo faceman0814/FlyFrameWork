@@ -1,20 +1,18 @@
 using FlyFramework.Common.Extentions;
 using FlyFramework.Common.FlyFrameworkModules.Extensions;
 using FlyFramework.Domain.Localizations;
-using FlyFramework.Repositories.UserSessions;
 using FlyFramework.WebHost;
 using FlyFramework.WebHost.Extentions;
 
 using Hangfire;
 
-using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using Minio;
 
-using System.Globalization;
-
 var builder = WebApplication.CreateBuilder(args);
-// 配置文件读取
 
 //批量注册服务并构建
 var app = builder.ConfigurationServices().Build();
@@ -30,7 +28,7 @@ public static class AppConfig
     static WebApplication app;
     static IServiceCollection services;
     static IConfigurationRoot configuration;
-
+    private const string DefaultCorsPolicyName = "FlyFrameworkCorsPolicy";
     public static WebApplicationBuilder ConfigurationServices(this WebApplicationBuilder _builder)
     {
         builder = _builder;
@@ -42,28 +40,22 @@ public static class AppConfig
                        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                        .Build();
 
-
-
         //单独注册某个服务，特殊情况
         //_services.AddSingleton<Ixxx, xxx>();
 
         services.AddHttpContextAccessor();
 
-        // 添加Autofac依赖注入
-        //builder.Host.UseAutoFac();
         //// 添加应用程序模块
-        //builder.Services.AddApplication<FlyFrameworkWebHostModule>();
+        builder.Services.AddApplication<FlyFrameworkWebHostModule>();
+
+        // 添加Autofac依赖注入
+        builder.Host.UseAutoFac();
 
         // 配置日志
         builder.Host.ConfigureLogging((context, loggingBuilder) =>
         {
             Log4Extention.InitLog4(loggingBuilder);
         });
-
-        //注入用户Session
-        builder.Services.AddTransient<IUserSession, UserSession>();
-
-        services.AddAutoMapper();
 
         services.AddJsonOptions();
 
@@ -102,6 +94,8 @@ public static class AppConfig
 
         }, typeof(FlyFrameworkWebHostModule));
 
+        // 替换控制器构造器激活器以支持通过Autofac进行依赖注入
+        builder.Services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
         return builder;
     }
 
@@ -144,14 +138,14 @@ public static class AppConfig
             //endpoints.MapHub<SignalRTestHub>("/Hubs");
 
         });
-
         if (configuration.GetSection("HangFire:Enable").Get<bool>())
         {
             // 启用Hangfire仪表盘
             app.UseHangfireDashboard();
         }
 
-
+        // 启用跨域
+        app.UseCors(DefaultCorsPolicyName);
         return app;
     }
 

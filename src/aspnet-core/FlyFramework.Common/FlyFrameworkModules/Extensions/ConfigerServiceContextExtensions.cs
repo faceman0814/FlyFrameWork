@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace FlyFramework.Common.FlyFrameworkModules.Extensions
 {
-    public static class ConfigerServiceContextExtensions
+    public static class InitializeContextExtensions
     {
         /// <summary>
         /// 获取Configuration
@@ -40,12 +40,12 @@ namespace FlyFramework.Common.FlyFrameworkModules.Extensions
         /// <typeparam name="TMoudel"></typeparam>
         /// <param name="services"></param>
         /// <returns></returns>
-        public static IServiceCollection AddApplication<TMoudel>(this IServiceCollection services) where TMoudel : BaseModule
+        public static IServiceCollection AddApplication<TMoudel>(this IServiceCollection services) where TMoudel : FlyFrameworkBaseModule
         {
             services.ChcekNull();
-            services.AddSingleton<IModuleManager, ModuleManager>();
+            services.AddSingleton<IFlyFrameworkModuleManager, FlyFrameworkModuleManager>();
             services.AddObjectAccessor<IApplicationBuilder>();
-            new BaseModuleApplicationServiceProvider(typeof(TMoudel), services);
+            new FlyFrameworkBaseModuleApplicationServiceProvider(typeof(TMoudel), services);
             return services;
         }
     }

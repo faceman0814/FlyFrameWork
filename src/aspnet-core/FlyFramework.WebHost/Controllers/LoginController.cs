@@ -1,4 +1,5 @@
-﻿using FlyFramework.Common.Attributes;
+﻿using FlyFramework.Application.UserService;
+using FlyFramework.Common.Attributes;
 using FlyFramework.Common.Utilities.JWTTokens;
 using FlyFramework.Common.Utilities.Redis;
 using FlyFramework.Core;
@@ -25,6 +26,8 @@ namespace FlyFramework.WebHost.Controllers
         private readonly IUserManager _userManager;
         private readonly IStringLocalizer _sharedLocalizer;
         private readonly IConfiguration _configuration;
+
+
         public LoginController(SignInManager<User> signInManager,
             ICacheManager cacheManager,
             IJWTTokenManager jWTTokenManager,

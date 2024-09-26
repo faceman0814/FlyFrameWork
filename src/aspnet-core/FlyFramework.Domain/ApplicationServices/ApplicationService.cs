@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 
+using FlyFramework.Common.Attributes;
 using FlyFramework.Common.ErrorExceptions;
 using FlyFramework.Domain.Localizations;
 using FlyFramework.Repositories.UserSessions;
@@ -18,15 +19,12 @@ namespace FlyFramework.Domain.ApplicationServices
         /// <summary>
         /// 用户信息
         /// </summary>
-        //[IocSelect]
+        [IocSelect]
         public IUserSession UserSession { get; set; }
 
 
         public ApplicationService(IServiceProvider serviceProvider, string localizationSourceName = null)
         {
-            ObjectMapper = serviceProvider.GetRequiredService<IMapper>();
-            UserSession = serviceProvider.GetRequiredService<IUserSession>();
-            LocalizationManager = serviceProvider.GetRequiredService<ILocalizationManager>();
             base.LocalizationSourceName = localizationSourceName ?? FlyFrameworkConsts.LocalizationSourceName;
         }
 

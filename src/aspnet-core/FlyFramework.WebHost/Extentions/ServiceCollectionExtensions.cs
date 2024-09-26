@@ -1,12 +1,10 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 
-using AutoMapper;
-
 using DotNetCore.CAP.Internal;
 
+using FlyFramework.Application;
 using FlyFramework.Application.DynamicWebAPI;
-using FlyFramework.Application.UserService.Mappers;
 using FlyFramework.Common.Attributes;
 using FlyFramework.Common.Dependencys;
 using FlyFramework.Common.Extentions;
@@ -24,12 +22,9 @@ using FlyFramework.Common.Utilities.RabbitMqs;
 using FlyFramework.Common.Utilities.Redis;
 using FlyFramework.Core.RoleService;
 using FlyFramework.Core.UserService;
-using FlyFramework.Domain;
-using FlyFramework.Domain.Localizations;
 using FlyFramework.EntityFrameworkCore;
 using FlyFramework.EntityFrameworkCore.Extensions;
 using FlyFramework.Repositories.Repositories;
-using FlyFramework.WebHost.Autofac;
 using FlyFramework.WebHost.Filters;
 using FlyFramework.WebHost.Identitys;
 
@@ -44,8 +39,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -67,8 +60,6 @@ using System.Data;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
-
-using IContainer = Autofac.IContainer;
 namespace FlyFramework.WebHost.Extentions
 {
     public static class ServiceCollectionExtensions
@@ -549,22 +540,6 @@ namespace FlyFramework.WebHost.Extentions
         }
 
         /// <summary>
-        /// 配置AutoMapper
-        /// </summary>
-        /// <param name="services"></param>
-        public static void AddAutoMapper(this IServiceCollection services)
-        {
-            // AutoMapper 配置
-            var mapperConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new UserMapper());
-            });
-
-            IMapper mapper = mapperConfig.CreateMapper();
-            services.AddSingleton(mapper); // 注册 IMapper 接口
-        }
-
-        /// <summary>
         /// CORS策略
         /// </summary>
         /// <returns></returns>
@@ -596,16 +571,17 @@ namespace FlyFramework.WebHost.Extentions
         /// <returns></returns>
         public static IHostBuilder UseAutoFac(this IHostBuilder hostBuilder)
         {
-            return hostBuilder.UseServiceProviderFactory(
-                new AutofacServiceProviderFactory())
-                    .ConfigureContainer<ContainerBuilder>(builder =>
-                    {
-                        builder.RegisterModule(new AutofacModule());
-                        builder.RegisterBuildCallback(scope =>
-                        {
-                            IOCManager.Current = (IContainer)scope;
-                        });
-                    });
+            // 使用 Autofac 作为服务提供器工厂
+            hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+
+            // 配置 Autofac 特有的依赖注入
+            hostBuilder.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+            {
+                // 注册自定义的 Autofac 模块
+                containerBuilder.RegisterModule(new FlyFrameworkApplicationModule());
+                containerBuilder.RegisterModule(new FlyFrameworkWebHostModule());
+            });
+            return hostBuilder;
         }
 
 

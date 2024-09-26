@@ -1,6 +1,5 @@
 ﻿using FlyFramework.Common.Attributes;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlyFramework.WebHost.Controllers

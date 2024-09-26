@@ -1,7 +1,7 @@
 ﻿namespace FlyFramework.Common.FlyFrameworkModules.Interface
 {
-    public interface IPreConfigureServices
+    public interface IPreInitialize
     {
-        void PreConfigureServices(ServiceConfigerContext context);
+        void PreInitialize(ServiceConfigerContext context);
     }
 }

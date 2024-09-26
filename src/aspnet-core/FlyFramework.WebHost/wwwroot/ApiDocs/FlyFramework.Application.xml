@@ -76,6 +76,11 @@
             <param name="builder">IMvcCoreBuilder实例。</param>
             <returns>IMvcCoreBuilder实例。</returns>
         </member>
+        <member name="T:FlyFramework.Application.IocSelectPropertySelector">
+            <summary>
+            属性注入选择器
+            </summary>
+        </member>
         <member name="M:FlyFramework.Application.Test.MinioAppService.IsBucketExit">
             <summary>
             1、判断指定bucket是否存在

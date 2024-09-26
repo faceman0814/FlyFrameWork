@@ -1,10 +1,20 @@
-﻿using FlyFramework.Common.FlyFrameworkModules.Modules;
+﻿using Autofac;
+
+using FlyFramework.Application;
+using FlyFramework.Common.FlyFrameworkModules.Modules;
 using FlyFramework.Core;
+using FlyFramework.WebHost.Controllers;
 
 namespace FlyFramework.WebHost
 {
-    [DependOn(typeof(FlyFrameworkCoreModule))]
-    public class FlyFrameworkWebHostModule : BaseModule
+    [DependOn(typeof(FlyFrameworkApplicationModule))]
+    public class FlyFrameworkWebHostModule : FlyFrameworkBaseModule
     {
+        protected override void Load(ContainerBuilder builder)
+        {
+            // 注册 HomeController
+            builder.RegisterType<HomeController>().InstancePerLifetimeScope();
+            builder.RegisterType<LoginController>().InstancePerLifetimeScope();
+        }
     }
 }
