@@ -14,6 +14,7 @@ namespace FlyFramework.WebHost
         {
             // 注册 HomeController
             builder.RegisterType<HomeController>().InstancePerLifetimeScope();
+            builder.RegisterType<LoginController>().InstancePerLifetimeScope();
         }
     }
 }

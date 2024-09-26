@@ -6,6 +6,7 @@ using FlyFramework.WebHost.Extentions;
 
 using Hangfire;
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -27,7 +28,7 @@ public static class AppConfig
     static WebApplication app;
     static IServiceCollection services;
     static IConfigurationRoot configuration;
-
+    private const string DefaultCorsPolicyName = "FlyFrameworkCorsPolicy";
     public static WebApplicationBuilder ConfigurationServices(this WebApplicationBuilder _builder)
     {
         builder = _builder;
@@ -137,14 +138,14 @@ public static class AppConfig
             //endpoints.MapHub<SignalRTestHub>("/Hubs");
 
         });
-
         if (configuration.GetSection("HangFire:Enable").Get<bool>())
         {
             // ∆Ù”√Hangfire“«±Ì≈Ã
             app.UseHangfireDashboard();
         }
 
-
+        // ∆Ù”√øÁ”Ú
+        app.UseCors(DefaultCorsPolicyName);
         return app;
     }
 

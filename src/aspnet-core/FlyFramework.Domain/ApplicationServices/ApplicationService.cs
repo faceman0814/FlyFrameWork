@@ -25,9 +25,6 @@ namespace FlyFramework.Domain.ApplicationServices
 
         public ApplicationService(IServiceProvider serviceProvider, string localizationSourceName = null)
         {
-            //ObjectMapper = serviceProvider.GetRequiredService<IMapper>();
-            //UserSession = serviceProvider.GetRequiredService<IUserSession>();
-            //LocalizationManager = serviceProvider.GetRequiredService<ILocalizationManager>();
             base.LocalizationSourceName = localizationSourceName ?? FlyFrameworkConsts.LocalizationSourceName;
         }
 
