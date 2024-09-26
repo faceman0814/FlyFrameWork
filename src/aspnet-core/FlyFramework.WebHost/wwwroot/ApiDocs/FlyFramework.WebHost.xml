@@ -4,14 +4,14 @@
         <name>FlyFramework.WebHost</name>
     </assembly>
     <members>
-        <member name="T:FlyFramework.WebHost.Autofac.IOCManager">
+        <member name="T:FlyFramework.WebHost.Autofac.AutofacModule">
             <summary>
-            注入的服务容器
+            容器注册类
             </summary>
         </member>
-        <member name="P:FlyFramework.WebHost.Autofac.IOCManager.Current">
+        <member name="T:FlyFramework.WebHost.Autofac.IocSelectPropertySelector">
             <summary>
-            autofac容器
+            属性注入选择器
             </summary>
         </member>
         <member name="F:FlyFramework.WebHost.Extentions.EnvironmentExs.Development">

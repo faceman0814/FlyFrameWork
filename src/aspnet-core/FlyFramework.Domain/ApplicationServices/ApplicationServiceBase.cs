@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 
+using FlyFramework.Common.Attributes;
 using FlyFramework.Domain.Localizations;
 using FlyFramework.Repositories.Uow;
 
@@ -11,17 +12,16 @@ namespace FlyFramework.Domain.ApplicationServices
 {
     public abstract class ApplicationServiceBase
     {
-        //protected ApplicationServiceBase()
-        //{
-        //    //LocalizationManager = NullLocalizationManager.Instance;
-        //}
+        //[IocSelect]
         public IServiceProvider ServiceProvider { get; set; } = default!;
+        //[IocSelect]
         public IMapper ObjectMapper { get; set; }
 
         private IUnitOfWorkManager _unitOfWorkManager;
 
         private ILocalizationSource _localizationSource;
         protected string LocalizationSourceName { get; set; }
+        //[IocSelect]
         public ILocalizationManager LocalizationManager { get; set; }
         protected ILocalizationSource LocalizationSource
         {
@@ -40,6 +40,7 @@ namespace FlyFramework.Domain.ApplicationServices
                 return _localizationSource;
             }
         }
+        //[IocSelect]
         public IUnitOfWorkManager UnitOfWorkManager
         {
             get

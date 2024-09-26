@@ -4,7 +4,7 @@ using System.Security.Claims;
 
 namespace FlyFramework.Repositories.UserSessions
 {
-    public interface IUserSession : ITransientDependency
+    public interface IUserSession
     {
         public string UserId { get; }
 

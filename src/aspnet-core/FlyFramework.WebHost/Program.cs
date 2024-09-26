@@ -1,20 +1,29 @@
+using Autofac;
+using Autofac.Core;
+using Autofac.Extensions.DependencyInjection;
+
+using FlyFramework.Application.UserService;
 using FlyFramework.Common.Extentions;
 using FlyFramework.Common.FlyFrameworkModules.Extensions;
 using FlyFramework.Domain.Localizations;
 using FlyFramework.Repositories.UserSessions;
 using FlyFramework.WebHost;
+using FlyFramework.WebHost.Autofac;
 using FlyFramework.WebHost.Extentions;
 
 using Hangfire;
 
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using Minio;
+
+using ServiceStack;
 
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
-// 配置文件读取
 
 //批量注册服务并构建
 var app = builder.ConfigurationServices().Build();
@@ -42,15 +51,13 @@ public static class AppConfig
                        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                        .Build();
 
-
-
         //单独注册某个服务，特殊情况
         //_services.AddSingleton<Ixxx, xxx>();
 
         services.AddHttpContextAccessor();
-
         // 添加Autofac依赖注入
-        //builder.Host.UseAutoFac();
+        builder.Host.UseAutoFac();
+
         //// 添加应用程序模块
         //builder.Services.AddApplication<FlyFrameworkWebHostModule>();
 
@@ -59,9 +66,6 @@ public static class AppConfig
         {
             Log4Extention.InitLog4(loggingBuilder);
         });
-
-        //注入用户Session
-        builder.Services.AddTransient<IUserSession, UserSession>();
 
         services.AddAutoMapper();
 
@@ -102,6 +106,8 @@ public static class AppConfig
 
         }, typeof(FlyFrameworkWebHostModule));
 
+        // 替换控制器构造器激活器以支持通过Autofac进行依赖注入
+        builder.Services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
         return builder;
     }
 
