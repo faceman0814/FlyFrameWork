@@ -1,12 +1,10 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 
-using AutoMapper;
-
 using DotNetCore.CAP.Internal;
 
+using FlyFramework.Application;
 using FlyFramework.Application.DynamicWebAPI;
-using FlyFramework.Application.UserService.Mappers;
 using FlyFramework.Common.Attributes;
 using FlyFramework.Common.Dependencys;
 using FlyFramework.Common.Extentions;
@@ -27,7 +25,6 @@ using FlyFramework.Core.UserService;
 using FlyFramework.EntityFrameworkCore;
 using FlyFramework.EntityFrameworkCore.Extensions;
 using FlyFramework.Repositories.Repositories;
-using FlyFramework.WebHost.Autofac;
 using FlyFramework.WebHost.Filters;
 using FlyFramework.WebHost.Identitys;
 
@@ -543,22 +540,6 @@ namespace FlyFramework.WebHost.Extentions
         }
 
         /// <summary>
-        /// 配置AutoMapper
-        /// </summary>
-        /// <param name="services"></param>
-        public static void AddAutoMapper(this IServiceCollection services)
-        {
-            // AutoMapper 配置
-            var mapperConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new UserMapper());
-            });
-
-            IMapper mapper = mapperConfig.CreateMapper();
-            services.AddSingleton(mapper); // 注册 IMapper 接口
-        }
-
-        /// <summary>
         /// CORS策略
         /// </summary>
         /// <returns></returns>
@@ -597,7 +578,8 @@ namespace FlyFramework.WebHost.Extentions
             hostBuilder.ConfigureContainer<ContainerBuilder>(containerBuilder =>
             {
                 // 注册自定义的 Autofac 模块
-                containerBuilder.RegisterModule(new AutofacModule());
+                containerBuilder.RegisterModule(new FlyFrameworkApplicationModule());
+                containerBuilder.RegisterModule(new FlyFrameworkWebHostModule());
             });
             return hostBuilder;
         }

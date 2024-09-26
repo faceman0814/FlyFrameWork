@@ -2,7 +2,8 @@
 
 namespace FlyFramework.Repositories.Uow
 {
-    public interface IUnitOfWorkManager : IScopedDependency
+    public interface IUnitOfWorkManager
+    //: IScopedDependency
     {
         IUnitOfWork? Current { get; }
 

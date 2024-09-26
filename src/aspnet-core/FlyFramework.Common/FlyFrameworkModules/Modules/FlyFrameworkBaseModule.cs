@@ -1,12 +1,17 @@
-﻿using FlyFramework.Common.FlyFrameworkModules.Interface;
+﻿using Autofac;
+
+using FlyFramework.Common.FlyFrameworkModules.Interface;
 
 using Microsoft.Extensions.DependencyInjection;
 
 using System.Reflection;
 
+using Module = Autofac.Module;
+
+
 namespace FlyFramework.Common.FlyFrameworkModules.Modules
 {
-    public abstract class BaseModule : IBaseModule
+    public abstract class FlyFrameworkBaseModule : Module, IFlyFrameworkBaseModule
     {
         protected internal ServiceConfigerContext ServiceConfigerContext
         {
@@ -28,7 +33,7 @@ namespace FlyFramework.Common.FlyFrameworkModules.Modules
         /// </summary>
         /// <param name="context"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public virtual void PreConfigureServices(ServiceConfigerContext context)
+        public virtual void PreInitialize(ServiceConfigerContext context)
         {
         }
 
@@ -37,8 +42,9 @@ namespace FlyFramework.Common.FlyFrameworkModules.Modules
         /// </summary>
         /// <param name="context"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public virtual void ConfigerService(ServiceConfigerContext context)
+        public virtual void Initialize(ServiceConfigerContext context)
         {
+
         }
 
         /// <summary>
@@ -51,10 +57,10 @@ namespace FlyFramework.Common.FlyFrameworkModules.Modules
         }
 
         /// <summary>
-        /// 后处理程序
+        /// 加载后处理程序
         /// </summary>
         /// <param name="context"></param>
-        public virtual void LaterInitApplication(InitApplicationContext context)
+        public virtual void PostInitialize(InitApplicationContext context)
         {
         }
 
@@ -66,7 +72,7 @@ namespace FlyFramework.Common.FlyFrameworkModules.Modules
                 typeInfo.IsClass &&
                 !typeInfo.IsAbstract &&
                 !typeInfo.IsGenericType &&
-                typeof(IBaseModule).GetTypeInfo().IsAssignableFrom(type);
+                typeof(IFlyFrameworkBaseModule).GetTypeInfo().IsAssignableFrom(type);
         }
 
         internal static void CheckModuleType(Type type)

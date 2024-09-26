@@ -7,9 +7,9 @@ namespace FlyFramework.Common.FlyFrameworkModules
     /// <summary>
     /// 模块初始化Provider
     /// </summary>
-    public class BaseModuleApplicationServiceProvider : BaseModuleApplication, IApplicationServiceProvider
+    public class FlyFrameworkBaseModuleApplicationServiceProvider : FlyFrameworkBaseModuleApplication, IApplicationServiceProvider
     {
-        public BaseModuleApplicationServiceProvider(Type startModuleType, IServiceCollection services) : base(startModuleType, services)
+        public FlyFrameworkBaseModuleApplicationServiceProvider(Type startModuleType, IServiceCollection services) : base(startModuleType, services)
         {
             services.AddSingleton<IApplicationServiceProvider>(this);
         }

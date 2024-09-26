@@ -1,9 +1,9 @@
 ﻿namespace FlyFramework.Common.FlyFrameworkModules.Interface
 {
-    public interface IBaseModuleDescritor
+    public interface IFlyFrameworkBaseModuleDescritor
     {
         public Type ModuleType { get; }
 
-        public IBaseModule Instance { get; }
+        public IFlyFrameworkBaseModule Instance { get; }
     }
 }

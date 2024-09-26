@@ -1,6 +1,6 @@
 ﻿namespace FlyFramework.Common.FlyFrameworkModules.Interface
 {
-    public interface IModuleManager
+    public interface IFlyFrameworkModuleManager
     {
         void InitializeModules();
 

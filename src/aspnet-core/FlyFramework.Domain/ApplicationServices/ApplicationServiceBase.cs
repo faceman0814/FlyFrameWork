@@ -12,16 +12,16 @@ namespace FlyFramework.Domain.ApplicationServices
 {
     public abstract class ApplicationServiceBase
     {
-        //[IocSelect]
+        [IocSelect]
         public IServiceProvider ServiceProvider { get; set; } = default!;
-        //[IocSelect]
+        [IocSelect]
         public IMapper ObjectMapper { get; set; }
 
         private IUnitOfWorkManager _unitOfWorkManager;
 
         private ILocalizationSource _localizationSource;
         protected string LocalizationSourceName { get; set; }
-        //[IocSelect]
+        [IocSelect]
         public ILocalizationManager LocalizationManager { get; set; }
         protected ILocalizationSource LocalizationSource
         {
@@ -40,7 +40,7 @@ namespace FlyFramework.Domain.ApplicationServices
                 return _localizationSource;
             }
         }
-        //[IocSelect]
+        [IocSelect]
         public IUnitOfWorkManager UnitOfWorkManager
         {
             get

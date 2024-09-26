@@ -1,16 +1,16 @@
-﻿using System.Reflection;
+﻿using FlyFramework.Common.FlyFrameworkModules.Interface;
 
-using FlyFramework.Common.FlyFrameworkModules.Interface;
+using System.Reflection;
 
 namespace FlyFramework.Common.FlyFrameworkModules.Modules
 {
-    public class BaseModuleDescritor : IBaseModuleDescritor
+    public class FlyFrameworkBaseModuleDescritor : IFlyFrameworkBaseModuleDescritor
     {
         public Type ModuleType { get; }
 
-        public IBaseModule Instance { get; }
+        public IFlyFrameworkBaseModule Instance { get; }
 
-        public BaseModuleDescritor(Type type, IBaseModule instance)
+        public FlyFrameworkBaseModuleDescritor(Type type, IFlyFrameworkBaseModule instance)
         {
             if (!type.GetTypeInfo().IsAssignableFrom(instance.GetType()))
             {

@@ -4,16 +4,6 @@
         <name>FlyFramework.WebHost</name>
     </assembly>
     <members>
-        <member name="T:FlyFramework.WebHost.Autofac.AutofacModule">
-            <summary>
-            容器注册类
-            </summary>
-        </member>
-        <member name="T:FlyFramework.WebHost.Autofac.IocSelectPropertySelector">
-            <summary>
-            属性注入选择器
-            </summary>
-        </member>
         <member name="F:FlyFramework.WebHost.Extentions.EnvironmentExs.Development">
             <summary>
             指定开发环境。
@@ -104,12 +94,6 @@
              <summary>
             配置请求大小限制
              </summary>
-        </member>
-        <member name="M:FlyFramework.WebHost.Extentions.ServiceCollectionExtensions.AddAutoMapper(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            配置AutoMapper
-            </summary>
-            <param name="services"></param>
         </member>
         <member name="M:FlyFramework.WebHost.Extentions.ServiceCollectionExtensions.AddLocalCors(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfigurationRoot)">
             <summary>

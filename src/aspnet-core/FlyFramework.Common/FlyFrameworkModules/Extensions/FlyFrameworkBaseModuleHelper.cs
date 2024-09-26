@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace FlyFramework.Common.FlyFrameworkModules.Extensions
 {
-    internal static class BaseModuleHelper
+    internal static class FlyFrameworkBaseModuleHelper
     {
         /// <summary>
         /// 加载模块
@@ -16,7 +16,7 @@ namespace FlyFramework.Common.FlyFrameworkModules.Extensions
         /// <returns></returns>
         public static List<Type> LoadModules(Type moduleType)
         {
-            BaseModule.CheckModuleType(moduleType);
+            FlyFrameworkBaseModule.CheckModuleType(moduleType);
             var moduleTypes = new List<Type>();
             GetDependsAllModuleType(moduleType, moduleTypes);
             return moduleTypes;
@@ -45,7 +45,7 @@ namespace FlyFramework.Common.FlyFrameworkModules.Extensions
 
         public static void GetDependsAllModuleType(Type moduleType, List<Type> moduleTypes)
         {
-            BaseModule.CheckModuleType(moduleType);
+            FlyFrameworkBaseModule.CheckModuleType(moduleType);
             if (moduleTypes.Contains(moduleType))
             {
                 return;
@@ -61,7 +61,7 @@ namespace FlyFramework.Common.FlyFrameworkModules.Extensions
 
         public static List<Type> DependModuleTypes(Type moduleType)
         {
-            BaseModule.CheckModuleType(moduleType);
+            FlyFrameworkBaseModule.CheckModuleType(moduleType);
 
             var dependencies = new List<Type>();
 

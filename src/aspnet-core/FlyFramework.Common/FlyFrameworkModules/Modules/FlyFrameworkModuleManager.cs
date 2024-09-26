@@ -6,10 +6,10 @@ using Microsoft.Extensions.Options;
 
 namespace FlyFramework.Common.FlyFrameworkModules.Modules
 {
-    public class ModuleManager : IModuleManager
+    public class FlyFrameworkModuleManager : IFlyFrameworkModuleManager
     {
-        private readonly IModuleContainer _moduleContainer;
-        private readonly IEnumerable<IModuleLifecycleContributor> _moduleLifecycleContributors;
+        private readonly IFlyFrameworkModuleContainer _moduleContainer;
+        private readonly IEnumerable<IFlyFrameworkModuleLifecycleContributor> _moduleLifecycleContributors;
         private readonly IObjectAccessor<InitApplicationContext> _applicationContext;
 
         /// <summary>
@@ -19,10 +19,10 @@ namespace FlyFramework.Common.FlyFrameworkModules.Modules
         /// <param name="serviceProvider">服务提供者</param>
         /// <param name="options">模块生命周期选项</param>
         /// <param name="applicationContext">应用程序上下文访问器</param>
-        public ModuleManager(
-            IModuleContainer moduleContainer,
+        public FlyFrameworkModuleManager(
+            IFlyFrameworkModuleContainer moduleContainer,
             IServiceProvider serviceProvider,
-            IOptions<BaseModuleLifecycleOptions> options,
+            IOptions<FlyFrameworkBaseModuleLifecycleOptions> options,
             IObjectAccessor<InitApplicationContext> applicationContext)
         {
             _moduleContainer = moduleContainer;
@@ -30,7 +30,7 @@ namespace FlyFramework.Common.FlyFrameworkModules.Modules
             _moduleLifecycleContributors = options.Value
                 .Contributors
                 .Select(serviceProvider.GetRequiredService)
-                .Cast<IModuleLifecycleContributor>()
+                .Cast<IFlyFrameworkModuleLifecycleContributor>()
                 .ToArray();
             _applicationContext = applicationContext;
         }

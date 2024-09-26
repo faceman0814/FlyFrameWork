@@ -2,14 +2,14 @@
 
 namespace FlyFramework.Common.FlyFrameworkModules.Interface
 {
-    public interface IModuleApplication : IModuleContainer
+    public interface IFlyFrameworkModuleApplication : IFlyFrameworkModuleContainer
     {
         Type StartModuleType { get; }
         IServiceCollection Services { get; }
 
         IServiceProvider ServiceProvider { get; }
 
-        void ConfigerService();
+        void Initialize();
 
         void InitApplication(IServiceProvider serviceProvider);
 

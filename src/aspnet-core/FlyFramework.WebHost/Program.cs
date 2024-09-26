@@ -1,27 +1,15 @@
-using Autofac;
-using Autofac.Core;
-using Autofac.Extensions.DependencyInjection;
-
-using FlyFramework.Application.UserService;
 using FlyFramework.Common.Extentions;
 using FlyFramework.Common.FlyFrameworkModules.Extensions;
 using FlyFramework.Domain.Localizations;
-using FlyFramework.Repositories.UserSessions;
 using FlyFramework.WebHost;
-using FlyFramework.WebHost.Autofac;
 using FlyFramework.WebHost.Extentions;
 
 using Hangfire;
 
-using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using Minio;
-
-using ServiceStack;
-
-using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,19 +43,18 @@ public static class AppConfig
         //_services.AddSingleton<Ixxx, xxx>();
 
         services.AddHttpContextAccessor();
-        // 添加Autofac依赖注入
-        builder.Host.UseAutoFac();
 
         //// 添加应用程序模块
-        //builder.Services.AddApplication<FlyFrameworkWebHostModule>();
+        builder.Services.AddApplication<FlyFrameworkWebHostModule>();
+
+        // 添加Autofac依赖注入
+        builder.Host.UseAutoFac();
 
         // 配置日志
         builder.Host.ConfigureLogging((context, loggingBuilder) =>
         {
             Log4Extention.InitLog4(loggingBuilder);
         });
-
-        services.AddAutoMapper();
 
         services.AddJsonOptions();
 
