@@ -1,12 +1,12 @@
 ﻿using FlyFramework.Common.Dependencys;
-using FlyFramework.Common.FlyFrameworkModules.Extensions;
 using FlyFramework.Common.FlyFrameworkModules.Interface;
 using FlyFramework.Common.FlyFrameworkModules.Modules;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using System;
+using System.Linq;
 using System.Reflection;
-
 namespace FlyFramework.Common.FlyFrameworkModules.Extensions
 {
     public static class ServiceCollectionExtensions

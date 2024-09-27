@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using System;
+
 namespace FlyFramework.Common.FlyFrameworkModules.Extensions
 {
     public static class InitializeContextExtensions
