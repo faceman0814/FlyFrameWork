@@ -10,6 +10,7 @@ using FlyFramework.Core;
 using FlyFramework.Repositories.Uow;
 using FlyFramework.Repositories.UserSessions;
 
+using System.Linq;
 using System.Reflection;
 
 namespace FlyFramework.Application

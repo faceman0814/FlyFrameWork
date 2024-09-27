@@ -3,6 +3,8 @@
 using Microsoft.OpenApi.Models;
 
 using Swashbuckle.AspNetCore.SwaggerGen;
+
+using System.Threading.Tasks;
 namespace FlyFramework.WebHost.Filters
 {
     public class WrapResponseOperationFilter : IOperationFilter

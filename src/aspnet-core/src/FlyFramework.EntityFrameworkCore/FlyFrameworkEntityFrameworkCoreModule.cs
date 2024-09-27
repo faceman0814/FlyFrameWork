@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using System;
+
 namespace FlyFramework.EntityFrameworkCore
 {
     public static class FlyFrameworkEntityFrameworkCoreModule

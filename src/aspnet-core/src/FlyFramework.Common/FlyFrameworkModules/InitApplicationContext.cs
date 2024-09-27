@@ -1,4 +1,6 @@
-﻿namespace FlyFramework.Common.FlyFrameworkModules
+﻿using System;
+
+namespace FlyFramework.Common.FlyFrameworkModules
 {
     public class InitApplicationContext
     {

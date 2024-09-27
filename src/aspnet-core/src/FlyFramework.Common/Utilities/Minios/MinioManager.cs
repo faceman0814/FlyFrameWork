@@ -4,6 +4,10 @@ using Minio;
 using Minio.DataModel.Args;
 using Minio.DataModel.Result;
 
+using System;
+using System.IO;
+using System.Threading.Tasks;
+
 namespace FlyFramework.Common.Utilities.Minios
 {
     public class MinioManager : IMinioManager

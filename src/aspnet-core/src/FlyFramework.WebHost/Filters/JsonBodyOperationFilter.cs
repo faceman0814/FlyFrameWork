@@ -4,6 +4,8 @@ using Microsoft.OpenApi.Models;
 
 using Swashbuckle.AspNetCore.SwaggerGen;
 
+using System;
+using System.Linq;
 using System.Reflection;
 
 namespace FlyFramework.WebHost.Filters

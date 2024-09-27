@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 
 using ServiceStack;
 
+using System;
 using System.IO;
 
 namespace FlyFramework.EntityFrameworkCore

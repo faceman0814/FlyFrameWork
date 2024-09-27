@@ -4,6 +4,8 @@ using Newtonsoft.Json;
 
 using ServiceStack.Redis;
 
+using System;
+using System.Threading.Tasks;
 namespace FlyFramework.Common.Utilities.Redis
 {
     public class RedisCacheManager : ICacheManager

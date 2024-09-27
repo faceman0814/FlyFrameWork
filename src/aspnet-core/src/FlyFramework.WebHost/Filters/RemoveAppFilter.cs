@@ -7,6 +7,10 @@ using Microsoft.OpenApi.Models;
 
 using Swashbuckle.AspNetCore.SwaggerGen;
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace FlyFramework.WebHost.Filters
 {
     public class RemoveAppFilter : IDocumentFilter

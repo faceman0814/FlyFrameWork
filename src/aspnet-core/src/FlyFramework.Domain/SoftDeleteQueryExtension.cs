@@ -2,9 +2,9 @@
 
 using Microsoft.EntityFrameworkCore.Metadata;
 
+using System;
 using System.Linq.Expressions;
 using System.Reflection;
-
 namespace FlyFramework.Domain
 {
     public static class SoftDeleteQueryExtension
