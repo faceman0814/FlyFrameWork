@@ -21,5 +21,9 @@
         /// 过期时间（分钟）
         /// </summary>
         public int AccessTokenExpiresMinutes { get; set; }
+        /// <summary>
+        /// 刷新令牌过期时间（分钟）
+        /// </summary>
+        public int RefreshTokenExpiresMinutes { get; set; }
     }
 }

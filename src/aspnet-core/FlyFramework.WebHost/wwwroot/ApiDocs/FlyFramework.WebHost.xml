@@ -95,7 +95,7 @@
             配置请求大小限制
              </summary>
         </member>
-        <member name="M:FlyFramework.WebHost.Extentions.ServiceCollectionExtensions.AddLocalCors(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfigurationRoot)">
+        <member name="M:FlyFramework.WebHost.Extentions.ServiceCollectionExtensions.AddCors(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfigurationRoot)">
             <summary>
             CORS策略
             </summary>

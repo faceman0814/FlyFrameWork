@@ -6,6 +6,7 @@ namespace FlyFramework.Common.Utilities.JWTTokens
 {
     public interface IJWTTokenManager : ISingletonDependency
     {
-        string GenerateToken(List<Claim> claims);
+        string GenerateToken(List<Claim> claims, DateTime expiration);
+        IEnumerable<Claim> GetClaims(string token);
     }
 }

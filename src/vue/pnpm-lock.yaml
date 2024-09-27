@@ -29,6 +29,9 @@ importers:
       axios:
         specifier: ^1.7.4
         version: 1.7.4
+      cors:
+        specifier: ^2.8.5
+        version: 2.8.5
       dayjs:
         specifier: ^1.11.12
         version: 1.11.12
@@ -47,9 +50,15 @@ importers:
       mitt:
         specifier: ^3.0.1
         version: 3.0.1
+      moment:
+        specifier: ^2.30.1
+        version: 2.30.1
       nprogress:
         specifier: ^0.2.0
         version: 0.2.0
+      nswag:
+        specifier: ^14.1.0
+        version: 14.1.0
       path:
         specifier: ^0.12.7
         version: 0.12.7
@@ -65,6 +74,12 @@ importers:
       responsive-storage:
         specifier: ^2.2.0
         version: 2.2.0
+      rxjs:
+        specifier: ^6.5.3
+        version: 6.6.7
+      rxjs-compat:
+        specifier: ^6.5.3
+        version: 6.6.7
       sortablejs:
         specifier: ^1.15.2
         version: 1.15.2
@@ -1536,6 +1551,10 @@ packages:
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
 
+  cors@2.8.5:
+    resolution: {integrity: sha512-KIHbLJqu73RGr/hnbrO9uBeixNGuvSQjul/jdFvS/KFSIH1hWVd1ng7zOHx+YrEfInLG7q4n6GHQ9cDtxv/P6g==}
+    engines: {node: '>= 0.10'}
+
   cosmiconfig-typescript-loader@5.0.0:
     resolution: {integrity: sha512-+8cK7jRAReYkMwMiG+bxhcNKiHJDM6bR9FD/nGBXOWdMLuYawjF5cGrtLilJ+LGd3ZjCXnJjR5DkfWPoIVlqJA==}
     engines: {node: '>=v16'}
@@ -2526,6 +2545,9 @@ packages:
   mlly@1.7.1:
     resolution: {integrity: sha512-rrVRZRELyQzrIUAVMHxP97kv+G786pHmOKzuFII8zDYahFBS7qnHh2AlYSl1GAHhaMPCz6/oHjVMcfFYgFYHgA==}
 
+  moment@2.30.1:
+    resolution: {integrity: sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==}
+
   mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
     engines: {node: '>=4'}
@@ -2578,6 +2600,11 @@ packages:
 
   nprogress@0.2.0:
     resolution: {integrity: sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA==}
+
+  nswag@14.1.0:
+    resolution: {integrity: sha512-Jvsdq/lZiIxuGJujNcuU2zRC9CAyCc9BXL2+rCVhIrBkTd6TKtc6szuolt0QegulQ86J8Ta4uyB4N/CL2P1gmw==}
+    engines: {npm: '>=3.10.8'}
+    hasBin: true
 
   nth-check@2.1.1:
     resolution: {integrity: sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==}
@@ -3245,6 +3272,13 @@ packages:
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
 
+  rxjs-compat@6.6.7:
+    resolution: {integrity: sha512-szN4fK+TqBPOFBcBcsR0g2cmTTUF/vaFEOZNuSdfU8/pGFnNmmn2u8SystYXG1QMrjOPBc6XTKHMVfENDf6hHw==}
+
+  rxjs@6.6.7:
+    resolution: {integrity: sha512-hTdwr+7yYNIT5n4AMYp85KA6yw2Va0FLa3Rguvbpa4W3I5xynaBZo41cM3XM+4Q6fRMj3sBYIR1VAmZMXYJvRQ==}
+    engines: {npm: '>=2.0.0'}
+
   sass@1.77.8:
     resolution: {integrity: sha512-4UHg6prsrycW20fqLGPShtEvo/WyHRVRHwOP4DzkUrObWoWI05QBSfzU71TVB7PFaL104TwNaHpjlWXAZbQiNQ==}
     engines: {node: '>=14.0.0'}
@@ -3559,6 +3593,9 @@ packages:
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
 
+  tslib@1.14.1:
+    resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
+
   tslib@2.3.0:
     resolution: {integrity: sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==}
 
@@ -3638,6 +3675,10 @@ packages:
   uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     hasBin: true
+
+  vary@1.1.2:
+    resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
+    engines: {node: '>= 0.8'}
 
   vite-plugin-cdn-import@1.0.1:
     resolution: {integrity: sha512-lgjLxgwFSKvJLbqjVBirUZ0rQo00GpUGJzRpgQu8RyBw9LA7jaqG6fUMQzBC9qWmTGabPC3iOzwCcoi7PseRAQ==}
@@ -5245,6 +5286,11 @@ snapshots:
 
   convert-source-map@2.0.0: {}
 
+  cors@2.8.5:
+    dependencies:
+      object-assign: 4.1.1
+      vary: 1.1.2
+
   cosmiconfig-typescript-loader@5.0.0(@types/node@20.16.1)(cosmiconfig@9.0.0(typescript@5.5.4))(typescript@5.5.4):
     dependencies:
       '@types/node': 20.16.1
@@ -6311,6 +6357,8 @@ snapshots:
       ufo: 1.5.4
     optional: true
 
+  moment@2.30.1: {}
+
   mri@1.2.0:
     optional: true
 
@@ -6350,6 +6398,8 @@ snapshots:
       path-key: 4.0.0
 
   nprogress@0.2.0: {}
+
+  nswag@14.1.0: {}
 
   nth-check@2.1.1:
     dependencies:
@@ -6973,6 +7023,12 @@ snapshots:
     dependencies:
       queue-microtask: 1.2.3
 
+  rxjs-compat@6.6.7: {}
+
+  rxjs@6.6.7:
+    dependencies:
+      tslib: 1.14.1
+
   sass@1.77.8:
     dependencies:
       chokidar: 3.6.0
@@ -7356,6 +7412,8 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
+  tslib@1.14.1: {}
+
   tslib@2.3.0: {}
 
   tslib@2.4.0: {}
@@ -7451,6 +7509,8 @@ snapshots:
       inherits: 2.0.3
 
   uuid@8.3.2: {}
+
+  vary@1.1.2: {}
 
   vite-plugin-cdn-import@1.0.1(rollup@4.21.0)(vite@5.4.1(@types/node@20.16.1)(sass@1.77.8)):
     dependencies:

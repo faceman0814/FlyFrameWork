@@ -17,25 +17,25 @@ import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
 import Lock from "@iconify-icons/ri/lock-fill";
 import User from "@iconify-icons/ri/user-3-fill";
-
+import { LoginDto } from "@/shared";
 defineOptions({
   name: "Login"
 });
 const router = useRouter();
 const loading = ref(false);
 const ruleFormRef = ref<FormInstance>();
-
 const { initStorage } = useLayout();
 initStorage();
 
 const { dataTheme, overallStyle, dataThemeChange } = useDataThemeChange();
 dataThemeChange(overallStyle.value);
 const { title } = useNav();
-
-const ruleForm = reactive({
-  username: "admin",
-  password: "admin123"
+const input = new LoginDto({
+  userName: "admin",
+  password: "bb123456",
+  isApiLogin: false
 });
+const ruleForm = reactive(input);
 
 const onLogin = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
@@ -43,9 +43,9 @@ const onLogin = async (formEl: FormInstance | undefined) => {
     if (valid) {
       loading.value = true;
       useUserStoreHook()
-        .loginByUsername({ username: ruleForm.username, password: "admin123" })
+        .loginByUsername(ruleForm)
         .then(res => {
-          if (res.success) {
+          if (res) {
             // 获取后端路由
             return initRouter().then(() => {
               router.push(getTopMenu(true).path).then(() => {
@@ -116,10 +116,10 @@ onBeforeUnmount(() => {
                     trigger: 'blur'
                   }
                 ]"
-                prop="username"
+                prop="userName"
               >
                 <el-input
-                  v-model="ruleForm.username"
+                  v-model="ruleForm.userName"
                   clearable
                   placeholder="账号"
                   :prefix-icon="useRenderIcon(User)"

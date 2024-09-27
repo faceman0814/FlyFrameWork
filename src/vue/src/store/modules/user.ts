@@ -7,24 +7,19 @@ import {
   routerArrays,
   storageLocal
 } from "../utils";
-import {
-  type UserResult,
-  type RefreshTokenResult,
-  getLogin,
-  refreshTokenApi
-} from "@/api/user";
 import { useMultiTagsStoreHook } from "./multiTags";
 import { type DataInfo, setToken, removeToken, userKey } from "@/utils/auth";
-
+import { type UserLoginDtoApiResponse, LoginServiceProxy } from "@/shared";
+const loginServiceProxy = new LoginServiceProxy();
 export const useUserStore = defineStore({
   id: "pure-user",
   state: (): userType => ({
     // 头像
     avatar: storageLocal().getItem<DataInfo<number>>(userKey)?.avatar ?? "",
     // 用户名
-    username: storageLocal().getItem<DataInfo<number>>(userKey)?.username ?? "",
+    username: storageLocal().getItem<DataInfo<number>>(userKey)?.userName ?? "",
     // 昵称
-    nickname: storageLocal().getItem<DataInfo<number>>(userKey)?.nickname ?? "",
+    nickname: storageLocal().getItem<DataInfo<number>>(userKey)?.nickName ?? "",
     // 页面级别权限
     roles: storageLocal().getItem<DataInfo<number>>(userKey)?.roles ?? [],
     // 按钮级别权限
@@ -41,12 +36,12 @@ export const useUserStore = defineStore({
       this.avatar = avatar;
     },
     /** 存储用户名 */
-    SET_USERNAME(username: string) {
-      this.username = username;
+    SET_USERNAME(userName: string) {
+      this.username = userName;
     },
     /** 存储昵称 */
-    SET_NICKNAME(nickname: string) {
-      this.nickname = nickname;
+    SET_NICKNAME(nickName: string) {
+      this.nickname = nickName;
     },
     /** 存储角色 */
     SET_ROLES(roles: Array<string>) {
@@ -66,11 +61,12 @@ export const useUserStore = defineStore({
     },
     /** 登入 */
     async loginByUsername(data) {
-      return new Promise<UserResult>((resolve, reject) => {
-        getLogin(data)
-          .then(data => {
-            if (data?.success) setToken(data.data);
-            resolve(data);
+      return new Promise<UserLoginDtoApiResponse>((resolve, reject) => {
+        loginServiceProxy
+          .loginIn(data)
+          .then(res => {
+            if (res?.success) setToken(res.data);
+            resolve(res);
           })
           .catch(error => {
             reject(error);
@@ -89,11 +85,12 @@ export const useUserStore = defineStore({
     },
     /** 刷新`token` */
     async handRefreshToken(data) {
-      return new Promise<RefreshTokenResult>((resolve, reject) => {
-        refreshTokenApi(data)
-          .then(data => {
-            if (data) {
-              setToken(data.data);
+      return new Promise<UserLoginDtoApiResponse>((resolve, reject) => {
+        loginServiceProxy
+          .refreshToken(data)
+          .then(res => {
+            if (res) {
+              setToken(res.data);
               resolve(data);
             }
           })
