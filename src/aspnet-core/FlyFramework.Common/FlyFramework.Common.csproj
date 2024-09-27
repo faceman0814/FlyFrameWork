@@ -37,6 +37,7 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="8.0.0" />
 		<PackageReference Include="Autofac" Version="8.1.0" />
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
+		<PackageReference Include="AutoMapper" Version="13.0.1" />
 	</ItemGroup>
 
 </Project>
