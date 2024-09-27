@@ -5,10 +5,6 @@
 		<TargetFramework>$(DotNetVersion)</TargetFramework>
 		<RootNamespace>FlyFramework</RootNamespace>
 	</PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\FlyFramework.Common\FlyFramework.Common.csproj" />
-  </ItemGroup>
 	<!-- Common -->
 	<ItemGroup Condition="'$(FlyFrameworkCommonRefMode)'=='nuget'">
 		<PackageReference Include="FlyFramework.Common" Version="$(FlyFrameworkCommonVersion)" />

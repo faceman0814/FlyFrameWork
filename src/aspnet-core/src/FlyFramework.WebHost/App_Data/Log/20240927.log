@@ -306,3 +306,13 @@ Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Ambiguous HTTP meth
 [21:09:25]:数据库类型：SqlServer
 [21:09:25]:连接字符串：Server=data.dev.52abp.com,1434;Database=FlyDev1;User ID=sa;Password=bb123456??;MultipleActiveResultSets=True;TrustServerCertificate=True;
 [21:09:25]:HangFire:False
+[21:13:46]:数据库类型：SqlServer
+[21:13:46]:连接字符串：Server=data.dev.52abp.com,1434;Database=FlyDev1;User ID=sa;Password=bb123456??;MultipleActiveResultSets=True;TrustServerCertificate=True;
+[21:13:46]:HangFire:False
+[21:13:47]:Redis:False,Host:139.224.224.192:6379
+[21:13:47]:Minio:False,Host:8.137.77.105:8235
+[21:14:13]:数据库类型：SqlServer
+[21:14:13]:连接字符串：Server=data.dev.52abp.com,1434;Database=FlyDev1;User ID=sa;Password=bb123456??;MultipleActiveResultSets=True;TrustServerCertificate=True;
+[21:14:13]:HangFire:False
+[21:14:14]:Redis:False,Host:139.224.224.192:6379
+[21:14:14]:Minio:False,Host:8.137.77.105:8235
