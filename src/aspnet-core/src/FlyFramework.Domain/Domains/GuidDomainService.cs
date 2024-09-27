@@ -5,6 +5,9 @@ using FlyFramework.Repositories.UserSessions;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using System;
+using System.Threading.Tasks;
+
 namespace FlyFramework.Domain.Domains
 {
     public abstract class GuidDomainService<TEntity> : DomainService<TEntity, string>, IGuidDomainService<TEntity>, ITransientDependency where TEntity : class, IFullAuditedEntity<string>

@@ -1,8 +1,8 @@
 ﻿using FlyFramework.Common.Dependencys;
 
-using Minio;
 using Minio.DataModel.Result;
 
+using System.Threading.Tasks;
 namespace FlyFramework.Common.Utilities.Minios
 {
     public interface IMinioManager : ISingletonDependency

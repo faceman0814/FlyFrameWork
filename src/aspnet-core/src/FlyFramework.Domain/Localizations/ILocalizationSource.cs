@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Localization;
 
+using System.Collections.Generic;
 using System.Globalization;
-
 namespace FlyFramework.Domain.Localizations
 {
     public interface ILocalizationSource

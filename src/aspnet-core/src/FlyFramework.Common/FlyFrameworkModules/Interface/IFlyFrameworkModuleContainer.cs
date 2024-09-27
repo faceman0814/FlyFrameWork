@@ -1,4 +1,7 @@
-﻿namespace FlyFramework.Common.FlyFrameworkModules.Interface
+﻿
+using System.Collections.Generic;
+
+namespace FlyFramework.Common.FlyFrameworkModules.Interface
 {
     public interface IFlyFrameworkModuleContainer
     {

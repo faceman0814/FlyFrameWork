@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Identity;
 
+using System;
 namespace FlyFramework.Core.UserService
 {
     public class User : IdentityUser<string>, IFullAuditedEntity<string>

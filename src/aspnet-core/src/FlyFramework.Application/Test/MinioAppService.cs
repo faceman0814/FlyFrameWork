@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 using Minio.DataModel.Result;
 
+using System;
+using System.Threading.Tasks;
 namespace FlyFramework.Application.Test
 {
     public class MinioAppService : ApplicationService, IApplicationService

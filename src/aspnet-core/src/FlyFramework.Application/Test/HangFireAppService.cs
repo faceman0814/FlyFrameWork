@@ -1,14 +1,10 @@
-﻿using DotNetCore.CAP;
-
-using FlyFramework.Common.Utilities.EventBus.Distributed;
-using FlyFramework.Common.Utilities.EventBus.Local;
-using FlyFramework.Common.Utilities.Minios;
-using FlyFramework.Domain.ApplicationServices;
+﻿using FlyFramework.Domain.ApplicationServices;
 
 using Hangfire;
 
 using Microsoft.AspNetCore.Mvc;
 
+using System;
 namespace FlyFramework.Application.Test
 {
     public class HangFireAppService : ApplicationService, IApplicationService

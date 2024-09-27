@@ -1,7 +1,7 @@
 ﻿using FlyFramework.Common.FlyFrameworkModules.Interface;
 
+using System;
 using System.Reflection;
-
 namespace FlyFramework.Common.FlyFrameworkModules.Modules
 {
     public class FlyFrameworkBaseModuleDescritor : IFlyFrameworkBaseModuleDescritor

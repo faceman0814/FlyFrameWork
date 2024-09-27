@@ -4,9 +4,8 @@ using FlyFramework.Common.Attributes;
 using FlyFramework.Domain.Localizations;
 using FlyFramework.Repositories.Uow;
 
-using System.Data.Common;
+using System;
 using System.Globalization;
-
 
 namespace FlyFramework.Domain.ApplicationServices
 {

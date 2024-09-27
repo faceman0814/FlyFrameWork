@@ -1,5 +1,6 @@
 ﻿using FlyFramework.Common.FlyFrameworkModules.Interface;
 
+using System;
 namespace FlyFramework.Common.FlyFrameworkModules.Modules
 {
     public class DependOnAttribute : Attribute, IDependsAttrProvider

@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Identity;
 
+using System;
 namespace FlyFramework.Core.RoleService
 {
     public class Role : IdentityRole<string>, IFullAuditedEntity<string>

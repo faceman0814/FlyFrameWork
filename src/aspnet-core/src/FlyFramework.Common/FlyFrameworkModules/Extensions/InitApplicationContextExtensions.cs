@@ -4,6 +4,8 @@ using FlyFramework.Common.FlyFrameworkModules.Modules;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
+using System;
+using System.Threading.Tasks;
 namespace FlyFramework.Common.FlyFrameworkModules.Extensions
 {
     public static class InitApplicationContextExtensions

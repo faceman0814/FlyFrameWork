@@ -1,7 +1,8 @@
 ﻿using FlyFramework.Common.Dependencys;
 
+using System;
+using System.Collections.Generic;
 using System.Security.Claims;
-
 namespace FlyFramework.Common.Utilities.JWTTokens
 {
     public interface IJWTTokenManager : ISingletonDependency

@@ -1,0 +1,22 @@
+<Project>
+
+  <PropertyGroup>
+    <FlyFrameworkVersion>1.0.0</FlyFrameworkVersion>
+    <FlyFrameworkCommonVersion>1.0.0</FlyFrameworkCommonVersion>
+    <FlyFrameworkDomainVersion>1.0.0</FlyFrameworkDomainVersion>
+    <FlyFrameworkRepositoriesVersion>1.0.0</FlyFrameworkRepositoriesVersion>
+    <DotNetVersion>net8.0</DotNetVersion>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <!-- 项目引入模式，src:源码  nuget:包 -->
+  <PropertyGroup>
+    <FlyFrameworkCommonRefMode>src</FlyFrameworkCommonRefMode>
+    <FlyFrameworkDomainRefMode>src</FlyFrameworkDomainRefMode>
+    <FlyFrameworkRepositoriesRefMode>src</FlyFrameworkRepositoriesRefMode>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NoWarn>1701;1702;1591;1572;1570;1573;1584;1587;1658;0414;</NoWarn>
+  </PropertyGroup>
+</Project>

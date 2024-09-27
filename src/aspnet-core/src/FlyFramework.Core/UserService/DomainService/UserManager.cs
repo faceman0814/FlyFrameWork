@@ -2,6 +2,9 @@
 
 using Microsoft.EntityFrameworkCore;
 
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 namespace FlyFramework.Core.UserService.DomainService
 {
     public class UserManager : GuidDomainService<User>, IUserManager

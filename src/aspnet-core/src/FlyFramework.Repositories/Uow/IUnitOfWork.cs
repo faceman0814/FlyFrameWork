@@ -1,5 +1,7 @@
 ﻿using FlyFramework.Common.Dependencys;
 
+using System.Threading;
+using System.Threading.Tasks;
 namespace FlyFramework.Repositories.Uow
 {
     public interface IUnitOfWork : IScopedDependency

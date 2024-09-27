@@ -1,12 +1,8 @@
-﻿using AutoMapper;
-
-using FlyFramework.Common.Attributes;
+﻿using FlyFramework.Common.Attributes;
 using FlyFramework.Common.ErrorExceptions;
-using FlyFramework.Domain.Localizations;
 using FlyFramework.Repositories.UserSessions;
 
-using Microsoft.Extensions.DependencyInjection;
-
+using System;
 namespace FlyFramework.Domain.ApplicationServices
 {
     public abstract class ApplicationService : ApplicationServiceBase, IApplicationService

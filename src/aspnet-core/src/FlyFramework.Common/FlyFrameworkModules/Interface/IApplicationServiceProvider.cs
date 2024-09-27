@@ -1,4 +1,6 @@
-﻿namespace FlyFramework.Common.FlyFrameworkModules.Interface
+﻿using System;
+using System.Threading.Tasks;
+namespace FlyFramework.Common.FlyFrameworkModules.Interface
 {
     public interface IApplicationServiceProvider
     {

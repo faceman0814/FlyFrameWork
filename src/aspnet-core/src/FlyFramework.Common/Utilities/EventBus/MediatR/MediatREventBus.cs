@@ -3,6 +3,9 @@ using FlyFramework.Common.Utilities.EventBus.Local;
 
 using MediatR;
 
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace FlyFramework.Common.Utilities.EventBus.MediatR
 {
     public class MediatREventBus : ILocalEventBus, ITransientDependency

@@ -2,6 +2,8 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
+using System;
+using System.Threading.Tasks;
 namespace FlyFramework.Common.FlyFrameworkModules
 {
     /// <summary>

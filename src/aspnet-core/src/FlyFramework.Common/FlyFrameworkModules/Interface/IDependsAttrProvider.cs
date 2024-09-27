@@ -1,4 +1,5 @@
-﻿namespace FlyFramework.Common.FlyFrameworkModules.Interface
+﻿using System;
+namespace FlyFramework.Common.FlyFrameworkModules.Interface
 {
     public interface IDependsAttrProvider
     {

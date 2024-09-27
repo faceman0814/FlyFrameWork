@@ -4,6 +4,7 @@ using FlyFramework.Common.FlyFrameworkModules.Interface;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using System;
 using System.Reflection;
 
 using Module = Autofac.Module;

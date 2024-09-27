@@ -8,8 +8,10 @@ using FlyFramework.Repositories.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
+using System;
+using System.Linq;
 using System.Reflection;
-
+using System.Threading.Tasks;
 namespace FlyFramework.Domain.Domains
 {
     public abstract class DomainService<TEntity, TPrimaryKey> : IDomainService<TEntity, TPrimaryKey>, ITransientDependency where TEntity : class, IEntity<TPrimaryKey>

@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-
-using FlyFramework.Application.UserService.Dtos;
-using FlyFramework.Common.ErrorExceptions;
+﻿using FlyFramework.Application.UserService.Dtos;
 using FlyFramework.Core.UserService;
 using FlyFramework.Core.UserService.DomainService;
 using FlyFramework.Domain.ApplicationServices;
@@ -9,8 +6,9 @@ using FlyFramework.Repositories.Uow;
 using FlyFramework.Repositories.UserSessions;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
+using System;
+using System.Threading.Tasks;
 namespace FlyFramework.Application.UserService
 {
     [Authorize]

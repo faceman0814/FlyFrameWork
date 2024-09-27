@@ -1,21 +1,24 @@
-﻿using FlyFramework.Application.UserService;
+﻿
 using FlyFramework.Application.UserService.Dtos;
 using FlyFramework.Common.Attributes;
 using FlyFramework.Common.Utilities.JWTTokens;
 using FlyFramework.Common.Utilities.Redis;
-using FlyFramework.Core;
 using FlyFramework.Core.UserService;
 using FlyFramework.Core.UserService.DomainService;
 using FlyFramework.WebHost.Models;
 
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 
+using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
-
+using System.Threading.Tasks;
 namespace FlyFramework.WebHost.Controllers
 {
     [ApiController]

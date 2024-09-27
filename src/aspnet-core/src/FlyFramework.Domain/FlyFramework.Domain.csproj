@@ -1,14 +1,29 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿
+<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\version.props" />
+	<PropertyGroup>
+		<LangVersion>$(LangVersion)</LangVersion>
+		<TargetFramework>$(DotNetVersion)</TargetFramework>
+		<RootNamespace>FlyFramework</RootNamespace>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<!-- Common -->
+	<ItemGroup Condition="'$(FlyFrameworkCommonRefMode)'=='nuget'">
+		<PackageReference Include="FlyFramework.Common" Version="$(FlyFrameworkCommonVersion)" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\FlyFramework.Common\FlyFramework.Common.csproj" />
-    <ProjectReference Include="..\FlyFramework.Repositories\FlyFramework.Repositories.csproj" />
-  </ItemGroup>
+	<!-- Common -->
+	<ItemGroup Condition="'$(FlyFrameworkCommonRefMode)'=='src'">
+		<ProjectReference Include="..\FlyFramework.Common\FlyFramework.Common.csproj" />
+	</ItemGroup>
 
+	<!-- Repositories -->
+	<ItemGroup Condition="'$(FlyFrameworkRepositoriesRefMode)'=='nuget'">
+		<PackageReference Include="FlyFramework.Repositories" Version="$(FlyFrameworkRepositoriesVersion)" />
+	</ItemGroup>
+
+	<!-- Repositories -->
+	<ItemGroup Condition="'$(FlyFrameworkRepositoriesRefMode)'=='src'">
+		<ProjectReference Include="..\FlyFramework.Repositories\FlyFramework.Repositories.csproj" />
+	</ItemGroup>
 </Project>

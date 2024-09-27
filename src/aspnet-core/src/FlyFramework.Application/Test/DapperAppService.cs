@@ -2,6 +2,9 @@
 using FlyFramework.Core.UserService;
 using FlyFramework.Domain.ApplicationServices;
 
+using System;
+using System.Threading.Tasks;
+
 namespace FlyFramework.Application.Test
 {
     public class DapperAppService : ApplicationService, IApplicationService

@@ -4,6 +4,7 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
+using System;
 namespace FlyFramework.Core.LazyModule.LazyDefinition
 {
     public class FlyFrameworkLazy<T> : IFlyFrameworkLazy<T>

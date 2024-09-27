@@ -300,3 +300,6 @@ Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Ambiguous HTTP meth
 [19:07:12]:Application started. Press Ctrl+C to shut down.
 [19:07:12]:Hosting environment: Development
 [19:07:12]:Content root path: D:\FaceMan\FlyFrameWork\src\aspnet-core\FlyFramework.WebHost
+[20:27:42]:数据库类型：SqlServer
+[20:27:42]:连接字符串：Server=data.dev.52abp.com,1434;Database=FlyDev1;User ID=sa;Password=bb123456??;MultipleActiveResultSets=True;TrustServerCertificate=True;
+[20:27:42]:HangFire:False

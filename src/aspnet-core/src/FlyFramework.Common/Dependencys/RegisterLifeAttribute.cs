@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
+using System;
+
 namespace FlyFramework.Common.Dependencys
 {
     [AttributeUsage(AttributeTargets.Class)]

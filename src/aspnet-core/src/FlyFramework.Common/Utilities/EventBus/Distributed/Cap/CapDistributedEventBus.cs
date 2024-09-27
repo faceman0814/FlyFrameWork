@@ -3,7 +3,8 @@
 using FlyFramework.Common.Dependencys;
 
 using System.Reflection;
-
+using System.Threading;
+using System.Threading.Tasks;
 namespace FlyFramework.Common.Utilities.EventBus.Distributed.Cap
 {
     public class CapDistributedEventBus : IDistributedEventBus, ITransientDependency

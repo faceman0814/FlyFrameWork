@@ -1,10 +1,13 @@
 ﻿using FlyFramework.Core.RoleService;
 using FlyFramework.Core.UserService;
-using FlyFramework.Domain.Entities;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 namespace FlyFramework.EntityFrameworkCore
 {
     public class FlyFrameworkDbContext : IdentityDbContext<User, Role, string>

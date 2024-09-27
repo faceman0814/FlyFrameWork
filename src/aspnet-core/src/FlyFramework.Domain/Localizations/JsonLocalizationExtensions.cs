@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Localization;
 
+using System;
 namespace FlyFramework.Domain.Localizations;
 
 public static class JsonLocalizationExtensions

@@ -1,4 +1,5 @@
-﻿namespace FlyFramework.Application.DynamicWebAPI
+﻿using System.Collections.Generic;
+namespace FlyFramework.Application.DynamicWebAPI
 {
     public class HttpMethodConfigure
     {

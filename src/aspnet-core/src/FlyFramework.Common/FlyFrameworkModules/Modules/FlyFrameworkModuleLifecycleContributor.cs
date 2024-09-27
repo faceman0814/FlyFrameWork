@@ -1,5 +1,6 @@
 ﻿using FlyFramework.Common.FlyFrameworkModules.Interface;
 
+using System.Threading.Tasks;
 namespace FlyFramework.Common.FlyFrameworkModules.Modules
 {
     public abstract class FlyFrameworkModuleLifecycleContributor : IFlyFrameworkModuleLifecycleContributor

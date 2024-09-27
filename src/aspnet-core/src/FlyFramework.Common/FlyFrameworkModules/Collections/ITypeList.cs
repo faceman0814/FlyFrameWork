@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace FlyFramework.Common.FlyFrameworkModules.Collections
 {
     /// <summary>
