@@ -23,9 +23,27 @@ namespace FlyFramework.Common.Utilities.JWTTokens
 
         }
 
-        public string GenerateToken(List<Claim> claims)
+        public string GenerateToken(List<Claim> claims, DateTime expires)
         {
-            return CreateTokenString(claims);
+            return CreateTokenString(claims, expires);
+        }
+
+        public IEnumerable<Claim> GetClaims(string token)
+        {
+            // 验证和解码 token
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var validationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(token)),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ClockSkew = TimeSpan.Zero  // 可根据需要调整时钟偏移量
+            };
+
+            SecurityToken validatedToken;
+            ClaimsPrincipal principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
+            return principal.Claims;
         }
 
         /// <summary>
@@ -33,11 +51,8 @@ namespace FlyFramework.Common.Utilities.JWTTokens
         /// </summary>
         /// <param name="claims"></param>
         /// <returns></returns>
-        private string CreateTokenString(List<Claim> claims)
+        private string CreateTokenString(List<Claim> claims, DateTime expires)
         {
-            //过期时间
-            DateTime expires = DateTime.Now.AddMinutes(_jwtModel.AccessTokenExpiresMinutes);
-
             var token = new JwtSecurityToken(
                 issuer: _jwtModel.Issuer,
                 audience: _jwtModel.Audience,

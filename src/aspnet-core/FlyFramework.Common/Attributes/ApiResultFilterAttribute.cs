@@ -48,12 +48,11 @@ namespace FlyFramework.Common.Attributes
             if (!context.ExceptionHandled && context.Exception is UserFriendlyException userFriendlyException)
             {
                 var errorDetails = userFriendlyException.Details;
-                var apiResponse = new ApiResponse
-                {
-                    Success = false,
-                    Message = context.Exception.Message + ": " + errorDetails,
-                    Data = null
-                };
+                var apiResponse = new ApiResponse<object>(
+                   false,
+                   context.Exception.Message + ": " + errorDetails,
+                   null
+                );
                 log.Info(apiResponse.Message);
                 SetContentResult(context, apiResponse, StatusCodes.Status500InternalServerError);
                 context.ExceptionHandled = true;
@@ -68,30 +67,28 @@ namespace FlyFramework.Common.Attributes
             {
                 if (result.StatusCode < 200 || result.StatusCode >= 300)
                 {
-                    var apiResponse = new ApiResponse
-                    {
-                        Success = false,
-                        Message = "错误或无效响应",
-                        Data = result.Value
-                    };
 
+                    var apiResponse = new ApiResponse<object>(
+                      false,
+                      "错误或无效响应",
+                      result.Value
+                    );
                     SetContentResult(context, apiResponse, result.StatusCode ?? StatusCodes.Status500InternalServerError);
                 }
                 else
                 {
-                    var apiResponse = new ApiResponse
-                    {
-                        Success = true,
-                        Message = "请求成功",
-                        Data = result.Value // 改为使用原始数据，避免数据丢失
-                    };
-
+                    var apiResponse = new ApiResponse<object>
+                    (
+                      true,
+                      "请求成功",
+                      result.Value
+                    );
                     SetContentResult(context, apiResponse, StatusCodes.Status200OK);
                 }
             }
         }
 
-        private static void SetContentResult(ActionExecutedContext context, ApiResponse response, int statusCode)
+        private static void SetContentResult(ActionExecutedContext context, ApiResponse<object> response, int statusCode)
         {
             context.Result = new ContentResult
             {

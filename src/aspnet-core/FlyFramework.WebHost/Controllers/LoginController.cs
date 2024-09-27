@@ -1,4 +1,5 @@
 ﻿using FlyFramework.Application.UserService;
+using FlyFramework.Application.UserService.Dtos;
 using FlyFramework.Common.Attributes;
 using FlyFramework.Common.Utilities.JWTTokens;
 using FlyFramework.Common.Utilities.Redis;
@@ -7,10 +8,12 @@ using FlyFramework.Core.UserService;
 using FlyFramework.Core.UserService.DomainService;
 using FlyFramework.WebHost.Models;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace FlyFramework.WebHost.Controllers
@@ -39,19 +42,13 @@ namespace FlyFramework.WebHost.Controllers
             _cacheManager = cacheManager;
             _jWTTokenManager = jWTTokenManager;
             _userManager = userManager;
-            _sharedLocalizer = factory.Create("FlyFramework", typeof(Program).Assembly.GetName().Name);
             _configuration = configuration;
         }
-        [HttpGet]
-        public string GetString()
-        {
-            Console.WriteLine("资源地址：{0}", _sharedLocalizer["Name"].SearchedLocation);
-            var content = _sharedLocalizer.GetString("Name").Value;
-            return content;
-        }
+
         [HttpPost]
-        public async Task LoginIn(LoginDto input)
+        public async Task<UserLoginDto> LoginIn(LoginDto input)
         {
+            UserLoginDto userLoginDto = default;
             //用户名和密码校验
             var result = await _signInManager.PasswordSignInAsync(input.UserName, input.Password, false, false);
             if (result.Succeeded)
@@ -62,17 +59,75 @@ namespace FlyFramework.WebHost.Controllers
                 {
                     new Claim(ClaimTypes.Name,input.UserName),
                     new Claim(ClaimTypes.NameIdentifier,user.Id),
+                    new Claim(JwtRegisteredClaimNames.Sub, input.UserName),
                 };
-                var token = _jWTTokenManager.GenerateToken(claims.ToList());
-                await _cacheManager.SetCacheAsync(input.UserName, token);
-
                 var jwtBearer = _configuration.GetSection("JwtBearer").Get<JwtBearerModel>();
-                Response.Cookies.Append("access-token", token, new CookieOptions()
+
+                var expireTime = DateTime.Now.AddMinutes(jwtBearer.AccessTokenExpiresMinutes);
+                var token = _jWTTokenManager.GenerateToken(claims.ToList(), expireTime);
+
+                userLoginDto = new UserLoginDto()
                 {
-                    Expires = DateTimeOffset.UtcNow.AddMinutes(jwtBearer.AccessTokenExpiresMinutes)
+                    AccessToken = token,
+                    UserName = input.UserName,
+                    NickName = user.FullName,
+                    Expires = expireTime,
+                    Roles = new List<string>()
+                    {
+                        "admin"
+                    },
+                    Permissions = new List<string>()
+                    {
+                        "*:*:*"
+                    },
+                    Avatar = "https://avatars.githubusercontent.com/u/44761321",
+                    RefreshToken = _jWTTokenManager.GenerateToken(claims.ToList(), DateTime.Now.AddMinutes(jwtBearer.RefreshTokenExpiresMinutes))
+                };
+                if (input.IsApiLogin)
+                {
+                    Response.Cookies.Append("access-token", token, new CookieOptions()
+                    {
+                        Expires = expireTime
+                    }
+                    );
                 }
-                );
             }
+            return userLoginDto;
+        }
+
+        [HttpPost]
+        public async Task<UserLoginDto> RefreshToken(string refreshToken)
+        {
+            UserLoginDto userLoginDto = default;
+            var jwtBearer = _configuration.GetSection("JwtBearer").Get<JwtBearerModel>();
+            if (refreshToken != null)
+            {
+                var claims = _jWTTokenManager.GetClaims(refreshToken);
+                var userName = claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+                var user = await _userManager.FindByNameAsync(userName);
+
+                var expireTime = DateTime.Now.AddMinutes(jwtBearer.AccessTokenExpiresMinutes);
+                var newToken = _jWTTokenManager.GenerateToken(claims.ToList(), expireTime);
+                await _cacheManager.SetCacheAsync(userName, newToken);
+                userLoginDto = new UserLoginDto()
+                {
+                    AccessToken = newToken,
+                    UserName = userName,
+                    NickName = user.FullName,
+                    Expires = DateTime.Now.AddMinutes(jwtBearer.AccessTokenExpiresMinutes),
+                    Roles = new List<string>()
+                    {
+                        "admin"
+                    },
+                    Permissions = new List<string>()
+                    {
+                        "*:*:*"
+                    },
+                    Avatar = "https://avatars.githubusercontent.com/u/44761321",
+                    RefreshToken = _jWTTokenManager.GenerateToken(claims.ToList(), DateTime.Now.AddMinutes(jwtBearer.RefreshTokenExpiresMinutes))
+                };
+            }
+            return userLoginDto;
         }
     }
 }

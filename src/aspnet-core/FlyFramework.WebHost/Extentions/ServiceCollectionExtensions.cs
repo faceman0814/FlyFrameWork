@@ -64,8 +64,10 @@ namespace FlyFramework.WebHost.Extentions
 {
     public static class ServiceCollectionExtensions
     {
-        private const string DefaultCorsPolicyName = "FlyFrameworkCorsPolicy";
+        private const string DefaultCorsPolicyName = "DefaultCorsPolicy";
+
         public static string[] InterfacePostfixes { get; set; } = { "Manager", "AppService", "Service" };
+
         private static readonly ILog log = LogManager.GetLogger("程序启动配置：");
         /// <summary>
         /// 动态依赖注入
@@ -389,6 +391,7 @@ namespace FlyFramework.WebHost.Extentions
                 options.DocumentFilter<RemoveAppFilter>();
                 //使Post请求的Body参数在Swagger UI中以Json格式显示。
                 options.OperationFilter<JsonBodyOperationFilter>();
+                options.OperationFilter<WrapResponseOperationFilter>(); // 添加自定义Swagger操作过滤器
                 //添加自定义文档信息
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
@@ -543,7 +546,7 @@ namespace FlyFramework.WebHost.Extentions
         /// CORS策略
         /// </summary>
         /// <returns></returns>
-        public static void AddLocalCors(this IServiceCollection services, IConfigurationRoot configuration)
+        public static void AddCors(this IServiceCollection services, IConfigurationRoot configuration)
         {
             var corsOrigins = configuration["CorsOrigins"]
                .Split(",", StringSplitOptions.RemoveEmptyEntries)
@@ -559,7 +562,7 @@ namespace FlyFramework.WebHost.Extentions
                         .SetIsOriginAllowedToAllowWildcardSubdomains()
                         .AllowAnyHeader()
                         .AllowAnyMethod()
-                        .AllowCredentials()
+                .AllowCredentials()
                 )
             );
         }

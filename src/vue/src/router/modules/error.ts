@@ -5,7 +5,9 @@ export default {
     icon: "ri:information-line",
     // showLink: false,
     title: "异常页面",
-    rank: 9
+    rank: 9,
+    //页面不展示在菜单栏
+    showLink: false
   },
   children: [
     {

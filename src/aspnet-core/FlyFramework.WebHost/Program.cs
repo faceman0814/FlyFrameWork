@@ -28,7 +28,6 @@ public static class AppConfig
     static WebApplication app;
     static IServiceCollection services;
     static IConfigurationRoot configuration;
-    private const string DefaultCorsPolicyName = "FlyFrameworkCorsPolicy";
     public static WebApplicationBuilder ConfigurationServices(this WebApplicationBuilder _builder)
     {
         builder = _builder;
@@ -42,6 +41,7 @@ public static class AppConfig
 
         //单独注册某个服务，特殊情况
         //_services.AddSingleton<Ixxx, xxx>();
+        services.AddCors(configuration);
 
         services.AddHttpContextAccessor();
 
@@ -83,7 +83,6 @@ public static class AppConfig
 
         services.AddRabbitMq(configuration);
 
-        services.AddLocalCors(configuration);
 
         services.AddSignalR();
 
@@ -107,7 +106,8 @@ public static class AppConfig
     public static WebApplication Configuration(this WebApplication _app)
     {
         app = _app;
-
+        // 启用跨域
+        app.UseCors("DefaultCorsPolicy");
         // 启用中间件
         app.UseRequestLocalization(options =>
         {
@@ -144,8 +144,7 @@ public static class AppConfig
             app.UseHangfireDashboard();
         }
 
-        // 启用跨域
-        app.UseCors(DefaultCorsPolicyName);
+
         return app;
     }
 
