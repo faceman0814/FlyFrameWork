@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\version.props" />
+	<PropertyGroup>
+		<LangVersion>$(LangVersion)</LangVersion>
+		<TargetFramework>$(DotNetVersion)</TargetFramework>
+		<RootNamespace>FlyFramework</RootNamespace>
+	</PropertyGroup>
+	<!-- Common -->
+	<ItemGroup Condition="'$(FlyFrameworkCommonRefMode)'=='nuget'">
+		<PackageReference Include="FlyFramework.Common" Version="$(FlyFrameworkCommonVersion)" />
+	</ItemGroup>
+
+	<!-- Common -->
+	<ItemGroup Condition="'$(FlyFrameworkCommonRefMode)'=='src'">
+		<ProjectReference Include="..\FlyFramework.Common\FlyFramework.Common.csproj" />
+	</ItemGroup>
+</Project>

@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\version.props" />
+	<PropertyGroup>
+		<LangVersion>$(LangVersion)</LangVersion>
+		<TargetFramework>$(DotNetVersion)</TargetFramework>
+		<RootNamespace>FlyFramework</RootNamespace>
+		
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>bin\Debug\FlyFramework.Core.xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Localizations\FlyFramework.en-US.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</EmbeddedResource>
+		<Content Include="Localizations\FlyFramework.zh-CN.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	</ItemGroup>
+	<!-- Domain -->
+	<ItemGroup Condition="'$(FlyFrameworkDomainRefMode)'=='nuget'">
+		<PackageReference Include="FlyFramework.Domain" Version="$(FlyFrameworkDomainVersion)" />
+	</ItemGroup>
+
+	<!-- Domain -->
+	<ItemGroup Condition="'$(FlyFrameworkDomainRefMode)'=='src'">
+		<ProjectReference Include="..\FlyFramework.Domain\FlyFramework.Domain.csproj" />
+	</ItemGroup>
+</Project>

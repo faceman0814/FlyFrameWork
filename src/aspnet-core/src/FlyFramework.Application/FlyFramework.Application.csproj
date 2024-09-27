@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\version.props" />
+	<PropertyGroup>
+		<LangVersion>$(LangVersion)</LangVersion>
+		<TargetFramework>$(DotNetVersion)</TargetFramework>
+		<RootNamespace>FlyFramework</RootNamespace>
+
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>bin\Debug\FlyFramework.Application.xml</DocumentationFile>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\FlyFramework.Core\FlyFramework.Core.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="FluentMigrator.Abstractions" Version="5.2.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
+
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+
+	</ItemGroup>
+
+	
+</Project>

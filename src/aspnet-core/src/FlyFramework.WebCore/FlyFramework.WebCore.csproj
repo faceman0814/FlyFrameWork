@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\version.props" />
+	<PropertyGroup>
+		<LangVersion>$(LangVersion)</LangVersion>
+		<TargetFramework>$(DotNetVersion)</TargetFramework>
+		<RootNamespace>FlyFramework</RootNamespace>
+
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>bin\Debug\FlyFramework.WebCore.xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\FlyFramework.Application\FlyFramework.Application.csproj" />
+		<ProjectReference Include="..\FlyFramework.EntityFrameworkCore\FlyFramework.EntityFrameworkCore.csproj" />
+	</ItemGroup>
+
+</Project>
