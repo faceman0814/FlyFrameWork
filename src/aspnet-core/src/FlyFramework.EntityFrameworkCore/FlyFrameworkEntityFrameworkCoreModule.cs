@@ -1,48 +1,40 @@
-﻿using FlyFramework.Extensions;
+﻿using FlyFramework.FlyFrameworkModules;
+using FlyFramework.FlyFrameworkModules.Extensions;
+using FlyFramework.FlyFrameworkModules.Modules;
+using FlyFramework.Repositories;
+using FlyFramework.Utilities.Dappers;
 
-using log4net;
-
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using System;
+using System.Data;
 
 namespace FlyFramework
 {
-    public static class FlyFrameworkEntityFrameworkCoreModule
+    [DependOn(
+       typeof(FlyFrameworkCoreModule)
+   )]
+    public class FlyFrameworkEntityFrameworkCoreModule : FlyFrameworkBaseModule
     {
-        public static void UsingDatabaseServices(this IServiceCollection services, IConfiguration configuration, ILog log)
+        public override void PreInitialize(ServiceConfigerContext context)
         {
-            var databaseType = configuration.GetSection("ConnectionStrings:DatabaseType").Get<DatabaseType>();
-            string connectionString = string.Empty;
-            connectionString = configuration.GetSection("ConnectionStrings:Default").Get<string>();
-            log.Info($"数据库类型：{databaseType}");
-            log.Info($"连接字符串：{connectionString}");
-            services.AddDbContext<FlyFrameworkDbContext>(option =>
-            {
-                switch (databaseType)
-                {
-                    case DatabaseType.SqlServer:
-                        option.UseSqlServer(connectionString);
-                        break;
+            FlyFrameworkDbContextConfigurer.UsingDatabaseServices(context);
 
-                    case DatabaseType.MySql:
-                        option.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 31)));
-                        break;
 
-                    case DatabaseType.Sqlite:
-                        option.UseSqlite(connectionString);
-                        break;
+        }
 
-                    case DatabaseType.Psotgre:
-                        option.UseNpgsql(connectionString);
-                        break;
-
-                    default:
-                        throw new Exception("不支持的数据库类型");
-                }
-            });
+        public override void Initialize(ServiceConfigerContext context)
+        {
+            var configuration = context.GetConfiguration();
+            //注册泛型仓储服务
+            context.Services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+            context.Services.AddScoped<IDbContextProvider, DbContextProvider>();
+            // 注册IDbConnection，使用Scoped生命周期
+            context.Services.AddScoped<IDbConnection>(provider =>
+                new SqlConnection(configuration.GetConnectionString("Default")));
+            context.Services.AddScoped(typeof(IDapperManager<>), typeof(DapperManager<>));
         }
     }
 }

@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 
-using FlyFramework.UserService.Dtos;
+using FlyFramework.UserModule.Dtos;
+using FlyFramework.UserService;
 
-using GCT.MedPro.Application;
-
-namespace FlyFramework.UserService.Mappers
+namespace FlyFramework.UserModule.Mappers
 {
     public class UserMapper
     {

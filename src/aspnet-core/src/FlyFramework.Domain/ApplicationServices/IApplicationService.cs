@@ -7,5 +7,6 @@ namespace FlyFramework.ApplicationServices
     /// </summary>
     public interface IApplicationService : ITransientDependency
     {
+        TService GetService<TService>();
     }
 }

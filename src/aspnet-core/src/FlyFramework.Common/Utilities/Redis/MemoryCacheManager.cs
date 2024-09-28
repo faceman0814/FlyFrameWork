@@ -34,7 +34,7 @@ namespace FlyFramework.Utilities.Redis
             await Task.Run(() => RemoveCache(key));
         }
 
-        public void SetCache<T>(string key, T value, DateTime? expireTime = null)
+        public void SetCache<T>(string key, T value, DateTime? expireTime = null, string name = null)
         {
             if (expireTime == null)
             {
@@ -42,12 +42,12 @@ namespace FlyFramework.Utilities.Redis
             }
             else
             {
-                DateTimeOffset dateTimeOffset = new DateTimeOffset(expireTime.Value, TimeSpan.Zero);  // UTC偏移量为0
+                DateTimeOffset dateTimeOffset = new DateTimeOffset(expireTime.Value);
                 _memoryCache.Set(key, value, dateTimeOffset);
             }
         }
 
-        public async Task SetCacheAsync<T>(string key, T value, DateTime? expireTime = null)
+        public async Task SetCacheAsync<T>(string key, T value, DateTime? expireTime = null, string name = null)
         {
             await Task.Run(() => SetCache(key, value, expireTime));
         }

@@ -4,11 +4,154 @@
         <name>FlyFramework.WebCore</name>
     </assembly>
     <members>
+        <member name="M:FlyFramework.Controllers.AccountClientController.CreateAccessToken(System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},System.Nullable{System.TimeSpan})">
+            <summary>
+            创建jwt token
+            </summary>
+            <param name="claims">认证信息</param>
+            <param name="expiration">过期时间</param>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.Controllers.AccountClientController.CreateRefreshToken(System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})">
+            <summary>
+            创建刷新Token
+            </summary>
+            <param name="claims">认证信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.Controllers.AccountClientController.CreateToken(System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},System.Nullable{System.TimeSpan})">
+            <summary>
+            创建Token
+            </summary>
+            <param name="claims">认证信息</param>
+            <param name="expiration">过期时间</param>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.Controllers.AccountClientController.CreateJwtClaims(System.Security.Claims.ClaimsIdentity,FlyFramework.UserService.User,System.Nullable{System.TimeSpan},FlyFramework.Authorizations.JwtBearer.TokenType,System.String,System.String,System.String)">
+            <summary>
+            添加JwtClaims
+            </summary>
+            <param name="identity">认证信息</param>
+            <param name="user">登录的用户</param>
+            <param name="expiration">过期时间</param>
+            <param name="tokenType">token类型</param>
+            <param name="refreshTokenKey">refreshToken秘钥</param>
+            <param name="clientType">客户端类型</param>
+            <param name="clientTokenTag">token标记</param>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.Controllers.AccountClientController.GetEncrpyedAccessToken(System.String)">
+            <summary>
+            编码jwt token
+            </summary>
+            <param name="accessToken"></param>
+            <returns></returns>
+        </member>
         <member name="M:FlyFramework.Controllers.FileController.GetFile">
             <summary>
             文件控制器
             </summary>
             <returns></returns>
+        </member>
+        <member name="P:FlyFramework.Models.AccountForgotPasswordDto.PhoneNumber">
+            <summary>
+            联系电话
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountForgotPasswordDto.NewPassword">
+            <summary>
+            新密码
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountForgotPasswordDto.Captcha">
+            <summary>
+            验证码
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountLoginDto.UserName">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountLoginDto.Password">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountLoginDto.PhoneNumber">
+            <summary>
+            手机号
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountLoginDto.ProviderId">
+            <summary>
+            第三方登陆提供者数据Id
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountLoginDto.ProviderCode">
+            <summary>
+            第三方登陆预授权编码
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountLoginDto.ReturnUrl">
+            <summary>
+            返回Url
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountLoginDto.ClientType">
+            <summary>
+            客户端，PC，App
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountLoginDto.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountLoginDto.RememberMe">
+            <summary>
+            记住我
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountLoginDto.IsEncrypt">
+            <summary>
+            是否加密
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountLoginDto.IsRefresh">
+            <summary>
+            是否刷新Token
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountLoginDto.IsApiLogin">
+            <summary>
+            是否Api登录
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountRegiserDto.Nickname">
+            <summary>
+            昵称
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountRegiserDto.PhoneNumber">
+            <summary>
+            联系电话
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountRegiserDto.Password">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountRegiserDto.Captcha">
+            <summary>
+            验证码
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AuthenticateResultModel.Password">
+            <summary>
+            加密后的密码
+            </summary>
         </member>
     </members>
 </doc>

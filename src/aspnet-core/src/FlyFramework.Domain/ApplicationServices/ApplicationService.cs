@@ -2,6 +2,8 @@
 using FlyFramework.ErrorExceptions;
 using FlyFramework.UserSessions;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using System;
 namespace FlyFramework.ApplicationServices
 {
@@ -12,14 +14,7 @@ namespace FlyFramework.ApplicationServices
         /// </summary>
         public static string[] CommonPostfixes { get; set; } = { "AppService", "ApplicationService", "Service" };
 
-        /// <summary>
-        /// 用户信息
-        /// </summary>
-        [IocSelect]
-        public IUserSession UserSession { get; set; }
-
-
-        public ApplicationService(IServiceProvider serviceProvider, string localizationSourceName = null)
+        public ApplicationService(string localizationSourceName = null)
         {
             LocalizationSourceName = localizationSourceName ?? FlyFrameworkConsts.LocalizationSourceName;
         }
@@ -27,6 +22,11 @@ namespace FlyFramework.ApplicationServices
         protected virtual void ThrowUserFriendlyError(string reason)
         {
             throw new UserFriendlyException(L("Error"), L("UserFriendlyError", reason, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")));
+        }
+
+        public TService GetService<TService>()
+        {
+            return this.ServiceProvider.GetRequiredService<TService>();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace FlyFramework.Test
 {
     public class HangFireAppService : ApplicationService, IApplicationService
     {
-        public HangFireAppService(IServiceProvider serviceProvider) : base(serviceProvider)
+        public HangFireAppService(IServiceProvider serviceProvider)
         {
         }
 

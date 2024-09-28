@@ -4,6 +4,17 @@
         <name>FlyFramework.Application</name>
     </assembly>
     <members>
+        <!-- Badly formed XML comment ignored for member "T:FlyFramework.AutoMapperExtensions" -->
+        <member name="M:FlyFramework.AutoMapperExtensions.IgnoreNullSourceProperties``2(AutoMapper.IMappingExpression{``0,``1},System.Collections.Generic.List{System.String})">
+            <summary>
+            忽略不需要映射的属性。
+            </summary>
+            <typeparam name="TSource"></typeparam>
+            <typeparam name="TDestination"></typeparam>
+            <param name="expression"></param>
+            <param name="ignoreProperties">指定需要忽略的属性名称列表</param>
+            <returns></returns>
+        </member>
         <member name="T:FlyFramework.DynamicWebAPI.ApplicationServiceControllerFeatureProvider">
             <summary>
             自定义控制器特性提供程序，用于将实现了 IApplicationService 接口的类识别为控制器。

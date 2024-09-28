@@ -24,13 +24,11 @@
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.8" />
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.8" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.8" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.5" />
 		<!--<PackageReference Include="ServiceStack.Redis" Version="8.4.0" />-->
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.2" />
 		<PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.1.2" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
 		<!--<PackageReference Include="Autofac" Version="8.1.0" />
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />-->
 	</ItemGroup>

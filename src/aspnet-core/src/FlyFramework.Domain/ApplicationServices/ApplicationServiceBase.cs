@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 
+using Castle.Core.Logging;
+
 using FlyFramework.Attributes;
 using FlyFramework.Localizations;
 using FlyFramework.Uow;
+using FlyFramework.UserSessions;
 
 using System;
 using System.Globalization;
@@ -11,8 +14,13 @@ namespace FlyFramework.ApplicationServices
 {
     public abstract class ApplicationServiceBase
     {
+        public ILogger Logger { protected get; set; }
+        [IocSelect]
+        public IUserSession UserSession { get; set; }
+
         [IocSelect]
         public IServiceProvider ServiceProvider { get; set; } = default!;
+
         [IocSelect]
         public IMapper ObjectMapper { get; set; }
 

@@ -16,5 +16,10 @@
         <member name="M:FlyFramework.EntityFrameworkCore.Migrations.Init.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:QueryWithNoLockDbCommandInterceptor">
+            <summary>
+            EF Core 查询增加 With NoLock(仅限sqlserver)
+            </summary>
+        </member>
     </members>
 </doc>

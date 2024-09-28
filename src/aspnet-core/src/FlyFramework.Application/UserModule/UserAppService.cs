@@ -1,12 +1,13 @@
 ﻿using FlyFramework.ApplicationServices;
+using FlyFramework.UserModule.Dtos;
+using FlyFramework.UserService;
 using FlyFramework.UserService.DomainService;
-using FlyFramework.UserService.Dtos;
 
 using Microsoft.AspNetCore.Authorization;
 
 using System;
 using System.Threading.Tasks;
-namespace FlyFramework.UserService
+namespace FlyFramework.UserModule
 {
     [Authorize]
     public class UserAppService : ApplicationService, IUserAppService
@@ -15,7 +16,7 @@ namespace FlyFramework.UserService
 
         public UserAppService(IServiceProvider serviceProvider
             , IUserManager userManager
-            ) : base(serviceProvider)
+            )
         {
             _userManager = userManager;
         }
@@ -25,7 +26,6 @@ namespace FlyFramework.UserService
             var user = ObjectMapper.Map<User>(input);
             await _userManager.CreateUserAsync(user);
         }
-
         public async Task UpdateUser(UserDto input)
         {
             var user = await _userManager.FindByNameAsync(input.UserName);

@@ -15,10 +15,6 @@ namespace FlyFramework.FlyFrameworkModules.Modules
 {
     public abstract class FlyFrameworkBaseModule : Module, IFlyFrameworkBaseModule
     {
-        protected override void Load(ContainerBuilder builder)
-        {
-
-        }
 
         protected internal ServiceConfigerContext ServiceConfigerContext
         {

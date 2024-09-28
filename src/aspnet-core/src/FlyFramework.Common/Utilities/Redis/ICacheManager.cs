@@ -12,8 +12,8 @@ namespace FlyFramework.Utilities.Redis
         /// <param name="value"></param>
         /// <param name="expireTime"></param>
         /// <returns></returns>
-        Task SetCacheAsync<T>(string key, T value, DateTime? expireTime = null);
-        void SetCache<T>(string key, T value, DateTime? expireTime = null);
+        Task SetCacheAsync<T>(string key, T value, DateTime? expireTime = null, string name = null);
+        void SetCache<T>(string key, T value, DateTime? expireTime = null, string name = null);
 
         /// <summary>
         /// 获取缓存

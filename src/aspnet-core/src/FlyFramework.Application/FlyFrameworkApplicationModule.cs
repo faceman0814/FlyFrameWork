@@ -3,19 +3,17 @@ using Autofac.Core;
 
 using AutoMapper;
 
+using Castle.Core.Logging;
+
 using FlyFramework.Attributes;
+using FlyFramework.Authorizations;
 using FlyFramework.FlyFrameworkModules;
 using FlyFramework.FlyFrameworkModules.Modules;
 using FlyFramework.Uow;
-using FlyFramework.UserService;
-using FlyFramework.UserService.Dtos;
-using FlyFramework.UserService.Mappers;
+using FlyFramework.UserModule.Mappers;
 using FlyFramework.UserSessions;
 
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-
-using ServiceStack;
 
 using System.Linq;
 using System.Reflection;
@@ -50,7 +48,13 @@ namespace FlyFramework
                  .As<IMapper>()
                  .SingleInstance();
 
-            //AddMapper(builder);
+            builder.RegisterType<LogInManager>()
+                 .As<ILogInManager>()
+                 .SingleInstance();
+
+            builder.Register(c => new ConsoleLogger())
+                .As<ILogger>()
+                .InstancePerLifetimeScope();
 
             // 注册所有应用服务，并开启属性注入
             builder.RegisterAssemblyTypes(typeof(FlyFrameworkApplicationModule).Assembly)

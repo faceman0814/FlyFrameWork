@@ -15,7 +15,7 @@ namespace FlyFramework.Test
     {
         private readonly IRabbitMqManager _rabbitMqManager;
 
-        public RabbitMqAppService(IServiceProvider serviceProvider, IRabbitMqManager rabbitMqManager) : base(serviceProvider)
+        public RabbitMqAppService(IServiceProvider serviceProvider, IRabbitMqManager rabbitMqManager)
         {
             _rabbitMqManager = rabbitMqManager;
         }

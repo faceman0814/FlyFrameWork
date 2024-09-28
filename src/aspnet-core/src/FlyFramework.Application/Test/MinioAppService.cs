@@ -13,7 +13,7 @@ namespace FlyFramework.Test
     {
         private readonly IMinioManager _minioManager;
 
-        public MinioAppService(IServiceProvider serviceProvider, IMinioManager minioManager) : base(serviceProvider)
+        public MinioAppService(IServiceProvider serviceProvider, IMinioManager minioManager)
         {
             _minioManager = minioManager;
         }

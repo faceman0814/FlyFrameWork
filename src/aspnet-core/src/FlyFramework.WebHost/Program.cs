@@ -65,19 +65,11 @@ public static class AppConfig
 
         services.AddFilters();
 
-        services.AddDbContext(configuration);
-
         services.AddHangfire(configuration);
 
         services.AddIdentity();
 
-        services.AddJWT(configuration);
-
-        services.AddDynamicApi(builder);
-
         services.AddSwagger(builder);
-
-        //services.AddDependencyServices();
 
         services.AddRedis(configuration);
 
