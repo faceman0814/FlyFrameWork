@@ -4,5 +4,19 @@
         <name>FlyFramework.Core</name>
     </assembly>
     <members>
+        <member name="M:FlyFramework.UserService.DomainService.IUserManager.FindByNameAsync(System.String)">
+            <summary>
+            根据用户名查找用户
+            </summary>
+            <param name="userName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.UserService.DomainService.IUserManager.CreateUserAsync(FlyFramework.UserService.User)">
+            <summary>
+            创建用户
+            </summary>
+            <param name="email"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

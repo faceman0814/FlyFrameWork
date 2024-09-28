@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-namespace FlyFramework.Application.DynamicWebAPI
+namespace FlyFramework.DynamicWebAPI
 {
     public class HttpMethodConfigure
     {

@@ -1,8 +1,10 @@
-﻿using MediatR;
+﻿using FlyFramework.Utilities.EventBus;
+
+using MediatR;
 
 using System.Threading;
 using System.Threading.Tasks;
-namespace FlyFramework.Common.Utilities.EventBus.Local
+namespace FlyFramework.Utilities.EventBus.Local
 {
     public interface ILocalEventHandler<in TEventData> : IEventHandler, INotificationHandler<TEventData> where TEventData : INotification
     {

@@ -1,11 +1,11 @@
-﻿using FlyFramework.Domain.ApplicationServices;
+﻿using FlyFramework.ApplicationServices;
 
 using Hangfire;
 
 using Microsoft.AspNetCore.Mvc;
 
 using System;
-namespace FlyFramework.Application.Test
+namespace FlyFramework.Test
 {
     public class HangFireAppService : ApplicationService, IApplicationService
     {

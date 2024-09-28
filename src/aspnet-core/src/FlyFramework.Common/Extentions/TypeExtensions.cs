@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Extentions
+namespace FlyFramework.Extentions
 {
     /// <summary>
     /// 类型扩展方法类
@@ -109,7 +109,7 @@ namespace FlyFramework.Common.Extentions
         //     是否存在
         public static bool AttributeExists<T>(this MemberInfo memberInfo, bool inherit = false) where T : Attribute
         {
-            return memberInfo.GetCustomAttributes(typeof(T), inherit).Any((object m) => m as T != null);
+            return memberInfo.GetCustomAttributes(typeof(T), inherit).Any((m) => m as T != null);
         }
 
         //

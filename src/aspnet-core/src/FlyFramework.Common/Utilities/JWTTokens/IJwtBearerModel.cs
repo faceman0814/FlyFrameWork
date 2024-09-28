@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Utilities.JWTTokens
+namespace FlyFramework.Utilities.JWTTokens
 {
     public interface IJwtBearerModel
     {

@@ -1,9 +1,9 @@
-﻿using FlyFramework.Common.Attributes;
-using FlyFramework.Common.ErrorExceptions;
-using FlyFramework.Repositories.UserSessions;
+﻿using FlyFramework.Attributes;
+using FlyFramework.ErrorExceptions;
+using FlyFramework.UserSessions;
 
 using System;
-namespace FlyFramework.Domain.ApplicationServices
+namespace FlyFramework.ApplicationServices
 {
     public abstract class ApplicationService : ApplicationServiceBase, IApplicationService
     {
@@ -21,7 +21,7 @@ namespace FlyFramework.Domain.ApplicationServices
 
         public ApplicationService(IServiceProvider serviceProvider, string localizationSourceName = null)
         {
-            base.LocalizationSourceName = localizationSourceName ?? FlyFrameworkConsts.LocalizationSourceName;
+            LocalizationSourceName = localizationSourceName ?? FlyFrameworkConsts.LocalizationSourceName;
         }
 
         protected virtual void ThrowUserFriendlyError(string reason)

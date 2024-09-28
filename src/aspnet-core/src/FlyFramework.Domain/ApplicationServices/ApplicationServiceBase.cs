@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 
-using FlyFramework.Common.Attributes;
-using FlyFramework.Domain.Localizations;
-using FlyFramework.Repositories.Uow;
+using FlyFramework.Attributes;
+using FlyFramework.Localizations;
+using FlyFramework.Uow;
 
 using System;
 using System.Globalization;
 
-namespace FlyFramework.Domain.ApplicationServices
+namespace FlyFramework.ApplicationServices
 {
     public abstract class ApplicationServiceBase
     {

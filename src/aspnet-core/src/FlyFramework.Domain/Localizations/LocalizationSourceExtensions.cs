@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Domain.Localizations
+namespace FlyFramework.Localizations
 {
     public static class LocalizationSourceExtensions
     {

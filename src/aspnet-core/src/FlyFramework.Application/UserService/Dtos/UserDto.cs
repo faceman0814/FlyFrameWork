@@ -1,9 +1,10 @@
-﻿using FlyFramework.Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FlyFramework.Application.UserService.Dtos
+namespace FlyFramework.UserService.Dtos
 {
-    public class UserDto : Entity<string>
+    public class UserDto
     {
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }

@@ -1,5 +1,5 @@
-﻿using FlyFramework.Common.ErrorExceptions;
-using FlyFramework.Repositories.Repositories;
+﻿using FlyFramework.ErrorExceptions;
+using FlyFramework.Repositories;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -8,7 +8,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Repositories.Uow
+namespace FlyFramework.Uow
 {
     public class UnitOfWork : IUnitOfWork
     {

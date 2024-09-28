@@ -1,10 +1,10 @@
-﻿using FlyFramework.Repositories.Uow;
+﻿using FlyFramework.Uow;
 
 using Microsoft.AspNetCore.Http;
 
 using System;
 using System.Threading.Tasks;
-namespace FlyFramework.WebHost.Middlewares
+namespace FlyFramework.Middlewares
 {
     public class UnitOfWorkMiddleware
     {

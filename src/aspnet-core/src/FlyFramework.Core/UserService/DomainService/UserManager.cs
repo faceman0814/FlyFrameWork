@@ -1,11 +1,14 @@
-﻿using FlyFramework.Domain.Domains;
+﻿using FlyFramework.Domains;
+using FlyFramework.UserService;
 
 using Microsoft.EntityFrameworkCore;
+
+using ServiceStack;
 
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-namespace FlyFramework.Core.UserService.DomainService
+namespace FlyFramework.UserService.DomainService
 {
     public class UserManager : GuidDomainService<User>, IUserManager
     {
@@ -13,9 +16,19 @@ namespace FlyFramework.Core.UserService.DomainService
         {
         }
 
+        public Task<User> CreateUserAsync(User user)
+        {
+            user.NormalizedUserName = user.UserName.ToUpper();
+            user.NormalizedEmail = user.Email.ToUpper();
+            user.TwoFactorEnabled = false;
+            user.EmailConfirmed = true;
+            user.PhoneNumberConfirmed = false;
+            return Create(user);
+        }
+
         public Task<User> FindByNameAsync(string userName)
         {
-            return this.QueryAsNoTracking.FirstOrDefaultAsync(t => t.UserName == userName);
+            return QueryAsNoTracking.FirstOrDefaultAsync(t => t.UserName == userName);
         }
 
         public override IQueryable<User> GetIncludeQuery()

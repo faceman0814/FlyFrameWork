@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Utilities.EventBus.Local
+namespace FlyFramework.Utilities.EventBus.Local
 {
     public interface ILocalEventBus
     {

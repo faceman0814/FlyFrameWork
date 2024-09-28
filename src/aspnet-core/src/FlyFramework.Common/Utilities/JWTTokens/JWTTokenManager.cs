@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Utilities.JWTTokens
+namespace FlyFramework.Utilities.JWTTokens
 {
     public class JWTTokenManager : IJWTTokenManager
     {

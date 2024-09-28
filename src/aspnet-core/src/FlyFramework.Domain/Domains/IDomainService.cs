@@ -1,10 +1,9 @@
-﻿using FlyFramework.Common;
-using FlyFramework.Common.Dependencys;
-using FlyFramework.Repositories.Repositories;
+﻿using FlyFramework.Dependencys;
+using FlyFramework.Repositories;
 
 using System.Linq;
 using System.Threading.Tasks;
-namespace FlyFramework.Domain.Domains
+namespace FlyFramework.Domains
 {
     public interface IDomainService<TEntity, TPrimaryKey> : IDomainBaseService, ITransientDependency where TEntity : class, IEntity<TPrimaryKey>
     {

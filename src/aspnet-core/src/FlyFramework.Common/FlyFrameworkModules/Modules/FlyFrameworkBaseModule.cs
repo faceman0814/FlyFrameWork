@@ -1,6 +1,7 @@
 ﻿using Autofac;
 
-using FlyFramework.Common.FlyFrameworkModules.Interface;
+using FlyFramework.FlyFrameworkModules;
+using FlyFramework.FlyFrameworkModules.Interface;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,7 +11,7 @@ using System.Reflection;
 using Module = Autofac.Module;
 
 
-namespace FlyFramework.Common.FlyFrameworkModules.Modules
+namespace FlyFramework.FlyFrameworkModules.Modules
 {
     public abstract class FlyFrameworkBaseModule : Module, IFlyFrameworkBaseModule
     {

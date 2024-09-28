@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Dependencys
+namespace FlyFramework.Dependencys
 {
     /// <summary>
     /// 定义一个依赖注入的生命周期为 transient 的接口

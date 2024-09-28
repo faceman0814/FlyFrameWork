@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Utilities.RabbitMqs
+namespace FlyFramework.Utilities.RabbitMqs
 {
     public class RabbitMqManager : IRabbitMqManager, IDisposable
     {

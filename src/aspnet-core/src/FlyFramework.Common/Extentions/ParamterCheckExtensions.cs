@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-namespace FlyFramework.Common.Extentions
+namespace FlyFramework.Extentions
 {
     //
     // 摘要:
@@ -176,8 +176,8 @@ namespace FlyFramework.Common.Extentions
         //   T:System.ArgumentOutOfRangeException:
         public static void CheckLessThan<T>(this T value, string paramName, T target, bool canEqual = false) where T : IComparable<T>
         {
-            bool assertion = (canEqual ? (value.CompareTo(target) <= 0) : (value.CompareTo(target) < 0));
-            string format = (canEqual ? "参数“{0}”的值必须小于或等于“{1}”。" : "参数“{0}”的值必须小于“{1}”。");
+            bool assertion = canEqual ? value.CompareTo(target) <= 0 : value.CompareTo(target) < 0;
+            string format = canEqual ? "参数“{0}”的值必须小于或等于“{1}”。" : "参数“{0}”的值必须小于“{1}”。";
             Require<ArgumentOutOfRangeException>(assertion, string.Format(format, paramName, target));
         }
 
@@ -205,8 +205,8 @@ namespace FlyFramework.Common.Extentions
         //   T:System.ArgumentOutOfRangeException:
         public static void CheckGreaterThan<T>(this T value, string paramName, T target, bool canEqual = false) where T : IComparable<T>
         {
-            bool assertion = (canEqual ? (value.CompareTo(target) >= 0) : (value.CompareTo(target) > 0));
-            string format = (canEqual ? "参数“{0}”的值必须大于或等于“{1}”。" : "参数“{0}”的值必须大于“{1}”。");
+            bool assertion = canEqual ? value.CompareTo(target) >= 0 : value.CompareTo(target) > 0;
+            string format = canEqual ? "参数“{0}”的值必须大于或等于“{1}”。" : "参数“{0}”的值必须大于“{1}”。";
             Require<ArgumentOutOfRangeException>(assertion, string.Format(format, paramName, target));
         }
 
@@ -240,11 +240,11 @@ namespace FlyFramework.Common.Extentions
         //   T:System.ArgumentOutOfRangeException:
         public static void CheckBetween<T>(this T value, string paramName, T start, T end, bool startEqual = false, bool endEqual = false) where T : IComparable<T>
         {
-            bool assertion = (startEqual ? (value.CompareTo(start) >= 0) : (value.CompareTo(start) > 0));
-            string message = (startEqual ? $"参数“{paramName}”的值必须在“{start}”与“{end}”之间，且不能等于“{start}”。" : $"参数“{paramName}”的值必须在“{start}”与“{end}”之间。");
+            bool assertion = startEqual ? value.CompareTo(start) >= 0 : value.CompareTo(start) > 0;
+            string message = startEqual ? $"参数“{paramName}”的值必须在“{start}”与“{end}”之间，且不能等于“{start}”。" : $"参数“{paramName}”的值必须在“{start}”与“{end}”之间。";
             Require<ArgumentOutOfRangeException>(assertion, message);
-            assertion = (endEqual ? (value.CompareTo(end) <= 0) : (value.CompareTo(end) < 0));
-            message = (endEqual ? $"参数“{paramName}”的值必须在“{start}”与“{end}”之间，且不能等于“{end}”。" : $"参数“{paramName}”的值必须在“{start}”与“{end}”之间。");
+            assertion = endEqual ? value.CompareTo(end) <= 0 : value.CompareTo(end) < 0;
+            message = endEqual ? $"参数“{paramName}”的值必须在“{start}”与“{end}”之间，且不能等于“{end}”。" : $"参数“{paramName}”的值必须在“{start}”与“{end}”之间。";
             Require<ArgumentOutOfRangeException>(assertion, message);
         }
 

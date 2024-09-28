@@ -1,5 +1,4 @@
-﻿using FlyFramework.Common;
-using FlyFramework.Common.ErrorExceptions;
+﻿using FlyFramework.ErrorExceptions;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -9,7 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Repositories.Repositories
+namespace FlyFramework.Repositories
 {
     public class Repository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey>, IRepository where TEntity : class, IEntity<TPrimaryKey>
     {

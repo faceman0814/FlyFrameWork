@@ -1,8 +1,8 @@
-﻿using FlyFramework.Common.Attributes;
+﻿using FlyFramework.Attributes;
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace FlyFramework.WebHost.Controllers
+namespace FlyFramework.Controllers
 {
     [SkipActionFilter]
     [DisabledUnitOfWork(true)]

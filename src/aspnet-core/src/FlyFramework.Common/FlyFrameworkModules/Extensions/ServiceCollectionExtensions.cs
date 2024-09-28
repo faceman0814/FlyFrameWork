@@ -1,13 +1,14 @@
-﻿using FlyFramework.Common.Dependencys;
-using FlyFramework.Common.FlyFrameworkModules.Interface;
-using FlyFramework.Common.FlyFrameworkModules.Modules;
+﻿using FlyFramework.Dependencys;
+using FlyFramework.FlyFrameworkModules.Extensions;
+using FlyFramework.FlyFrameworkModules.Interface;
+using FlyFramework.FlyFrameworkModules.Modules;
 
 using Microsoft.Extensions.DependencyInjection;
 
 using System;
 using System.Linq;
 using System.Reflection;
-namespace FlyFramework.Common.FlyFrameworkModules.Extensions
+namespace FlyFramework.FlyFrameworkModules.Extensions
 {
     public static class ServiceCollectionExtensions
     {
@@ -90,7 +91,7 @@ namespace FlyFramework.Common.FlyFrameworkModules.Extensions
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="services">服务集合</param>
         /// <returns>单例实例或 null</returns>
-        public static T? GetSingletonInstanceOrNull<T>(this IServiceCollection services) where T : class
+        public static T GetSingletonInstanceOrNull<T>(this IServiceCollection services) where T : class
         {
             // 查找服务类型为 T 的服务描述符
             var serviceDescriptor = services.FirstOrDefault(d => d.ServiceType == typeof(T));

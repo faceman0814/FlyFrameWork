@@ -6,7 +6,7 @@ using ServiceStack.Redis;
 
 using System;
 using System.Threading.Tasks;
-namespace FlyFramework.Common.Utilities.Redis
+namespace FlyFramework.Utilities.Redis
 {
     public class RedisCacheManager : ICacheManager
     {

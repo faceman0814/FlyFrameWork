@@ -1,17 +1,12 @@
-﻿
-using FlyFramework.Common.Dependencys;
-using FlyFramework.Common.FlyFrameworkModules;
-using FlyFramework.Common.FlyFrameworkModules.Modules;
-using FlyFramework.Core.LazyModule.LazyDefinition;
+﻿using FlyFramework.FlyFrameworkModules;
+using FlyFramework.FlyFrameworkModules.Modules;
+using FlyFramework.LazyModule.LazyDefinition;
 
 using Microsoft.Extensions.DependencyInjection;
 
 using ServiceStack;
 
-using System;
-using System.Linq;
-
-namespace FlyFramework.Core
+namespace FlyFramework
 {
     [DependOn(typeof(FlyFrameworkDomainModule))]
     public class FlyFrameworkCoreModule : FlyFrameworkBaseModule

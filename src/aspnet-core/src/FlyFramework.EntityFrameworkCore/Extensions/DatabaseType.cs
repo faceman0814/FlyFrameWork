@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace FlyFramework.EntityFrameworkCore.Extensions
+namespace FlyFramework.Extensions
 {
     public enum DatabaseType
     {

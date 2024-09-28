@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-namespace FlyFramework.Domain.Entities
+namespace FlyFramework.Entities
 {
     public class FullAuditedEntity<TPrimaryKey> : AuditedEntity<TPrimaryKey>, IFullAuditedEntity<TPrimaryKey>
     {

@@ -1,8 +1,7 @@
-using FlyFramework.Common.Extentions;
-using FlyFramework.Common.FlyFrameworkModules.Extensions;
-using FlyFramework.Domain.Localizations;
-using FlyFramework.WebHost;
-using FlyFramework.WebHost.Extentions;
+using FlyFramework;
+using FlyFramework.Extentions;
+using FlyFramework.FlyFrameworkModules.Extensions;
+using FlyFramework.Localizations;
 
 using Hangfire;
 

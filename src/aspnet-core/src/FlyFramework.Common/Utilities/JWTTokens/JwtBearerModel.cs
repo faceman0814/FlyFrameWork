@@ -1,4 +1,4 @@
-﻿namespace FlyFramework.Common.Utilities.JWTTokens
+﻿namespace FlyFramework.Utilities.JWTTokens
 {
     public class JwtBearerModel : IJwtBearerModel
     {

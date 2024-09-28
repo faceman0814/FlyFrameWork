@@ -1,11 +1,11 @@
-﻿using FlyFramework.Common.Utilities.Dappers;
-using FlyFramework.Core.UserService;
-using FlyFramework.Domain.ApplicationServices;
+﻿using FlyFramework.ApplicationServices;
+using FlyFramework.UserService;
+using FlyFramework.Utilities.Dappers;
 
 using System;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Application.Test
+namespace FlyFramework.Test
 {
     public class DapperAppService : ApplicationService, IApplicationService
     {

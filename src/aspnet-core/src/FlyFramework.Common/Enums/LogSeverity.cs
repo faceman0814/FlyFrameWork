@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Enums
+namespace FlyFramework.Enums
 {
     public enum LogSeverity
     {

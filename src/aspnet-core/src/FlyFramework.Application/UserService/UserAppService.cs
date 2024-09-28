@@ -1,57 +1,35 @@
-﻿using FlyFramework.Application.UserService.Dtos;
-using FlyFramework.Core.UserService;
-using FlyFramework.Core.UserService.DomainService;
-using FlyFramework.Domain.ApplicationServices;
-using FlyFramework.Repositories.Uow;
-using FlyFramework.Repositories.UserSessions;
+﻿using FlyFramework.ApplicationServices;
+using FlyFramework.UserService.DomainService;
+using FlyFramework.UserService.Dtos;
 
 using Microsoft.AspNetCore.Authorization;
 
 using System;
 using System.Threading.Tasks;
-namespace FlyFramework.Application.UserService
+namespace FlyFramework.UserService
 {
     [Authorize]
     public class UserAppService : ApplicationService, IUserAppService
     {
         private readonly IUserManager _userManager;
-        private readonly IUserSession _userSession;
-        private readonly IUnitOfWorkManager _unitOfWorkManager;
 
         public UserAppService(IServiceProvider serviceProvider
-            , IUserManager userManager,
-            IUnitOfWorkManager unitOfWorkManager,
-            IUserSession userSession
+            , IUserManager userManager
             ) : base(serviceProvider)
         {
             _userManager = userManager;
-            _userSession = userSession;
-            _unitOfWorkManager = unitOfWorkManager;
-        }
-
-        [AllowAnonymous]
-        public void test()
-        {
-            Console.WriteLine(_userSession.UserId);
-            Console.WriteLine(UserSession.UserId);
-            ThrowUserFriendlyError("test");
         }
 
         public async Task CreateUser(UserDto input)
         {
             var user = ObjectMapper.Map<User>(input);
-            user.NormalizedUserName = input.UserName.ToUpper();
-            user.NormalizedEmail = input.Email.ToUpper();
-            user.TwoFactorEnabled = false;
-            user.EmailConfirmed = true;
-            user.PhoneNumberConfirmed = false;
-            await _userManager.Create(user);
+            await _userManager.CreateUserAsync(user);
         }
 
         public async Task UpdateUser(UserDto input)
         {
-            var user = await _userManager.FindById(input.Id);
-            user.Password = input.Password;
+            var user = await _userManager.FindByNameAsync(input.UserName);
+            ObjectMapper.Map(input, user);
             await _userManager.Update(user);
         }
     }

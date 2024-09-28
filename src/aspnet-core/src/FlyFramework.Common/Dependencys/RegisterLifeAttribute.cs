@@ -2,7 +2,7 @@
 
 using System;
 
-namespace FlyFramework.Common.Dependencys
+namespace FlyFramework.Dependencys
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class RegisterLifeAttribute : Attribute

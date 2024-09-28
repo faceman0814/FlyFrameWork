@@ -3,31 +3,27 @@ using Autofac.Extensions.DependencyInjection;
 
 using DotNetCore.CAP.Internal;
 
-using FlyFramework.Application;
-using FlyFramework.Application.DynamicWebAPI;
-using FlyFramework.Common.Attributes;
-using FlyFramework.Common.Dependencys;
-using FlyFramework.Common.Extentions;
-using FlyFramework.Common.Extentions.JsonOptions;
-using FlyFramework.Common.Utilities.Dappers;
-using FlyFramework.Common.Utilities.EventBus;
-using FlyFramework.Common.Utilities.EventBus.Distributed;
-using FlyFramework.Common.Utilities.EventBus.Distributed.Cap;
-using FlyFramework.Common.Utilities.EventBus.Local;
-using FlyFramework.Common.Utilities.EventBus.MediatR;
-using FlyFramework.Common.Utilities.HangFires;
-using FlyFramework.Common.Utilities.JWTTokens;
-using FlyFramework.Common.Utilities.Minios;
-using FlyFramework.Common.Utilities.RabbitMqs;
-using FlyFramework.Common.Utilities.Redis;
-using FlyFramework.Core;
-using FlyFramework.Core.RoleService;
-using FlyFramework.Core.UserService;
-using FlyFramework.EntityFrameworkCore;
-using FlyFramework.EntityFrameworkCore.Extensions;
-using FlyFramework.Repositories.Repositories;
-using FlyFramework.WebHost.Filters;
-using FlyFramework.WebHost.Identitys;
+using FlyFramework.Attributes;
+using FlyFramework.DynamicWebAPI;
+using FlyFramework.Extensions;
+using FlyFramework.Extentions;
+using FlyFramework.Extentions.JsonOptions;
+using FlyFramework.Filters;
+using FlyFramework.Identitys;
+using FlyFramework.Repositories;
+using FlyFramework.RoleService;
+using FlyFramework.UserService;
+using FlyFramework.Utilities.Dappers;
+using FlyFramework.Utilities.EventBus;
+using FlyFramework.Utilities.EventBus.Distributed;
+using FlyFramework.Utilities.EventBus.Distributed.Cap;
+using FlyFramework.Utilities.EventBus.Local;
+using FlyFramework.Utilities.EventBus.MediatR;
+using FlyFramework.Utilities.HangFires;
+using FlyFramework.Utilities.JWTTokens;
+using FlyFramework.Utilities.Minios;
+using FlyFramework.Utilities.RabbitMqs;
+using FlyFramework.Utilities.Redis;
 
 using Hangfire;
 using Hangfire.MySql;
@@ -72,7 +68,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using System.Threading.Tasks;
-namespace FlyFramework.WebHost.Extentions
+namespace FlyFramework.Extentions
 {
     public static class ServiceCollectionExtensions
     {

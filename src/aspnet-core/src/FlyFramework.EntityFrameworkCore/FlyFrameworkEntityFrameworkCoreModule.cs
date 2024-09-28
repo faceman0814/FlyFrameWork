@@ -1,4 +1,4 @@
-﻿using FlyFramework.EntityFrameworkCore.Extensions;
+﻿using FlyFramework.Extensions;
 
 using log4net;
 
@@ -8,14 +8,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 using System;
 
-namespace FlyFramework.EntityFrameworkCore
+namespace FlyFramework
 {
     public static class FlyFrameworkEntityFrameworkCoreModule
     {
         public static void UsingDatabaseServices(this IServiceCollection services, IConfiguration configuration, ILog log)
         {
             var databaseType = configuration.GetSection("ConnectionStrings:DatabaseType").Get<DatabaseType>();
-            string? connectionString = string.Empty;
+            string connectionString = string.Empty;
             connectionString = configuration.GetSection("ConnectionStrings:Default").Get<string>();
             log.Info($"数据库类型：{databaseType}");
             log.Info($"连接字符串：{connectionString}");

@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Extentions.JsonOptions
+namespace FlyFramework.Extentions.JsonOptions
 {
     public class JsonOptionsDate : JsonConverter<DateTime>
     {

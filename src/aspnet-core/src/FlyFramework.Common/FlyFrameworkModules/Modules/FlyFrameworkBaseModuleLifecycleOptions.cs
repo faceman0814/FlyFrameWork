@@ -1,7 +1,7 @@
-﻿using FlyFramework.Common.FlyFrameworkModules.Collections;
-using FlyFramework.Common.FlyFrameworkModules.Interface;
+﻿using FlyFramework.FlyFrameworkModules.Collections;
+using FlyFramework.FlyFrameworkModules.Interface;
 
-namespace FlyFramework.Common.FlyFrameworkModules.Modules
+namespace FlyFramework.FlyFrameworkModules.Modules
 {
     public class FlyFrameworkBaseModuleLifecycleOptions
     {

@@ -1,5 +1,5 @@
-﻿using FlyFramework.Common.FlyFrameworkModules.Interface;
-using FlyFramework.Common.FlyFrameworkModules.Modules;
+﻿using FlyFramework.FlyFrameworkModules.Interface;
+using FlyFramework.FlyFrameworkModules.Modules;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 
 using System;
 
-namespace FlyFramework.Common.FlyFrameworkModules.Extensions
+namespace FlyFramework.FlyFrameworkModules.Extensions
 {
     public static class InitializeContextExtensions
     {

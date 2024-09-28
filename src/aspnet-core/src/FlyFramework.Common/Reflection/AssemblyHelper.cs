@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-namespace FlyFramework.Common.Reflection
+namespace FlyFramework.Reflection
 {
     public static class AssemblyHelper
     {

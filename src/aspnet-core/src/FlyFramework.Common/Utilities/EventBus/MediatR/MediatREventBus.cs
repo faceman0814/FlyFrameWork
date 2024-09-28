@@ -1,12 +1,12 @@
-﻿using FlyFramework.Common.Dependencys;
-using FlyFramework.Common.Utilities.EventBus.Local;
+﻿using FlyFramework.Dependencys;
+using FlyFramework.Utilities.EventBus.Local;
 
 using MediatR;
 
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Utilities.EventBus.MediatR
+namespace FlyFramework.Utilities.EventBus.MediatR
 {
     public class MediatREventBus : ILocalEventBus, ITransientDependency
     {

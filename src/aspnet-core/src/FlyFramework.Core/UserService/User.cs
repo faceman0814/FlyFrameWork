@@ -1,9 +1,9 @@
-﻿using FlyFramework.Domain.Entities;
+﻿using FlyFramework.Entities;
 
 using Microsoft.AspNetCore.Identity;
 
 using System;
-namespace FlyFramework.Core.UserService
+namespace FlyFramework.UserService
 {
     public class User : IdentityUser<string>, IFullAuditedEntity<string>
     {

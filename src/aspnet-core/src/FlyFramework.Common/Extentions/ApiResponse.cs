@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Extentions
+namespace FlyFramework.Extentions
 {
     public class ApiResponse<T>
     {

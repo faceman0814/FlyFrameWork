@@ -1,4 +1,6 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using FlyFramework.Extentions;
+
+using Microsoft.IdentityModel.Tokens;
 
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Extentions
+namespace FlyFramework.Extentions
 {
     public static class StringExtensions
     {
@@ -406,7 +408,7 @@ namespace FlyFramework.Common.Extentions
                 return str;
             }
 
-            return Regex.Replace(str, "[a-z][A-Z]", (Match m) => m.Value[0] + " " + (invariantCulture ? char.ToLowerInvariant(m.Value[1]) : char.ToLower(m.Value[1])));
+            return Regex.Replace(str, "[a-z][A-Z]", (m) => m.Value[0] + " " + (invariantCulture ? char.ToLowerInvariant(m.Value[1]) : char.ToLower(m.Value[1])));
         }
 
         //
@@ -428,7 +430,7 @@ namespace FlyFramework.Common.Extentions
                 return str;
             }
 
-            return Regex.Replace(str, "[a-z][A-Z]", (Match m) => m.Value[0] + " " + char.ToLower(m.Value[1], culture));
+            return Regex.Replace(str, "[a-z][A-Z]", (m) => m.Value[0] + " " + char.ToLower(m.Value[1], culture));
         }
 
         //

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using static Dapper.SqlMapper;
-namespace FlyFramework.Common.Utilities.Dappers
+namespace FlyFramework.Utilities.Dappers
 {
     public class DapperManager<T> : IDapperManager<T>
     {

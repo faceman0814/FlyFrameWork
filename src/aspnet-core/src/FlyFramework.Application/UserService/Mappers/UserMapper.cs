@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 
-using FlyFramework.Application.UserService.Dtos;
-using FlyFramework.Core.UserService;
+using FlyFramework.UserService.Dtos;
+
+using GCT.MedPro.Application;
+
+using Microsoft.AspNetCore.Builder;
 
 using System;
 using System.Collections.Generic;
@@ -9,14 +12,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Application.UserService.Mappers
+namespace FlyFramework.UserService.Mappers
 {
-    public class UserMapper : Profile
+    public class UserMapper
     {
-        public UserMapper()
+        public static void CreateMappings(IMapperConfigurationExpression configuration)
         {
-            CreateMap<User, UserDto>().ReverseMap(); // 配置User到UserDto的映射
+            configuration.CreateMap<User, UserDto>().ReverseMap().IgnoreNullSourceProperties();
         }
-
     }
 }

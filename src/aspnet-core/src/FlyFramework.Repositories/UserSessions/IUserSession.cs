@@ -1,8 +1,6 @@
-﻿using FlyFramework.Common.Dependencys;
+﻿using System.Security.Claims;
 
-using System.Security.Claims;
-
-namespace FlyFramework.Repositories.UserSessions
+namespace FlyFramework.UserSessions
 {
     public interface IUserSession
     {

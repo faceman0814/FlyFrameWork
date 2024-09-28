@@ -1,11 +1,9 @@
-﻿using FlyFramework.Common.Dependencys;
-
-namespace FlyFramework.Repositories.Uow
+﻿namespace FlyFramework.Uow
 {
     public interface IUnitOfWorkManager
     //: IScopedDependency
     {
-        IUnitOfWork? Current { get; }
+        IUnitOfWork Current { get; }
 
         IUnitOfWork Begin();
 

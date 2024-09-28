@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Application.UserService.Dtos
+namespace FlyFramework.UserService.Dtos
 {
     public class UserLoginDto
     {

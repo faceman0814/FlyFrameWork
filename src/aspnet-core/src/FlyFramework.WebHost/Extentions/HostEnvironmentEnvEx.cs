@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.WebHost.Extentions
+namespace FlyFramework.Extentions
 {
     public static class HostEnvironmentEnvEx
     {

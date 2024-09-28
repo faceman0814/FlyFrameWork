@@ -1,7 +1,5 @@
-﻿using FlyFramework.Common.Extentions;
-using FlyFramework.Domain.ApplicationServices;
-
-using Masuit.Tools;
+﻿using FlyFramework.ApplicationServices;
+using FlyFramework.Extentions;
 
 using Microsoft.OpenApi.Models;
 
@@ -11,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FlyFramework.WebHost.Filters
+namespace FlyFramework.Filters
 {
     public class RemoveAppFilter : IDocumentFilter
     {

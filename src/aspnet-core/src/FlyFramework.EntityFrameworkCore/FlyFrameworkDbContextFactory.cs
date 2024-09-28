@@ -2,7 +2,7 @@
 // The .NET YoyoBoot licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using FlyFramework.EntityFrameworkCore.Extensions;
+using FlyFramework.Extensions;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -13,7 +13,7 @@ using ServiceStack;
 using System;
 using System.IO;
 
-namespace FlyFramework.EntityFrameworkCore
+namespace FlyFramework
 {
     public class FlyFrameworkDbContextFactory : IDesignTimeDbContextFactory<FlyFrameworkDbContext>
     {

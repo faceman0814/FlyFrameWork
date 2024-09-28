@@ -1,5 +1,5 @@
-﻿using FlyFramework.Common.Utilities.RabbitMqs;
-using FlyFramework.Domain.ApplicationServices;
+﻿using FlyFramework.ApplicationServices;
+using FlyFramework.Utilities.RabbitMqs;
 
 using RabbitMQ.Client.Events;
 
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Application.Test
+namespace FlyFramework.Test
 {
     public class RabbitMqAppService : ApplicationService, IApplicationService
     {

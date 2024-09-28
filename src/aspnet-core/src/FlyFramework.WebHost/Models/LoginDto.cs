@@ -1,4 +1,4 @@
-﻿namespace FlyFramework.WebHost.Models
+﻿namespace FlyFramework.Models
 {
     public class LoginDto
     {

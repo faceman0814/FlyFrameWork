@@ -1,4 +1,4 @@
-namespace FlyFramework.Test
+namespace FlyFramework
 {
     public class RabbitMqTest
     {

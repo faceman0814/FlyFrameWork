@@ -4,7 +4,7 @@
         <name>FlyFramework.WebCore</name>
     </assembly>
     <members>
-        <member name="M:FlyFramework.WebCore.Controllers.FileController.GetFile">
+        <member name="M:FlyFramework.Controllers.FileController.GetFile">
             <summary>
             文件控制器
             </summary>

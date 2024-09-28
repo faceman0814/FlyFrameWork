@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Repositories.Repositories
+namespace FlyFramework.Repositories
 {
     public interface IDbContextProvider
     {

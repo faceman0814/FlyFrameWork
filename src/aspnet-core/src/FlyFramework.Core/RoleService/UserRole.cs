@@ -1,4 +1,4 @@
-﻿namespace FlyFramework.Core.RoleService
+﻿namespace FlyFramework.RoleService
 {
     public class UserRole
     {

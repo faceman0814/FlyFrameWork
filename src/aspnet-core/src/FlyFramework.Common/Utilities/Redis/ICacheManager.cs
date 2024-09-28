@@ -1,8 +1,6 @@
-﻿using FlyFramework.Common.Dependencys;
-
-using System;
+﻿using System;
 using System.Threading.Tasks;
-namespace FlyFramework.Common.Utilities.Redis
+namespace FlyFramework.Utilities.Redis
 {
     public interface ICacheManager
     {

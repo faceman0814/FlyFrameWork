@@ -1,11 +1,9 @@
 ﻿using Autofac;
 
-using FlyFramework.Application;
-using FlyFramework.Common.FlyFrameworkModules.Modules;
-using FlyFramework.Core;
-using FlyFramework.WebHost.Controllers;
+using FlyFramework.Controllers;
+using FlyFramework.FlyFrameworkModules.Modules;
 
-namespace FlyFramework.WebHost
+namespace FlyFramework
 {
     [DependOn(typeof(FlyFrameworkApplicationModule))]
     public class FlyFrameworkWebHostModule : FlyFrameworkBaseModule

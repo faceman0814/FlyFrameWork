@@ -1,4 +1,4 @@
-﻿namespace FlyFramework.Domain
+﻿namespace FlyFramework
 {
     public class FlyFrameworkConsts
     {

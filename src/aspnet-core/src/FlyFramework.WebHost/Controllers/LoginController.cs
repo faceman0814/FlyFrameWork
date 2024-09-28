@@ -1,12 +1,11 @@
-﻿
-using FlyFramework.Application.UserService.Dtos;
-using FlyFramework.Common.Attributes;
-using FlyFramework.Common.Utilities.JWTTokens;
-using FlyFramework.Common.Utilities.Redis;
-using FlyFramework.Core.LazyModule.LazyDefinition;
-using FlyFramework.Core.UserService;
-using FlyFramework.Core.UserService.DomainService;
-using FlyFramework.WebHost.Models;
+﻿using FlyFramework.Attributes;
+using FlyFramework.LazyModule.LazyDefinition;
+using FlyFramework.Models;
+using FlyFramework.UserService;
+using FlyFramework.UserService.DomainService;
+using FlyFramework.UserService.Dtos;
+using FlyFramework.Utilities.JWTTokens;
+using FlyFramework.Utilities.Redis;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -20,7 +19,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-namespace FlyFramework.WebHost.Controllers
+namespace FlyFramework.Controllers
 {
     [ApiController]
     [DisabledUnitOfWork(true)]

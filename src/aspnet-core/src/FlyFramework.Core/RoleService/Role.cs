@@ -1,9 +1,9 @@
-﻿using FlyFramework.Domain.Entities;
+﻿using FlyFramework.Entities;
 
 using Microsoft.AspNetCore.Identity;
 
 using System;
-namespace FlyFramework.Core.RoleService
+namespace FlyFramework.RoleService
 {
     public class Role : IdentityRole<string>, IFullAuditedEntity<string>
     {
