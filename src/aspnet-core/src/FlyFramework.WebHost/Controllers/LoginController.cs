@@ -3,6 +3,7 @@ using FlyFramework.Application.UserService.Dtos;
 using FlyFramework.Common.Attributes;
 using FlyFramework.Common.Utilities.JWTTokens;
 using FlyFramework.Common.Utilities.Redis;
+using FlyFramework.Core.LazyModule.LazyDefinition;
 using FlyFramework.Core.UserService;
 using FlyFramework.Core.UserService.DomainService;
 using FlyFramework.WebHost.Models;
@@ -29,22 +30,21 @@ namespace FlyFramework.WebHost.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly ICacheManager _cacheManager;
         private readonly IJWTTokenManager _jWTTokenManager;
-        private readonly IUserManager _userManager;
-        private readonly IStringLocalizer _sharedLocalizer;
+        private readonly IFlyFrameworkLazy<IUserManager> _userManagerLazy;
         private readonly IConfiguration _configuration;
 
-
+        private IUserManager _userManager => _userManagerLazy.Value;
         public LoginController(SignInManager<User> signInManager,
             ICacheManager cacheManager,
             IJWTTokenManager jWTTokenManager,
             IStringLocalizerFactory factory,
             IConfiguration configuration,
-            IUserManager userManager)
+            IFlyFrameworkLazy<IUserManager> userManagerLazy)
         {
             _signInManager = signInManager;
             _cacheManager = cacheManager;
             _jWTTokenManager = jWTTokenManager;
-            _userManager = userManager;
+            _userManagerLazy = userManagerLazy;
             _configuration = configuration;
         }
 

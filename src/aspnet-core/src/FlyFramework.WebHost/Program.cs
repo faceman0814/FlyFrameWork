@@ -78,7 +78,7 @@ public static class AppConfig
 
         services.AddSwagger(builder);
 
-        services.AddDependencyServices();
+        //services.AddDependencyServices();
 
         services.AddRedis(configuration);
 

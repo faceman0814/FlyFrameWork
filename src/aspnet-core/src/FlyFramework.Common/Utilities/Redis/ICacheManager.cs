@@ -4,7 +4,7 @@ using System;
 using System.Threading.Tasks;
 namespace FlyFramework.Common.Utilities.Redis
 {
-    public interface ICacheManager : ISingletonDependency
+    public interface ICacheManager
     {
         /// <summary>
         /// 设置缓存

@@ -20,6 +20,7 @@ using FlyFramework.Common.Utilities.JWTTokens;
 using FlyFramework.Common.Utilities.Minios;
 using FlyFramework.Common.Utilities.RabbitMqs;
 using FlyFramework.Common.Utilities.Redis;
+using FlyFramework.Core;
 using FlyFramework.Core.RoleService;
 using FlyFramework.Core.UserService;
 using FlyFramework.EntityFrameworkCore;
@@ -80,54 +81,6 @@ namespace FlyFramework.WebHost.Extentions
         public static string[] InterfacePostfixes { get; set; } = { "Manager", "AppService", "Service" };
 
         private static readonly ILog log = LogManager.GetLogger("程序启动配置：");
-        /// <summary>
-        /// 动态依赖注入
-        /// </summary>
-        /// <param name="services"></param>
-        /// <returns></returns>
-        public static IServiceCollection AddDependencyServices(this IServiceCollection services)
-        {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(t => t.FullName.StartsWith("FlyFramework"))
-                .ToArray();
-
-            foreach (var assembly in assemblies)
-            {
-                var types = assembly.GetTypes()
-                    .Where(type => type.IsClass && !type.IsAbstract);
-
-                foreach (var type in types)
-                {
-                    var interfaces = type.GetInterfaces()
-                                         .Where(t => InterfacePostfixes.Any(postfix => t.Name.EndsWith(postfix)))
-                                         .Distinct();
-                    // 自动注册与接口名称匹配的服务实现
-                    foreach (var interfaceType in interfaces)
-                    {
-                        if (!interfaceType.IsPublic || interfaceType == typeof(IDisposable))
-                            continue;
-
-                        if (interfaceType.Name.Equals($"I{type.Name}", StringComparison.OrdinalIgnoreCase))
-                        {
-                            if (typeof(ITransientDependency).IsAssignableFrom(interfaceType))
-                            {
-                                services.AddTransient(interfaceType, type);
-                            }
-                            else if (typeof(IScopedDependency).IsAssignableFrom(interfaceType))
-                            {
-                                services.AddScoped(interfaceType, type);
-                            }
-                            else if (typeof(ISingletonDependency).IsAssignableFrom(interfaceType))
-                            {
-                                services.AddSingleton(interfaceType, type);
-                            }
-                        }
-                    }
-                }
-            }
-
-            return services;
-        }
 
         public static void AddRabbitMq(this IServiceCollection services, IConfiguration configuration)
         {
@@ -147,7 +100,6 @@ namespace FlyFramework.WebHost.Extentions
             }
             // 注册到依赖注入系统
             services.AddSingleton<IConnectionFactory>(_ => factory);
-            //services.AddSingleton<IRabbitMqManager, RabbitMqManager>();
         }
 
 
@@ -231,7 +183,6 @@ namespace FlyFramework.WebHost.Extentions
                 // 注册Redis缓存工具为单例服务
             }
             services.AddSingleton(minioClient);
-            //services.AddSingleton<IMinioManager, MinioManager>();
         }
 
         /// <summary>
@@ -490,7 +441,6 @@ namespace FlyFramework.WebHost.Extentions
             services.AddScoped<IDbConnection>(provider =>
                 new SqlConnection(configuration.GetConnectionString("Default")));
             services.AddScoped(typeof(IDapperManager<>), typeof(DapperManager<>));
-
         }
 
         /// <summary>
@@ -592,7 +542,11 @@ namespace FlyFramework.WebHost.Extentions
             hostBuilder.ConfigureContainer<ContainerBuilder>(containerBuilder =>
             {
                 // 注册自定义的 Autofac 模块
+                containerBuilder.RegisterModule(new FlyFrameworkCommonModule());
+                containerBuilder.RegisterModule(new FlyFrameworkDomainModule());
+                containerBuilder.RegisterModule(new FlyFrameworkRepositoriesModule());
                 containerBuilder.RegisterModule(new FlyFrameworkApplicationModule());
+                containerBuilder.RegisterModule(new FlyFrameworkCoreModule());
                 containerBuilder.RegisterModule(new FlyFrameworkWebHostModule());
             });
             return hostBuilder;

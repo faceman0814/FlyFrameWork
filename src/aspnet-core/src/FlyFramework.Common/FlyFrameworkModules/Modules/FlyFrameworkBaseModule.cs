@@ -14,6 +14,11 @@ namespace FlyFramework.Common.FlyFrameworkModules.Modules
 {
     public abstract class FlyFrameworkBaseModule : Module, IFlyFrameworkBaseModule
     {
+        protected override void Load(ContainerBuilder builder)
+        {
+
+        }
+
         protected internal ServiceConfigerContext ServiceConfigerContext
         {
             get
@@ -36,6 +41,7 @@ namespace FlyFramework.Common.FlyFrameworkModules.Modules
         /// <exception cref="NotImplementedException"></exception>
         public virtual void PreInitialize(ServiceConfigerContext context)
         {
+
         }
 
         /// <summary>
