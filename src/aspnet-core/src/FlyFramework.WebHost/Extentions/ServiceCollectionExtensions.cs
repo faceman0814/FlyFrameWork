@@ -3,30 +3,23 @@ using Autofac.Extensions.DependencyInjection;
 
 using DotNetCore.CAP.Internal;
 
-using FlyFramework.Application;
-using FlyFramework.Application.DynamicWebAPI;
-using FlyFramework.Common.Attributes;
-using FlyFramework.Common.Dependencys;
-using FlyFramework.Common.Extentions;
-using FlyFramework.Common.Extentions.JsonOptions;
-using FlyFramework.Common.Utilities.Dappers;
-using FlyFramework.Common.Utilities.EventBus;
-using FlyFramework.Common.Utilities.EventBus.Distributed;
-using FlyFramework.Common.Utilities.EventBus.Distributed.Cap;
-using FlyFramework.Common.Utilities.EventBus.Local;
-using FlyFramework.Common.Utilities.EventBus.MediatR;
-using FlyFramework.Common.Utilities.HangFires;
-using FlyFramework.Common.Utilities.JWTTokens;
-using FlyFramework.Common.Utilities.Minios;
-using FlyFramework.Common.Utilities.RabbitMqs;
-using FlyFramework.Common.Utilities.Redis;
-using FlyFramework.Core.RoleService;
-using FlyFramework.Core.UserService;
-using FlyFramework.EntityFrameworkCore;
-using FlyFramework.EntityFrameworkCore.Extensions;
-using FlyFramework.Repositories.Repositories;
-using FlyFramework.WebHost.Filters;
-using FlyFramework.WebHost.Identitys;
+using FlyFramework.Attributes;
+using FlyFramework.Extensions;
+using FlyFramework.Extentions;
+using FlyFramework.Extentions.JsonOptions;
+using FlyFramework.Filters;
+using FlyFramework.Identitys;
+using FlyFramework.RoleService;
+using FlyFramework.UserService;
+using FlyFramework.Utilities.EventBus;
+using FlyFramework.Utilities.EventBus.Distributed;
+using FlyFramework.Utilities.EventBus.Distributed.Cap;
+using FlyFramework.Utilities.EventBus.Local;
+using FlyFramework.Utilities.EventBus.MediatR;
+using FlyFramework.Utilities.HangFires;
+using FlyFramework.Utilities.Minios;
+using FlyFramework.Utilities.RabbitMqs;
+using FlyFramework.Utilities.Redis;
 
 using Hangfire;
 using Hangfire.MySql;
@@ -34,25 +27,18 @@ using Hangfire.SqlServer;
 
 using log4net;
 
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 using Minio;
 
 using MongoDB.Driver;
-
-using Newtonsoft.Json;
 
 using RabbitMQ.Client;
 
@@ -67,11 +53,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
-using System.Threading.Tasks;
-namespace FlyFramework.WebHost.Extentions
+namespace FlyFramework.Extentions
 {
     public static class ServiceCollectionExtensions
     {
@@ -80,54 +64,6 @@ namespace FlyFramework.WebHost.Extentions
         public static string[] InterfacePostfixes { get; set; } = { "Manager", "AppService", "Service" };
 
         private static readonly ILog log = LogManager.GetLogger("程序启动配置：");
-        /// <summary>
-        /// 动态依赖注入
-        /// </summary>
-        /// <param name="services"></param>
-        /// <returns></returns>
-        public static IServiceCollection AddDependencyServices(this IServiceCollection services)
-        {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(t => t.FullName.StartsWith("FlyFramework"))
-                .ToArray();
-
-            foreach (var assembly in assemblies)
-            {
-                var types = assembly.GetTypes()
-                    .Where(type => type.IsClass && !type.IsAbstract);
-
-                foreach (var type in types)
-                {
-                    var interfaces = type.GetInterfaces()
-                                         .Where(t => InterfacePostfixes.Any(postfix => t.Name.EndsWith(postfix)))
-                                         .Distinct();
-                    // 自动注册与接口名称匹配的服务实现
-                    foreach (var interfaceType in interfaces)
-                    {
-                        if (!interfaceType.IsPublic || interfaceType == typeof(IDisposable))
-                            continue;
-
-                        if (interfaceType.Name.Equals($"I{type.Name}", StringComparison.OrdinalIgnoreCase))
-                        {
-                            if (typeof(ITransientDependency).IsAssignableFrom(interfaceType))
-                            {
-                                services.AddTransient(interfaceType, type);
-                            }
-                            else if (typeof(IScopedDependency).IsAssignableFrom(interfaceType))
-                            {
-                                services.AddScoped(interfaceType, type);
-                            }
-                            else if (typeof(ISingletonDependency).IsAssignableFrom(interfaceType))
-                            {
-                                services.AddSingleton(interfaceType, type);
-                            }
-                        }
-                    }
-                }
-            }
-
-            return services;
-        }
 
         public static void AddRabbitMq(this IServiceCollection services, IConfiguration configuration)
         {
@@ -147,7 +83,6 @@ namespace FlyFramework.WebHost.Extentions
             }
             // 注册到依赖注入系统
             services.AddSingleton<IConnectionFactory>(_ => factory);
-            //services.AddSingleton<IRabbitMqManager, RabbitMqManager>();
         }
 
 
@@ -231,7 +166,6 @@ namespace FlyFramework.WebHost.Extentions
                 // 注册Redis缓存工具为单例服务
             }
             services.AddSingleton(minioClient);
-            //services.AddSingleton<IMinioManager, MinioManager>();
         }
 
         /// <summary>
@@ -299,90 +233,6 @@ namespace FlyFramework.WebHost.Extentions
              .AddInMemoryCaching()
              .AddTestUsers(IdentityConfig.GetUsers());
 
-        }
-
-        /// <summary>
-        /// JWT配置
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="configuration"></param>
-        public static void AddJWT(this IServiceCollection services, IConfigurationRoot configuration)
-        {
-            //将身份验证服务添加到管道中
-            var jwtBearer = configuration.GetSection("JwtBearer").Get<JwtBearerModel>();
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddCookie(options =>
-            {
-                options.Cookie.Name = "BearerCookie";
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(jwtBearer.AccessTokenExpiresMinutes);
-                options.SlidingExpiration = false;
-                options.LogoutPath = "/Home/Index";
-                options.Events = new CookieAuthenticationEvents
-                {
-                    OnSigningOut = async context =>
-                    {
-                        context.Response.Cookies.Delete("access-token");
-                        await Task.CompletedTask;
-                    }
-                };
-            })
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    //验证Audience
-                    ValidateAudience = true,
-                    ValidAudience = jwtBearer.Audience,
-                    //验证Issuer
-                    ValidateIssuer = true,
-                    ValidIssuer = jwtBearer.Issuer,
-                    //验证签发时间
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.FromMinutes(5),
-                    // 验证签名
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtBearer.SecretKey)),
-                };
-                options.Events = new JwtBearerEvents()
-                {
-                    OnAuthenticationFailed = context =>
-                    {
-                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                        {
-                            context.Response.Headers.Add("Token-Expired", "true");
-                        }
-                        return Task.CompletedTask;
-                    },
-                    OnChallenge = context =>
-                    {
-                        context.HandleResponse();
-                        var payload = JsonConvert.SerializeObject(new { Code = "401", Message = "很抱歉，您无权访问该接口" });
-                        context.Response.ContentType = "application/json";
-                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                        context.Response.WriteAsync(payload);
-                        return Task.CompletedTask;
-                    }
-                };
-            });
-        }
-
-        /// <summary>
-        /// 配置动态API
-        /// </summary>
-        public static void AddDynamicApi(this IServiceCollection services, WebApplicationBuilder builder)
-        {
-            services.AddMvc(options => { })
-                    .AddRazorPagesOptions((options) => { })
-                    .AddRazorRuntimeCompilation()
-                    .AddDynamicWebApi(builder.Configuration);
-
-            //services.AddSingleton<IJWTTokenManager, JWTTokenManager>();
-            services.AddSingleton<IJwtBearerModel, JwtBearerModel>();
         }
 
         /// <summary>
@@ -476,24 +326,6 @@ namespace FlyFramework.WebHost.Extentions
             });
         }
 
-        /// <summary>
-        /// 配置DbContext
-        /// </summary>
-        public static void AddDbContext(this IServiceCollection services, IConfigurationRoot configuration)
-        {
-            // 添加DbContext服务
-            services.UsingDatabaseServices(configuration, log);
-            //注册泛型仓储服务
-            services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
-            services.AddScoped<IDbContextProvider, DbContextProvider>();
-            // 注册IDbConnection，使用Scoped生命周期
-            services.AddScoped<IDbConnection>(provider =>
-                new SqlConnection(configuration.GetConnectionString("Default")));
-            services.AddScoped(typeof(IDapperManager<>), typeof(DapperManager<>));
-
-        }
-
-        /// <summary>
         /// 配置格式化响应
         /// </summary>
         public static void AddJsonOptions(this IServiceCollection services)
@@ -592,7 +424,11 @@ namespace FlyFramework.WebHost.Extentions
             hostBuilder.ConfigureContainer<ContainerBuilder>(containerBuilder =>
             {
                 // 注册自定义的 Autofac 模块
+                containerBuilder.RegisterModule(new FlyFrameworkCommonModule());
+                containerBuilder.RegisterModule(new FlyFrameworkDomainModule());
+                containerBuilder.RegisterModule(new FlyFrameworkRepositoriesModule());
                 containerBuilder.RegisterModule(new FlyFrameworkApplicationModule());
+                containerBuilder.RegisterModule(new FlyFrameworkCoreModule());
                 containerBuilder.RegisterModule(new FlyFrameworkWebHostModule());
             });
             return hostBuilder;

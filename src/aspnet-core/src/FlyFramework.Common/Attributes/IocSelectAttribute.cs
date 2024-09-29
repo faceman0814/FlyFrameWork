@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FlyFramework.Common.Attributes
+namespace FlyFramework.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class IocSelectAttribute : Attribute

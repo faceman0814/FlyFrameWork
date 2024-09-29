@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Attributes
+namespace FlyFramework.Attributes
 {
     /// <summary>
     /// 禁用工作单元属性

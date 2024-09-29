@@ -1,5 +1,5 @@
-﻿using FlyFramework.Common.Utilities.Minios;
-using FlyFramework.Domain.ApplicationServices;
+﻿using FlyFramework.ApplicationServices;
+using FlyFramework.Utilities.Minios;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,13 +7,13 @@ using Minio.DataModel.Result;
 
 using System;
 using System.Threading.Tasks;
-namespace FlyFramework.Application.Test
+namespace FlyFramework.Test
 {
     public class MinioAppService : ApplicationService, IApplicationService
     {
         private readonly IMinioManager _minioManager;
 
-        public MinioAppService(IServiceProvider serviceProvider, IMinioManager minioManager) : base(serviceProvider)
+        public MinioAppService(IServiceProvider serviceProvider, IMinioManager minioManager)
         {
             _minioManager = minioManager;
         }

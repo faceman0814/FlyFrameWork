@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Domain.Entities
+namespace FlyFramework.Entities
 {
     public interface IFullAuditedEntity<TPrimaryKey> : IAuditedEntity<TPrimaryKey>, ISoftDelete
     {

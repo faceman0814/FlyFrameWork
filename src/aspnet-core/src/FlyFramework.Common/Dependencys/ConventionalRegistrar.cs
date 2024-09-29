@@ -1,4 +1,4 @@
-﻿using FlyFramework.Common.Reflection;
+﻿using FlyFramework.Reflection;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace FlyFramework.Common.Dependencys
+namespace FlyFramework.Dependencys
 {
     /// <summary>
     /// 常规注册器，用于将程序集中的类型注册到依赖注入容器中。

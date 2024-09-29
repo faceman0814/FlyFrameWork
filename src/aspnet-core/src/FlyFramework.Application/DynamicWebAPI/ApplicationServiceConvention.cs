@@ -1,4 +1,4 @@
-﻿using FlyFramework.Domain.ApplicationServices;
+﻿using FlyFramework.ApplicationServices;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-namespace FlyFramework.Application.DynamicWebAPI
+namespace FlyFramework.DynamicWebAPI
 {
     /// <summary>
     /// 自定义应用程序模型约定，用于配置实现了 IApplicationService 接口的控制器。

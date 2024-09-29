@@ -1,9 +1,10 @@
-﻿using FlyFramework.Domain.Entities;
+﻿using FlyFramework.Entities;
 
 using Microsoft.AspNetCore.Identity;
 
 using System;
-namespace FlyFramework.Core.UserService
+using System.Collections.Generic;
+namespace FlyFramework.UserService
 {
     public class User : IdentityUser<string>, IFullAuditedEntity<string>
     {
@@ -24,7 +25,22 @@ namespace FlyFramework.Core.UserService
 
         public bool IsTransient()
         {
-            throw new NotImplementedException();
+            if (EqualityComparer<string>.Default.Equals(Id, default))
+            {
+                return true;
+            }
+
+            if (typeof(string) == typeof(int))
+            {
+                return Convert.ToInt32(Id) <= 0;
+            }
+
+            if (typeof(string) == typeof(long))
+            {
+                return Convert.ToInt64(Id) <= 0;
+            }
+
+            return false;
         }
     }
 }

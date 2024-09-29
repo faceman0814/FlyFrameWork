@@ -1,6 +1,6 @@
-﻿using FlyFramework.Common.FlyFrameworkModules.Interface;
-using FlyFramework.Common.FlyFrameworkModules.Modules;
-using FlyFramework.Common.Reflection;
+﻿using FlyFramework.FlyFrameworkModules.Interface;
+using FlyFramework.FlyFrameworkModules.Modules;
+using FlyFramework.Reflection;
 
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Reflection;
 
 
-namespace FlyFramework.Common.FlyFrameworkModules.Extensions
+namespace FlyFramework.FlyFrameworkModules.Extensions
 {
     internal static class FlyFrameworkBaseModuleHelper
     {

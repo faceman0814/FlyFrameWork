@@ -4,37 +4,48 @@
         <name>FlyFramework.Application</name>
     </assembly>
     <members>
-        <member name="T:FlyFramework.Application.DynamicWebAPI.ApplicationServiceControllerFeatureProvider">
+        <!-- Badly formed XML comment ignored for member "T:FlyFramework.AutoMapperExtensions" -->
+        <member name="M:FlyFramework.AutoMapperExtensions.IgnoreNullSourceProperties``2(AutoMapper.IMappingExpression{``0,``1},System.Collections.Generic.List{System.String})">
+            <summary>
+            忽略不需要映射的属性。
+            </summary>
+            <typeparam name="TSource"></typeparam>
+            <typeparam name="TDestination"></typeparam>
+            <param name="expression"></param>
+            <param name="ignoreProperties">指定需要忽略的属性名称列表</param>
+            <returns></returns>
+        </member>
+        <member name="T:FlyFramework.DynamicWebAPI.ApplicationServiceControllerFeatureProvider">
             <summary>
             自定义控制器特性提供程序，用于将实现了 IApplicationService 接口的类识别为控制器。
             </summary>
         </member>
-        <member name="M:FlyFramework.Application.DynamicWebAPI.ApplicationServiceControllerFeatureProvider.IsController(System.Reflection.TypeInfo)">
+        <member name="M:FlyFramework.DynamicWebAPI.ApplicationServiceControllerFeatureProvider.IsController(System.Reflection.TypeInfo)">
             <summary>
             判断给定的类型是否为控制器。
             </summary>
             <param name="typeInfo">要判断的类型信息。</param>
             <returns>如果类型是控制器，则返回 true；否则返回 false。</returns>
         </member>
-        <member name="T:FlyFramework.Application.DynamicWebAPI.ApplicationServiceConvention">
+        <member name="T:FlyFramework.DynamicWebAPI.ApplicationServiceConvention">
             <summary>
             自定义应用程序模型约定，用于配置实现了 IApplicationService 接口的控制器。
             </summary>
         </member>
-        <member name="M:FlyFramework.Application.DynamicWebAPI.ApplicationServiceConvention.Apply(Microsoft.AspNetCore.Mvc.ApplicationModels.ApplicationModel)">
+        <member name="M:FlyFramework.DynamicWebAPI.ApplicationServiceConvention.Apply(Microsoft.AspNetCore.Mvc.ApplicationModels.ApplicationModel)">
             <summary>
             应用约定
             </summary>
             <param name="application"></param>
         </member>
-        <member name="M:FlyFramework.Application.DynamicWebAPI.ApplicationServiceConvention.ConfigureSelector(System.String,Microsoft.AspNetCore.Mvc.ApplicationModels.ActionModel)">
+        <member name="M:FlyFramework.DynamicWebAPI.ApplicationServiceConvention.ConfigureSelector(System.String,Microsoft.AspNetCore.Mvc.ApplicationModels.ActionModel)">
             <summary>
             配置选择器
             </summary>
             <param name="controllerName"></param>
             <param name="action"></param>
         </member>
-        <member name="M:FlyFramework.Application.DynamicWebAPI.ApplicationServiceConvention.CreateActionSelector(System.String,Microsoft.AspNetCore.Mvc.ApplicationModels.ActionModel)">
+        <member name="M:FlyFramework.DynamicWebAPI.ApplicationServiceConvention.CreateActionSelector(System.String,Microsoft.AspNetCore.Mvc.ApplicationModels.ActionModel)">
             <summary>
             创建Action选择器
             </summary>
@@ -42,7 +53,7 @@
             <param name="action"></param>
             <returns></returns>
         </member>
-        <member name="M:FlyFramework.Application.DynamicWebAPI.ApplicationServiceConvention.ConfigureSelectorModel(Microsoft.AspNetCore.Mvc.ApplicationModels.SelectorModel,Microsoft.AspNetCore.Mvc.ApplicationModels.ActionModel,System.String,System.String)">
+        <member name="M:FlyFramework.DynamicWebAPI.ApplicationServiceConvention.ConfigureSelectorModel(Microsoft.AspNetCore.Mvc.ApplicationModels.SelectorModel,Microsoft.AspNetCore.Mvc.ApplicationModels.ActionModel,System.String,System.String)">
             <summary>
             配置选择器模型
             </summary>
@@ -52,63 +63,63 @@
             <param name="httpMethod"></param>
             <returns></returns>
         </member>
-        <member name="T:FlyFramework.Application.DynamicWebAPI.DynamicWebApiAttribute">
+        <member name="T:FlyFramework.DynamicWebAPI.DynamicWebApiAttribute">
             <summary>
             动态WebAPI特性
             </summary>
         </member>
-        <member name="T:FlyFramework.Application.DynamicWebAPI.DynamicWebApiExtensions">
+        <member name="T:FlyFramework.DynamicWebAPI.DynamicWebApiExtensions">
             <summary>
             动态WebAPI扩展类，用于在ASP.NET Core应用程序中添加动态WebAPI功能。
             </summary>
         </member>
-        <member name="M:FlyFramework.Application.DynamicWebAPI.DynamicWebApiExtensions.AddDynamicWebApi(Microsoft.Extensions.DependencyInjection.IMvcBuilder,Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="M:FlyFramework.DynamicWebAPI.DynamicWebApiExtensions.AddDynamicWebApi(Microsoft.Extensions.DependencyInjection.IMvcBuilder,Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
             为IMvcBuilder添加动态WebAPI功能。
             </summary>
             <param name="builder">IMvcBuilder实例。</param>
             <returns>IMvcBuilder实例。</returns>
         </member>
-        <member name="M:FlyFramework.Application.DynamicWebAPI.DynamicWebApiExtensions.AddDynamicWebApi(Microsoft.Extensions.DependencyInjection.IMvcCoreBuilder,Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="M:FlyFramework.DynamicWebAPI.DynamicWebApiExtensions.AddDynamicWebApi(Microsoft.Extensions.DependencyInjection.IMvcCoreBuilder,Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
             为IMvcCoreBuilder添加动态WebAPI功能。
             </summary>
             <param name="builder">IMvcCoreBuilder实例。</param>
             <returns>IMvcCoreBuilder实例。</returns>
         </member>
-        <member name="T:FlyFramework.Application.IocSelectPropertySelector">
+        <member name="T:FlyFramework.IocSelectPropertySelector">
             <summary>
             属性注入选择器
             </summary>
         </member>
-        <member name="M:FlyFramework.Application.Test.MinioAppService.IsBucketExit">
+        <member name="M:FlyFramework.Test.MinioAppService.IsBucketExit">
             <summary>
             1、判断指定bucket是否存在
             </summary>
             <param name="bucketName">bucket 名称</param>
             <returns></returns>
         </member>
-        <member name="M:FlyFramework.Application.Test.MinioAppService.CreateBucket">
+        <member name="M:FlyFramework.Test.MinioAppService.CreateBucket">
             <summary>
             2、 创建bucket
             </summary>
             <param name="bucketName">bucket 名称</param>
             <returns></returns>
         </member>
-        <member name="M:FlyFramework.Application.Test.MinioAppService.DeleteBucket">
+        <member name="M:FlyFramework.Test.MinioAppService.DeleteBucket">
             <summary>
             3、移除bucket
             </summary>
             <param name="bucketName">bucket 名称</param>
             <returns></returns>
         </member>
-        <member name="M:FlyFramework.Application.Test.MinioAppService.GetBucketList">
+        <member name="M:FlyFramework.Test.MinioAppService.GetBucketList">
             <summary>
             4、获取bucket列表
             </summary>
             <returns></returns>
         </member>
-        <member name="M:FlyFramework.Application.Test.MinioAppService.DownloadObject(System.String)">
+        <member name="M:FlyFramework.Test.MinioAppService.DownloadObject(System.String)">
             <summary>
             1、下载 bucket中的文件
             </summary>
@@ -119,7 +130,7 @@
             <param name="objectName">文件名</param>
             <param name="bucketName">桶名，默认flyframework</param>
         </member>
-        <member name="M:FlyFramework.Application.Test.MinioAppService.UploadObject(System.String)">
+        <member name="M:FlyFramework.Test.MinioAppService.UploadObject(System.String)">
             <summary>
              2、上传 本地指定文件
              </summary>
@@ -129,14 +140,14 @@
              <param name="fileFullPath">上传文件的完整绝对路径，例如：D:\test\test.txt</param>
              <param name="bucketName">桶名，默认flyframework</param>
         </member>
-        <member name="M:FlyFramework.Application.Test.MinioAppService.DeleteObject(System.String)">
+        <member name="M:FlyFramework.Test.MinioAppService.DeleteObject(System.String)">
             <summary>
             3、删除 指定桶中的指定文件
             </summary>
             <param name="objectName">文件名</param>
             <param name="bucketName">桶名，默认flyframework</param>
         </member>
-        <member name="M:FlyFramework.Application.Test.MinioAppService.GetObjectUrl(System.String)">
+        <member name="M:FlyFramework.Test.MinioAppService.GetObjectUrl(System.String)">
             <summary>
             4、获取 指定文件的Url链接 （有效期 7天）
             </summary>

@@ -3,24 +3,38 @@ using Autofac.Core;
 
 using AutoMapper;
 
-using FlyFramework.Application.UserService.Mappers;
-using FlyFramework.Common.Attributes;
-using FlyFramework.Common.FlyFrameworkModules.Modules;
-using FlyFramework.Core;
-using FlyFramework.Repositories.Uow;
-using FlyFramework.Repositories.UserSessions;
+using Castle.Core.Logging;
+
+using FlyFramework.Attributes;
+using FlyFramework.Authorizations;
+using FlyFramework.FlyFrameworkModules;
+using FlyFramework.FlyFrameworkModules.Modules;
+using FlyFramework.Uow;
+using FlyFramework.UserModule.Mappers;
+using FlyFramework.UserSessions;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using System.Linq;
 using System.Reflection;
 
-namespace FlyFramework.Application
+namespace FlyFramework
 {
     [DependOn(typeof(FlyFrameworkCoreModule))]
     public class FlyFrameworkApplicationModule : FlyFrameworkBaseModule
     {
+        public override void PreInitialize(ServiceConfigerContext context)
+        {
+            // 配置 AutoMapper
+            context.Services.AddAutoMapper((serviceProvider, configuration) =>
+            {
+                UserMapper.CreateMappings(configuration);
+
+            }, typeof(FlyFrameworkApplicationModule));
+        }
+
         protected override void Load(ContainerBuilder builder)
         {
-            //ApplicationService的属性注入
             builder.RegisterType<UserSession>()
                    .As<IUserSession>()
                    .InstancePerLifetimeScope();
@@ -29,25 +43,27 @@ namespace FlyFramework.Application
                   .As<IUnitOfWorkManager>()
                   .InstancePerLifetimeScope();
 
-            AddMapper(builder);
+
+            builder.RegisterType<Mapper>()
+                 .As<IMapper>()
+                 .SingleInstance();
+
+            builder.RegisterType<LogInManager>()
+                 .As<ILogInManager>()
+                 .SingleInstance();
+
+            builder.Register(c => new ConsoleLogger())
+                .As<ILogger>()
+                .InstancePerLifetimeScope();
 
             // 注册所有应用服务，并开启属性注入
             builder.RegisterAssemblyTypes(typeof(FlyFrameworkApplicationModule).Assembly)
-                   .Where(t => t.Name.EndsWith("AppService"))
+                   //.Where(t => t.Name.EndsWith("AppService"))
                    //.EnableClassInterceptors() // 如果使用拦截器
                    .PropertiesAutowired(new IocSelectPropertySelector()); // 启用属性注入
         }
-        public static void AddMapper(ContainerBuilder builder)
-        {
-            // AutoMapper 配置
-            var mapperConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new UserMapper());
-            });
-            IMapper mapper = mapperConfig.CreateMapper();
-            builder.RegisterInstance(mapper).As<IMapper>().SingleInstance();
-        }
     }
+
     /// <summary>
     /// 属性注入选择器
     /// </summary>

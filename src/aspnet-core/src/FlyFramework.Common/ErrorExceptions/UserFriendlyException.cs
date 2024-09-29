@@ -1,4 +1,4 @@
-﻿using FlyFramework.Common.Enums;
+﻿using FlyFramework.Enums;
 
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.ErrorExceptions
+namespace FlyFramework.ErrorExceptions
 {
     [Serializable]
     public class UserFriendlyException : Exception

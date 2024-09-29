@@ -1,9 +1,8 @@
-﻿using FlyFramework.Common;
-using FlyFramework.Common.Dependencys;
-using FlyFramework.Common.ErrorExceptions;
-using FlyFramework.Common.Extentions;
-using FlyFramework.Common.Extentions.Object;
-using FlyFramework.Repositories.Repositories;
+﻿using FlyFramework.Dependencys;
+using FlyFramework.ErrorExceptions;
+using FlyFramework.Extentions;
+using FlyFramework.Extentions.Object;
+using FlyFramework.Repositories;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +11,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-namespace FlyFramework.Domain.Domains
+namespace FlyFramework.Domains
 {
     public abstract class DomainService<TEntity, TPrimaryKey> : IDomainService<TEntity, TPrimaryKey>, ITransientDependency where TEntity : class, IEntity<TPrimaryKey>
     {

@@ -1,6 +1,6 @@
-﻿using FlyFramework.Common.FlyFrameworkModules.Interface;
+﻿using FlyFramework.FlyFrameworkModules.Interface;
 
-namespace FlyFramework.Common.FlyFrameworkModules.Modules
+namespace FlyFramework.FlyFrameworkModules.Modules
 {
     public class ObjectAccessor<T> : IObjectAccessor<T>
     {

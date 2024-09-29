@@ -10,7 +10,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace FlyFramework.WebHost.Filters
+namespace FlyFramework.Filters
 {
     public class AutoFromBodyActionFilter : IAsyncActionFilter
     {

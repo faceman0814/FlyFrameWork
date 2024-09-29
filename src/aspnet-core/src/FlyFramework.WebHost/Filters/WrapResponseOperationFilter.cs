@@ -1,11 +1,11 @@
-﻿using FlyFramework.Common.Extentions;
+﻿using FlyFramework.Extentions;
 
 using Microsoft.OpenApi.Models;
 
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 using System.Threading.Tasks;
-namespace FlyFramework.WebHost.Filters
+namespace FlyFramework.Filters
 {
     public class WrapResponseOperationFilter : IOperationFilter
     {

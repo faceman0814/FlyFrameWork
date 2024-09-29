@@ -1,5 +1,5 @@
-﻿using FlyFramework.Common.ErrorExceptions;
-using FlyFramework.Common.Extentions;
+﻿using FlyFramework.ErrorExceptions;
+using FlyFramework.Extentions;
 
 using log4net;
 
@@ -18,7 +18,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Attributes
+namespace FlyFramework.Attributes
 {
     public class ApiResultFilterAttribute : ActionFilterAttribute
     {

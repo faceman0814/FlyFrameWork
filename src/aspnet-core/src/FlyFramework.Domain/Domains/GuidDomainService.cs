@@ -1,14 +1,14 @@
-﻿using FlyFramework.Common.Dependencys;
-using FlyFramework.Common.Extentions.Object;
-using FlyFramework.Domain.Entities;
-using FlyFramework.Repositories.UserSessions;
+﻿using FlyFramework.Dependencys;
+using FlyFramework.Entities;
+using FlyFramework.Extentions.Object;
+using FlyFramework.UserSessions;
 
 using Microsoft.Extensions.DependencyInjection;
 
 using System;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Domain.Domains
+namespace FlyFramework.Domains
 {
     public abstract class GuidDomainService<TEntity> : DomainService<TEntity, string>, IGuidDomainService<TEntity>, ITransientDependency where TEntity : class, IFullAuditedEntity<string>
     {

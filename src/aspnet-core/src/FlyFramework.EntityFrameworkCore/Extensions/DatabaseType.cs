@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace FlyFramework.EntityFrameworkCore.Extensions
+namespace FlyFramework.Extensions
 {
     public enum DatabaseType
     {
@@ -10,6 +10,8 @@ namespace FlyFramework.EntityFrameworkCore.Extensions
         MySql,
         [Description("Psotgre")]
         Psotgre,
+        [Description("Oracle")]
+        Oracle,
         [Description("SQLite")]
         Sqlite
     }

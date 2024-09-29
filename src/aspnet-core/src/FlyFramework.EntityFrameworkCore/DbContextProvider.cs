@@ -1,8 +1,8 @@
-﻿using FlyFramework.Repositories.Repositories;
+﻿using FlyFramework.Repositories;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace FlyFramework.EntityFrameworkCore
+namespace FlyFramework
 {
     public class DbContextProvider : IDbContextProvider
     {

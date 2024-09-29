@@ -1,11 +1,13 @@
 ﻿using DotNetCore.CAP;
 
-using FlyFramework.Common.Dependencys;
+using FlyFramework.Dependencys;
+using FlyFramework.Utilities.EventBus;
+using FlyFramework.Utilities.EventBus.Distributed;
 
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-namespace FlyFramework.Common.Utilities.EventBus.Distributed.Cap
+namespace FlyFramework.Utilities.EventBus.Distributed.Cap
 {
     public class CapDistributedEventBus : IDistributedEventBus, ITransientDependency
     {

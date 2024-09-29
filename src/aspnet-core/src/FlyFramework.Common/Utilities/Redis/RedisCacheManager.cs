@@ -6,7 +6,7 @@ using ServiceStack.Redis;
 
 using System;
 using System.Threading.Tasks;
-namespace FlyFramework.Common.Utilities.Redis
+namespace FlyFramework.Utilities.Redis
 {
     public class RedisCacheManager : ICacheManager
     {
@@ -20,7 +20,7 @@ namespace FlyFramework.Common.Utilities.Redis
 
         }
 
-        public async void SetCache<T>(string key, T value, DateTime? expireTime = null)
+        public async void SetCache<T>(string key, T value, DateTime? expireTime = null, string name = null)
         {
             try
             {
@@ -35,12 +35,12 @@ namespace FlyFramework.Common.Utilities.Redis
                 }
                 if (expireTime == null)
                 {
-                    _redisClient.Set(InitKey(key), strValue);
+                    _redisClient.Set(name ?? InitKey(key), strValue);
 
                 }
                 else
                 {
-                    _redisClient.Set(InitKey(key), strValue, expireTime.Value);
+                    _redisClient.Set(name ?? InitKey(key), strValue, expireTime.Value);
                 }
             }
             catch (Exception ex)
@@ -76,9 +76,9 @@ namespace FlyFramework.Common.Utilities.Redis
             return $"{_configuration["Redis:preName"]}{key}";
         }
 
-        public async Task SetCacheAsync<T>(string key, T value, DateTime? expireTime = null)
+        public async Task SetCacheAsync<T>(string key, T value, DateTime? expireTime = null, string name = null)
         {
-            await Task.Run(() => SetCache(key, value, expireTime));
+            await Task.Run(() => SetCache(key, value, expireTime, name));
         }
 
         public async Task<T> GetCacheAsync<T>(string key)

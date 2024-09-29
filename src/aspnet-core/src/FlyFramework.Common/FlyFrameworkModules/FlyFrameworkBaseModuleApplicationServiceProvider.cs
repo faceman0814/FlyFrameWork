@@ -1,10 +1,10 @@
-﻿using FlyFramework.Common.FlyFrameworkModules.Interface;
+﻿using FlyFramework.FlyFrameworkModules.Interface;
 
 using Microsoft.Extensions.DependencyInjection;
 
 using System;
 using System.Threading.Tasks;
-namespace FlyFramework.Common.FlyFrameworkModules
+namespace FlyFramework.FlyFrameworkModules
 {
     /// <summary>
     /// 模块初始化Provider

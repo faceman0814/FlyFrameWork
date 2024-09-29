@@ -1,5 +1,5 @@
-﻿using FlyFramework.Core.RoleService;
-using FlyFramework.Core.UserService;
+﻿using FlyFramework.RoleService;
+using FlyFramework.UserService;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-namespace FlyFramework.EntityFrameworkCore
+namespace FlyFramework
 {
     public class FlyFrameworkDbContext : IdentityDbContext<User, Role, string>
     {
@@ -21,7 +21,7 @@ namespace FlyFramework.EntityFrameworkCore
         {
             return base.SaveChanges(acceptAllChangesOnSuccess);
         }
-        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
             //OnBeforeSaving();
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
@@ -39,7 +39,7 @@ namespace FlyFramework.EntityFrameworkCore
             //}
 
             //从当前程序集中加载实现了IDesignTimeDbContextFactory接口的配置类
-            modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
 
             //设置表名
             modelBuilder.Entity<User>().ToTable("User");

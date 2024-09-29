@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using System;
 
-namespace FlyFramework.Application.DynamicWebAPI
+namespace FlyFramework.DynamicWebAPI
 {
     /// <summary>
     /// 动态WebAPI扩展类，用于在ASP.NET Core应用程序中添加动态WebAPI功能。

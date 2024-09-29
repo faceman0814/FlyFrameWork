@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Utilities.EventBus
+namespace FlyFramework.Utilities.EventBus
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class EventNameAttribute : Attribute
@@ -17,12 +17,12 @@ namespace FlyFramework.Common.Utilities.EventBus
             Name = name;
         }
 
-        public static string? GetNameOrDefault<TEvent>()
+        public static string GetNameOrDefault<TEvent>()
         {
             return GetNameOrDefault(typeof(TEvent));
         }
 
-        public static string? GetNameOrDefault([NotNull] Type eventType)
+        public static string GetNameOrDefault([NotNull] Type eventType)
         {
             return eventType
                        .GetCustomAttributes(true)
@@ -32,7 +32,7 @@ namespace FlyFramework.Common.Utilities.EventBus
                    ?? eventType.FullName;
         }
 
-        public string? GetName(Type eventType)
+        public string GetName(Type eventType)
         {
             return Name;
         }

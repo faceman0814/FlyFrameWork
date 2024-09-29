@@ -1,4 +1,4 @@
-﻿namespace FlyFramework.Domain.Localizations;
+﻿namespace FlyFramework.Localizations;
 
 public sealed class JsonLocalizationOptions
 {

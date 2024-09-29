@@ -5,7 +5,7 @@ using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-namespace FlyFramework.Domain.Localizations
+namespace FlyFramework.Localizations
 {
     public class LocalizationSource : ILocalizationSource
     {

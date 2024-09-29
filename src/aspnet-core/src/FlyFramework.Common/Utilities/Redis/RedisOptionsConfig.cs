@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Utilities.Redis
+namespace FlyFramework.Utilities.Redis
 {
     public class RedisOptionsConfig
     {

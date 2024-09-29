@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Repositories.UserSessions
+namespace FlyFramework.UserSessions
 {
     public class NullUserSession : IUserSession
     {

@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
+using System.Globalization;
 
-namespace FlyFramework.Common.Extentions.Object
+namespace FlyFramework.Extentions.Object
 {
     /// <summary>
     /// FlyFramework对象扩展
@@ -64,6 +62,26 @@ namespace FlyFramework.Common.Extentions.Object
         public static T Deserialize<T>(this string jsonContent)
         {
             return Instance.Deserialize<T>(jsonContent);
+        }
+
+        public static T To<T>(this object obj) where T : struct
+        {
+            if (typeof(T) == typeof(Guid) || typeof(T) == typeof(TimeSpan))
+            {
+                return (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromInvariantString(obj.ToString());
+            }
+
+            if (typeof(T).IsEnum)
+            {
+                if (Enum.IsDefined(typeof(T), obj))
+                {
+                    return (T)Enum.Parse(typeof(T), obj.ToString());
+                }
+
+                throw new ArgumentException($"Enum type undefined '{obj}'.");
+            }
+
+            return (T)Convert.ChangeType(obj, typeof(T), CultureInfo.InvariantCulture);
         }
     }
 }

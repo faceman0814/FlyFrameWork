@@ -1,4 +1,4 @@
-﻿namespace FlyFramework.Common.FlyFrameworkModules.Interface
+﻿namespace FlyFramework.FlyFrameworkModules.Interface
 {
     public interface IObjectAccessor<T>
     {

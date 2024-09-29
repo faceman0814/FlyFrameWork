@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Utilities.EventBus.MediatR
+namespace FlyFramework.Utilities.EventBus.MediatR
 {
     public class FlyFrameworkPublisher : INotificationPublisher
     {

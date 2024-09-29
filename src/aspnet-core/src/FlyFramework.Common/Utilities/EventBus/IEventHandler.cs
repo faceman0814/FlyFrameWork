@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Utilities.EventBus
+namespace FlyFramework.Utilities.EventBus
 {
     public interface IEventHandler
     {

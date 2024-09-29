@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-namespace FlyFramework.Common.Utilities.EventBus.Distributed
+namespace FlyFramework.Utilities.EventBus.Distributed
 {
     public interface IDistributedEventBus
     {

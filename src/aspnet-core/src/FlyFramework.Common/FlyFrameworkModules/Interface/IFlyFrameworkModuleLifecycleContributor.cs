@@ -1,7 +1,8 @@
-﻿using FlyFramework.Common.Dependencys;
+﻿using FlyFramework.Dependencys;
+using FlyFramework.FlyFrameworkModules;
 
 using System.Threading.Tasks;
-namespace FlyFramework.Common.FlyFrameworkModules.Interface
+namespace FlyFramework.FlyFrameworkModules.Interface
 {
     public interface IFlyFrameworkModuleLifecycleContributor : ITransientDependency
     {

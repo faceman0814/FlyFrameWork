@@ -1,4 +1,4 @@
-﻿using FlyFramework.Common.FlyFrameworkModules.Interface;
+﻿using FlyFramework.FlyFrameworkModules.Interface;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-namespace FlyFramework.Common.FlyFrameworkModules.Modules
+namespace FlyFramework.FlyFrameworkModules.Modules
 {
     public class FlyFrameworkModuleManager : IFlyFrameworkModuleManager
     {

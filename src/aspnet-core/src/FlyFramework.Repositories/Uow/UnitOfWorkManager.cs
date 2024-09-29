@@ -1,23 +1,19 @@
-﻿using FlyFramework.Repositories.Repositories;
+﻿using FlyFramework.Repositories;
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace FlyFramework.Repositories.Uow
+namespace FlyFramework.Uow
 {
     public class UnitOfWorkManager : IUnitOfWorkManager
     {
-        private IUnitOfWork? _currentUnitOfWork;
+        private IUnitOfWork _currentUnitOfWork;
         private readonly IDbContextProvider _dbContextProvider;
         public UnitOfWorkManager(IDbContextProvider dbContextProvider)
         {
             _dbContextProvider = dbContextProvider;
         }
         // 获取当前的工作单元，如果不存在，则返回null。
-        public IUnitOfWork? Current => _currentUnitOfWork;
+        public IUnitOfWork Current => _currentUnitOfWork;
 
         /// <summary>
         /// 开始一个新的工作单元，并设置为当前工作单元。

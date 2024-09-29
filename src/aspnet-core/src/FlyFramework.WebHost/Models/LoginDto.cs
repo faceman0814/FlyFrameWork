@@ -1,9 +1,9 @@
-﻿namespace FlyFramework.WebHost.Models
+﻿namespace FlyFramework.Models
 {
     public class LoginDto
     {
         public string UserName { get; set; }
         public string Password { get; set; }
-        public bool IsApiLogin { get; set; }
+        public bool IsApiLogin { get; set; } = true;
     }
 }

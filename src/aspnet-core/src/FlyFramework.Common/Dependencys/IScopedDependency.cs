@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Dependencys
+namespace FlyFramework.Dependencys
 {
     /// <summary>
     /// 定义一个生命周期为Scope的依赖注入接口

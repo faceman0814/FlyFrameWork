@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Domain.Entities
+namespace FlyFramework.Entities
 {
     [Serializable]
     public class AuditedEntity<TPrimaryKey> : CreationAuditedEntity<TPrimaryKey>, IAuditedEntity<TPrimaryKey>

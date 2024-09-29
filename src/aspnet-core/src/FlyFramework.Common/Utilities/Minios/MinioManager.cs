@@ -8,7 +8,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Utilities.Minios
+namespace FlyFramework.Utilities.Minios
 {
     public class MinioManager : IMinioManager
     {

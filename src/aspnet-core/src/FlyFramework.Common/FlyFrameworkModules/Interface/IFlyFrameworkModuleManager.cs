@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-namespace FlyFramework.Common.FlyFrameworkModules.Interface
+namespace FlyFramework.FlyFrameworkModules.Interface
 {
     public interface IFlyFrameworkModuleManager
     {

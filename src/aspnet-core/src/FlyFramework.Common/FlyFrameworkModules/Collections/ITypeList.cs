@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace FlyFramework.Common.FlyFrameworkModules.Collections
+namespace FlyFramework.FlyFrameworkModules.Collections
 {
     /// <summary>
     /// A shortcut for <see cref="ITypeList{TBaseType}"/> to use object as base type.

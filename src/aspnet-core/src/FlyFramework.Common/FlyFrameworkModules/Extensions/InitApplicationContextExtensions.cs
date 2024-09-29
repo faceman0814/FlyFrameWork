@@ -1,12 +1,13 @@
-﻿using FlyFramework.Common.FlyFrameworkModules.Interface;
-using FlyFramework.Common.FlyFrameworkModules.Modules;
+﻿using FlyFramework.FlyFrameworkModules;
+using FlyFramework.FlyFrameworkModules.Interface;
+using FlyFramework.FlyFrameworkModules.Modules;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 using System;
 using System.Threading.Tasks;
-namespace FlyFramework.Common.FlyFrameworkModules.Extensions
+namespace FlyFramework.FlyFrameworkModules.Extensions
 {
     public static class InitApplicationContextExtensions
     {

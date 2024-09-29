@@ -1,7 +1,7 @@
-﻿using FlyFramework.Common.FlyFrameworkModules.Interface;
+﻿using FlyFramework.FlyFrameworkModules.Interface;
 
 using System.Threading.Tasks;
-namespace FlyFramework.Common.FlyFrameworkModules.Modules
+namespace FlyFramework.FlyFrameworkModules.Modules
 {
     public abstract class FlyFrameworkModuleLifecycleContributor : IFlyFrameworkModuleLifecycleContributor
     {

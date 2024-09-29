@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
 using System.Threading.Tasks;
-namespace FlyFramework.Application.Test
+namespace FlyFramework.Test
 {
     public class SignalRTestHub : Hub
     {

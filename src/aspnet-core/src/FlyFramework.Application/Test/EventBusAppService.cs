@@ -1,10 +1,10 @@
 ﻿using DotNetCore.CAP;
 
-using FlyFramework.Common.Dependencys;
-using FlyFramework.Common.Utilities.EventBus;
-using FlyFramework.Common.Utilities.EventBus.Distributed;
-using FlyFramework.Common.Utilities.EventBus.Local;
-using FlyFramework.Domain.ApplicationServices;
+using FlyFramework.ApplicationServices;
+using FlyFramework.Dependencys;
+using FlyFramework.Utilities.EventBus;
+using FlyFramework.Utilities.EventBus.Distributed;
+using FlyFramework.Utilities.EventBus.Local;
 
 using MediatR;
 
@@ -14,14 +14,14 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-namespace FlyFramework.Application.Test
+namespace FlyFramework.Test
 {
     public class EventBusAppService : ApplicationService, IApplicationService
     {
         private readonly ILocalEventBus _localEventBus;
         private readonly IDistributedEventBus _distributedEventBus;
 
-        public EventBusAppService(IServiceProvider serviceProvider, ILocalEventBus localEventBus, IDistributedEventBus distributedEventBus) : base(serviceProvider)
+        public EventBusAppService(IServiceProvider serviceProvider, ILocalEventBus localEventBus, IDistributedEventBus distributedEventBus)
         {
             _localEventBus = localEventBus;
             _distributedEventBus = distributedEventBus;

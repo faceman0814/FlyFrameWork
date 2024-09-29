@@ -5,15 +5,15 @@
 using Microsoft.Extensions.DependencyInjection;
 
 using System;
-namespace FlyFramework.Core.LazyModule.LazyDefinition
+namespace FlyFramework.LazyModule.LazyDefinition
 {
     public class FlyFrameworkLazy<T> : IFlyFrameworkLazy<T>
     {
-        private readonly System.Lazy<T> _value;
+        private readonly Lazy<T> _value;
 
         public FlyFrameworkLazy(IServiceProvider serviceProvider)
         {
-            _value = new System.Lazy<T>(() =>
+            _value = new Lazy<T>(() =>
             {
                 return serviceProvider.GetService<T>();
             });

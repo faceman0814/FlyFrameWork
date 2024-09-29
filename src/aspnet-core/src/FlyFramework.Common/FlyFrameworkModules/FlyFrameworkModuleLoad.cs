@@ -1,13 +1,12 @@
-﻿using FlyFramework.Common.FlyFrameworkModules.Extensions;
-using FlyFramework.Common.FlyFrameworkModules.Interface;
-using FlyFramework.Common.FlyFrameworkModules.Modules;
+﻿using FlyFramework.FlyFrameworkModules.Extensions;
+using FlyFramework.FlyFrameworkModules.Interface;
+using FlyFramework.FlyFrameworkModules.Modules;
 
 using Microsoft.Extensions.DependencyInjection;
 
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-namespace FlyFramework.Common.FlyFrameworkModules
+namespace FlyFramework.FlyFrameworkModules
 {
     public class FlyFrameworkModuleLoad : IFlyFrameworkModuleLoad
     {

@@ -4,5 +4,43 @@
         <name>FlyFramework.Core</name>
     </assembly>
     <members>
+        <member name="M:FlyFramework.Authorizations.ILogInManager.LoginAsync(FlyFramework.UserService.User)">
+            <summary>
+            获取登录用户信息
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.Authorizations.ILogInManager.GetClaims(System.String)">
+            <summary>
+            获取用户信息
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
+        <member name="F:FlyFramework.FlyFrameworkConst.AccessTokenExpiration">
+            <summary>
+            Token过期时间 默认1天
+            </summary>
+        </member>
+        <member name="F:FlyFramework.FlyFrameworkConst.RefreshTokenExpiration">
+            <summary>
+            RefreshToken过期时间 默认30h
+            </summary>
+        </member>
+        <member name="M:FlyFramework.UserService.DomainService.IUserManager.FindByNameAsync(System.String)">
+            <summary>
+            根据用户名查找用户
+            </summary>
+            <param name="userName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.UserService.DomainService.IUserManager.CreateUserAsync(FlyFramework.UserService.User)">
+            <summary>
+            创建用户
+            </summary>
+            <param name="email"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Extentions.ContractResolvers
+namespace FlyFramework.Extentions.ContractResolvers
 {
     public class NonPublicSetterContractResolver : DefaultContractResolver
     {

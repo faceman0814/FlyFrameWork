@@ -1,4 +1,4 @@
-﻿using FlyFramework.Common.Utilities.EventBus.MediatR;
+﻿using FlyFramework.Utilities.EventBus.MediatR;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Common.Utilities.EventBus
+namespace FlyFramework.Utilities.EventBus
 {
     public static class EventBusExtensions
     {

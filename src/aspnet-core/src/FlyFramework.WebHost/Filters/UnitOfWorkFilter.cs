@@ -1,5 +1,5 @@
-﻿using FlyFramework.Common.Attributes;
-using FlyFramework.Repositories.Uow;
+﻿using FlyFramework.Attributes;
+using FlyFramework.Uow;
 
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 using System;
 using System.Threading.Tasks;
-namespace FlyFramework.WebHost.Filters
+namespace FlyFramework.Filters
 {
 
     public class UnitOfWorkFilter : IAsyncActionFilter, IOrderedFilter

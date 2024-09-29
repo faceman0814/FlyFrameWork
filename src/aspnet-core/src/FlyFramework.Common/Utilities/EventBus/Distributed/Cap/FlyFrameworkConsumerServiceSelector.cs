@@ -1,6 +1,9 @@
 ﻿using DotNetCore.CAP;
 using DotNetCore.CAP.Internal;
 
+using FlyFramework.Utilities.EventBus;
+using FlyFramework.Utilities.EventBus.Distributed;
+
 using Microsoft.Extensions.DependencyInjection;
 
 using System;
@@ -8,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-namespace FlyFramework.Common.Utilities.EventBus.Distributed.Cap
+namespace FlyFramework.Utilities.EventBus.Distributed.Cap
 {
     public class FlyFrameworkConsumerServiceSelector : ConsumerServiceSelector
     {

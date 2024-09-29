@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-namespace FlyFramework.Common.FlyFrameworkModules
+namespace FlyFramework.FlyFrameworkModules
 {
     public class ServiceConfigerContext
     {

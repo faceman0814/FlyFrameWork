@@ -1,15 +1,9 @@
-﻿using FlyFramework.Common.Dependencys;
+﻿using Microsoft.AspNetCore.Http;
 
-using Microsoft.AspNetCore.Http;
-
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace FlyFramework.Repositories.UserSessions
+namespace FlyFramework.UserSessions
 {
     public class UserSession : IUserSession
     {

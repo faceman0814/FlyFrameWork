@@ -20,4 +20,4 @@ Thumbs.db
 /FlyFramework.Common/bin
 /FlyFramework.Common/obj
 /FlyFramework.Common/obj
-/src/aspnet-core/FlyFramework.WebHost/App_Data/Log
+/src/aspnet-core/src/FlyFramework.WebHost/App_Data/Log

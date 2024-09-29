@@ -1,10 +1,8 @@
-﻿using FlyFramework.Common.Dependencys;
-
-using System;
+﻿using System;
 using System.Threading.Tasks;
-namespace FlyFramework.Common.Utilities.Redis
+namespace FlyFramework.Utilities.Redis
 {
-    public interface ICacheManager : ISingletonDependency
+    public interface ICacheManager
     {
         /// <summary>
         /// 设置缓存
@@ -14,8 +12,8 @@ namespace FlyFramework.Common.Utilities.Redis
         /// <param name="value"></param>
         /// <param name="expireTime"></param>
         /// <returns></returns>
-        Task SetCacheAsync<T>(string key, T value, DateTime? expireTime = null);
-        void SetCache<T>(string key, T value, DateTime? expireTime = null);
+        Task SetCacheAsync<T>(string key, T value, DateTime? expireTime = null, string name = null);
+        void SetCache<T>(string key, T value, DateTime? expireTime = null, string name = null);
 
         /// <summary>
         /// 获取缓存

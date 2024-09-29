@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FlyFramework.Common.FlyFrameworkModules
+namespace FlyFramework.FlyFrameworkModules
 {
     public class InitApplicationContext
     {
