@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace FlyFramework.EntityFrameworkCore.Migrations
+namespace FlyFramework.Migrations
 {
     /// <inheritdoc />
     public partial class Init : Migration
@@ -27,6 +27,7 @@ namespace FlyFramework.EntityFrameworkCore.Migrations
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatorUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatorUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -55,6 +56,7 @@ namespace FlyFramework.EntityFrameworkCore.Migrations
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatorUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatorUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -187,7 +189,8 @@ namespace FlyFramework.EntityFrameworkCore.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -208,18 +211,18 @@ namespace FlyFramework.EntityFrameworkCore.Migrations
 
             migrationBuilder.InsertData(
                 table: "Role",
-                columns: new[] { "Id", "ConcurrencyStamp", "ConcurrencyToken", "CreationTime", "CreatorUserId", "CreatorUserName", "DeleterUserId", "DeleterUserName", "DeletionTime", "IsDeleted", "LastModificationTime", "LastModifierUserId", "LastModifierUserName", "Name", "NormalizedName" },
-                values: new object[] { "f782747be4e2456facdfa5fc36280118", null, null, new DateTime(2024, 9, 21, 18, 31, 28, 234, DateTimeKind.Local).AddTicks(9312), null, null, null, null, null, false, null, null, null, "管理员", null });
+                columns: new[] { "Id", "ConcurrencyStamp", "ConcurrencyToken", "CreationTime", "CreatorUserId", "CreatorUserName", "DeleterUserId", "DeleterUserName", "DeletionTime", "IsDeleted", "LastModificationTime", "LastModifierUserId", "LastModifierUserName", "Name", "NormalizedName", "TenantId" },
+                values: new object[] { "ebc475fb319b45db91024d861ec9a02e", null, null, new DateTime(2024, 9, 29, 23, 3, 11, 308, DateTimeKind.Local).AddTicks(4379), null, null, null, null, null, false, null, null, null, "管理员", null, null });
 
             migrationBuilder.InsertData(
                 table: "User",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "ConcurrencyToken", "CreationTime", "CreatorUserId", "CreatorUserName", "DeleterUserId", "DeleterUserName", "DeletionTime", "Email", "EmailConfirmed", "FullName", "IsActive", "IsDeleted", "LastModificationTime", "LastModifierUserId", "LastModifierUserName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "eb4d30090bdd489e8becd10ab88d69d3", 0, "d384dc94-f3d6-4527-8222-a844d0e639a2", null, new DateTime(2024, 9, 21, 18, 31, 28, 234, DateTimeKind.Local).AddTicks(9498), null, null, null, null, null, "1234567890@qq.com", true, "xxx", false, false, null, null, null, false, null, "1234567890@QQ.COM", "ADMIN", null, "AQAAAAIAAYagAAAAEJ+SwbfezD+Y5+oq0gkDBGV/LkAMHwmPHYQxYXGPI8vZ0KvYXdMyZpbcGaWSpfOixw==", "1234567890", false, "Mecca", false, "admin" });
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "ConcurrencyToken", "CreationTime", "CreatorUserId", "CreatorUserName", "DeleterUserId", "DeleterUserName", "DeletionTime", "Email", "EmailConfirmed", "FullName", "IsActive", "IsDeleted", "LastModificationTime", "LastModifierUserId", "LastModifierUserName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TenantId", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "4957adb8870f4e79882231537ff5d3b9", 0, "50db534b-38eb-4ad2-90dd-b41cde361863", null, new DateTime(2024, 9, 29, 23, 3, 11, 308, DateTimeKind.Local).AddTicks(4626), null, null, null, null, null, "1234567890@qq.com", true, "xxx", false, false, null, null, null, false, null, "1234567890@QQ.COM", "ADMIN", null, "AQAAAAIAAYagAAAAEOKgYhNJjC4CzhumPbn9fqwCtGfrPfB+VBVV72rUWnbXPvyDagn7w/wxg7/C7G+Sqw==", "1234567890", false, "Mecca", null, false, "admin" });
 
             migrationBuilder.InsertData(
                 table: "UserRole",
-                columns: new[] { "Id", "RoleId", "UserId" },
-                values: new object[] { "387ade8e84204031be9915b82b74db1c", "f782747be4e2456facdfa5fc36280118", "eb4d30090bdd489e8becd10ab88d69d3" });
+                columns: new[] { "Id", "RoleId", "TenantId", "UserId" },
+                values: new object[] { "cae37d839449493ba462ce4f89f4925c", "ebc475fb319b45db91024d861ec9a02e", null, "4957adb8870f4e79882231537ff5d3b9" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

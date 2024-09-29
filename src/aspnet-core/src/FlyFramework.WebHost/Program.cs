@@ -49,6 +49,13 @@ public static class AppConfig
 
         services.AddHttpContextAccessor();
 
+        // 添加JSON多语言
+        services.AddJsonLocalization(options =>
+        {
+            options.ResourcesPath = "Localizations";
+
+        }, typeof(FlyFrameworkWebHostModule));
+
         //// 添加应用程序模块
         builder.Services.AddApplication<FlyFrameworkWebHostModule>();
 
@@ -79,15 +86,9 @@ public static class AppConfig
 
         services.AddRabbitMq(configuration);
 
-
         services.AddSignalR();
 
-        // 添加JSON多语言
-        services.AddJsonLocalization(options =>
-        {
-            options.ResourcesPath = "Localizations";
-
-        }, typeof(FlyFrameworkWebHostModule));
+        //services.UseKestrel(builder);
 
         // 替换控制器构造器激活器以支持通过Autofac进行依赖注入
         builder.Services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
@@ -104,6 +105,7 @@ public static class AppConfig
         app = _app;
         // 启用跨域
         app.UseCors("DefaultCorsPolicy");
+
         // 启用中间件
         app.UseRequestLocalization(options =>
         {
@@ -117,12 +119,19 @@ public static class AppConfig
         });
 
         app.UseRouting();
+
         app.UseSwagger(builder);
-        app.UseAuthentication(); //使用验证方式 将身份认证中间件添加到管道中，因此将在每次调用API时自动执行身份验证。
+
+        app.UseAuthentication();
+
         app.UseIdentityServer();
+
         app.UseHttpsRedirection();
+
         app.UseAuthorization();
+
         app.MapControllers();
+
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapDefaultControllerRoute();
@@ -134,12 +143,12 @@ public static class AppConfig
             //endpoints.MapHub<SignalRTestHub>("/Hubs");
 
         });
+
         if (configuration.GetSection("HangFire:Enable").Get<bool>())
         {
             // 启用Hangfire仪表盘
             app.UseHangfireDashboard();
         }
-
 
         return app;
     }

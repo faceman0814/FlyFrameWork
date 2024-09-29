@@ -8,8 +8,9 @@ namespace FlyFramework.Entities
 {
     public interface IAuditedEntity<TPrimaryKey> : ICreationAuditedEntity<TPrimaryKey>
     {
-        public DateTime? LastModificationTime { get; set; }
+        public new DateTime? LastModificationTime { get; set; }
         public string LastModifierUserName { get; set; }
         public TPrimaryKey LastModifierUserId { get; set; }
     }
+
 }

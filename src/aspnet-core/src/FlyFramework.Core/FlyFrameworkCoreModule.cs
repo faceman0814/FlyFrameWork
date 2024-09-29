@@ -1,4 +1,6 @@
-﻿using FlyFramework.FlyFrameworkModules;
+﻿using Autofac;
+
+using FlyFramework.FlyFrameworkModules;
 using FlyFramework.FlyFrameworkModules.Modules;
 using FlyFramework.LazyModule.LazyDefinition;
 
@@ -11,11 +13,14 @@ namespace FlyFramework
     [DependOn(typeof(FlyFrameworkDomainModule))]
     public class FlyFrameworkCoreModule : FlyFrameworkBaseModule
     {
-        public override void Initialize(ServiceConfigerContext context)
+        protected override void Load(ContainerBuilder builder)
         {
-            //IocManager.AddDependencyServices(context.Services, typeof(FlyFrameworkCoreModule).Assembly, InterfacePostfixes);
-
-            context.Services.AddTransient(typeof(IFlyFrameworkLazy<>), typeof(FlyFrameworkLazy<>));
+            builder.RegisterType<FlyFrameworkLazy>().As<IFlyFrameworkLazy>().InstancePerDependency();
+            // 注册所有应用服务，并开启属性注入
+            builder.RegisterAssemblyTypes(typeof(FlyFrameworkCoreModule).Assembly)
+                   //.Where(t => t.Name.EndsWith("AppService"))
+                   //.EnableClassInterceptors() // 如果使用拦截器
+                   .PropertiesAutowired(); // 启用属性注入
         }
     }
 }

@@ -4,16 +4,21 @@
         <name>FlyFramework.EntityFrameworkCore</name>
     </assembly>
     <members>
-        <member name="T:FlyFramework.EntityFrameworkCore.Migrations.Init">
+        <member name="T:FlyFramework.Extensions.ChangeTrackers.FlyFrameworkEfCoreNavigationHelper">
+            <summary>
+            Refactor this class after EF Core supports this case.
+            </summary>
+        </member>
+        <member name="T:FlyFramework.Migrations.Init">
             <inheritdoc />
         </member>
-        <member name="M:FlyFramework.EntityFrameworkCore.Migrations.Init.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:FlyFramework.Migrations.Init.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:FlyFramework.EntityFrameworkCore.Migrations.Init.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:FlyFramework.Migrations.Init.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:FlyFramework.EntityFrameworkCore.Migrations.Init.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:FlyFramework.Migrations.Init.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
         <member name="T:QueryWithNoLockDbCommandInterceptor">

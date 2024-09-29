@@ -1,5 +1,6 @@
 ﻿using FlyFramework.ErrorExceptions;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 using System;
@@ -12,10 +13,11 @@ namespace FlyFramework.Repositories
 {
     public class Repository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey>, IRepository where TEntity : class, IEntity<TPrimaryKey>
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
         protected DbContext DbContext { get; }
         protected DbSet<TEntity> DbSet { get; }
 
-        public Repository(IDbContextProvider dbContextProvider)
+        public Repository(IDbContextProvider dbContextProvider, IHttpContextAccessor httpContextAccessor)
         {
             DbContext = dbContextProvider.GetDbContext();
             DbSet = DbContext.Set<TEntity>();

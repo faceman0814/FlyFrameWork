@@ -4,7 +4,7 @@
         <name>FlyFramework.Core</name>
     </assembly>
     <members>
-        <member name="M:FlyFramework.Authorizations.ILogInManager.LoginAsync(FlyFramework.UserService.User)">
+        <member name="M:FlyFramework.Authorizations.ILogInManager.LoginAsync(FlyFramework.UserModule.User)">
             <summary>
             获取登录用户信息
             </summary>
@@ -28,14 +28,62 @@
             RefreshToken过期时间 默认30h
             </summary>
         </member>
-        <member name="M:FlyFramework.UserService.DomainService.IUserManager.FindByNameAsync(System.String)">
+        <member name="M:FlyFramework.LazyModule.LazyDefinition.IFlyFrameworkLazy.LazyGetRequiredService``1">
+            <summary>
+            This method is equivalent of the GetRequiredService method.
+            It does exists for backward compatibility.
+            </summary>
+        </member>
+        <member name="M:FlyFramework.LazyModule.LazyDefinition.IFlyFrameworkLazy.LazyGetRequiredService(System.Type)">
+            <summary>
+            This method is equivalent of the GetRequiredService method.
+            It does exists for backward compatibility.
+            </summary>
+        </member>
+        <member name="M:FlyFramework.LazyModule.LazyDefinition.IFlyFrameworkLazy.LazyGetService``1">
+            <summary>
+            This method is equivalent of the GetService method.
+            It does exists for backward compatibility.
+            </summary>
+        </member>
+        <member name="M:FlyFramework.LazyModule.LazyDefinition.IFlyFrameworkLazy.LazyGetService(System.Type)">
+            <summary>
+            This method is equivalent of the GetService method.
+            It does exists for backward compatibility.
+            </summary>
+        </member>
+        <member name="M:FlyFramework.LazyModule.LazyDefinition.IFlyFrameworkLazy.LazyGetService``1(``0)">
+            <summary>
+            This method is equivalent of the <see cref="!:ICachedServiceProviderBase.GetService&lt;T&gt;(T)"/> method.
+            It does exists for backward compatibility.
+            </summary>
+        </member>
+        <member name="M:FlyFramework.LazyModule.LazyDefinition.IFlyFrameworkLazy.LazyGetService(System.Type,System.Object)">
+            <summary>
+            This method is equivalent of the <see cref="!:ICachedServiceProviderBase.GetService(Type, object)"/> method.
+            It does exists for backward compatibility.
+            </summary>
+        </member>
+        <member name="M:FlyFramework.LazyModule.LazyDefinition.IFlyFrameworkLazy.LazyGetService(System.Type,System.Func{System.IServiceProvider,System.Object})">
+            <summary>
+            This method is equivalent of the <see cref="!:ICachedServiceProviderBase.GetService(Type, Func&lt;IServiceProvider, object&gt;)"/> method.
+            It does exists for backward compatibility.
+            </summary>
+        </member>
+        <member name="M:FlyFramework.LazyModule.LazyDefinition.IFlyFrameworkLazy.LazyGetService``1(System.Func{System.IServiceProvider,System.Object})">
+            <summary>
+            This method is equivalent of the <see cref="!:ICachedServiceProviderBase.GetService&lt;T&gt;(Func&lt;IServiceProvider, object&gt;)"/> method.
+            It does exists for backward compatibility.
+            </summary>
+        </member>
+        <member name="M:FlyFramework.UserModule.DomainService.IUserManager.FindByNameAsync(System.String)">
             <summary>
             根据用户名查找用户
             </summary>
             <param name="userName"></param>
             <returns></returns>
         </member>
-        <member name="M:FlyFramework.UserService.DomainService.IUserManager.CreateUserAsync(FlyFramework.UserService.User)">
+        <member name="M:FlyFramework.UserModule.DomainService.IUserManager.CreateUserAsync(FlyFramework.UserModule.User)">
             <summary>
             创建用户
             </summary>

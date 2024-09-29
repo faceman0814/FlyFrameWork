@@ -16,20 +16,24 @@ namespace FlyFramework.UserSessions
         /// <summary>
         /// 用户id
         /// </summary>
-        public string UserId => FindClaim(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+        public string UserId => FindClaim(UserClaimTypes.UserId)?.Value ?? string.Empty;
 
         /// <summary>
         /// 用户名称
         /// </summary>
-        public string UserName => FindClaim(ClaimTypes.Name)?.Value ?? string.Empty;
+        public string UserName => FindClaim(UserClaimTypes.UserName)?.Value ?? string.Empty;
 
         /// <summary>
         /// 是否是超级管理员
         /// </summary>
         public bool IsAdmin => UserId == "4957adb8870f4e79882231537ff5d3b9";
 
+        public string TenantId => FindClaim(UserClaimTypes.TenantId)?.Value ?? string.Empty;
 
-        //public virtual IEnumerable<string> RoleName => FindClaims(LoginClaimTypes.Role).Select(c => c.Value).Distinct().ToArray();
+        public string TenantName => FindClaim(UserClaimTypes.TenantName)?.Value ?? string.Empty;
+
+
+        //public virtual IEnumerable<string> RoleName => FindClaims(UserClaimTypes.Role).Select(c => c.Value).Distinct().ToArray();
 
         public virtual Claim FindClaim(string claimType)
         {

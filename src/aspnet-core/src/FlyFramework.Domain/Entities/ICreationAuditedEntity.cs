@@ -12,4 +12,5 @@ namespace FlyFramework.Entities
         public string CreatorUserName { get; set; }
         public TPrimaryKey CreatorUserId { get; set; }
     }
+
 }

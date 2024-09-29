@@ -3,17 +3,15 @@ using FlyFramework.Authorizations.JwtBearer;
 using FlyFramework.Extentions;
 using FlyFramework.Extentions.Object;
 using FlyFramework.Models;
-using FlyFramework.RoleService;
-using FlyFramework.UserService;
-using FlyFramework.UserService.DomainService;
+using FlyFramework.UserModule;
+using FlyFramework.UserModule.DomainService;
+using FlyFramework.UserSessions;
 using FlyFramework.Utilities.Redis;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-
-using Minio.DataModel.ILM;
 
 using System;
 using System.Collections.Generic;
@@ -29,7 +27,7 @@ namespace FlyFramework.Controllers
     public class AccountClientController : Controller
     {
         readonly IOptions<IdentityOptions> _identityOptions;
-        readonly ITokenAuthConfiguration _tokenAuthConfiguration;
+        readonly TokenAuthConfiguration _tokenAuthConfiguration;
         readonly ICacheManager _cacheManager;
         readonly UserClaimsPrincipalFactory<User, Role> _claimsPrincipalFactory;
         readonly SignInManager<User> _signInManager;
@@ -43,7 +41,7 @@ namespace FlyFramework.Controllers
            ILogInManager logInManager,
            IOptions<IdentityOptions> identityOptions,
            ICacheManager cacheManager,
-           ITokenAuthConfiguration tokenAuthConfiguration)
+           TokenAuthConfiguration tokenAuthConfiguration)
         {
             _claimsPrincipalFactory = userClaimsPrincipalFactory;
             _signInManager = signInManager;
@@ -103,7 +101,7 @@ namespace FlyFramework.Controllers
                 {
                     Response.Cookies.Append("access-token", accessToken, new CookieOptions()
                     {
-                        Expires = DateTime.Now.Add(FlyFrameworkConst.AccessTokenExpiration)
+                        Expires = DateTimeOffset.Now.Add(_tokenAuthConfiguration.AccessTokenExpiration)
                     }
                     );
                 }
@@ -138,7 +136,7 @@ namespace FlyFramework.Controllers
         public async Task<AuthenticateResultModel> RefreshToken(string refreshToken)
         {
             var claims = _logInManager.GetClaims(refreshToken);
-            var userName = claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+            var userName = claims.FirstOrDefault(x => x.Type == UserClaimTypes.UserName)?.Value;
             var user = await _userManager.FindByNameAsync(userName);
             if (user != null)
             {
@@ -171,7 +169,7 @@ namespace FlyFramework.Controllers
         (string token, string key) CreateRefreshToken(IEnumerable<Claim> claims)
         {
             var claimsList = claims.ToList();
-            return (CreateToken(claimsList, FlyFrameworkConst.RefreshTokenExpiration),
+            return (CreateToken(claimsList, _tokenAuthConfiguration.RefreshTokenExpiration),
                 claimsList.First(c => c.Type == FlyFrameworkConst.TokenValidityKey).Value);
         }
 
@@ -221,10 +219,7 @@ namespace FlyFramework.Controllers
             var tokenValidityKey = Guid.NewGuid().ToString();
             var claims = identity.Claims.ToList();
 
-
-
             var nameIdClaim = claims.First(c => c.Type == _identityOptions.Value.ClaimsIdentity.UserIdClaimType);
-
 
             if (!string.IsNullOrWhiteSpace(clientTokenTag))
             {
@@ -241,14 +236,13 @@ namespace FlyFramework.Controllers
                 claims.Add(new Claim(JwtRegisteredClaimNames.Sub, nameIdClaim.Value));
             }
 
-
             claims.AddRange(new[]
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.Now.ToUnixTimeSeconds().ToString(),
-                    ClaimValueTypes.Integer64),
+                new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.Now.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
                 new Claim(FlyFrameworkConst.TokenValidityKey, tokenValidityKey),
                 new Claim(FlyFrameworkConst.UserIdentifier, user.Id.ToString()),
+                new Claim(UserClaimTypes.TenantId, user.TenantId.ToString()),
                 new Claim(FlyFrameworkConst.TokenType, tokenType.To<int>().ToString()),
             });
 

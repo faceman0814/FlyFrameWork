@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FlyFramework
 {
-    public interface IEntity<TPrimaryKey>
+    public interface IEntity<TPrimaryKey> : IEntity
     {
         /// <summary>
         /// 主键
@@ -20,5 +20,10 @@ namespace FlyFramework
         /// </summary>
         /// <returns></returns>
         bool IsTransient();
+    }
+
+    public interface IEntity
+    {
+        object?[] GetKeys();
     }
 }

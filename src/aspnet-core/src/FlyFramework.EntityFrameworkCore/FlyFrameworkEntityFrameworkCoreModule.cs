@@ -21,8 +21,6 @@ namespace FlyFramework
         public override void PreInitialize(ServiceConfigerContext context)
         {
             FlyFrameworkDbContextConfigurer.UsingDatabaseServices(context);
-
-
         }
 
         public override void Initialize(ServiceConfigerContext context)

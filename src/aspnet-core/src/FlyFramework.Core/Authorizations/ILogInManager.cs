@@ -1,5 +1,5 @@
 ﻿using FlyFramework.Dependencys;
-using FlyFramework.UserService;
+using FlyFramework.UserModule;
 
 using System;
 using System.Collections.Generic;

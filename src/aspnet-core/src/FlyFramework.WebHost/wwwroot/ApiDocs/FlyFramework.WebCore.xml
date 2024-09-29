@@ -27,7 +27,7 @@
             <param name="expiration">过期时间</param>
             <returns></returns>
         </member>
-        <member name="M:FlyFramework.Controllers.AccountClientController.CreateJwtClaims(System.Security.Claims.ClaimsIdentity,FlyFramework.UserService.User,System.Nullable{System.TimeSpan},FlyFramework.Authorizations.JwtBearer.TokenType,System.String,System.String,System.String)">
+        <member name="M:FlyFramework.Controllers.AccountClientController.CreateJwtClaims(System.Security.Claims.ClaimsIdentity,FlyFramework.UserModule.User,System.Nullable{System.TimeSpan},FlyFramework.Authorizations.JwtBearer.TokenType,System.String,System.String,System.String)">
             <summary>
             添加JwtClaims
             </summary>

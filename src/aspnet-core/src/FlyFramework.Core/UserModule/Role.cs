@@ -1,11 +1,12 @@
 ﻿using FlyFramework.Entities;
+using FlyFramework.TenantModule;
 
 using Microsoft.AspNetCore.Identity;
 
 using System;
-namespace FlyFramework.RoleService
+namespace FlyFramework.UserModule
 {
-    public class Role : IdentityRole<string>, IFullAuditedEntity<string>
+    public class Role : IdentityRole<string>, IFullAuditedEntity<string>, IMayHaveTenant
     {
         public bool IsDeleted { get; set; }
         public string DeleterUserId { get; set; }
@@ -18,10 +19,16 @@ namespace FlyFramework.RoleService
         public DateTime CreationTime { get; set; }
         public string CreatorUserName { get; set; }
         public string CreatorUserId { get; set; }
+        public string TenantId { get; set; }
 
         public bool IsTransient()
         {
             throw new NotImplementedException();
+        }
+
+        public object[] GetKeys()
+        {
+            return new string?[] { Id };
         }
     }
 }

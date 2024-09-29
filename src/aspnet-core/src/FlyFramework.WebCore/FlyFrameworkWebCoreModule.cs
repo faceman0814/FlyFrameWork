@@ -55,7 +55,7 @@ namespace FlyFramework
             );
 
             // 将 jwtBearer 作为参数传递
-            context.Services.AddSingleton<ITokenAuthConfiguration>(jwtBearer);
+            context.Services.AddSingleton(jwtBearer);
 
             context.Services.Configure<CookiePolicyOptions>(options =>
             {

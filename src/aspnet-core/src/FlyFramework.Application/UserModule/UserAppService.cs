@@ -1,15 +1,15 @@
 ﻿using FlyFramework.ApplicationServices;
+using FlyFramework.UserModule.DomainService;
 using FlyFramework.UserModule.Dtos;
-using FlyFramework.UserService;
-using FlyFramework.UserService.DomainService;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using System;
 using System.Threading.Tasks;
 namespace FlyFramework.UserModule
 {
-    [Authorize]
+    //[Authorize]
     public class UserAppService : ApplicationService, IUserAppService
     {
         private readonly IUserManager _userManager;
@@ -20,7 +20,7 @@ namespace FlyFramework.UserModule
         {
             _userManager = userManager;
         }
-
+        //[HttpPost]
         public async Task CreateUser(UserDto input)
         {
             var user = ObjectMapper.Map<User>(input);

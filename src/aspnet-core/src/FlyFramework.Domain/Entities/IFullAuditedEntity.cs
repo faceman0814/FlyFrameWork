@@ -12,4 +12,5 @@ namespace FlyFramework.Entities
         public DateTime? DeletionTime { get; set; }
         public string DeleterUserName { get; set; }
     }
+
 }

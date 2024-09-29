@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FlyFramework.ErrorExceptions;
+
+using Microsoft.Extensions.Configuration;
 
 using Newtonsoft.Json;
 
@@ -35,17 +37,17 @@ namespace FlyFramework.Utilities.Redis
                 }
                 if (expireTime == null)
                 {
-                    _redisClient.Set(name ?? InitKey(key), strValue);
+                    _redisClient.Set(name != null ? name + key : InitKey(key), strValue);
 
                 }
                 else
                 {
-                    _redisClient.Set(name ?? InitKey(key), strValue, expireTime.Value);
+                    _redisClient.Set(name != null ? name + key : InitKey(key), strValue, expireTime.Value);
                 }
             }
             catch (Exception ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new UserFriendlyException(ex.Message);
             }
         }
 

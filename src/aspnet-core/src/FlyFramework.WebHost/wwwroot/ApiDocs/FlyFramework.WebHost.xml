@@ -62,7 +62,7 @@
             注册全局拦截器
             </summary>
         </member>
-        <member name="M:FlyFramework.Extentions.ServiceCollectionExtensions.AddKestrel(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+        <member name="M:FlyFramework.Extentions.ServiceCollectionExtensions.UseKestrel(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
              <summary>
             配置请求大小限制
              </summary>

@@ -15,9 +15,9 @@ namespace FlyFramework.UserSessions
         public static NullUserSession Instance { get; } = new NullUserSession();
 
         public string UserId => null;
-
-        //public string TenantId => null;
         public string UserName => null;
+        public string TenantId => null;
+        public string TenantName => null;
 
         public Claim FindClaim(string claimType)
         {

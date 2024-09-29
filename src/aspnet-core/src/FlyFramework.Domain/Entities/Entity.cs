@@ -89,5 +89,10 @@ namespace FlyFramework.Entities
         {
             return $"[{GetType().Name} {Id}]";
         }
+
+        public virtual object?[] GetKeys()
+        {
+            return new object?[] { Id };
+        }
     }
 }

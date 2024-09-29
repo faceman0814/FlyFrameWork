@@ -9,8 +9,7 @@ using FlyFramework.Extentions;
 using FlyFramework.Extentions.JsonOptions;
 using FlyFramework.Filters;
 using FlyFramework.Identitys;
-using FlyFramework.RoleService;
-using FlyFramework.UserService;
+using FlyFramework.UserModule;
 using FlyFramework.Utilities.EventBus;
 using FlyFramework.Utilities.EventBus.Distributed;
 using FlyFramework.Utilities.EventBus.Distributed.Cap;
@@ -364,25 +363,22 @@ namespace FlyFramework.Extentions
         /// <summary>
         ///配置请求大小限制
         /// </summary>
-        public static void AddKestrel(this IServiceCollection services, WebApplicationBuilder builder)
+        public static void UseKestrel(this IServiceCollection services, WebApplicationBuilder builder)
         {
-            builder.WebHost.UseKestrel(options =>
-            {
-                options.Limits.MaxRequestLineSize = int.MaxValue;//HTTP 请求行的最大允许大小。 默认为 8kb
-                options.Limits.MaxRequestBufferSize = int.MaxValue;//请求缓冲区的最大大小。 默认为 1M
-                                                                   //任何请求正文的最大允许大小（以字节为单位）,默认 30,000,000 字节，大约为 28.6MB
-                options.Limits.MaxRequestBodySize = int.MaxValue;//限制请求长度
-            });
+            var port = builder.Configuration.GetSection("WebHostPort").Get<int>();
+            builder.WebHost
+            .ConfigureKestrel(options => options.Limits.MaxRequestBodySize = 1024 * 1024 * 300)
+            .UseIIS()
+            .UseIISIntegration()
+            .UseKestrel();
 
             /* ↓↓↓↓↓↓↓ 使用iis/nginx ↓↓↓↓↓↓ */
-            services.Configure<FormOptions>(x =>
-            {
-                x.ValueCountLimit = 1000000; // 设置表单键值对的最大数量
-                x.ValueLengthLimit = int.MaxValue;// 设置表单数据长度限制为int的最大值
-                x.MultipartBodyLengthLimit = int.MaxValue; // 设置多部分正文的长度限制为int的最大值
-                                                           //x.MultipartHeadersCountLimit = 100; // 设置多部分表单头的最大数量
-                                                           //x.MultipartHeadersLengthLimit = 16384; // 设置多部分表单头的最大长度（bytes）
-            });
+            //services.Configure<FormOptions>(x =>
+            //{
+            //    x.ValueCountLimit = 1000000; // 设置表单键值对的最大数量
+            //    x.ValueLengthLimit = int.MaxValue;// 设置表单数据长度限制为int的最大值
+            //    x.MultipartBodyLengthLimit = int.MaxValue; // 设置多部分正文的长度限制为int的最大值
+            //});
         }
 
         /// <summary>
@@ -427,8 +423,8 @@ namespace FlyFramework.Extentions
                 containerBuilder.RegisterModule(new FlyFrameworkCommonModule());
                 containerBuilder.RegisterModule(new FlyFrameworkDomainModule());
                 containerBuilder.RegisterModule(new FlyFrameworkRepositoriesModule());
-                containerBuilder.RegisterModule(new FlyFrameworkApplicationModule());
                 containerBuilder.RegisterModule(new FlyFrameworkCoreModule());
+                containerBuilder.RegisterModule(new FlyFrameworkApplicationModule());
                 containerBuilder.RegisterModule(new FlyFrameworkWebHostModule());
             });
             return hostBuilder;

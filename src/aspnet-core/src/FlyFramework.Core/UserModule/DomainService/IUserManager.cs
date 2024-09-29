@@ -1,8 +1,8 @@
 ﻿using FlyFramework.Domains;
-using FlyFramework.UserService;
+using FlyFramework.UserModule;
 
 using System.Threading.Tasks;
-namespace FlyFramework.UserService.DomainService
+namespace FlyFramework.UserModule.DomainService
 {
     public interface IUserManager : IGuidDomainService<User>
     {

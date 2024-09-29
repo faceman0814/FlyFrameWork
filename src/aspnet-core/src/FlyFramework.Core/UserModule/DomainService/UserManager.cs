@@ -1,5 +1,5 @@
 ﻿using FlyFramework.Domains;
-using FlyFramework.UserService;
+using FlyFramework.UserModule;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +8,7 @@ using ServiceStack;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-namespace FlyFramework.UserService.DomainService
+namespace FlyFramework.UserModule.DomainService
 {
     public class UserManager : GuidDomainService<User>, IUserManager
     {
