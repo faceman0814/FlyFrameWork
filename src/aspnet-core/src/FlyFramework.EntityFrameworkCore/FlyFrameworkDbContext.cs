@@ -1,5 +1,4 @@
-﻿using FlyFramework.RoleService;
-using FlyFramework.UserService;
+﻿using FlyFramework.UserModule;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -93,5 +92,7 @@ namespace FlyFramework
         }
 
         public DbSet<User> User { get; set; }
+        public DbSet<UserRole> UserRole { get; set; }
+        public DbSet<Role> Role { get; set; }
     }
 }

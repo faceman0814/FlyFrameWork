@@ -1,6 +1,7 @@
 ﻿using FlyFramework.ApplicationServices;
 using FlyFramework.LazyModule.LazyDefinition;
-using FlyFramework.UserService.DomainService;
+using FlyFramework.UserModule;
+using FlyFramework.UserModule.DomainService;
 using FlyFramework.UserService.Dtos;
 
 using Microsoft.AspNetCore.Authorization;

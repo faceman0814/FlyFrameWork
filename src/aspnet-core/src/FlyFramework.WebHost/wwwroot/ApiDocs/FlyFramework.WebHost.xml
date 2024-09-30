@@ -130,30 +130,6 @@
             <param name="context">动作方法上下文</param>
             <param name="next">中间件委托</param>
         </member>
-        <member name="M:FlyFramework.Identitys.IdentityConfig.GetApiResources">
-            <summary>
-            这个方法是来描述和阐述，提供外部选择的作用域
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:FlyFramework.Identitys.IdentityConfig.GetClients">
-            <summary>
-            作用域的名称和验证规则
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:FlyFramework.Identitys.IdentityConfig.GetIdentityResources">
-            <summary>
-            这个方法是来规范tooken生成的规则和方法的。一般不进行设置，直接采用默认的即可。
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:FlyFramework.Identitys.IdentityConfig.GetUsers">
-            <summary>
-            针对用户密码验证方式需要比对的账户
-            </summary>
-            <returns></returns>
-        </member>
         <member name="T:AppConfig">
             <summary>
             配置类

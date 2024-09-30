@@ -12,7 +12,7 @@ namespace FlyFramework
         {
             // 注册 HomeController
             builder.RegisterType<HomeController>().InstancePerLifetimeScope();
-            builder.RegisterType<LoginController>().InstancePerLifetimeScope();
+            builder.RegisterType<AccountClientController>().InstancePerLifetimeScope();
         }
     }
 }

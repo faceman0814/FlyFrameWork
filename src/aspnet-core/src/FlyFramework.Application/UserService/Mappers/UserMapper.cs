@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 
+using FlyFramework.UserModule;
 using FlyFramework.UserService.Dtos;
 
 namespace FlyFramework.UserService.Mappers

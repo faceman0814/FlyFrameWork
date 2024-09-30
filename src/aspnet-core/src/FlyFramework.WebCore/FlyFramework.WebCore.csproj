@@ -10,6 +10,10 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DocumentationFile>bin\Debug\FlyFramework.WebCore.xml</DocumentationFile>
 	</PropertyGroup>
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
+	  <PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.1.2" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\FlyFramework.Application\FlyFramework.Application.csproj" />

@@ -3,10 +3,13 @@
 using Microsoft.AspNetCore.Identity;
 
 using System;
-namespace FlyFramework.RoleService
+namespace FlyFramework.UserModule
 {
-    public class Role : IdentityRole<string>, IFullAuditedEntity<string>
+    public class User : IdentityUser<string>, IFullAuditedEntity<string>, IMustHaveTenant
     {
+        public string FullName { get; set; }
+        public string Password { get; set; }
+        public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public string DeleterUserId { get; set; }
         public DateTime? DeletionTime { get; set; }
@@ -18,6 +21,7 @@ namespace FlyFramework.RoleService
         public DateTime CreationTime { get; set; }
         public string CreatorUserName { get; set; }
         public string CreatorUserId { get; set; }
+        public string TenantId { get; set; }
 
         public bool IsTransient()
         {
