@@ -429,14 +429,14 @@ namespace FlyFramework.Extentions
         public static void AddDbContext(this IServiceCollection services, IConfigurationRoot configuration)
         {
             // 添加DbContext服务
-            services.UsingDatabaseServices(configuration, log);
+            //services.UsingDatabaseServices(configuration, log);
             //注册泛型仓储服务
-            services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
-            services.AddScoped<IDbContextProvider, DbContextProvider>();
-            // 注册IDbConnection，使用Scoped生命周期
-            services.AddScoped<IDbConnection>(provider =>
-                new SqlConnection(configuration.GetConnectionString("Default")));
-            services.AddScoped(typeof(IDapperManager<>), typeof(DapperManager<>));
+            //services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+            //services.AddScoped<IDbContextProvider, DbContextProvider>();
+            //// 注册IDbConnection，使用Scoped生命周期
+            //services.AddScoped<IDbConnection>(provider =>
+            //    new SqlConnection(configuration.GetConnectionString("Default")));
+            //services.AddScoped(typeof(IDapperManager<>), typeof(DapperManager<>));
         }
 
         /// <summary>
@@ -541,8 +541,9 @@ namespace FlyFramework.Extentions
                 containerBuilder.RegisterModule(new FlyFrameworkCommonModule());
                 containerBuilder.RegisterModule(new FlyFrameworkDomainModule());
                 containerBuilder.RegisterModule(new FlyFrameworkRepositoriesModule());
-                containerBuilder.RegisterModule(new FlyFrameworkApplicationModule());
                 containerBuilder.RegisterModule(new FlyFrameworkCoreModule());
+                containerBuilder.RegisterModule(new FlyFrameworkApplicationModule());
+                containerBuilder.RegisterModule(new FlyFrameworkEntityFrameworkCoreModule());
                 containerBuilder.RegisterModule(new FlyFrameworkWebHostModule());
             });
             return hostBuilder;

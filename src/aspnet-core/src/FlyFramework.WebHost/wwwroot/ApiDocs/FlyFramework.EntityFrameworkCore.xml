@@ -4,6 +4,11 @@
         <name>FlyFramework.EntityFrameworkCore</name>
     </assembly>
     <members>
+        <member name="T:FlyFramework.Extensions.QueryWithNoLockDbCommandInterceptor">
+            <summary>
+            EF Core 查询增加 With NoLock(仅限sqlserver)
+            </summary>
+        </member>
         <member name="T:FlyFramework.EntityFrameworkCore.Migrations.Init">
             <inheritdoc />
         </member>

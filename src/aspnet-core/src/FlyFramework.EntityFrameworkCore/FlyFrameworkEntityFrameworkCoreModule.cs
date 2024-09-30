@@ -1,48 +1,59 @@
-﻿using FlyFramework.Extensions;
+﻿using Autofac;
 
-using log4net;
+using AutoMapper;
 
+using FlyFramework.FlyFrameworkModules;
+using FlyFramework.FlyFrameworkModules.Extensions;
+using FlyFramework.FlyFrameworkModules.Modules;
+using FlyFramework.Repositories;
+using FlyFramework.Uow;
+using FlyFramework.UserSessions;
+using FlyFramework.Utilities.Dappers;
+
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using System;
+using System.Data;
 
 namespace FlyFramework
 {
-    public static class FlyFrameworkEntityFrameworkCoreModule
+    [DependOn(
+       typeof(FlyFrameworkApplicationModule)
+   )]
+    public class FlyFrameworkEntityFrameworkCoreModule : FlyFrameworkBaseModule
     {
-        public static void UsingDatabaseServices(this IServiceCollection services, IConfiguration configuration, ILog log)
+        public override void PreInitialize(ServiceConfigerContext context)
         {
-            var databaseType = configuration.GetSection("ConnectionStrings:DatabaseType").Get<DatabaseType>();
-            string connectionString = string.Empty;
-            connectionString = configuration.GetSection("ConnectionStrings:Default").Get<string>();
-            log.Info($"数据库类型：{databaseType}");
-            log.Info($"连接字符串：{connectionString}");
-            services.AddDbContext<FlyFrameworkDbContext>(option =>
+            FlyFrameworkDbContextConfigurer.UsingDatabaseServices(context);
+        }
+        protected override void Load(ContainerBuilder builder)
+        {
+            builder.RegisterGeneric(typeof(Repository<,>))
+                .As(typeof(IRepository<,>))
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<DbContextProvider>()
+                  .As<IDbContextProvider>()
+                  .InstancePerLifetimeScope();
+
+            builder.Register<IDbConnection>(context =>
             {
-                switch (databaseType)
-                {
-                    case DatabaseType.SqlServer:
-                        option.UseSqlServer(connectionString);
-                        break;
+                //var configuration = context.GetConfiguration();
+                var configuration = context.Resolve<IConfiguration>();
+                return new SqlConnection(configuration.GetConnectionString("Default"));
+            }).InstancePerLifetimeScope();
 
-                    case DatabaseType.MySql:
-                        option.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 31)));
-                        break;
 
-                    case DatabaseType.Sqlite:
-                        option.UseSqlite(connectionString);
-                        break;
-
-                    case DatabaseType.Psotgre:
-                        option.UseNpgsql(connectionString);
-                        break;
-
-                    default:
-                        throw new Exception("不支持的数据库类型");
-                }
-            });
+            builder.RegisterGeneric(typeof(DapperManager<>))
+                .As(typeof(IDapperManager<>))
+              .InstancePerLifetimeScope();
+            // 注册所有应用服务，并开启属性注入
+            builder.RegisterAssemblyTypes(typeof(FlyFrameworkEntityFrameworkCoreModule).Assembly)
+                   //.Where(t => t.Name.EndsWith("AppService"))
+                   //.EnableClassInterceptors() // 如果使用拦截器
+                   .PropertiesAutowired(); // 启用属性注入
         }
     }
 }
