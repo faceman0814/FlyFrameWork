@@ -4,8 +4,8 @@
         <name>FlyFramework.Application</name>
     </assembly>
     <members>
-        <!-- Badly formed XML comment ignored for member "T:GCT.MedPro.Application.AutoMapperExtensions" -->
-        <member name="M:GCT.MedPro.Application.AutoMapperExtensions.IgnoreNullSourceProperties``2(AutoMapper.IMappingExpression{``0,``1},System.Collections.Generic.List{System.String})">
+        <!-- Badly formed XML comment ignored for member "T:FlyFramework.AutoMapperExtensions" -->
+        <member name="M:FlyFramework.AutoMapperExtensions.IgnoreNullSourceProperties``2(AutoMapper.IMappingExpression{``0,``1},System.Collections.Generic.List{System.String})">
             <summary>
             忽略不需要映射的属性。
             </summary>

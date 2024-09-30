@@ -3,7 +3,7 @@ using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GCT.MedPro.Application
+namespace FlyFramework
 {
     /// 映射扩展
     /// </summary>
