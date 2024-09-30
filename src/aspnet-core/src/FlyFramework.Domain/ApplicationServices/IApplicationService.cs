@@ -5,7 +5,7 @@ namespace FlyFramework.ApplicationServices
     /// <summary>
     /// 动态WebAPI接口
     /// </summary>
-    public interface IApplicationService : ITransientDependency
+    public interface IApplicationService
     {
     }
 }

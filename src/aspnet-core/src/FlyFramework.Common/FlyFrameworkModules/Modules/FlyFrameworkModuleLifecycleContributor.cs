@@ -1,9 +1,10 @@
-﻿using FlyFramework.FlyFrameworkModules.Interface;
+﻿using FlyFramework.Dependencys;
+using FlyFramework.FlyFrameworkModules.Interface;
 
 using System.Threading.Tasks;
 namespace FlyFramework.FlyFrameworkModules.Modules
 {
-    public abstract class FlyFrameworkModuleLifecycleContributor : IFlyFrameworkModuleLifecycleContributor
+    public abstract class FlyFrameworkModuleLifecycleContributor : IFlyFrameworkModuleLifecycleContributor, ITransientDependency
     {
         public virtual void Initialize(InitApplicationContext context, IFlyFrameworkBaseModule module)
         {

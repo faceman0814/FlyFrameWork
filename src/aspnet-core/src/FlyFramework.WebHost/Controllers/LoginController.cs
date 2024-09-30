@@ -29,21 +29,19 @@ namespace FlyFramework.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly ICacheManager _cacheManager;
         private readonly IJWTTokenManager _jWTTokenManager;
-        private readonly IFlyFrameworkLazy<IUserManager> _userManagerLazy;
         private readonly IConfiguration _configuration;
-
-        private IUserManager _userManager => _userManagerLazy.Value;
+        private readonly IUserManager _userManager;
         public LoginController(SignInManager<User> signInManager,
             ICacheManager cacheManager,
             IJWTTokenManager jWTTokenManager,
             IStringLocalizerFactory factory,
             IConfiguration configuration,
-            IFlyFrameworkLazy<IUserManager> userManagerLazy)
+            IFlyFrameworkLazy flyFrameworkLazy)
         {
             _signInManager = signInManager;
             _cacheManager = cacheManager;
             _jWTTokenManager = jWTTokenManager;
-            _userManagerLazy = userManagerLazy;
+            _userManager = flyFrameworkLazy.LazyGetService<IUserManager>().Value;
             _configuration = configuration;
         }
 

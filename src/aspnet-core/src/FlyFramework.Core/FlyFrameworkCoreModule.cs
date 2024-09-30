@@ -13,9 +13,7 @@ namespace FlyFramework
     {
         public override void Initialize(ServiceConfigerContext context)
         {
-            //IocManager.AddDependencyServices(context.Services, typeof(FlyFrameworkCoreModule).Assembly, InterfacePostfixes);
-
-            context.Services.AddTransient(typeof(IFlyFrameworkLazy<>), typeof(FlyFrameworkLazy<>));
+            context.Services.AddTransient(typeof(IFlyFrameworkLazy), typeof(FlyFrameworkLazy));
         }
     }
 }
