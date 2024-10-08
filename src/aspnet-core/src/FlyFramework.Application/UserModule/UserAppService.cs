@@ -1,8 +1,7 @@
 ﻿using FlyFramework.ApplicationServices;
-using FlyFramework.LazyModule.LazyDefinition;
-using FlyFramework.UserModule;
-using FlyFramework.UserModule.DomainService;
-using FlyFramework.UserService.Dtos;
+using FlyFramework.UserModule.Dtos;
+using FlyFramework.UserService;
+using FlyFramework.UserService.DomainService;
 
 using Microsoft.AspNetCore.Authorization;
 
@@ -10,7 +9,7 @@ using ServiceStack;
 
 using System;
 using System.Threading.Tasks;
-namespace FlyFramework.UserService
+namespace FlyFramework.UserModule
 {
     [Authorize]
     public class UserAppService : ApplicationService, IUserAppService
@@ -18,8 +17,8 @@ namespace FlyFramework.UserService
         private readonly IUserManager _userManager;
 
         public UserAppService(IServiceProvider serviceProvider
-            , IFlyFrameworkLazy flyFrameworkLazy
-            ) : base(serviceProvider)
+            , IUserManager userManager
+            )
         {
             _userManager = flyFrameworkLazy.LazyGetRequiredService<IUserManager>().Value;
         }
@@ -29,7 +28,6 @@ namespace FlyFramework.UserService
             var user = ObjectMapper.Map<User>(input);
             await _userManager.CreateUserAsync(user);
         }
-
         public async Task UpdateUser(UserDto input)
         {
             var user = await _userManager.FindByNameAsync(input.UserName);

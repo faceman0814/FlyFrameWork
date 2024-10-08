@@ -1,5 +1,7 @@
 ﻿using FlyFramework.Authorizations.Identitys;
 using FlyFramework.Authorizations.JwtBearer;
+using FlyFramework.Controllers;
+using FlyFramework.DynamicWebAPI;
 using FlyFramework.FlyFrameworkModules;
 using FlyFramework.FlyFrameworkModules.Extensions;
 using FlyFramework.FlyFrameworkModules.Modules;
@@ -7,6 +9,8 @@ using FlyFramework.UserModule;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -110,6 +114,7 @@ namespace FlyFramework
                     // 验证签名
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = jwtBearer.SecurityKey,
+
                 };
                 options.Events = new JwtBearerEvents()
                 {

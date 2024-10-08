@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 
-using FlyFramework.UserModule;
-using FlyFramework.UserService.Dtos;
+using FlyFramework.UserModule.Dtos;
+using FlyFramework.UserService;
 
-namespace FlyFramework.UserService.Mappers
+namespace FlyFramework.UserModule.Mappers
 {
     public class UserMapper
     {

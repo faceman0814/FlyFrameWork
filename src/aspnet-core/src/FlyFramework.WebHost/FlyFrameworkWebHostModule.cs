@@ -10,7 +10,6 @@ namespace FlyFramework
     {
         protected override void Load(ContainerBuilder builder)
         {
-            // 注册 HomeController
             builder.RegisterType<HomeController>().InstancePerLifetimeScope();
             builder.RegisterType<AccountClientController>().InstancePerLifetimeScope();
         }

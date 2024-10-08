@@ -55,6 +55,11 @@ namespace FlyFramework.Models
 
         //
         // 摘要:
+        //     过期时间
+        public int ExpireInSeconds { get; set; }
+
+        //
+        // 摘要:
         //     用户编号
         public string UserId { get; set; }
 

@@ -10,6 +10,8 @@ namespace FlyFramework.Extensions
         MySql,
         [Description("Psotgre")]
         Psotgre,
+        [Description("Oracle")]
+        Oracle,
         [Description("SQLite")]
         Sqlite
     }

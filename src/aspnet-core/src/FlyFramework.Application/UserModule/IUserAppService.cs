@@ -1,6 +1,6 @@
 ﻿using FlyFramework.ApplicationServices;
 
-namespace FlyFramework.UserService
+namespace FlyFramework.UserModule
 {
     public interface IUserAppService : IApplicationService
     {

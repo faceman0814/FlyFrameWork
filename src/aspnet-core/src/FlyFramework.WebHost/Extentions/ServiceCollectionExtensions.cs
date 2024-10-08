@@ -4,7 +4,6 @@ using Autofac.Extensions.DependencyInjection;
 using DotNetCore.CAP.Internal;
 
 using FlyFramework.Attributes;
-using FlyFramework.DynamicWebAPI;
 using FlyFramework.Extensions;
 using FlyFramework.Extentions;
 using FlyFramework.Extentions.JsonOptions;

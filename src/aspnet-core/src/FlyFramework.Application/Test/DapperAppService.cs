@@ -10,7 +10,7 @@ namespace FlyFramework.Test
     public class DapperAppService : ApplicationService, IApplicationService
     {
         private readonly IDapperManager<User> _dapperManager;
-        public DapperAppService(IServiceProvider serviceProvider, IDapperManager<User> dapperManager) : base(serviceProvider)
+        public DapperAppService(IServiceProvider serviceProvider, IDapperManager<User> dapperManager)
         {
             _dapperManager = dapperManager;
         }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FlyFramework.UserService.Dtos
+namespace FlyFramework.UserModule.Dtos
 {
     public class UserDto
     {
