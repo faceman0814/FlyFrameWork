@@ -215,8 +215,8 @@ namespace FlyFramework.Extentions
         {
             services.AddMvc(options => { })
                     .AddRazorPagesOptions((options) => { })
-                    .AddRazorRuntimeCompilation()
-                    .AddDynamicWebApi(builder.Configuration);
+                    .AddRazorRuntimeCompilation();
+            //.AddDynamicWebApi(builder.Configuration);
         }
 
         /// <summary>

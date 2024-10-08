@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Identity;
 
 using System;
+using System.Collections.Generic;
 namespace FlyFramework.UserModule
 {
     public class User : IdentityUser<string>, IFullAuditedEntity<string>, IMustHaveTenant

@@ -11,10 +11,6 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DocumentationFile>bin\Debug\FlyFramework.Application.xml</DocumentationFile>
 	</PropertyGroup>
-	
-	<ItemGroup>
-		<ProjectReference Include="..\FlyFramework.Core\FlyFramework.Core.csproj" />
-	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="FluentMigrator.Abstractions" Version="5.2.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
@@ -23,6 +19,9 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\FlyFramework.Core\FlyFramework.Core.csproj" />
 	</ItemGroup>
 
 	

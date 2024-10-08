@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿
+using Autofac;
 using Autofac.Core;
 
 using AutoMapper;
@@ -6,7 +7,7 @@ using AutoMapper;
 using Castle.Core.Logging;
 
 using FlyFramework.Attributes;
-using FlyFramework.DynamicWebAPI;
+using FlyFramework.Authorizations;
 using FlyFramework.FlyFrameworkModules;
 using FlyFramework.FlyFrameworkModules.Modules;
 using FlyFramework.Uow;
@@ -47,7 +48,6 @@ namespace FlyFramework
             builder.RegisterType<UnitOfWorkManager>()
                   .As<IUnitOfWorkManager>()
                   .InstancePerLifetimeScope();
-
 
             builder.RegisterType<Mapper>()
                  .As<IMapper>()

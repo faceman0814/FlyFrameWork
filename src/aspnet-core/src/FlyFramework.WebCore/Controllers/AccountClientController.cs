@@ -77,79 +77,76 @@ namespace FlyFramework.Controllers
             {
                 throw new UserFriendlyException("用户名或密码错误");
             }
-                var user = await _userManager.FindByNameAsync(input.UserName);
+            var user = await _userManager.FindByNameAsync(input.UserName);
 
             var claimsIdentity = await GetClaimsIdentityAsync(user);
 
-                // 客户端token标识，用于区分是否来源同一浏览器
-                var clientTokenTag = Guid.NewGuid().ToString();
+            // 客户端token标识，用于区分是否来源同一浏览器
+            var clientTokenTag = Guid.NewGuid().ToString();
 
-                // 创建refresh token
-                var refreshTokenClaims = await CreateJwtClaims(
-                    claimsIdentity,
-                    user,
-                    tokenType: TokenType.RefreshToken,
-                    clientType: input.ClientType,
-                    clientTokenTag: clientTokenTag
-                    );
-                var refreshToken = CreateRefreshToken(refreshTokenClaims);
+            // 创建refresh token
+            var refreshTokenClaims = await CreateJwtClaims(
+                claimsIdentity,
+                user,
+                tokenType: TokenType.RefreshToken,
+                clientType: input.ClientType,
+                clientTokenTag: clientTokenTag
+                );
+            var refreshToken = CreateRefreshToken(refreshTokenClaims);
 
-                // 创建access token
-                var accessTokenClaims = await CreateJwtClaims(
-                    claimsIdentity,
-                    user,
-                    refreshTokenKey: refreshToken.key,
-                    clientType: input.ClientType,
-                    clientTokenTag: clientTokenTag);
-                var accessToken = CreateAccessToken(accessTokenClaims);
+            // 创建access token
+            var accessTokenClaims = await CreateJwtClaims(
+                claimsIdentity,
+                user,
+                refreshTokenKey: refreshToken.key,
+                clientType: input.ClientType,
+                clientTokenTag: clientTokenTag);
+            var accessToken = CreateAccessToken(accessTokenClaims);
 
-                // 第三方登录-登录记录
-                //if (!string.IsNullOrEmpty(input.ProviderId))
-                //{
-                //    var externalAuthProvider = await _externalAuthProviderManager
-                //        .FindByIdAsync(input.ProviderId);
+            // 第三方登录-登录记录
+            //if (!string.IsNullOrEmpty(input.ProviderId))
+            //{
+            //    var externalAuthProvider = await _externalAuthProviderManager
+            //        .FindByIdAsync(input.ProviderId);
 
-                //    await _userManager.AddLoginAsync(
-                //        loginResult.User,
-                //        new UserLoginInfo(
-                //            externalAuthProvider.Id,
-                //            input.ProviderCode,
-                //            externalAuthProvider.Name
-                //            )
-                //        );
-                //}
+            //    await _userManager.AddLoginAsync(
+            //        loginResult.User,
+            //        new UserLoginInfo(
+            //            externalAuthProvider.Id,
+            //            input.ProviderCode,
+            //            externalAuthProvider.Name
+            //            )
+            //        );
+            //}
 
-                if (input.IsApiLogin)
+            if (input.IsApiLogin)
+            {
+                Response.Cookies.Append("access-token", accessToken, new CookieOptions()
                 {
-                    Response.Cookies.Append("access-token", accessToken, new CookieOptions()
-                    {
                     Expires = DateTimeOffset.Now.Add(_tokenAuthConfiguration.AccessTokenExpiration)
-                    }
-                    );
                 }
-                return new AuthenticateResultModel
-                {
-                    AccessToken = accessToken,
-                //EncryptedAccessToken = GetEncrpyedAccessToken(accessToken),
-                    Expires = DateTimeOffset.Now.Add(_tokenAuthConfiguration.AccessTokenExpiration),
-                    ExpireInSeconds = (int)_tokenAuthConfiguration.AccessTokenExpiration.TotalSeconds,
-                    RefreshToken = refreshToken.token,
+                );
+            }
+            return new AuthenticateResultModel
+            {
+                AccessToken = accessToken,
+                Expires = DateTimeOffset.Now.Add(_tokenAuthConfiguration.AccessTokenExpiration),
+                RefreshToken = refreshToken.token,
                 RefreshTokenExpire = DateTimeOffset.Now.Add(_tokenAuthConfiguration.RefreshTokenExpiration),
-                    UserId = user.Id,
-                    ReturnUrl = input.ReturnUrl,
-                //Password = input.RememberMe ? SimpleStringCipher.Instance.Encrypt(input.Password) : null,
-                    UserName = user.UserName,
-                    NickName = user.FullName,
-                    Roles = new List<string>()
+                UserId = user.Id,
+                ReturnUrl = input.ReturnUrl,
+                UserName = user.UserName,
+                NickName = user.FullName,
+                Roles = new List<string>()
                      {
                          "admin"
                      },
-                    Permissions = new List<string>()
+                Permissions = new List<string>()
                      {
                          "*:*:*"
                      },
-                    Avatar = "https://avatars.githubusercontent.com/u/44761321",
-                };
+                Avatar = "https://avatars.githubusercontent.com/u/44761321",
+            };
 
         }
 

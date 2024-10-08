@@ -1,23 +1,16 @@
 ﻿using FlyFramework.Entities;
-using FlyFramework.Extensions;
 using FlyFramework.Extentions;
 using FlyFramework.Extentions.Object;
 using FlyFramework.UserModule;
 using FlyFramework.UserSessions;
 
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-using MongoDB.Bson.Serialization.IdGenerators;
-
 using System;
-using System.Data.Common;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 namespace FlyFramework
 {
     public class FlyFrameworkDbContext : DbContextBase

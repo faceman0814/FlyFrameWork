@@ -8,7 +8,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Wheel.EntityFrameworkCore
+namespace FlyFramework
 {
     /// <summary>
     /// EF拦截器
@@ -31,23 +31,23 @@ namespace Wheel.EntityFrameworkCore
             eventData.Context.ChangeTracker.DetectChanges();
             foreach (var entityEntry in eventData.Context.ChangeTracker.Entries())
             {
-                if (entityEntry is { State: EntityState.Deleted, Entity: ISoftDelete softDeleteEntity })
-                {
-                    softDeleteEntity.IsDeleted = true;
-                    entityEntry.State = EntityState.Modified;
-                }
-                //if (entityEntry is { State: EntityState.Modified, Entity: IHasUpdateTime hasUpdateTimeEntity })
+                //if (entityEntry is { State: EntityState.Deleted, Entity: ISoftDelete softDeleteEntity })
                 //{
-                //    hasUpdateTimeEntity.UpdateTime = DateTimeOffset.Now;
+                //    softDeleteEntity.IsDeleted = true;
+                //    entityEntry.State = EntityState.Modified;
                 //}
-                if (entityEntry is { State: EntityState.Added, Entity: ICreationAuditedEntity<string> hasCreationTimeEntity })
-                {
-                    hasCreationTimeEntity.CreationTime = DateTime.Now;
-                    //entityEntry.GetType().GetProperty("Id").SetValue(entityEntry, Guid.NewGuid).ToString("N"));
-                    //hasCreationTimeEntity.CreatorUserName = DateTimeOffset.Now;
-                    //hasCreationTimeEntity.CreationTime = DateTimeOffset.Now;
+                ////if (entityEntry is { State: EntityState.Modified, Entity: IHasUpdateTime hasUpdateTimeEntity })
+                ////{
+                ////    hasUpdateTimeEntity.UpdateTime = DateTimeOffset.Now;
+                ////}
+                //if (entityEntry is { State: EntityState.Added, Entity: ICreationAuditedEntity<string> hasCreationTimeEntity })
+                //{
+                //    hasCreationTimeEntity.CreationTime = DateTime.Now;
+                //    //entityEntry.GetType().GetProperty("Id").SetValue(entityEntry, Guid.NewGuid).ToString("N"));
+                //    //hasCreationTimeEntity.CreatorUserName = DateTimeOffset.Now;
+                //    //hasCreationTimeEntity.CreationTime = DateTimeOffset.Now;
 
-                }
+                //}
             }
         }
     }
