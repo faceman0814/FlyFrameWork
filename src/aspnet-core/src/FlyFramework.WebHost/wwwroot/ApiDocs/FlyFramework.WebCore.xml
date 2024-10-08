@@ -4,64 +4,29 @@
         <name>FlyFramework.WebCore</name>
     </assembly>
     <members>
-        <member name="M:FlyFramework.Identitys.IdentityConfig.GetApiResources">
+        <member name="M:FlyFramework.Authorizations.Identitys.IdentityConfig.GetApiResources">
             <summary>
             这个方法是来描述和阐述，提供外部选择的作用域
             </summary>
             <returns></returns>
         </member>
-        <member name="M:FlyFramework.Identitys.IdentityConfig.GetClients">
+        <member name="M:FlyFramework.Authorizations.Identitys.IdentityConfig.GetClients">
             <summary>
             作用域的名称和验证规则
             </summary>
             <returns></returns>
         </member>
-        <member name="M:FlyFramework.Identitys.IdentityConfig.GetIdentityResources">
+        <member name="M:FlyFramework.Authorizations.Identitys.IdentityConfig.GetIdentityResources">
             <summary>
             这个方法是来规范tooken生成的规则和方法的。一般不进行设置，直接采用默认的即可。
             </summary>
             <returns></returns>
         </member>
-        <member name="M:FlyFramework.Identitys.IdentityConfig.GetUsers">
+        <member name="M:FlyFramework.Authorizations.Identitys.IdentityConfig.GetUsers">
             <summary>
             针对用户密码验证方式需要比对的账户
             </summary>
             <returns></returns>
-        </member>
-        <member name="T:FlyFramework.Authorizations.JwtBearer.UserClaimTypes">
-            <summary>
-            登录声明类型帮助类，定义了常用的声明类型名称。
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Authorizations.JwtBearer.UserClaimTypes.UserName">
-            <summary>
-            用户名声明类型，默认值为 <see cref="F:System.Security.Claims.ClaimTypes.Name"/>。
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Authorizations.JwtBearer.UserClaimTypes.Expiration">
-            <summary>
-            过期时间声明类型，默认值为 <see cref="F:System.Security.Claims.ClaimTypes.Expiration"/>。
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Authorizations.JwtBearer.UserClaimTypes.UserId">
-            <summary>
-            用户 ID 声明类型，默认值为 <see cref="F:System.Security.Claims.ClaimTypes.NameIdentifier"/>。
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Authorizations.JwtBearer.UserClaimTypes.Role">
-            <summary>
-            角色声明类型，默认值为 <see cref="F:System.Security.Claims.ClaimTypes.Role"/>。
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Authorizations.JwtBearer.UserClaimTypes.TenantId">
-            <summary>
-            租户 ID 声明类型，默认值为 "TenantId"。
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Authorizations.JwtBearer.UserClaimTypes.TenantName">
-            <summary>
-            租户名称声明类型，默认值为 "TenantName"。
-            </summary>
         </member>
         <member name="M:FlyFramework.Controllers.AccountClientController.CreateAccessToken(System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},System.Nullable{System.TimeSpan})">
             <summary>

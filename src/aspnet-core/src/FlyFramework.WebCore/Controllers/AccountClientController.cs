@@ -4,6 +4,7 @@ using FlyFramework.LazyModule.LazyDefinition;
 using FlyFramework.Models;
 using FlyFramework.UserModule;
 using FlyFramework.UserModule.DomainService;
+using FlyFramework.UserSessions;
 using FlyFramework.Utilities.Redis;
 
 using Microsoft.AspNetCore.Http;

@@ -3,7 +3,7 @@ using IdentityServer4.Test;
 
 using System.Collections.Generic;
 using System.Security.Claims;
-namespace FlyFramework.Identitys
+namespace FlyFramework.Authorizations.Identitys
 {
     public class IdentityConfig
     {

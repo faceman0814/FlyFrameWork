@@ -4,15 +4,17 @@ using Autofac.Core;
 using AutoMapper;
 
 using FlyFramework.Attributes;
+using FlyFramework.DynamicWebAPI;
 using FlyFramework.FlyFrameworkModules;
 using FlyFramework.FlyFrameworkModules.Modules;
 using FlyFramework.Uow;
-using FlyFramework.UserService;
 using FlyFramework.UserService.Dtos;
 using FlyFramework.UserService.Mappers;
 using FlyFramework.UserSessions;
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using ServiceStack;
@@ -33,6 +35,11 @@ namespace FlyFramework
                 UserMapper.CreateMappings(configuration);
 
             }, typeof(FlyFrameworkApplicationModule));
+        }
+
+        public override void Initialize(ServiceConfigerContext context)
+        {
+
         }
 
         protected override void Load(ContainerBuilder builder)
@@ -58,6 +65,7 @@ namespace FlyFramework
                    //.EnableClassInterceptors() // 如果使用拦截器
                    .PropertiesAutowired(new IocSelectPropertySelector()); // 启用属性注入
         }
+
     }
 
     /// <summary>

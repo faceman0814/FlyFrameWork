@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 using System;
 
+using Wheel.EntityFrameworkCore;
+
 namespace FlyFramework
 {
     public static class FlyFrameworkDbContextConfigurer
@@ -29,7 +31,8 @@ namespace FlyFramework
                 switch (databaseType)
                 {
                     case DatabaseType.SqlServer:
-                        option.UseSqlServer(connectionString).AddInterceptors(new QueryWithNoLockDbCommandInterceptor());
+                        option.UseSqlServer(connectionString);
+                        //.AddInterceptors(new FlyFrameworkEFCoreInterceptor());
                         break;
 
                     case DatabaseType.MySql:

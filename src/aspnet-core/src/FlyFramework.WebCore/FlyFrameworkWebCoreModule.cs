@@ -1,8 +1,8 @@
-﻿using FlyFramework.Authorizations.JwtBearer;
+﻿using FlyFramework.Authorizations.Identitys;
+using FlyFramework.Authorizations.JwtBearer;
 using FlyFramework.FlyFrameworkModules;
 using FlyFramework.FlyFrameworkModules.Extensions;
 using FlyFramework.FlyFrameworkModules.Modules;
-using FlyFramework.Identitys;
 using FlyFramework.UserModule;
 
 using Microsoft.AspNetCore.Authentication.Cookies;

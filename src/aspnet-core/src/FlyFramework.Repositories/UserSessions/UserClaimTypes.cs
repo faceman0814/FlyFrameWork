@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.Authorizations.JwtBearer
+namespace FlyFramework.UserSessions
 {
     /// <summary>
     /// 登录声明类型帮助类，定义了常用的声明类型名称。

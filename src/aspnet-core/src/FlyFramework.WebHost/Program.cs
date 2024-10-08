@@ -65,8 +65,6 @@ public static class AppConfig
 
         services.AddFilters();
 
-        services.AddDbContext(configuration);
-
         services.AddHangfire(configuration);
 
         services.AddDynamicApi(builder);
@@ -80,7 +78,6 @@ public static class AppConfig
         services.AddEventBus(configuration);
 
         services.AddRabbitMq(configuration);
-
 
         services.AddSignalR();
 

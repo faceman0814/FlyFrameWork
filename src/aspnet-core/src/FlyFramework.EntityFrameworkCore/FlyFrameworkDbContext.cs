@@ -1,41 +1,165 @@
-﻿using FlyFramework.UserModule;
+﻿using FlyFramework.Entities;
+using FlyFramework.Extensions;
+using FlyFramework.Extentions;
+using FlyFramework.Extentions.Object;
+using FlyFramework.UserModule;
+using FlyFramework.UserSessions;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata;
+
+using MongoDB.Bson.Serialization.IdGenerators;
 
 using System;
+using System.Data.Common;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 namespace FlyFramework
 {
-    public class FlyFrameworkDbContext : IdentityDbContext<User, Role, string>
+    public class FlyFrameworkDbContext : DbContextBase
     {
         public FlyFrameworkDbContext(DbContextOptions<FlyFrameworkDbContext> options)
         : base(options)
         {
         }
+        public IUserSession UserSession { get; set; }
 
-        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        /// <summary>
+        /// 是否自动设置TenantId
+        /// </summary>
+        public bool SuppressAutoSetTenantId { get; set; } = false;
+
+        protected virtual void ApplyConcepts(EntityEntry entry)
         {
-            return base.SaveChanges(acceptAllChangesOnSuccess);
+            switch (entry.State)
+            {
+                case EntityState.Added:
+                    ApplyConceptsForAddedEntity(entry);
+                    break;
+                case EntityState.Modified:
+                    //ApplyConceptsForModifiedEntity(entry);
+                    break;
+                case EntityState.Deleted:
+                    //ApplyConceptsForDeletedEntity(entry);
+                    break;
+            }
+
         }
-        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        protected virtual void ApplyConceptsForAddedEntity(EntityEntry entry)
         {
-            //OnBeforeSaving();
-            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+            CheckAndSetId(entry);
+            CheckAndSetMustHaveTenantIdProperty(entry.Entity);
+            CheckAndSetMayHaveTenantIdProperty(entry.Entity);
+            SetCreationAuditProperties(entry.Entity);
         }
+
+        protected virtual void CheckAndSetId(EntityEntry entry)
+        {
+            if (entry.Entity is IEntity<string> entity && entity.Id.IsNullOrEmpty())
+            {
+                PropertyEntry propertyEntry = entry.Property("Id");
+                if (propertyEntry != null && propertyEntry.Metadata.ValueGenerated == ValueGenerated.Never)
+                {
+                    ObjectHelper.TrySetProperty(entity, x => x.Id, () => Guid.NewGuid().ToString("N"));
+
+                }
+            }
+        }
+
+        protected virtual void CheckAndSetMustHaveTenantIdProperty(object entityAsObj)
+        {
+            if (SuppressAutoSetTenantId || !(entityAsObj is IMustHaveTenant))
+            {
+                return;
+            }
+
+            IMustHaveTenant mustHaveTenant = entityAsObj.As<IMustHaveTenant>();
+            if (!mustHaveTenant.TenantId.HasValue())
+            {
+                if (!UserSession.TenantId.HasValue())
+                {
+                    throw new Exception("Can not set TenantId to 0 for IMustHaveTenant entities!");
+                }
+
+                mustHaveTenant.TenantId = UserSession.TenantId;
+            }
+        }
+
+        protected virtual void CheckAndSetMayHaveTenantIdProperty(object entityAsObj)
+        {
+            if (SuppressAutoSetTenantId || !(entityAsObj is IMayHaveTenant))
+            {
+                return;
+            }
+
+            IMayHaveTenant mayHaveTenant = entityAsObj.As<IMayHaveTenant>();
+            if (!mayHaveTenant.TenantId.HasValue())
+            {
+                mayHaveTenant.TenantId = UserSession.TenantId;
+            }
+        }
+
+        protected virtual void SetCreationAuditProperties(object entityAsObj)
+        {
+            if (entityAsObj is ICreationAuditedEntity<string> creationAuditedEntity)
+            {
+                if (creationAuditedEntity.CreatorUserId == null)
+                {
+                    creationAuditedEntity.CreatorUserId = UserSession.UserId;
+                }
+                if (creationAuditedEntity.CreationTime == null)
+                {
+                    creationAuditedEntity.CreationTime = DateTime.Now;
+                }
+                if (creationAuditedEntity.CreatorUserName == null)
+                {
+                    creationAuditedEntity.CreatorUserName = UserSession.UserName;
+                }
+            }
+        }
+
+        private void ConfigurationOnBeforeSaving()
+        {
+            foreach (EntityEntry item in ChangeTracker.Entries().ToList())
+            {
+                //if (item.State != EntityState.Modified && item.CheckOwnedEntityChange())
+                //{
+                //    Entry(item.Entity).State = EntityState.Modified;
+                //}
+                //ApplyConcepts(item);
+                if (item is { Entity: IEntity<string> safeDelete, State: EntityState.Added })
+                {
+                    safeDelete.Id = Guid.NewGuid().ToString("N");
+                }
+            }
+        }
+        //protected virtual void SetModificationAuditProperties(object entityAsObj, string userId)
+        //{
+        //    EntityAuditingHelper.SetModificationAuditProperties(MultiTenancyConfig, entityAsObj, AbpSession.TenantId, userId, CurrentUnitOfWorkProvider?.Current?.AuditFieldConfiguration);
+        //}
+
+        //protected virtual void CancelDeletionForSoftDelete(EntityEntry entry)
+        //{
+        //    if (entry.Entity is ISoftDelete)
+        //    {
+        //        entry.Reload();
+        //        entry.State = EntityState.Modified;
+        //        entry.Entity.As<ISoftDelete>().IsDeleted = true;
+        //    }
+        //}
+
+        //protected virtual void SetDeletionAuditProperties(object entityAsObj, string userId)
+        //{
+        //    EntityAuditingHelper.SetDeletionAuditProperties(MultiTenancyConfig, entityAsObj, AbpSession.TenantId, userId, CurrentUnitOfWorkProvider?.Current?.AuditFieldConfiguration);
+        //}
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            //foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-            //{
-            //    if (typeof(ISoftDelete).IsAssignableFrom(entityType.ClrType))
-            //    {
-            //        entityType.AddSoftDeleteQueryFilter();
-            //    }
-            //}
 
             //从当前程序集中加载实现了IDesignTimeDbContextFactory接口的配置类
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
@@ -56,7 +180,8 @@ namespace FlyFramework
             {
                 Id = adminRoleId,
                 Name = "管理员",
-                CreationTime = DateTime.Now
+                CreationTime = DateTime.Now,
+                TenantId = "1"
             });
 
             //2.添加用户
@@ -74,7 +199,8 @@ namespace FlyFramework
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = false,
                 SecurityStamp = "Mecca",
-                CreationTime = DateTime.Now
+                CreationTime = DateTime.Now,
+                TenantId = "1"
             };
             PasswordHasher<User> ph = new PasswordHasher<User>();
             adminUser.PasswordHash = ph.HashPassword(adminUser, "bb123456");
@@ -86,7 +212,8 @@ namespace FlyFramework
             {
                 Id = UserRoleId,
                 UserId = adminUserId,
-                RoleId = adminRoleId
+                RoleId = adminRoleId,
+                TenantId = "1"
             });
 
         }

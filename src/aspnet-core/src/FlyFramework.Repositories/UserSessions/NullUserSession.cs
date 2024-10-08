@@ -16,8 +16,11 @@ namespace FlyFramework.UserSessions
 
         public string UserId => null;
 
-        //public string TenantId => null;
         public string UserName => null;
+
+        public string TenantId => null;
+
+        public string TenantName => null;
 
         public Claim FindClaim(string claimType)
         {
