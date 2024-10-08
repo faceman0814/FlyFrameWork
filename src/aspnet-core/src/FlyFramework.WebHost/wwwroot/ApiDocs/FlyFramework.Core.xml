@@ -4,6 +4,20 @@
         <name>FlyFramework.Core</name>
     </assembly>
     <members>
+        <member name="M:FlyFramework.Authorizations.ILogInManager.LoginAsync(FlyFramework.UserModule.User)">
+            <summary>
+            获取登录用户信息
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.Authorizations.ILogInManager.GetClaims(System.String)">
+            <summary>
+            获取用户信息
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
         <member name="F:FlyFramework.FlyFrameworkConst.AccessTokenExpiration">
             <summary>
             Token过期时间 默认1天

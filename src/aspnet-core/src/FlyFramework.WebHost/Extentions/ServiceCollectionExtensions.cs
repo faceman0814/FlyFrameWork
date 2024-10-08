@@ -4,6 +4,7 @@ using Autofac.Extensions.DependencyInjection;
 using DotNetCore.CAP.Internal;
 
 using FlyFramework.Attributes;
+using FlyFramework.DynamicWebAPI;
 using FlyFramework.Extensions;
 using FlyFramework.Extentions;
 using FlyFramework.Extentions.JsonOptions;
@@ -215,8 +216,8 @@ namespace FlyFramework.Extentions
         {
             services.AddMvc(options => { })
                     .AddRazorPagesOptions((options) => { })
-                    .AddRazorRuntimeCompilation();
-            //.AddDynamicWebApi(builder.Configuration);
+                    .AddRazorRuntimeCompilation()
+                    .AddDynamicWebApi(builder.Configuration);
         }
 
         /// <summary>

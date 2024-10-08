@@ -70,6 +70,21 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="P:FlyFramework.Models.AccountForgotPasswordDto.PhoneNumber">
+            <summary>
+            联系电话
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountForgotPasswordDto.NewPassword">
+            <summary>
+            新密码
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountForgotPasswordDto.Captcha">
+            <summary>
+            验证码
+            </summary>
+        </member>
         <member name="P:FlyFramework.Models.AccountLoginDto.UserName">
             <summary>
             用户名
@@ -128,6 +143,26 @@
         <member name="P:FlyFramework.Models.AccountLoginDto.IsApiLogin">
             <summary>
             是否Api登录
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountRegiserDto.Nickname">
+            <summary>
+            昵称
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountRegiserDto.PhoneNumber">
+            <summary>
+            联系电话
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountRegiserDto.Password">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Models.AccountRegiserDto.Captcha">
+            <summary>
+            验证码
             </summary>
         </member>
         <member name="P:FlyFramework.Models.AuthenticateResultModel.Avatar">
