@@ -43,7 +43,7 @@ namespace Wheel.EntityFrameworkCore
                 if (entityEntry is { State: EntityState.Added, Entity: ICreationAuditedEntity<string> hasCreationTimeEntity })
                 {
                     hasCreationTimeEntity.CreationTime = DateTime.Now;
-                    entityEntry.GetType().GetProperty("Id").SetValue(entityEntry, Guid.NewGuid).ToString("N"));
+                    //entityEntry.GetType().GetProperty("Id").SetValue(entityEntry, Guid.NewGuid).ToString("N"));
                     //hasCreationTimeEntity.CreatorUserName = DateTimeOffset.Now;
                     //hasCreationTimeEntity.CreationTime = DateTimeOffset.Now;
 
