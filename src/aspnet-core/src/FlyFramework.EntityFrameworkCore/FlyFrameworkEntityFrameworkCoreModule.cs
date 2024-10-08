@@ -1,7 +1,13 @@
-﻿using FlyFramework.FlyFrameworkModules;
+﻿using Autofac;
+
+using AutoMapper;
+
+using FlyFramework.FlyFrameworkModules;
 using FlyFramework.FlyFrameworkModules.Extensions;
 using FlyFramework.FlyFrameworkModules.Modules;
 using FlyFramework.Repositories;
+using FlyFramework.Uow;
+using FlyFramework.UserSessions;
 using FlyFramework.Utilities.Dappers;
 
 using Microsoft.Data.SqlClient;
@@ -14,27 +20,40 @@ using System.Data;
 namespace FlyFramework
 {
     [DependOn(
-       typeof(FlyFrameworkCoreModule)
+       typeof(FlyFrameworkApplicationModule)
    )]
     public class FlyFrameworkEntityFrameworkCoreModule : FlyFrameworkBaseModule
     {
         public override void PreInitialize(ServiceConfigerContext context)
         {
             FlyFrameworkDbContextConfigurer.UsingDatabaseServices(context);
-
-
         }
-
-        public override void Initialize(ServiceConfigerContext context)
+        protected override void Load(ContainerBuilder builder)
         {
-            var configuration = context.GetConfiguration();
-            //注册泛型仓储服务
-            context.Services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
-            context.Services.AddScoped<IDbContextProvider, DbContextProvider>();
-            // 注册IDbConnection，使用Scoped生命周期
-            context.Services.AddScoped<IDbConnection>(provider =>
-                new SqlConnection(configuration.GetConnectionString("Default")));
-            context.Services.AddScoped(typeof(IDapperManager<>), typeof(DapperManager<>));
+            builder.RegisterGeneric(typeof(Repository<,>))
+                .As(typeof(IRepository<,>))
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<DbContextProvider>()
+                  .As<IDbContextProvider>()
+                  .InstancePerLifetimeScope();
+
+            builder.Register<IDbConnection>(context =>
+            {
+                //var configuration = context.GetConfiguration();
+                var configuration = context.Resolve<IConfiguration>();
+                return new SqlConnection(configuration.GetConnectionString("Default"));
+            }).InstancePerLifetimeScope();
+
+
+            builder.RegisterGeneric(typeof(DapperManager<>))
+                .As(typeof(IDapperManager<>))
+              .InstancePerLifetimeScope();
+            // 注册所有应用服务，并开启属性注入
+            builder.RegisterAssemblyTypes(typeof(FlyFrameworkEntityFrameworkCoreModule).Assembly)
+                   //.Where(t => t.Name.EndsWith("AppService"))
+                   //.EnableClassInterceptors() // 如果使用拦截器
+                   .PropertiesAutowired(); // 启用属性注入
         }
     }
 }

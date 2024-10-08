@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace FlyFramework.Authorizations.JwtBearer
 {
     public enum TokenType
     {
+        [Description("Access Token")]
         AccessToken,
+        [Description("Refresh Token")]
         RefreshToken
     }
 }

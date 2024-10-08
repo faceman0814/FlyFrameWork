@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Identity;
 
 using System;
 using System.Collections.Generic;
-namespace FlyFramework.UserService
+namespace FlyFramework.UserModule
 {
-    public class User : IdentityUser<string>, IFullAuditedEntity<string>
+    public class User : IdentityUser<string>, IFullAuditedEntity<string>, IMustHaveTenant
     {
         public string FullName { get; set; }
         public string Password { get; set; }
@@ -22,6 +22,7 @@ namespace FlyFramework.UserService
         public DateTime CreationTime { get; set; }
         public string CreatorUserName { get; set; }
         public string CreatorUserId { get; set; }
+        public string TenantId { get; set; }
 
         public bool IsTransient()
         {

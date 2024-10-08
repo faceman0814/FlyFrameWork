@@ -20,7 +20,7 @@ namespace FlyFramework
         public static IMappingExpression<TSource, TDestination> IgnoreNullSourceProperties<TSource, TDestination>
     (this IMappingExpression<TSource, TDestination> expression, List<string> ignoreProperties = null)
         {
-            if (ignoreProperties.Any())
+            if (ignoreProperties != null && ignoreProperties.Any())
             {
                 var sourceType = typeof(TSource);
                 var destinationType = typeof(TDestination);

@@ -1,5 +1,5 @@
 ﻿using FlyFramework.ApplicationServices;
-using FlyFramework.UserService;
+using FlyFramework.UserModule;
 using FlyFramework.Utilities.Dappers;
 
 using System;

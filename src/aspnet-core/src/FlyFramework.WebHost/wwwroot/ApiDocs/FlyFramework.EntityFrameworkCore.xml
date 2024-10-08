@@ -4,6 +4,16 @@
         <name>FlyFramework.EntityFrameworkCore</name>
     </assembly>
     <members>
+        <member name="T:FlyFramework.Extensions.QueryWithNoLockDbCommandInterceptor">
+            <summary>
+            EF Core 查询增加 With NoLock(仅限sqlserver)
+            </summary>
+        </member>
+        <member name="P:FlyFramework.FlyFrameworkDbContext.SuppressAutoSetTenantId">
+            <summary>
+            是否自动设置TenantId
+            </summary>
+        </member>
         <member name="T:FlyFramework.EntityFrameworkCore.Migrations.Init">
             <inheritdoc />
         </member>
@@ -16,9 +26,9 @@
         <member name="M:FlyFramework.EntityFrameworkCore.Migrations.Init.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
-        <member name="T:QueryWithNoLockDbCommandInterceptor">
+        <member name="T:Wheel.EntityFrameworkCore.FlyFrameworkEFCoreInterceptor">
             <summary>
-            EF Core 查询增加 With NoLock(仅限sqlserver)
+            EF拦截器
             </summary>
         </member>
     </members>

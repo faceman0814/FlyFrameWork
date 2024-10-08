@@ -1,4 +1,5 @@
 ﻿using FlyFramework.Attributes;
+using FlyFramework.Dependencys;
 using FlyFramework.ErrorExceptions;
 using FlyFramework.UserSessions;
 
@@ -7,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 namespace FlyFramework.ApplicationServices
 {
-    public abstract class ApplicationService : ApplicationServiceBase, IApplicationService
+    public abstract class ApplicationService : ApplicationServiceBase, IApplicationService, ITransientDependency
     {
         /// <summary>
         /// API 通用后缀

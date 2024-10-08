@@ -6,13 +6,32 @@ using System.Threading.Tasks;
 
 namespace FlyFramework.Models
 {
+
     public class AuthenticateResultModel
     {
+        /// <summary>
+        /// 用户头像
+        /// </summary>
         public string Avatar { get; set; }
+        /// <summary>
+        /// 用户名称
+        /// </summary>
         public string UserName { get; set; }
+        /// <summary>
+        /// 用户昵称
+        /// </summary>
         public string NickName { get; set; }
+        /// <summary>
+        /// 用户角色
+        /// </summary>
         public List<string> Roles { get; set; }
+        /// <summary>
+        /// 用户权限
+        /// </summary>
         public List<string> Permissions { get; set; }
+        /// <summary>
+        /// 过期时间
+        /// </summary>
         public DateTimeOffset Expires { get; set; }
 
         /// <summary>
@@ -57,7 +76,7 @@ namespace FlyFramework.Models
         //
         // 摘要:
         //     刷新令牌过期时间
-        public int RefreshTokenExpireInSeconds { get; set; }
+        public DateTimeOffset RefreshTokenExpire { get; set; }
 
         //
         // 摘要:

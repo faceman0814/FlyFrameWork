@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿
+using Autofac;
 using Autofac.Core;
 
 using AutoMapper;
@@ -33,6 +34,11 @@ namespace FlyFramework
             }, typeof(FlyFrameworkApplicationModule));
         }
 
+        public override void Initialize(ServiceConfigerContext context)
+        {
+
+        }
+
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<UserSession>()
@@ -42,7 +48,6 @@ namespace FlyFramework
             builder.RegisterType<UnitOfWorkManager>()
                   .As<IUnitOfWorkManager>()
                   .InstancePerLifetimeScope();
-
 
             builder.RegisterType<Mapper>()
                  .As<IMapper>()
@@ -62,6 +67,7 @@ namespace FlyFramework
                    //.EnableClassInterceptors() // 如果使用拦截器
                    .PropertiesAutowired(new IocSelectPropertySelector()); // 启用属性注入
         }
+
     }
 
     /// <summary>

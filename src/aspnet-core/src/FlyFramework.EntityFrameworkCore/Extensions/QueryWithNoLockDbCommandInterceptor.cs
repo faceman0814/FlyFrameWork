@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore.Diagnostics;
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
 
 using System;
 using System.Data.Common;
@@ -6,7 +6,8 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-
+namespace FlyFramework.Extensions
+{
 /// <summary>
 /// EF Core 查询增加 With NoLock(仅限sqlserver)
 /// </summary>
@@ -71,3 +72,4 @@ public class QueryWithNoLockDbCommandInterceptor : DbCommandInterceptor
     }
 }
 
+}

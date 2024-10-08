@@ -1,17 +1,18 @@
-﻿using Autofac;
-
+﻿using FlyFramework.Authorizations.Identitys;
 using FlyFramework.Authorizations.JwtBearer;
 using FlyFramework.Controllers;
 using FlyFramework.DynamicWebAPI;
 using FlyFramework.FlyFrameworkModules;
 using FlyFramework.FlyFrameworkModules.Extensions;
 using FlyFramework.FlyFrameworkModules.Modules;
+using FlyFramework.UserModule;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -21,33 +22,52 @@ using Newtonsoft.Json;
 using System;
 using System.Text;
 using System.Threading.Tasks;
+
 namespace FlyFramework
 {
-    [DependOn(
-       typeof(FlyFrameworkApplicationModule),
-       typeof(FlyFrameworkEntityFrameworkCoreModule)
-   )]
+    [DependOn(typeof(FlyFrameworkEntityFrameworkCoreModule))]
     public class FlyFrameworkWebCoreModule : FlyFrameworkBaseModule
     {
-        public override void PreInitialize(ServiceConfigerContext context)
+        public override void Initialize(ServiceConfigerContext context)
         {
-            //配置动态webapi
-            context.Services.AddMvc(options => { })
-                   .AddRazorPagesOptions((options) => { })
-                   .AddRazorRuntimeCompilation()
-                   .AddDynamicWebApi(context.GetConfiguration());
-
-            //services.AddSingleton<IJWTTokenManager, JWTTokenManager>();
-            //context.Services.AddSingleton<IJwtBearerModel, JwtBearerModel>();
-
             var configuration = context.GetConfiguration();
+            var services = context.Services;
 
+            //Identity必须在JWT之前注册
+            AddIdentity(services);
+
+            AddJWT(services, configuration);
+
+        }
+
+        public void AddIdentity(IServiceCollection services)
+        {
+            services.AddIdentity<User, Role>()
+        .AddEntityFrameworkStores<FlyFrameworkDbContext>()
+         .AddDefaultTokenProviders();
+
+            services.AddIdentityServer()
+             .AddAspNetIdentity<User>()
+             .AddDeveloperSigningCredential()
+             //扩展在每次启动时，为令牌签名创建了一个临时密钥。在生成环境需要一个持久化的密钥
+             .AddInMemoryClients(IdentityConfig.GetClients())             //验证方式
+             .AddInMemoryApiResources(IdentityConfig.GetApiResources())
+             .AddInMemoryIdentityResources(IdentityConfig.GetIdentityResources())     //创建接口返回格式
+             .AddInMemoryApiScopes(IdentityConfig.ApiScopes)
+             .AddInMemoryPersistedGrants()
+             .AddInMemoryCaching()
+             .AddTestUsers(IdentityConfig.GetUsers());
+
+        }
+
+        public void AddJWT(IServiceCollection services, IConfiguration configuration)
+        {
             //将身份验证服务添加到管道中
             var jwtBearer = configuration.GetSection("JwtBearer").Get<TokenAuthConfiguration>();
             jwtBearer.AccessTokenExpiration = FlyFrameworkConst.AccessTokenExpiration;
             jwtBearer.RefreshTokenExpiration = FlyFrameworkConst.RefreshTokenExpiration;
             jwtBearer.SecurityKey = new SymmetricSecurityKey(
-              Encoding.ASCII.GetBytes(configuration["JwtBearer:SecurityKey"])
+              Encoding.ASCII.GetBytes(configuration["JwtBearer:SecretKey"])
           );
             jwtBearer.SigningCredentials = new SigningCredentials(
                 jwtBearer.SecurityKey,
@@ -55,22 +75,9 @@ namespace FlyFramework
             );
 
             // 将 jwtBearer 作为参数传递
-            context.Services.AddSingleton<ITokenAuthConfiguration>(jwtBearer);
+            services.AddSingleton(jwtBearer);
 
-            context.Services.Configure<CookiePolicyOptions>(options =>
-            {
-                // 此设置确保所有cookie都将标记为Secure，只通过HTTPS传输
-                options.Secure = CookieSecurePolicy.Always;
-
-                // 设置MinimumSameSitePolicy为None允许跨站请求携带cookie
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-
-                // 设置HttpOnly为Always增加保护，防止通过客户端脚本访问cookie
-                options.HttpOnly = HttpOnlyPolicy.Always;
-
-            });
-
-            context.Services.AddAuthentication(options =>
+            services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -79,7 +86,7 @@ namespace FlyFramework
             .AddCookie(options =>
             {
                 options.Cookie.Name = "BearerCookie";
-                options.ExpireTimeSpan = FlyFrameworkConst.AccessTokenExpiration;
+                options.ExpireTimeSpan = jwtBearer.AccessTokenExpiration;
                 options.SlidingExpiration = false;
                 options.LogoutPath = "/Home/Index";
                 options.Events = new CookieAuthenticationEvents

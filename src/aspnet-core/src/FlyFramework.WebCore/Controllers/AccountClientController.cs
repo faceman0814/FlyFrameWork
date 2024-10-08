@@ -1,152 +1,168 @@
 ﻿using FlyFramework.Authorizations;
 using FlyFramework.Authorizations.JwtBearer;
-using FlyFramework.Extentions;
-using FlyFramework.Extentions.Object;
+using FlyFramework.ErrorExceptions;
+using FlyFramework.LazyModule.LazyDefinition;
 using FlyFramework.Models;
-using FlyFramework.RoleService;
-using FlyFramework.UserService;
-using FlyFramework.UserService.DomainService;
+using FlyFramework.UserModule;
+using FlyFramework.UserModule.DomainService;
+using FlyFramework.UserSessions;
 using FlyFramework.Utilities.Redis;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
-using Minio.DataModel.ILM;
+using Newtonsoft.Json.Linq;
+
+using ServiceStack;
 
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace FlyFramework.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Microsoft.AspNetCore.Mvc.Route("api/[controller]/[action]")]
     public class AccountClientController : Controller
     {
         readonly IOptions<IdentityOptions> _identityOptions;
-        readonly ITokenAuthConfiguration _tokenAuthConfiguration;
+        readonly TokenAuthConfiguration _tokenAuthConfiguration;
         readonly ICacheManager _cacheManager;
         readonly UserClaimsPrincipalFactory<User, Role> _claimsPrincipalFactory;
         readonly SignInManager<User> _signInManager;
         readonly IUserManager _userManager;
-        readonly ILogInManager _logInManager;
-
-        public AccountClientController(
-           UserClaimsPrincipalFactory<User, Role> userClaimsPrincipalFactory,
-           SignInManager<User> signInManager,
-           IUserManager userManager,
-           ILogInManager logInManager,
-           IOptions<IdentityOptions> identityOptions,
-           ICacheManager cacheManager,
-           ITokenAuthConfiguration tokenAuthConfiguration)
+        public AccountClientController(IFlyFrameworkLazy flyFrameworkLazy)
         {
-            _claimsPrincipalFactory = userClaimsPrincipalFactory;
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _logInManager = logInManager;
-            _identityOptions = identityOptions;
-            _cacheManager = cacheManager;
-            _tokenAuthConfiguration = tokenAuthConfiguration;
+            _userManager = flyFrameworkLazy.LazyGetService<IUserManager>().Value;
+            _signInManager = flyFrameworkLazy.LazyGetService<SignInManager<User>>().Value;
+            _identityOptions = flyFrameworkLazy.LazyGetService<IOptions<IdentityOptions>>().Value;
+            _tokenAuthConfiguration = flyFrameworkLazy.LazyGetService<TokenAuthConfiguration>().Value;
+            _cacheManager = flyFrameworkLazy.LazyGetService<ICacheManager>().Value;
+            _claimsPrincipalFactory = flyFrameworkLazy.LazyGetService<UserClaimsPrincipalFactory<User, Role>>().Value;
+        }
+        private async Task<ClaimsIdentity> GetClaimsIdentityAsync(User user)
+        {
+            return (ClaimsIdentity)(await _claimsPrincipalFactory.CreateAsync(user)).Identity;
+        }
+
+        private IEnumerable<Claim> GetClaims(string token)
+        {
+            // 验证和解码 token
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var validationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(token)),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ClockSkew = TimeSpan.Zero  // 可根据需要调整时钟偏移量
+            };
+
+            SecurityToken validatedToken;
+            ClaimsPrincipal principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
+            return principal.Claims;
         }
         [HttpPost]
         public async Task<AuthenticateResultModel> Login(AccountLoginDto input)
         {
             var result = await _signInManager.PasswordSignInAsync(input.UserName, input.Password, false, false);
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                var user = await _userManager.FindByNameAsync(input.UserName);
-                var claimsIdentity = await _logInManager.LoginAsync(user);
-                // 客户端token标识，用于区分是否来源同一浏览器
-                var clientTokenTag = Guid.NewGuid().ToString();
+                throw new UserFriendlyException("用户名或密码错误");
+            }
+            var user = await _userManager.FindByNameAsync(input.UserName);
 
-                // 创建refresh token
-                var refreshTokenClaims = await CreateJwtClaims(
-                    claimsIdentity,
-                    user,
-                    tokenType: TokenType.RefreshToken,
-                    clientType: input.ClientType,
-                    clientTokenTag: clientTokenTag
-                    );
-                var refreshToken = CreateRefreshToken(refreshTokenClaims);
+            var claimsIdentity = await GetClaimsIdentityAsync(user);
 
-                // 创建access token
-                var accessTokenClaims = await CreateJwtClaims(
-                    claimsIdentity,
-                    user,
-                    refreshTokenKey: refreshToken.key,
-                    clientType: input.ClientType,
-                    clientTokenTag: clientTokenTag);
-                var accessToken = CreateAccessToken(accessTokenClaims);
+            // 客户端token标识，用于区分是否来源同一浏览器
+            var clientTokenTag = Guid.NewGuid().ToString();
 
-                // 第三方登录-登录记录
-                //if (!string.IsNullOrEmpty(input.ProviderId))
-                //{
-                //    var externalAuthProvider = await _externalAuthProviderManager
-                //        .FindByIdAsync(input.ProviderId);
+            // 创建refresh token
+            var refreshTokenClaims = await CreateJwtClaims(
+                claimsIdentity,
+                user,
+                tokenType: TokenType.RefreshToken,
+                clientType: input.ClientType,
+                clientTokenTag: clientTokenTag
+                );
+            var refreshToken = CreateRefreshToken(refreshTokenClaims);
 
-                //    await _userManager.AddLoginAsync(
-                //        loginResult.User,
-                //        new UserLoginInfo(
-                //            externalAuthProvider.Id,
-                //            input.ProviderCode,
-                //            externalAuthProvider.Name
-                //            )
-                //        );
-                //}
+            // 创建access token
+            var accessTokenClaims = await CreateJwtClaims(
+                claimsIdentity,
+                user,
+                refreshTokenKey: refreshToken.key,
+                clientType: input.ClientType,
+                clientTokenTag: clientTokenTag);
+            var accessToken = CreateAccessToken(accessTokenClaims);
 
-                if (input.IsApiLogin)
+            // 第三方登录-登录记录
+            //if (!string.IsNullOrEmpty(input.ProviderId))
+            //{
+            //    var externalAuthProvider = await _externalAuthProviderManager
+            //        .FindByIdAsync(input.ProviderId);
+
+            //    await _userManager.AddLoginAsync(
+            //        loginResult.User,
+            //        new UserLoginInfo(
+            //            externalAuthProvider.Id,
+            //            input.ProviderCode,
+            //            externalAuthProvider.Name
+            //            )
+            //        );
+            //}
+
+            if (input.IsApiLogin)
+            {
+                Response.Cookies.Append("access-token", accessToken, new CookieOptions()
                 {
-                    Response.Cookies.Append("access-token", accessToken, new CookieOptions()
-                    {
-                        Expires = DateTime.Now.Add(FlyFrameworkConst.AccessTokenExpiration)
-                    }
-                    );
+                    Expires = DateTimeOffset.Now.Add(_tokenAuthConfiguration.AccessTokenExpiration)
                 }
-                return new AuthenticateResultModel
-                {
-                    AccessToken = accessToken,
-                    EncryptedAccessToken = GetEncrpyedAccessToken(accessToken),
-                    Expires = DateTimeOffset.Now.Add(_tokenAuthConfiguration.AccessTokenExpiration),
-                    ExpireInSeconds = (int)_tokenAuthConfiguration.AccessTokenExpiration.TotalSeconds,
-                    RefreshToken = refreshToken.token,
-                    RefreshTokenExpireInSeconds = (int)_tokenAuthConfiguration.RefreshTokenExpiration.TotalSeconds,
-                    UserId = user.Id,
-                    ReturnUrl = input.ReturnUrl,
-                    Password = input.RememberMe ? SimpleStringCipher.Instance.Encrypt(input.Password) : null,
-                    UserName = user.UserName,
-                    NickName = user.FullName,
-                    Roles = new List<string>()
+                );
+            }
+            return new AuthenticateResultModel
+            {
+                AccessToken = accessToken,
+                Expires = DateTimeOffset.Now.Add(_tokenAuthConfiguration.AccessTokenExpiration),
+                RefreshToken = refreshToken.token,
+                RefreshTokenExpire = DateTimeOffset.Now.Add(_tokenAuthConfiguration.RefreshTokenExpiration),
+                UserId = user.Id,
+                ReturnUrl = input.ReturnUrl,
+                UserName = user.UserName,
+                NickName = user.FullName,
+                Roles = new List<string>()
                      {
                          "admin"
                      },
-                    Permissions = new List<string>()
+                Permissions = new List<string>()
                      {
                          "*:*:*"
                      },
-                    Avatar = "https://avatars.githubusercontent.com/u/44761321",
-                };
-            }
-            return null;
+                Avatar = "https://avatars.githubusercontent.com/u/44761321",
+            };
+
         }
 
         [HttpPost]
         public async Task<AuthenticateResultModel> RefreshToken(string refreshToken)
         {
-            var claims = _logInManager.GetClaims(refreshToken);
-            var userName = claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+            var claims = GetClaims(refreshToken);
+            var userName = claims.FirstOrDefault(x => x.Type == UserClaimTypes.UserName)?.Value;
             var user = await _userManager.FindByNameAsync(userName);
             if (user != null)
             {
                 return await Login(new AccountLoginDto()
                 {
                     IsRefresh = true,
-                    UserName = user.UserName,
-                    Password = SimpleStringCipher.Instance.Decrypt(user.Password),
+                    //UserName = user.UserName,
+                    //Password = SimpleStringCipher.Instance.Decrypt(user.Password),
                 });
             }
             return null;
@@ -171,7 +187,7 @@ namespace FlyFramework.Controllers
         (string token, string key) CreateRefreshToken(IEnumerable<Claim> claims)
         {
             var claimsList = claims.ToList();
-            return (CreateToken(claimsList, FlyFrameworkConst.RefreshTokenExpiration),
+            return (CreateToken(claimsList, _tokenAuthConfiguration.RefreshTokenExpiration),
                 claimsList.First(c => c.Type == FlyFrameworkConst.TokenValidityKey).Value);
         }
 
@@ -245,11 +261,11 @@ namespace FlyFramework.Controllers
             claims.AddRange(new[]
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.Now.ToUnixTimeSeconds().ToString(),
-                    ClaimValueTypes.Integer64),
+                new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.Now.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
                 new Claim(FlyFrameworkConst.TokenValidityKey, tokenValidityKey),
                 new Claim(FlyFrameworkConst.UserIdentifier, user.Id.ToString()),
-                new Claim(FlyFrameworkConst.TokenType, tokenType.To<int>().ToString()),
+                new Claim(UserClaimTypes.TenantId, user.TenantId.ToString()),
+                new Claim(FlyFrameworkConst.TokenType, tokenType.ToDescription()),
             });
 
             if (!string.IsNullOrEmpty(refreshTokenKey))
@@ -283,10 +299,10 @@ namespace FlyFramework.Controllers
         /// </summary>
         /// <param name="accessToken"></param>
         /// <returns></returns>
-        string GetEncrpyedAccessToken(string accessToken)
-        {
-            return SimpleStringCipher.Instance.Encrypt(accessToken, FlyFrameworkConst.DefaultPassPhrase);
-        }
+        //string GetEncrpyedAccessToken(string accessToken)
+        //{
+        //    return SimpleStringCipher.Instance.Encrypt(accessToken, FlyFrameworkConst.DefaultPassPhrase);
+        //}
 
         #endregion
     }

@@ -1,7 +1,7 @@
 ﻿using FlyFramework.ApplicationServices;
+using FlyFramework.LazyModule.LazyDefinition;
+using FlyFramework.UserModule.DomainService;
 using FlyFramework.UserModule.Dtos;
-using FlyFramework.UserService;
-using FlyFramework.UserService.DomainService;
 
 using Microsoft.AspNetCore.Authorization;
 
@@ -15,10 +15,11 @@ namespace FlyFramework.UserModule
         private readonly IUserManager _userManager;
 
         public UserAppService(IServiceProvider serviceProvider
+            , IFlyFrameworkLazy flyFrameworkLazy
             , IUserManager userManager
             )
         {
-            _userManager = userManager;
+            _userManager = flyFrameworkLazy.LazyGetRequiredService<IUserManager>().Value;
         }
 
         public async Task CreateUser(UserDto input)

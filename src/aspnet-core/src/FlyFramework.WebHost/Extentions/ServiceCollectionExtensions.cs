@@ -8,9 +8,6 @@ using FlyFramework.Extensions;
 using FlyFramework.Extentions;
 using FlyFramework.Extentions.JsonOptions;
 using FlyFramework.Filters;
-using FlyFramework.Identitys;
-using FlyFramework.RoleService;
-using FlyFramework.UserService;
 using FlyFramework.Utilities.EventBus;
 using FlyFramework.Utilities.EventBus.Distributed;
 using FlyFramework.Utilities.EventBus.Distributed.Cap;
@@ -30,7 +27,6 @@ using log4net;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -213,26 +209,14 @@ namespace FlyFramework.Extentions
         }
 
         /// <summary>
-        /// 身份验证
+        /// 配置动态API
         /// </summary>
-        public static void AddIdentity(this IServiceCollection services)
+        public static void AddDynamicApi(this IServiceCollection services, WebApplicationBuilder builder)
         {
-            services.AddIdentity<User, Role>()
-           .AddEntityFrameworkStores<FlyFrameworkDbContext>()
-            .AddDefaultTokenProviders();
-
-            services.AddIdentityServer()
-             .AddAspNetIdentity<User>()
-             .AddDeveloperSigningCredential()
-             //扩展在每次启动时，为令牌签名创建了一个临时密钥。在生成环境需要一个持久化的密钥
-             .AddInMemoryClients(IdentityConfig.GetClients())             //验证方式
-             .AddInMemoryApiResources(IdentityConfig.GetApiResources())
-             .AddInMemoryIdentityResources(IdentityConfig.GetIdentityResources())     //创建接口返回格式
-             .AddInMemoryApiScopes(IdentityConfig.ApiScopes)
-             .AddInMemoryPersistedGrants()
-             .AddInMemoryCaching()
-             .AddTestUsers(IdentityConfig.GetUsers());
-
+            services.AddMvc(options => { })
+                    .AddRazorPagesOptions((options) => { })
+                    .AddRazorRuntimeCompilation();
+            //.AddDynamicWebApi(builder.Configuration);
         }
 
         /// <summary>
@@ -326,6 +310,7 @@ namespace FlyFramework.Extentions
             });
         }
 
+        /// <summary>
         /// 配置格式化响应
         /// </summary>
         public static void AddJsonOptions(this IServiceCollection services)
@@ -427,8 +412,9 @@ namespace FlyFramework.Extentions
                 containerBuilder.RegisterModule(new FlyFrameworkCommonModule());
                 containerBuilder.RegisterModule(new FlyFrameworkDomainModule());
                 containerBuilder.RegisterModule(new FlyFrameworkRepositoriesModule());
-                containerBuilder.RegisterModule(new FlyFrameworkApplicationModule());
                 containerBuilder.RegisterModule(new FlyFrameworkCoreModule());
+                containerBuilder.RegisterModule(new FlyFrameworkApplicationModule());
+                containerBuilder.RegisterModule(new FlyFrameworkEntityFrameworkCoreModule());
                 containerBuilder.RegisterModule(new FlyFrameworkWebHostModule());
             });
             return hostBuilder;

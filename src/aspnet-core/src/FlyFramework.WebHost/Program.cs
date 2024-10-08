@@ -67,7 +67,7 @@ public static class AppConfig
 
         services.AddHangfire(configuration);
 
-        services.AddIdentity();
+        services.AddDynamicApi(builder);
 
         services.AddSwagger(builder);
 
@@ -78,7 +78,6 @@ public static class AppConfig
         services.AddEventBus(configuration);
 
         services.AddRabbitMq(configuration);
-
 
         services.AddSignalR();
 

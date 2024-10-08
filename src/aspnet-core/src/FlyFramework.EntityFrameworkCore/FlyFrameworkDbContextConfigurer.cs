@@ -9,10 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace FlyFramework
 {
@@ -33,7 +30,8 @@ namespace FlyFramework
                 switch (databaseType)
                 {
                     case DatabaseType.SqlServer:
-                        option.UseSqlServer(connectionString).AddInterceptors(new QueryWithNoLockDbCommandInterceptor());
+                        option.UseSqlServer(connectionString);
+                        //.AddInterceptors(new FlyFrameworkEFCoreInterceptor());
                         break;
 
                     case DatabaseType.MySql:
@@ -48,19 +46,19 @@ namespace FlyFramework
                         option.UseNpgsql(connectionString);
                         break;
 
-                    case DatabaseType.Oracle:
-                        option.UseOracle(connectionString, (config) =>
-                        {
-                            config.UseOracleSQLCompatibility(OracleSQLCompatibility.DatabaseVersion23);
-                            config.MigrationsHistoryTable("__EFMIGRATIONHISTORY");
-                        }).AddInterceptors(new CommentCommandInterceptor())
-                            //.UseRivenOracleTypeMapping()
-                            ;
-                        //if (DatabaseInfo.Instance.DatabaseType == DatabaseTypeEnum.Oracle)
-                        //{
-                        //    Configuration.UnitOfWork.IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted;
-                        //}
-                        break;
+                    //case DatabaseType.Oracle:
+                    //    option.UseOracle(connectionString, (config) =>
+                    //    {
+                    //        config.UseOracleSQLCompatibility(OracleSQLCompatibility.DatabaseVersion23);
+                    //        config.MigrationsHistoryTable("__EFMIGRATIONHISTORY");
+                    //    }).AddInterceptors(new CommentCommandInterceptor())
+                    //        //.UseRivenOracleTypeMapping()
+                    //        ;
+                    //    //if (DatabaseInfo.Instance.DatabaseType == DatabaseTypeEnum.Oracle)
+                    //    //{
+                    //    //    Configuration.UnitOfWork.IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted;
+                    //    //}
+                    //    break;
 
                     default:
                         throw new Exception("不支持的数据库类型");
