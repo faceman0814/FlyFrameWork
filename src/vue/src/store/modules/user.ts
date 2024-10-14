@@ -9,8 +9,11 @@ import {
 } from "../utils";
 import { useMultiTagsStoreHook } from "./multiTags";
 import { type DataInfo, setToken, removeToken, userKey } from "@/utils/auth";
-import { type UserLoginDtoApiResponse, LoginServiceProxy } from "@/shared";
-const loginServiceProxy = new LoginServiceProxy();
+import {
+  type AuthenticateResultModelApiResponse,
+  AccountClientServiceProxy
+} from "@/shared";
+const accountClientServiceProxy = new AccountClientServiceProxy();
 export const useUserStore = defineStore({
   id: "pure-user",
   state: (): userType => ({
@@ -61,17 +64,19 @@ export const useUserStore = defineStore({
     },
     /** 登入 */
     async loginByUsername(data) {
-      return new Promise<UserLoginDtoApiResponse>((resolve, reject) => {
-        loginServiceProxy
-          .loginIn(data)
-          .then(res => {
-            if (res?.success) setToken(res.data);
-            resolve(res);
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
+      return new Promise<AuthenticateResultModelApiResponse>(
+        (resolve, reject) => {
+          accountClientServiceProxy
+            .login(data)
+            .then(res => {
+              if (res?.success) setToken(res.data);
+              resolve(res);
+            })
+            .catch(error => {
+              reject(error);
+            });
+        }
+      );
     },
     /** 前端登出（不调用接口） */
     logOut() {
@@ -85,19 +90,21 @@ export const useUserStore = defineStore({
     },
     /** 刷新`token` */
     async handRefreshToken(data) {
-      return new Promise<UserLoginDtoApiResponse>((resolve, reject) => {
-        loginServiceProxy
-          .refreshToken(data)
-          .then(res => {
-            if (res) {
-              setToken(res.data);
-              resolve(data);
-            }
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
+      return new Promise<AuthenticateResultModelApiResponse>(
+        (resolve, reject) => {
+          accountClientServiceProxy
+            .refreshToken(data)
+            .then(res => {
+              if (res) {
+                setToken(res.data);
+                resolve(data);
+              }
+            })
+            .catch(error => {
+              reject(error);
+            });
+        }
+      );
     }
   }
 });

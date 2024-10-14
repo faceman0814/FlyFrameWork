@@ -9,11 +9,6 @@
             EF Core 查询增加 With NoLock(仅限sqlserver)
             </summary>
         </member>
-        <member name="P:FlyFramework.FlyFrameworkDbContext.SuppressAutoSetTenantId">
-            <summary>
-            是否自动设置TenantId
-            </summary>
-        </member>
         <member name="T:FlyFramework.FlyFrameworkEFCoreInterceptor">
             <summary>
             EF拦截器

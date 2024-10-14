@@ -63,8 +63,9 @@
         </member>
         <member name="M:FlyFramework.Extentions.ServiceCollectionExtensions.AddFilters(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-            注册全局拦截器
+            配置全局过滤器
             </summary>
+            <param name="services"></param>
         </member>
         <member name="M:FlyFramework.Extentions.ServiceCollectionExtensions.AddKestrel(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
              <summary>
