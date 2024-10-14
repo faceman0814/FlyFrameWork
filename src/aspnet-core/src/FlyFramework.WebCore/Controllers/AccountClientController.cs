@@ -216,26 +216,6 @@ namespace FlyFramework.Controllers
             return new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
         }
 
-        [HttpGet]
-        public void Test()
-        {
-            var option = new DbContextOptionsBuilder<FlyFrameworkDbContext>();
-
-            option.UseSqlServer("Server=data.dev.52abp.com,1434;Database=FlyDev2;User ID=sa;Password=bb123456??;MultipleActiveResultSets=True;TrustServerCertificate=True;");
-
-            using (var context = new FlyFrameworkDbContext(option.Options))
-            {
-                context.Database.EnsureCreated();
-
-                // 添加新的博客
-                var blog = new UserRole();
-                context.UserRole.Add(blog);
-                context.SaveChanges();
-
-                // 显示博客信息
-                Console.WriteLine($" Created: {blog.CreationTime}");
-            }
-        }
         /// <summary>
         /// 添加JwtClaims
         /// </summary>
