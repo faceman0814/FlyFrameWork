@@ -43,6 +43,7 @@ namespace FlyFramework
                 .Where(t => t.IsSubclassOf(typeof(Entity<string>)) && !t.IsAbstract)
                 .ToList();
 
+            // 获取ConfigureFilters方法
             MethodInfo? configureFilters = typeof(FlyFrameworkDbContext).GetMethod(
                 nameof(ConfigureFilters),
                 BindingFlags.Instance | BindingFlags.NonPublic
@@ -55,7 +56,7 @@ namespace FlyFramework
                 // 注册实体
                 modelBuilder.Entity(entityType);
 
-                // 注册筛选器
+                //动态地为每个注册的实体类型调用 ConfigureFilters 方法
                 configureFilters
                     .MakeGenericMethod(entityType)
                     .Invoke(this, new object[] { modelBuilder, entityType });
@@ -67,6 +68,12 @@ namespace FlyFramework
             //   .IsUnique();
         }
 
+        /// <summary>
+        /// 注册实体筛选器
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="builder"></param>
+        /// <param name="entityType"></param>
         protected virtual void ConfigureFilters<TEntity>(ModelBuilder builder, Type entityType)
            where TEntity : class
         {
@@ -77,17 +84,24 @@ namespace FlyFramework
                 expression = e => IgnoreDeleteFilter || !EF.Property<bool>(e, "IsDeleted");
             }
 
-            //if (typeof(IMayHaveTenant).IsAssignableFrom(entityType))
-            //{
-            //    Expression<Func<TEntity, bool>> tenantExpression = e => EF.Property<string>(e, "TenantId") == "1";
-            //    expression = expression == null ? tenantExpression : CombineExpressions(expression, tenantExpression);
-            //}
+            if (typeof(IMayHaveTenant).IsAssignableFrom(entityType))
+            {
+                Expression<Func<TEntity, bool>> tenantExpression = e => EF.Property<string>(e, "TenantId") == "1";
+                expression = expression == null ? tenantExpression : CombineExpressions(expression, tenantExpression);
+            }
 
             if (expression == null) return;
 
             builder.Entity<TEntity>().HasQueryFilter(expression);
         }
 
+        /// <summary>
+        /// 合并表达式
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="expression1"></param>
+        /// <param name="expression2"></param>
+        /// <returns></returns>
         protected virtual Expression<Func<T, bool>> CombineExpressions<T>(Expression<Func<T, bool>> expression1, Expression<Func<T, bool>> expression2)
         {
             var parameter = Expression.Parameter(typeof(T));
@@ -101,6 +115,9 @@ namespace FlyFramework
             return Expression.Lambda<Func<T, bool>>(Expression.AndAlso(left, right), parameter);
         }
 
+        /// <summary>
+        ///  更换表达访问者
+        /// </summary>
         class ReplaceExpressionVisitor : ExpressionVisitor
         {
             private readonly Expression _oldValue;
