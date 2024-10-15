@@ -64,10 +64,15 @@ namespace FlyFramework.FlyFrameworkModules.Modules
         /// 加载后处理程序
         /// </summary>
         /// <param name="context"></param>
-        public virtual void PostInitialize(InitApplicationContext context)
+        public virtual void PostInitialize(ServiceConfigerContext context)
         {
+
         }
 
+        protected virtual void Load(ContainerBuilder builder)
+        {
+
+        }
         public static bool IsModule(Type type)
         {
             var typeInfo = type.GetTypeInfo();

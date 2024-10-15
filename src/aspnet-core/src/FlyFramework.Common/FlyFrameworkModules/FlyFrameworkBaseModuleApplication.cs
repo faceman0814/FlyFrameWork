@@ -112,6 +112,27 @@ namespace FlyFramework.FlyFrameworkModules
                 throw new ArgumentException("An error occurred during the configuration phase.", ex);
             }
 
+            // 初始化后应用程序
+            try
+            {
+                foreach (var module in Modules)
+                {
+                    try
+                    {
+                        module.Instance.PostInitialize(context);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new ArgumentException(
+                            $"An error occurred during the {nameof(IFlyFrameworkBaseModule.PostInitialize)} phase of the module {module.ModuleType.AssemblyQualifiedName}.", ex);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("An error occurred during the post-configuration phase.", ex);
+            }
+
             isConfigService = true;
         }
 

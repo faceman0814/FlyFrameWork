@@ -8,6 +8,6 @@ namespace FlyFramework.FlyFrameworkModules.Interface
 
         void InitApplication(InitApplicationContext context);
 
-        void PostInitialize(InitApplicationContext context);
+        void PostInitialize(ServiceConfigerContext context);
     }
 }

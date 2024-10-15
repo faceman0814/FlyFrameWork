@@ -41,8 +41,8 @@ namespace FlyFramework
                     if (entityEntry.Entity is ICreationAuditedEntity<string>)
                     {
                         ((ICreationAuditedEntity<string>)entityEntry.Entity).CreationTime = DateTime.Now;
-                        ((ICreationAuditedEntity<string>)entityEntry.Entity).CreatorUserId = UserSession.UserId;
-                        ((ICreationAuditedEntity<string>)entityEntry.Entity).CreatorUserName = UserSession.UserName;
+                        ((ICreationAuditedEntity<string>)entityEntry.Entity).CreatorUserId = UserSession?.UserId;
+                        ((ICreationAuditedEntity<string>)entityEntry.Entity).CreatorUserName = UserSession?.UserName;
                     }
                 }
                 else if (entityEntry.State == EntityState.Modified)
@@ -50,8 +50,8 @@ namespace FlyFramework
                     if (entityEntry.Entity is IAuditedEntity<string>)
                     {
                         ((IAuditedEntity<string>)entityEntry.Entity).LastModificationTime = DateTime.Now;
-                        ((IAuditedEntity<string>)entityEntry.Entity).LastModifierUserId = UserSession.UserId;
-                        ((IAuditedEntity<string>)entityEntry.Entity).LastModifierUserName = UserSession.UserName;
+                        ((IAuditedEntity<string>)entityEntry.Entity).LastModifierUserId = UserSession?.UserId;
+                        ((IAuditedEntity<string>)entityEntry.Entity).LastModifierUserName = UserSession?.UserName;
                     }
                 }
                 else if (entityEntry.State == EntityState.Deleted)
@@ -67,8 +67,8 @@ namespace FlyFramework
                         entityEntry.State = EntityState.Modified;
                         ((ISoftDelete)entityEntry.Entity).IsDeleted = true;
                         ((IFullAuditedEntity<string>)entityEntry.Entity).DeletionTime = DateTime.Now;
-                        ((IFullAuditedEntity<string>)entityEntry.Entity).DeleterUserId = UserSession.UserId;
-                        ((IFullAuditedEntity<string>)entityEntry.Entity).DeleterUserName = UserSession.UserName;
+                        ((IFullAuditedEntity<string>)entityEntry.Entity).DeleterUserId = UserSession?.UserId;
+                        ((IFullAuditedEntity<string>)entityEntry.Entity).DeleterUserName = UserSession?.UserName;
                     }
                     else if (entityEntry.Entity is ISoftDelete)
                     {

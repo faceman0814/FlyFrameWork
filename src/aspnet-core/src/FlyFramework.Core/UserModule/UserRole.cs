@@ -7,11 +7,13 @@ using System.Collections.Generic;
 
 namespace FlyFramework.UserModule
 {
-    public class UserRole : IdentityUserRole<string>, IFullAuditedEntity<string>, IMustHaveTenant
+    public class UserRole :
+        //IdentityUserRole<string>, 
+        IFullAuditedEntity<string>, IMustHaveTenant
     {
         public string Id { get; set; }
-        public override string UserId { get; set; }
-        public override string RoleId { get; set; }
+        public string UserId { get; set; }
+        public string RoleId { get; set; }
         public bool IsDeleted { get; set; }
         public string DeleterUserId { get; set; }
         public DateTime? DeletionTime { get; set; }
@@ -43,6 +45,14 @@ namespace FlyFramework.UserModule
             }
 
             return false;
+        }
+
+        public UserRole(string tenantId, string userId, string roleId)
+        {
+            Id = Guid.NewGuid().ToString("N");
+            TenantId = tenantId;
+            UserId = userId;
+            RoleId = roleId;
         }
     }
 }

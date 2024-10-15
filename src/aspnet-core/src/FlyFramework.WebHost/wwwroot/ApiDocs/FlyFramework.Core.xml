@@ -18,6 +18,31 @@
             <param name="token"></param>
             <returns></returns>
         </member>
+        <member name="T:FlyFramework.FlyFrameworkConfigs.Database">
+            <summary>
+            EFCore配置
+            </summary>
+        </member>
+        <member name="P:FlyFramework.FlyFrameworkConfigs.Database.SkipDbContextRegistration">
+            <summary>
+            跳过DbContext注册
+            </summary>
+        </member>
+        <member name="P:FlyFramework.FlyFrameworkConfigs.Database.SkipDbSeed">
+            <summary>
+            跳过种子数据
+            </summary>
+        </member>
+        <member name="T:FlyFramework.FlyFrameworkConfigs.Sorting">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="F:FlyFramework.FlyFrameworkConfigs.Sorting.Default">
+            <summary>
+            默认 CreationTime Desc
+            </summary>
+        </member>
         <member name="F:FlyFramework.FlyFrameworkConst.AccessTokenExpiration">
             <summary>
             Token过期时间 默认1天
@@ -41,6 +66,21 @@
             </summary>
             <param name="email"></param>
             <returns></returns>
+        </member>
+        <member name="P:FlyFramework.UserModule.Role.DisplayName">
+            <summary>
+            显示名称
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.Role.IsStatic">
+            <summary>
+            这是静态角色吗？静态角色无法删除，无法更改其名称。它们可以通过编程方式使用。
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.Role.IsDefault">
+            <summary>
+            该角色是否将被分配给新用户？
+            </summary>
         </member>
     </members>
 </doc>

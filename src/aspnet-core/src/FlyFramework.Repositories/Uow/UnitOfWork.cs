@@ -58,5 +58,23 @@ namespace FlyFramework.Uow
                 _transaction = null;
             }
         }
+
+        public void Dispose()
+        {
+            _context.Dispose();
+        }
+
+        public DbContext GetDbContext()
+        {
+            //获取DbContext
+            return _context;
+
+        }
+
+        public Task<DbContext> GetDbContextAsync(CancellationToken cancellationToken = default)
+        {
+            //获取DbContext
+            return Task.FromResult(_context);
+        }
     }
 }
