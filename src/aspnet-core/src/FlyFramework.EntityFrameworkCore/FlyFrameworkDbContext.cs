@@ -77,11 +77,11 @@ namespace FlyFramework
                 expression = e => IgnoreDeleteFilter || !EF.Property<bool>(e, "IsDeleted");
             }
 
-            if (typeof(IMayHaveTenant).IsAssignableFrom(entityType))
-            {
-                Expression<Func<TEntity, bool>> tenantExpression = e => EF.Property<int>(e, "TenantId") == 1;
-                expression = expression == null ? tenantExpression : CombineExpressions(expression, tenantExpression);
-            }
+            //if (typeof(IMayHaveTenant).IsAssignableFrom(entityType))
+            //{
+            //    Expression<Func<TEntity, bool>> tenantExpression = e => EF.Property<string>(e, "TenantId") == "1";
+            //    expression = expression == null ? tenantExpression : CombineExpressions(expression, tenantExpression);
+            //}
 
             if (expression == null) return;
 
