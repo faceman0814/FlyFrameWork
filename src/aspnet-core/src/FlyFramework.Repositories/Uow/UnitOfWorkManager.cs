@@ -1,5 +1,7 @@
 ﻿using FlyFramework.Repositories;
 
+using Microsoft.EntityFrameworkCore;
+
 using System;
 
 namespace FlyFramework.Uow
@@ -39,6 +41,16 @@ namespace FlyFramework.Uow
         {
             // 创建一个新的UnitOfWork实例但不设置为当前工作单元
             return new UnitOfWork(_dbContextProvider);
+        }
+
+
+        public void Dispose()
+        {
+            if (_currentUnitOfWork != null)
+            {
+                _currentUnitOfWork.Dispose();
+                _currentUnitOfWork = null;
+            }
         }
     }
 }

@@ -23,6 +23,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Authorizations\" />
+	  <Folder Include="新文件夹\" />
 	</ItemGroup>
 	<!-- Domain -->
 	<ItemGroup Condition="'$(FlyFrameworkDomainRefMode)'=='nuget'">

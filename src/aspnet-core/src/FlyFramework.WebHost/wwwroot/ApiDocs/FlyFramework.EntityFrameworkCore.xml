@@ -9,27 +9,58 @@
             EF Core 查询增加 With NoLock(仅限sqlserver)
             </summary>
         </member>
-        <member name="P:FlyFramework.FlyFrameworkDbContext.SuppressAutoSetTenantId">
-            <summary>
-            是否自动设置TenantId
-            </summary>
-        </member>
         <member name="T:FlyFramework.FlyFrameworkEFCoreInterceptor">
             <summary>
             EF拦截器
             </summary>
         </member>
-        <member name="T:FlyFramework.EntityFrameworkCore.Migrations.Init">
+        <member name="M:FlyFramework.IDatabaseChecker.Exist(System.String)">
+            <summary>
+            判断数据库是否存在
+            </summary>
+            <param name="connectionString">数据库连接字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.IDatabaseChecker.GetDbContext">
+            <summary>
+            获取当前的数据库上下文实例
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:FlyFramework.Migrations.Init">
             <inheritdoc />
         </member>
-        <member name="M:FlyFramework.EntityFrameworkCore.Migrations.Init.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:FlyFramework.Migrations.Init.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:FlyFramework.EntityFrameworkCore.Migrations.Init.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:FlyFramework.Migrations.Init.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:FlyFramework.EntityFrameworkCore.Migrations.Init.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:FlyFramework.Migrations.Init.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
+        </member>
+        <member name="M:FlyFramework.Seed.FlyFrameworkCreatorHelper.SetContext(System.String,FlyFramework.FlyFrameworkDbContext)">
+            <summary>
+            设置上下文
+            </summary>
+            <param name="tenantId"></param>
+            <param name="context"></param>
+        </member>
+        <member name="M:FlyFramework.Seed.FlyFrameworkCreatorHelper.CreateRole(System.String,System.String,System.Boolean,System.Boolean)">
+            <summary>
+            创建角色
+            </summary>
+            <param name="roleName">角色名称</param>
+            <param name="isDefault">是否为默认角色,默认值: false</param>
+            <param name="isStatic">是否为系统角色,默认值: true</param>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.Seed.FlyFrameworkCreatorHelper.CreateUser(System.String,System.String)">
+            <summary>
+            创建用户
+            </summary>
+            <param name="roleId">角色id</param>
+            <param name="userName">用户名</param>
         </member>
     </members>
 </doc>

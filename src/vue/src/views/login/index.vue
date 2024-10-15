@@ -17,7 +17,7 @@ import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
 import Lock from "@iconify-icons/ri/lock-fill";
 import User from "@iconify-icons/ri/user-3-fill";
-import { LoginDto } from "@/shared";
+import { AccountLoginDto } from "@/shared";
 defineOptions({
   name: "Login"
 });
@@ -30,10 +30,14 @@ initStorage();
 const { dataTheme, overallStyle, dataThemeChange } = useDataThemeChange();
 dataThemeChange(overallStyle.value);
 const { title } = useNav();
-const input = new LoginDto({
+const input = new AccountLoginDto({
   userName: "admin",
   password: "bb123456",
-  isApiLogin: false
+  isApiLogin: false,
+  phoneNumber: undefined,
+  clientType: "web",
+  rememberMe: false,
+  isRefresh: false
 });
 const ruleForm = reactive(input);
 

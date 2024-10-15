@@ -1,5 +1,7 @@
 ﻿using FlyFramework.Entities;
 
+using Masuit.Tools.Models;
+
 using Microsoft.AspNetCore.Identity;
 
 using System;
@@ -8,10 +10,22 @@ namespace FlyFramework.UserModule
 {
     public class User : IdentityUser<string>, IFullAuditedEntity<string>, IMustHaveTenant
     {
+        //默认密码
+        public const string DefaultPassword = "bb123456";
+
+        //手机号最大长度 
+        public new const int MaxPhoneNumberLength = 18;
+
+        //真实姓名最大长度
+        public const int MaxRealNameLength = 1024;
+
+        //工号最大长度
+        public const int MaxEmployeeNumberLength = 1024;
         public string FullName { get; set; }
         public string Password { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
+        public bool NeedToChangeThePassword { get; set; }
         public string DeleterUserId { get; set; }
         public DateTime? DeletionTime { get; set; }
         public string DeleterUserName { get; set; }
@@ -42,6 +56,12 @@ namespace FlyFramework.UserModule
             }
 
             return false;
+        }
+
+        public virtual void SetNormalizedNames()
+        {
+            NormalizedUserName = UserName.ToUpperInvariant();
+            NormalizedEmail = Email.ToUpperInvariant();
         }
     }
 }

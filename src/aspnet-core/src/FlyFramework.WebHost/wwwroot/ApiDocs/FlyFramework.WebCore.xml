@@ -100,39 +100,14 @@
             手机号
             </summary>
         </member>
-        <member name="P:FlyFramework.Models.AccountLoginDto.ProviderId">
-            <summary>
-            第三方登陆提供者数据Id
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Models.AccountLoginDto.ProviderCode">
-            <summary>
-            第三方登陆预授权编码
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Models.AccountLoginDto.ReturnUrl">
-            <summary>
-            返回Url
-            </summary>
-        </member>
         <member name="P:FlyFramework.Models.AccountLoginDto.ClientType">
             <summary>
             客户端，PC，App
             </summary>
         </member>
-        <member name="P:FlyFramework.Models.AccountLoginDto.UserId">
-            <summary>
-            用户Id
-            </summary>
-        </member>
         <member name="P:FlyFramework.Models.AccountLoginDto.RememberMe">
             <summary>
             记住我
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Models.AccountLoginDto.IsEncrypt">
-            <summary>
-            是否加密
             </summary>
         </member>
         <member name="P:FlyFramework.Models.AccountLoginDto.IsRefresh">

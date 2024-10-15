@@ -12,6 +12,132 @@ import 'rxjs/add/operator/finally';import axios, { AxiosError, AxiosInstance, Ax
 
 import moment from 'moment';
 
+export class AccountClientServiceProxy {
+    protected instance: AxiosInstance;
+    protected baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, instance?: AxiosInstance) {
+
+        this.instance = instance || axios.create();
+
+        this.baseUrl = baseUrl ?? "";
+
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    login(body: AccountLoginDto | undefined, cancelToken?: CancelToken): Promise<AuthenticateResultModelApiResponse> {
+        let url_ = this.baseUrl + "/api/AccountClient/Login";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processLogin(_response);
+        });
+    }
+
+    protected processLogin(response: AxiosResponse): Promise<AuthenticateResultModelApiResponse> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = AuthenticateResultModelApiResponse.fromJS(resultData200);
+            return Promise.resolve<AuthenticateResultModelApiResponse>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<AuthenticateResultModelApiResponse>(null as any);
+    }
+
+    /**
+     * @param refreshToken (optional) 
+     * @return Success
+     */
+    refreshToken(refreshToken: string | undefined, cancelToken?: CancelToken): Promise<AuthenticateResultModelApiResponse> {
+        let url_ = this.baseUrl + "/api/AccountClient/RefreshToken?";
+        if (refreshToken === null)
+            throw new Error("The parameter 'refreshToken' cannot be null.");
+        else if (refreshToken !== undefined)
+            url_ += "refreshToken=" + encodeURIComponent("" + refreshToken) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "POST",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processRefreshToken(_response);
+        });
+    }
+
+    protected processRefreshToken(response: AxiosResponse): Promise<AuthenticateResultModelApiResponse> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = AuthenticateResultModelApiResponse.fromJS(resultData200);
+            return Promise.resolve<AuthenticateResultModelApiResponse>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<AuthenticateResultModelApiResponse>(null as any);
+    }
+}
+
 export class DapperServiceProxy {
     protected instance: AxiosInstance;
     protected baseUrl: string;
@@ -432,132 +558,6 @@ export class HangFireServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Promise.resolve<void>(null as any);
-    }
-}
-
-export class LoginServiceProxy {
-    protected instance: AxiosInstance;
-    protected baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(baseUrl?: string, instance?: AxiosInstance) {
-
-        this.instance = instance || axios.create();
-
-        this.baseUrl = baseUrl ?? "";
-
-    }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    loginIn(body: LoginDto | undefined, cancelToken?: CancelToken): Promise<UserLoginDtoApiResponse> {
-        let url_ = this.baseUrl + "/api/Login/LoginIn";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_: AxiosRequestConfig = {
-            data: content_,
-            method: "POST",
-            url: url_,
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processLoginIn(_response);
-        });
-    }
-
-    protected processLoginIn(response: AxiosResponse): Promise<UserLoginDtoApiResponse> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = UserLoginDtoApiResponse.fromJS(resultData200);
-            return Promise.resolve<UserLoginDtoApiResponse>(result200);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<UserLoginDtoApiResponse>(null as any);
-    }
-
-    /**
-     * @param refreshToken (optional) 
-     * @return Success
-     */
-    refreshToken(refreshToken: string | undefined, cancelToken?: CancelToken): Promise<UserLoginDtoApiResponse> {
-        let url_ = this.baseUrl + "/api/Login/RefreshToken?";
-        if (refreshToken === null)
-            throw new Error("The parameter 'refreshToken' cannot be null.");
-        else if (refreshToken !== undefined)
-            url_ += "refreshToken=" + encodeURIComponent("" + refreshToken) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "POST",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processRefreshToken(_response);
-        });
-    }
-
-    protected processRefreshToken(response: AxiosResponse): Promise<UserLoginDtoApiResponse> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = UserLoginDtoApiResponse.fromJS(resultData200);
-            return Promise.resolve<UserLoginDtoApiResponse>(result200);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<UserLoginDtoApiResponse>(null as any);
     }
 }
 
@@ -1109,53 +1109,6 @@ export class UserServiceProxy {
     }
 
     /**
-     * @return No Content - Method does not return any data
-     */
-    test( cancelToken?: CancelToken): Promise<void> {
-        let url_ = this.baseUrl + "/api/User/test";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "POST",
-            url: url_,
-            headers: {
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processTest(_response);
-        });
-    }
-
-    protected processTest(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 204) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(null as any);
-    }
-
-    /**
      * (Auth)
      * @param body (optional) 
      * @return Success - No return data
@@ -1260,6 +1213,275 @@ export class UserServiceProxy {
         }
         return Promise.resolve<void>(null as any);
     }
+}
+
+export class AccountLoginDto implements IAccountLoginDto {
+    /** 用户名 */
+    userName: string;
+    /** 密码 */
+    password: string;
+    /** 手机号 */
+    phoneNumber: string | undefined;
+    /** 客户端，PC，App */
+    clientType: string | undefined;
+    /** 记住我 */
+    rememberMe: boolean;
+    /** 是否刷新Token */
+    isRefresh: boolean;
+    /** 是否Api登录 */
+    isApiLogin: boolean;
+
+    constructor(data?: IAccountLoginDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userName = _data["UserName"];
+            this.password = _data["Password"];
+            this.phoneNumber = _data["PhoneNumber"];
+            this.clientType = _data["ClientType"];
+            this.rememberMe = _data["RememberMe"];
+            this.isRefresh = _data["IsRefresh"];
+            this.isApiLogin = _data["IsApiLogin"];
+        }
+    }
+
+    static fromJS(data: any): AccountLoginDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AccountLoginDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["UserName"] = this.userName;
+        data["Password"] = this.password;
+        data["PhoneNumber"] = this.phoneNumber;
+        data["ClientType"] = this.clientType;
+        data["RememberMe"] = this.rememberMe;
+        data["IsRefresh"] = this.isRefresh;
+        data["IsApiLogin"] = this.isApiLogin;
+        return data;
+    }
+
+    clone(): AccountLoginDto {
+        const json = this.toJSON();
+        let result = new AccountLoginDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IAccountLoginDto {
+    /** 用户名 */
+    userName: string;
+    /** 密码 */
+    password: string;
+    /** 手机号 */
+    phoneNumber: string | undefined;
+    /** 客户端，PC，App */
+    clientType: string | undefined;
+    /** 记住我 */
+    rememberMe: boolean;
+    /** 是否刷新Token */
+    isRefresh: boolean;
+    /** 是否Api登录 */
+    isApiLogin: boolean;
+}
+
+export class AuthenticateResultModel implements IAuthenticateResultModel {
+    /** 用户头像 */
+    avatar: string | undefined;
+    /** 用户名称 */
+    userName: string | undefined;
+    /** 用户昵称 */
+    nickName: string | undefined;
+    /** 用户角色 */
+    roles: string[] | undefined;
+    /** 用户权限 */
+    permissions: string[] | undefined;
+    /** 过期时间 */
+    expires: moment.Moment;
+    /** 加密后的密码 */
+    password: string | undefined;
+    accessToken: string | undefined;
+    encryptedAccessToken: string | undefined;
+    refreshToken: string | undefined;
+    expireInSeconds: number;
+    userId: string | undefined;
+    shouldResetPassword: boolean;
+    passwordResetCode: string | undefined;
+    refreshTokenExpire: moment.Moment;
+    returnUrl: string | undefined;
+    waitingForActivation: boolean;
+
+    constructor(data?: IAuthenticateResultModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.avatar = _data["Avatar"];
+            this.userName = _data["UserName"];
+            this.nickName = _data["NickName"];
+            if (Array.isArray(_data["Roles"])) {
+                this.roles = [] as any;
+                for (let item of _data["Roles"])
+                    this.roles.push(item);
+            }
+            if (Array.isArray(_data["Permissions"])) {
+                this.permissions = [] as any;
+                for (let item of _data["Permissions"])
+                    this.permissions.push(item);
+            }
+            this.expires = _data["Expires"] ? moment(_data["Expires"].toString()) : <any>undefined;
+            this.password = _data["Password"];
+            this.accessToken = _data["AccessToken"];
+            this.encryptedAccessToken = _data["EncryptedAccessToken"];
+            this.refreshToken = _data["RefreshToken"];
+            this.expireInSeconds = _data["ExpireInSeconds"];
+            this.userId = _data["UserId"];
+            this.shouldResetPassword = _data["ShouldResetPassword"];
+            this.passwordResetCode = _data["PasswordResetCode"];
+            this.refreshTokenExpire = _data["RefreshTokenExpire"] ? moment(_data["RefreshTokenExpire"].toString()) : <any>undefined;
+            this.returnUrl = _data["ReturnUrl"];
+            this.waitingForActivation = _data["WaitingForActivation"];
+        }
+    }
+
+    static fromJS(data: any): AuthenticateResultModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new AuthenticateResultModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["Avatar"] = this.avatar;
+        data["UserName"] = this.userName;
+        data["NickName"] = this.nickName;
+        if (Array.isArray(this.roles)) {
+            data["Roles"] = [];
+            for (let item of this.roles)
+                data["Roles"].push(item);
+        }
+        if (Array.isArray(this.permissions)) {
+            data["Permissions"] = [];
+            for (let item of this.permissions)
+                data["Permissions"].push(item);
+        }
+        data["Expires"] = this.expires ? this.expires.toISOString() : <any>undefined;
+        data["Password"] = this.password;
+        data["AccessToken"] = this.accessToken;
+        data["EncryptedAccessToken"] = this.encryptedAccessToken;
+        data["RefreshToken"] = this.refreshToken;
+        data["ExpireInSeconds"] = this.expireInSeconds;
+        data["UserId"] = this.userId;
+        data["ShouldResetPassword"] = this.shouldResetPassword;
+        data["PasswordResetCode"] = this.passwordResetCode;
+        data["RefreshTokenExpire"] = this.refreshTokenExpire ? this.refreshTokenExpire.toISOString() : <any>undefined;
+        data["ReturnUrl"] = this.returnUrl;
+        data["WaitingForActivation"] = this.waitingForActivation;
+        return data;
+    }
+
+    clone(): AuthenticateResultModel {
+        const json = this.toJSON();
+        let result = new AuthenticateResultModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IAuthenticateResultModel {
+    /** 用户头像 */
+    avatar: string | undefined;
+    /** 用户名称 */
+    userName: string | undefined;
+    /** 用户昵称 */
+    nickName: string | undefined;
+    /** 用户角色 */
+    roles: string[] | undefined;
+    /** 用户权限 */
+    permissions: string[] | undefined;
+    /** 过期时间 */
+    expires: moment.Moment;
+    /** 加密后的密码 */
+    password: string | undefined;
+    accessToken: string | undefined;
+    encryptedAccessToken: string | undefined;
+    refreshToken: string | undefined;
+    expireInSeconds: number;
+    userId: string | undefined;
+    shouldResetPassword: boolean;
+    passwordResetCode: string | undefined;
+    refreshTokenExpire: moment.Moment;
+    returnUrl: string | undefined;
+    waitingForActivation: boolean;
+}
+
+export class AuthenticateResultModelApiResponse implements IAuthenticateResultModelApiResponse {
+    success: boolean;
+    message: string | undefined;
+    data: AuthenticateResultModel;
+
+    constructor(data?: IAuthenticateResultModelApiResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["Success"];
+            this.message = _data["Message"];
+            this.data = _data["Data"] ? AuthenticateResultModel.fromJS(_data["Data"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): AuthenticateResultModelApiResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new AuthenticateResultModelApiResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["Success"] = this.success;
+        data["Message"] = this.message;
+        data["Data"] = this.data ? this.data.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): AuthenticateResultModelApiResponse {
+        const json = this.toJSON();
+        let result = new AuthenticateResultModelApiResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IAuthenticateResultModelApiResponse {
+    success: boolean;
+    message: string | undefined;
+    data: AuthenticateResultModel;
 }
 
 export class Bucket implements IBucket {
@@ -1419,57 +1641,6 @@ export interface IListAllMyBucketsResultApiResponse {
     data: ListAllMyBucketsResult;
 }
 
-export class LoginDto implements ILoginDto {
-    userName: string | undefined;
-    password: string | undefined;
-    isApiLogin: boolean;
-
-    constructor(data?: ILoginDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.userName = _data["UserName"];
-            this.password = _data["Password"];
-            this.isApiLogin = _data["IsApiLogin"];
-        }
-    }
-
-    static fromJS(data: any): LoginDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new LoginDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["UserName"] = this.userName;
-        data["Password"] = this.password;
-        data["IsApiLogin"] = this.isApiLogin;
-        return data;
-    }
-
-    clone(): LoginDto {
-        const json = this.toJSON();
-        let result = new LoginDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ILoginDto {
-    userName: string | undefined;
-    password: string | undefined;
-    isApiLogin: boolean;
-}
-
 export class StringApiResponse implements IStringApiResponse {
     success: boolean;
     message: string | undefined;
@@ -1551,6 +1722,7 @@ export class User implements IUser {
     creationTime: moment.Moment;
     creatorUserName: string | undefined;
     creatorUserId: string | undefined;
+    tenantId: string | undefined;
 
     constructor(data?: IUser) {
         if (data) {
@@ -1592,6 +1764,7 @@ export class User implements IUser {
             this.creationTime = _data["CreationTime"] ? moment(_data["CreationTime"].toString()) : <any>undefined;
             this.creatorUserName = _data["CreatorUserName"];
             this.creatorUserId = _data["CreatorUserId"];
+            this.tenantId = _data["TenantId"];
         }
     }
 
@@ -1633,6 +1806,7 @@ export class User implements IUser {
         data["CreationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["CreatorUserName"] = this.creatorUserName;
         data["CreatorUserId"] = this.creatorUserId;
+        data["TenantId"] = this.tenantId;
         return data;
     }
 
@@ -1674,6 +1848,7 @@ export interface IUser {
     creationTime: moment.Moment;
     creatorUserName: string | undefined;
     creatorUserId: string | undefined;
+    tenantId: string | undefined;
 }
 
 export class UserApiResponse implements IUserApiResponse {
@@ -1729,7 +1904,6 @@ export interface IUserApiResponse {
 
 export class UserDto implements IUserDto {
     id: string | undefined;
-    concurrencyToken: string | undefined;
     name: string | undefined;
     password: string | undefined;
     email: string | undefined;
@@ -1750,7 +1924,6 @@ export class UserDto implements IUserDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["Id"];
-            this.concurrencyToken = _data["ConcurrencyToken"];
             this.name = _data["Name"];
             this.password = _data["Password"];
             this.email = _data["Email"];
@@ -1771,7 +1944,6 @@ export class UserDto implements IUserDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["Id"] = this.id;
-        data["ConcurrencyToken"] = this.concurrencyToken;
         data["Name"] = this.name;
         data["Password"] = this.password;
         data["Email"] = this.email;
@@ -1792,7 +1964,6 @@ export class UserDto implements IUserDto {
 
 export interface IUserDto {
     id: string | undefined;
-    concurrencyToken: string | undefined;
     name: string | undefined;
     password: string | undefined;
     email: string | undefined;
@@ -1800,144 +1971,6 @@ export interface IUserDto {
     userName: string | undefined;
     phoneNumber: string | undefined;
     isActive: boolean;
-}
-
-export class UserLoginDto implements IUserLoginDto {
-    avatar: string | undefined;
-    userName: string | undefined;
-    nickName: string | undefined;
-    roles: string[] | undefined;
-    permissions: string[] | undefined;
-    accessToken: string | undefined;
-    refreshToken: string | undefined;
-    expires: moment.Moment;
-
-    constructor(data?: IUserLoginDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.avatar = _data["Avatar"];
-            this.userName = _data["UserName"];
-            this.nickName = _data["NickName"];
-            if (Array.isArray(_data["Roles"])) {
-                this.roles = [] as any;
-                for (let item of _data["Roles"])
-                    this.roles.push(item);
-            }
-            if (Array.isArray(_data["Permissions"])) {
-                this.permissions = [] as any;
-                for (let item of _data["Permissions"])
-                    this.permissions.push(item);
-            }
-            this.accessToken = _data["AccessToken"];
-            this.refreshToken = _data["RefreshToken"];
-            this.expires = _data["Expires"] ? moment(_data["Expires"].toString()) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): UserLoginDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new UserLoginDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["Avatar"] = this.avatar;
-        data["UserName"] = this.userName;
-        data["NickName"] = this.nickName;
-        if (Array.isArray(this.roles)) {
-            data["Roles"] = [];
-            for (let item of this.roles)
-                data["Roles"].push(item);
-        }
-        if (Array.isArray(this.permissions)) {
-            data["Permissions"] = [];
-            for (let item of this.permissions)
-                data["Permissions"].push(item);
-        }
-        data["AccessToken"] = this.accessToken;
-        data["RefreshToken"] = this.refreshToken;
-        data["Expires"] = this.expires ? this.expires.toISOString() : <any>undefined;
-        return data;
-    }
-
-    clone(): UserLoginDto {
-        const json = this.toJSON();
-        let result = new UserLoginDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IUserLoginDto {
-    avatar: string | undefined;
-    userName: string | undefined;
-    nickName: string | undefined;
-    roles: string[] | undefined;
-    permissions: string[] | undefined;
-    accessToken: string | undefined;
-    refreshToken: string | undefined;
-    expires: moment.Moment;
-}
-
-export class UserLoginDtoApiResponse implements IUserLoginDtoApiResponse {
-    success: boolean;
-    message: string | undefined;
-    data: UserLoginDto;
-
-    constructor(data?: IUserLoginDtoApiResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.success = _data["Success"];
-            this.message = _data["Message"];
-            this.data = _data["Data"] ? UserLoginDto.fromJS(_data["Data"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): UserLoginDtoApiResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new UserLoginDtoApiResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["Success"] = this.success;
-        data["Message"] = this.message;
-        data["Data"] = this.data ? this.data.toJSON() : <any>undefined;
-        return data;
-    }
-
-    clone(): UserLoginDtoApiResponse {
-        const json = this.toJSON();
-        let result = new UserLoginDtoApiResponse();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IUserLoginDtoApiResponse {
-    success: boolean;
-    message: string | undefined;
-    data: UserLoginDto;
 }
 
 export class SwaggerException extends Error {

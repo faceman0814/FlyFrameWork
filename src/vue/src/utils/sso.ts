@@ -1,4 +1,4 @@
-import type { UserLoginDto } from "@/shared";
+import type { AuthenticateResultModel } from "@/shared";
 import { removeToken, setToken } from "./auth";
 import { subBefore, getQueryMap } from "@pureadmin/utils";
 
@@ -13,7 +13,7 @@ import { subBefore, getQueryMap } from "@pureadmin/utils";
  */
 (function () {
   // 获取 url 中的参数
-  const params = getQueryMap(location.href) as UserLoginDto;
+  const params = getQueryMap(location.href) as AuthenticateResultModel;
   const must = ["username", "roles", "accessToken"];
   const mustLength = must.length;
   if (Object.keys(params).length !== mustLength) return;

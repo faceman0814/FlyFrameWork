@@ -115,6 +115,11 @@ namespace FlyFramework.Repositories
 
         public TEntity Insert(TEntity entity)
         {
+            // 反射判断TPrimaryKey是否为Guid类型，如果是Guid类型，则使用Guid.NewGuid()生成主键
+            //if (typeof(TPrimaryKey) == typeof(string))
+            //{
+            //    entity.Id = (TPrimaryKey)(object)Guid.NewGuid().ToString("N");
+            //}
             DbSet.Add(entity);
             return entity;
         }

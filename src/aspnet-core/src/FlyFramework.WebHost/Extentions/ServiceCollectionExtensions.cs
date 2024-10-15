@@ -329,11 +329,11 @@ namespace FlyFramework.Extentions
         }
 
         /// <summary>
-        /// 注册全局拦截器
+        /// 配置全局过滤器
         /// </summary>
+        /// <param name="services"></param>
         public static void AddFilters(this IServiceCollection services)
         {
-            // 注册全局拦截器
             services.AddControllersWithViews(x =>
             {
                 //全局返回，异常处理，统一返回格式。

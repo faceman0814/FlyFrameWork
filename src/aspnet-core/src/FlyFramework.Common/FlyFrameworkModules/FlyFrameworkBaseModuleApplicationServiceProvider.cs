@@ -35,5 +35,7 @@ namespace FlyFramework.FlyFrameworkModules
             SetServiceProvider(serviceProvider);
             await InitApplicationAsync(serviceProvider);
         }
+
+
     }
 }

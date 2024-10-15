@@ -15,5 +15,6 @@ namespace FlyFramework
         {
             context.Services.AddTransient(typeof(IFlyFrameworkLazy), typeof(FlyFrameworkLazy));
         }
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using FlyFramework.Authorizations;
 using FlyFramework.Authorizations.JwtBearer;
 using FlyFramework.ErrorExceptions;
+using FlyFramework.Extensions;
 using FlyFramework.LazyModule.LazyDefinition;
 using FlyFramework.Models;
 using FlyFramework.UserModule;
@@ -11,8 +12,11 @@ using FlyFramework.Utilities.Redis;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+
+using MongoDB.Driver.Core.Configuration;
 
 using Newtonsoft.Json.Linq;
 
@@ -134,7 +138,6 @@ namespace FlyFramework.Controllers
                 RefreshToken = refreshToken.token,
                 RefreshTokenExpire = DateTimeOffset.Now.Add(_tokenAuthConfiguration.RefreshTokenExpiration),
                 UserId = user.Id,
-                ReturnUrl = input.ReturnUrl,
                 UserName = user.UserName,
                 NickName = user.FullName,
                 Roles = new List<string>()
@@ -212,7 +215,6 @@ namespace FlyFramework.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
         }
-
 
         /// <summary>
         /// 添加JwtClaims

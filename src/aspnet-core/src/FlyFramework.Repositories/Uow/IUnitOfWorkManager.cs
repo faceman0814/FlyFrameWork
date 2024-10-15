@@ -1,6 +1,8 @@
-﻿namespace FlyFramework.Uow
+﻿using System;
+
+namespace FlyFramework.Uow
 {
-    public interface IUnitOfWorkManager
+    public interface IUnitOfWorkManager : IDisposable
     //: IScopedDependency
     {
         IUnitOfWork Current { get; }
