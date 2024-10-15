@@ -60,6 +60,11 @@ namespace FlyFramework
                     .MakeGenericMethod(entityType)
                     .Invoke(this, new object[] { modelBuilder, entityType });
             }
+
+            //自定义实体规则
+            //modelBuilder.Entity<User>()
+            //   .HasIndex(u => u.UserId)
+            //   .IsUnique();
         }
 
         protected virtual void ConfigureFilters<TEntity>(ModelBuilder builder, Type entityType)
@@ -117,6 +122,9 @@ namespace FlyFramework
                 return base.Visit(node)!;
             }
         }
+
+
+        //需要显示调用时注册
         public DbSet<UserRole> UserRole { get; set; }
     }
 }
