@@ -82,6 +82,29 @@ namespace FlyFramework.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OrganizationalUnit",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyToken = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatorUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatorUserId = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifierUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModifierUserId = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeleterUserId = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeleterUserName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrganizationalUnit", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserRole",
                 columns: table => new
                 {
@@ -269,6 +292,9 @@ namespace FlyFramework.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "OrganizationalUnit");
 
             migrationBuilder.DropTable(
                 name: "UserRole");

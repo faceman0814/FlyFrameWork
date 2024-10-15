@@ -27,18 +27,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:FlyFramework.Migrations.Init">
-            <inheritdoc />
-        </member>
-        <member name="M:FlyFramework.Migrations.Init.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:FlyFramework.Migrations.Init.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:FlyFramework.Migrations.Init.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
         <member name="M:FlyFramework.Seed.FlyFrameworkCreatorHelper.SetContext(System.String,FlyFramework.FlyFrameworkDbContext)">
             <summary>
             设置上下文
