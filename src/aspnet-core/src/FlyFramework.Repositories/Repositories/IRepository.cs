@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FlyFramework.Dependencys;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -6,11 +8,11 @@ using System.Threading.Tasks;
 namespace FlyFramework.Repositories
 {
 
-    public interface IRepository
+    public interface IRepository : ITransientDependency
     {
 
     }
-    public interface IRepository<TEntity, TPrimaryKey> : IRepository where TEntity : class, IEntity<TPrimaryKey>
+    public interface IRepository<TEntity, TPrimaryKey> : IRepository, ITransientDependency where TEntity : class, IEntity<TPrimaryKey>
     {
         /// <summary>
         /// 获取所有数据
@@ -300,5 +302,9 @@ namespace FlyFramework.Repositories
         /// <returns></returns>
         Task<long> LongCountAsync(Expression<Func<TEntity, bool>> predicate);
 
+    }
+
+    public interface IRepository<TEntity> : IRepository<TEntity, string>, IRepository, ITransientDependency where TEntity : class, IEntity<string>
+    {
     }
 }

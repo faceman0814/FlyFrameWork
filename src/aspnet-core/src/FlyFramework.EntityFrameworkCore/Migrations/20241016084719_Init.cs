@@ -82,11 +82,14 @@ namespace FlyFramework.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrganizationalUnit",
+                name: "OrgUnit",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
                     TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true, comment: "组织机构名称"),
+                    ParentId = table.Column<string>(type: "nvarchar(32)", nullable: true, comment: "父节点Id"),
+                    ParentIdList = table.Column<string>(type: "nvarchar(max)", nullable: true, comment: "父级数据id集合，aaa|bbb|ccc"),
                     ConcurrencyToken = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatorUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -101,7 +104,56 @@ namespace FlyFramework.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrganizationalUnit", x => x.Id);
+                    table.PrimaryKey("PK_OrgUnit", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrgUnit_OrgUnit_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "OrgUnit",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrgUnitNode",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true, comment: "节点显示名称"),
+                    ParentIdList = table.Column<string>(type: "nvarchar(max)", nullable: true, comment: "父级数据id集合，aaa|bbb|ccc"),
+                    ParentId = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true, comment: "节点关联数据的父级数据Id"),
+                    ConcurrencyToken = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatorUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatorUserId = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifierUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModifierUserId = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeleterUserId = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeleterUserName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrgUnitNode", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrgUnitNodeGranted",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true, comment: "系统用户Id"),
+                    OrgNodeId = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true, comment: "节点关联的数据Id"),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyToken = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatorUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatorUserId = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrgUnitNodeGranted", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -273,6 +325,11 @@ namespace FlyFramework.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrgUnit_ParentId",
+                table: "OrgUnit",
+                column: "ParentId");
         }
 
         /// <inheritdoc />
@@ -294,7 +351,13 @@ namespace FlyFramework.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "OrganizationalUnit");
+                name: "OrgUnit");
+
+            migrationBuilder.DropTable(
+                name: "OrgUnitNode");
+
+            migrationBuilder.DropTable(
+                name: "OrgUnitNodeGranted");
 
             migrationBuilder.DropTable(
                 name: "UserRole");

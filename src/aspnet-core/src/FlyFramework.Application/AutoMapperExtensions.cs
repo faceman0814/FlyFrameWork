@@ -10,7 +10,7 @@ namespace FlyFramework
     public static class AutoMapperExtensions
     {
         /// <summary>
-        /// 忽略不需要映射的属性。
+        /// 忽略null源属性
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <typeparam name="TDestination"></typeparam>
@@ -33,6 +33,11 @@ namespace FlyFramework
                     //当源对象属性为null时，忽略目标对象属性
                     expression.ForMember(property.Name, opt => opt.Condition((src, dest, srcMember) => srcMember != null));
                 }
+            }
+            else
+            {
+                //只映射有值的属性
+                expression.ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
             }
 
             // 通用忽略规则，例如忽略Id属性

@@ -1,6 +1,8 @@
 ﻿using FlyFramework.Dependencys;
 using FlyFramework.Repositories;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using System.Linq;
 using System.Threading.Tasks;
 namespace FlyFramework.Domains
@@ -110,5 +112,6 @@ namespace FlyFramework.Domains
         //   Base:
         //     TBase 实例
         Task ValidateOnCreateOrUpdate(TEntity entity);
+
     }
 }

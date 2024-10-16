@@ -26,9 +26,9 @@ namespace FlyFramework.UserModule.DomainService
             return Create(user);
         }
 
-        public Task<User> FindByNameAsync(string userName)
+        public Task<User> FindByNameAsync(string name)
         {
-            return QueryAsNoTracking.FirstOrDefaultAsync(t => t.UserName == userName);
+            return QueryAsNoTracking.FirstOrDefaultAsync(t => t.UserName == name);
         }
 
         public override IQueryable<User> GetIncludeQuery()
