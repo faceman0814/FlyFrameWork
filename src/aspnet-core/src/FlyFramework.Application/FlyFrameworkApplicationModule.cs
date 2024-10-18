@@ -10,6 +10,8 @@ using FlyFramework.Attributes;
 using FlyFramework.Authorizations;
 using FlyFramework.FlyFrameworkModules;
 using FlyFramework.FlyFrameworkModules.Modules;
+using FlyFramework.OrgUnitModule.OrgUnitNodes.Mappers;
+using FlyFramework.OrgUnitModule.OrgUnits.Mappers;
 using FlyFramework.Uow;
 using FlyFramework.UserModule.Mappers;
 using FlyFramework.UserSessions;
@@ -30,7 +32,8 @@ namespace FlyFramework
             context.Services.AddAutoMapper((serviceProvider, configuration) =>
             {
                 UserMapper.CreateMappings(configuration);
-
+                OrgUnitNodeMapper.CreateMappings(configuration);
+                OrgUnitMapper.CreateMappings(configuration);
             }, typeof(FlyFrameworkApplicationModule));
         }
 

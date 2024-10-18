@@ -7,7 +7,7 @@
         <!-- Badly formed XML comment ignored for member "T:FlyFramework.AutoMapperExtensions" -->
         <member name="M:FlyFramework.AutoMapperExtensions.IgnoreNullSourceProperties``2(AutoMapper.IMappingExpression{``0,``1},System.Collections.Generic.List{System.String})">
             <summary>
-            忽略不需要映射的属性。
+            忽略null源属性
             </summary>
             <typeparam name="TSource"></typeparam>
             <typeparam name="TDestination"></typeparam>
