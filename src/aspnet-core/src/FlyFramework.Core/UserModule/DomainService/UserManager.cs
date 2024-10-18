@@ -1,9 +1,6 @@
 ﻿using FlyFramework.Domains;
-using FlyFramework.UserModule;
 
 using Microsoft.EntityFrameworkCore;
-
-using ServiceStack;
 
 using System;
 using System.Linq;

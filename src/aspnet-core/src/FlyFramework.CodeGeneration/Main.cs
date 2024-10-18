@@ -24,10 +24,10 @@ namespace FlyFramework
 
         private void CodeGeneration(object sender, EventArgs e)
         {
-            //获取项目路径
-            var projectPath = this.projectPath.Text;
             //获取实体名称
-            var entityName = this.entityName.Text;
+            var entityName = char.ToUpper(this.entityName.Text[0]) + this.entityName.Text.Substring(1); ;
+            //获取项目路径
+            var projectPath = this.projectPath.Text + $"\\{entityName}Module";
             //获取实体描述
             var entityDescription = this.entityDescription.Text;
             //获取表格数据
@@ -43,8 +43,13 @@ namespace FlyFramework
                 entity.Description = this.entityTable.Rows[i].Cells[3].Value.ToString();
                 entityList.Add(entity);
             }
+            entityList.Add(new Entity() { Name = "TenantId", Type = "string", Description = "租户Id" });
             //生成实体类代码
             CodeGenerator.GenerateEntityClass(projectPath, entityName, entityList, entityDescription);
+            //生成管理器接口类代码
+            CodeGenerator.GenerateIManagerClass(projectPath, entityName);
+            //生成管理器类代码
+            CodeGenerator.GenerateManagerClass(projectPath, entityName);
         }
     }
 }
