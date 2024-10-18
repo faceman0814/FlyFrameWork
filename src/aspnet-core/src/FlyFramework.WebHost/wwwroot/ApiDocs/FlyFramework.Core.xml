@@ -53,6 +53,78 @@
             RefreshToken过期时间 默认30h
             </summary>
         </member>
+        <member name="M:FlyFramework.OrgUnitModule.DomainService.OrgUnits.IOrgUnitNodeManager.GetGrantedNodes(System.String)">
+            <summary>
+            获取用户能访问的节点id列表
+            </summary>
+            <param name="userId">用户id</param>
+            <param name="nodeType">节点类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.OrgUnitModule.DomainService.OrgUnits.OrgUnitNodeManager.GetGrantedNodes(System.String)">
+            <summary>
+            获取用户有权访问的节点
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FlyFramework.OrganizationalUnitModule.OrgUnit">
+            <summary>
+            组织机构
+            </summary>
+        </member>
+        <member name="P:FlyFramework.OrganizationalUnitModule.OrgUnit.Name">
+            <summary>
+            组织机构名称
+            </summary>
+        </member>
+        <member name="P:FlyFramework.OrganizationalUnitModule.OrgUnit.ParentId">
+            <summary>
+            父节点Id
+            <see cref="P:FlyFramework.OrganizationalUnitModule.OrgUnitNode.ParentId"/>
+            </summary>
+        </member>
+        <member name="P:FlyFramework.OrganizationalUnitModule.OrgUnit.ParentIdList">
+            <summary>
+            父级组织机构Id
+            </summary>
+        </member>
+        <member name="T:FlyFramework.OrganizationalUnitModule.OrgUnitNode">
+            <summary>
+            组织机构节点
+            </summary>
+        </member>
+        <member name="P:FlyFramework.OrganizationalUnitModule.OrgUnitNode.Name">
+            <summary>
+            组织机构名称
+            </summary>
+        </member>
+        <member name="P:FlyFramework.OrganizationalUnitModule.OrgUnitNode.ParentIdList">
+            <summary>
+            父级组织机构Id
+            </summary>
+        </member>
+        <member name="P:FlyFramework.OrganizationalUnitModule.OrgUnitNode.ParentId">
+            <summary>
+            节点关联数据的父级数据Id
+            </summary>
+        </member>
+        <member name="T:FlyFramework.OrganizationalUnitModule.OrgUnitNodeGranted">
+            <summary>
+            组织节点授权
+            </summary>
+        </member>
+        <member name="P:FlyFramework.OrganizationalUnitModule.OrgUnitNodeGranted.UserId">
+            <summary>
+            系统用户Id
+            </summary>
+        </member>
+        <member name="P:FlyFramework.OrganizationalUnitModule.OrgUnitNodeGranted.OrgNodeId">
+            <summary>
+            节点关联的数据Id
+            <see cref="!:OrgUnitNode.Id"/>
+            </summary>
+        </member>
         <member name="M:FlyFramework.UserModule.DomainService.IUserManager.FindByNameAsync(System.String)">
             <summary>
             根据用户名查找用户

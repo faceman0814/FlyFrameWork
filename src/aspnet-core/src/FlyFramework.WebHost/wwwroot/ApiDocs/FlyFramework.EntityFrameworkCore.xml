@@ -9,6 +9,35 @@
             EF Core 查询增加 With NoLock(仅限sqlserver)
             </summary>
         </member>
+        <member name="M:FlyFramework.FlyFrameworkDbContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <summary>
+            动态注册实体和筛选器
+            </summary>
+            <param name="modelBuilder"></param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:FlyFramework.FlyFrameworkDbContext.ConfigureFilters``1(Microsoft.EntityFrameworkCore.ModelBuilder,System.Type)">
+            <summary>
+            注册实体筛选器
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="builder"></param>
+            <param name="entityType"></param>
+        </member>
+        <member name="M:FlyFramework.FlyFrameworkDbContext.CombineExpressions``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            合并表达式
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="expression1"></param>
+            <param name="expression2"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FlyFramework.FlyFrameworkDbContext.ReplaceExpressionVisitor">
+            <summary>
+             更换表达访问者
+            </summary>
+        </member>
         <member name="T:FlyFramework.FlyFrameworkEFCoreInterceptor">
             <summary>
             EF拦截器

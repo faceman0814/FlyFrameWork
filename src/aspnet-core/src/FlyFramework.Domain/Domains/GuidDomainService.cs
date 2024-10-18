@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FlyFramework.Domains
 {
-    public abstract class GuidDomainService<TEntity> : DomainService<TEntity, string>, IGuidDomainService<TEntity>, ITransientDependency where TEntity : class, IFullAuditedEntity<string>
+    public abstract class GuidDomainService<TEntity> : DomainService<TEntity, string>, IGuidDomainService<TEntity>, ITransientDependency where TEntity : class, IEntity<string>
     {
         public GuidDomainService(IServiceProvider serviceProvider) : base(serviceProvider)
         {

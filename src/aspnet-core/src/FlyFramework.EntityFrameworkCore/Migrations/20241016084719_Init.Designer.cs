@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlyFramework.Migrations
 {
     [DbContext(typeof(FlyFrameworkDbContext))]
-    [Migration("20241015045842_Init")]
+    [Migration("20241016084719_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -24,6 +24,173 @@ namespace FlyFramework.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("FlyFramework.OrganizationalUnitModule.OrgUnit", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("ConcurrencyToken")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorUserId")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("CreatorUserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DeleterUserId")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("DeleterUserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifierUserId")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("LastModifierUserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)")
+                        .HasComment("组织机构名称");
+
+                    b.Property<string>("ParentId")
+                        .HasColumnType("nvarchar(32)")
+                        .HasComment("父节点Id");
+
+                    b.Property<string>("ParentIdList")
+                        .HasColumnType("nvarchar(max)")
+                        .HasComment("父级数据id集合，aaa|bbb|ccc");
+
+                    b.Property<string>("TenantId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("OrgUnit");
+                });
+
+            modelBuilder.Entity("FlyFramework.OrganizationalUnitModule.OrgUnitNode", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("ConcurrencyToken")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorUserId")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("CreatorUserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DeleterUserId")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("DeleterUserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifierUserId")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("LastModifierUserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)")
+                        .HasComment("节点显示名称");
+
+                    b.Property<string>("ParentId")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)")
+                        .HasComment("节点关联数据的父级数据Id");
+
+                    b.Property<string>("ParentIdList")
+                        .HasColumnType("nvarchar(max)")
+                        .HasComment("父级数据id集合，aaa|bbb|ccc");
+
+                    b.Property<string>("TenantId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrgUnitNode");
+                });
+
+            modelBuilder.Entity("FlyFramework.OrganizationalUnitModule.OrgUnitNodeGranted", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("ConcurrencyToken")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorUserId")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("CreatorUserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrgNodeId")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)")
+                        .HasComment("节点关联的数据Id");
+
+                    b.Property<string>("TenantId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)")
+                        .HasComment("系统用户Id");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrgUnitNodeGranted");
+                });
 
             modelBuilder.Entity("FlyFramework.UserModule.Role", b =>
                 {
@@ -366,6 +533,15 @@ namespace FlyFramework.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("FlyFramework.OrganizationalUnitModule.OrgUnit", b =>
+                {
+                    b.HasOne("FlyFramework.OrganizationalUnitModule.OrgUnit", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

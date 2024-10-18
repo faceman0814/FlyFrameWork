@@ -1,4 +1,5 @@
 ﻿using FlyFramework.Entities;
+using FlyFramework.Extentions;
 using FlyFramework.UserModule;
 using FlyFramework.UserSessions;
 
@@ -37,7 +38,10 @@ namespace FlyFramework
             {
                 if (entityEntry.State == EntityState.Added)
                 {
-                    ((IEntity<string>)entityEntry.Entity).Id = Guid.NewGuid().ToString("N");
+                    if (((IEntity<string>)entityEntry.Entity).Id.IsNullOrEmpty())
+                    {
+                        ((IEntity<string>)entityEntry.Entity).Id = Guid.NewGuid().ToString("N");
+                    }
                     if (entityEntry.Entity is ICreationAuditedEntity<string>)
                     {
                         ((ICreationAuditedEntity<string>)entityEntry.Entity).CreationTime = DateTime.Now;

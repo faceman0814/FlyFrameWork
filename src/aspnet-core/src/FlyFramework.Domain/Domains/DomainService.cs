@@ -3,6 +3,7 @@ using FlyFramework.ErrorExceptions;
 using FlyFramework.Extentions;
 using FlyFramework.Extentions.Object;
 using FlyFramework.Repositories;
+using FlyFramework.UserSessions;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +17,7 @@ namespace FlyFramework.Domains
     public abstract class DomainService<TEntity, TPrimaryKey> : IDomainService<TEntity, TPrimaryKey>, ITransientDependency where TEntity : class, IEntity<TPrimaryKey>
     {
         public virtual IServiceProvider ServiceProvider { get; private set; }
+        public virtual IUserSession UserSession { get; }
         public IRepository<TEntity, TPrimaryKey> Repo { get; }
         public IQueryable<TEntity> Query => Repo.GetAll();
         public IQueryable<TEntity> QueryAsNoTracking => Query.AsNoTracking();
@@ -101,6 +103,11 @@ namespace FlyFramework.Domains
                     propertyInfo.SetValue(obj, null);
                 }
             }
+        }
+
+        protected T GetService<T>()
+        {
+            return ServiceProvider.GetRequiredService<T>();
         }
     }
 }

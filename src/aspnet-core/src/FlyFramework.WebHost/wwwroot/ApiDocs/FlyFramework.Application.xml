@@ -15,6 +15,51 @@
             <param name="ignoreProperties">指定需要忽略的属性名称列表</param>
             <returns></returns>
         </member>
+        <member name="M:FlyFramework.Dtos.IShouldNormalize.Normalize">
+            <summary>
+            这种方法称为最后执行方法（如果存在验证后）。
+            </summary>
+        </member>
+        <member name="T:FlyFramework.Dtos.ILimitedResultRequest">
+            <summary>
+            定义限制结果数量的接口
+            </summary>
+        </member>
+        <member name="T:FlyFramework.Dtos.IPagedResultRequest">
+            <summary>
+            定义限制结果数量的接口
+            </summary>
+        </member>
+        <member name="T:FlyFramework.Dtos.ISortedResultRequest">
+            <summary>
+            定义排序的接口
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Dtos.ISortedResultRequest.Sorting">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="M:FlyFramework.Dtos.UniversalPagedSortedAndFilteredInputDtoL.Normalize">
+            <summary>
+            正常化排序使用
+            </summary>
+        </member>
+        <member name="T:FlyFramework.Dtos.PagedSortedAndFilteredInputDto">
+            <summary>
+            支持分页、排序和过滤的Dto
+            </summary>
+        </member>
+        <member name="T:FlyFramework.Dtos.PagedAndSortedInputDto">
+            <summary>
+            支持分页和排序的Dto
+            </summary>
+        </member>
+        <member name="T:FlyFramework.Dtos.PagedInputDto">
+            <summary>
+            支持分页的Dto
+            </summary>
+        </member>
         <member name="T:FlyFramework.DynamicWebAPI.ApplicationServiceControllerFeatureProvider">
             <summary>
             自定义控制器特性提供程序，用于将实现了 IApplicationService 接口的类识别为控制器。
@@ -91,6 +136,42 @@
             <summary>
             属性注入选择器
             </summary>
+        </member>
+        <member name="M:FlyFramework.OrgUnitModule.OrgUnitNodes.OrgUnitNodeAppService.GetTree(FlyFramework.OrgUnitModule.OrgUnits.Dtos.GetOrgUnitsInput)">
+            <summary>
+            获取树数据
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="P:FlyFramework.OrgUnitModule.OrgUnits.Dtos.OrgUnitCreateInput.Name">
+            <summary>
+            组织机构名称
+            </summary>
+        </member>
+        <member name="P:FlyFramework.OrgUnitModule.OrgUnits.Dtos.OrgUnitCreateInput.ParentId">
+            <summary>
+            父节点Id
+            <see cref="P:FlyFramework.OrganizationalUnitModule.OrgUnitNode.ParentId"/>
+            </summary>
+        </member>
+        <member name="P:FlyFramework.OrgUnitModule.OrgUnits.Dtos.OrgUnitCreateInput.ParentIdList">
+            <summary>
+            父级组织机构Id，aaa|bbb|ccc
+            </summary>
+        </member>
+        <member name="M:FlyFramework.OrgUnitModule.OrgUnits.OrgUnitAppService.Create(FlyFramework.OrgUnitModule.OrgUnits.Dtos.OrgUnitCreateInput)">
+            <summary>
+            创建机构
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.OrgUnitModule.OrgUnits.OrgUnitAppService.GetSubOrgUnitPaged(FlyFramework.OrgUnitModule.OrgUnits.Dtos.GetOrgUnitsInput)">
+            <summary>
+            查询子商信息
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
         </member>
         <member name="M:FlyFramework.Test.MinioAppService.IsBucketExit">
             <summary>
