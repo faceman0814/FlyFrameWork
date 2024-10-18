@@ -51,10 +51,11 @@ namespace FlyFramework
             // 
             entityTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             entityTable.Columns.AddRange(new DataGridViewColumn[] { nameComboBoxColumn, typeComboBoxColumn, lengthTextBoxColumn, descriptTextBoxColumn });
-            entityTable.Location = new Point(0, 0);
+            entityTable.Location = new Point(2, 3);
+            entityTable.Margin = new Padding(5);
             entityTable.Name = "entityTable";
             entityTable.RowHeadersWidth = 51;
-            entityTable.Size = new Size(954, 284);
+            entityTable.Size = new Size(1484, 440);
             entityTable.TabIndex = 0;
             // 
             // nameComboBoxColumn
@@ -68,6 +69,7 @@ namespace FlyFramework
             // 
             typeComboBoxColumn.DataSource = comboBox.Items;
             typeComboBoxColumn.HeaderText = "字段类型";
+            //typeComboBoxColumn.Items.AddRange(new object[] { "int", "string", "bool", "char", "DateTime", "Decimal", "float" });
             typeComboBoxColumn.MinimumWidth = 6;
             typeComboBoxColumn.Name = "typeComboBoxColumn";
             typeComboBoxColumn.Width = 225;
@@ -79,7 +81,7 @@ namespace FlyFramework
             comboBox.Items.AddRange(new object[] { "int", "string", "bool", "char", "DateTime", "Decimal", "float" });
             comboBox.Location = new Point(0, 0);
             comboBox.Name = "comboBox";
-            comboBox.Size = new Size(121, 28);
+            comboBox.Size = new Size(121, 39);
             comboBox.TabIndex = 0;
             // 
             // lengthTextBoxColumn
@@ -100,24 +102,27 @@ namespace FlyFramework
             // 
             label1.AutoSize = true;
             label1.ForeColor = SystemColors.ControlText;
-            label1.Location = new Point(23, 318);
+            label1.Location = new Point(32, 476);
+            label1.Margin = new Padding(5, 0, 5, 0);
             label1.Name = "label1";
-            label1.Size = new Size(84, 20);
+            label1.Size = new Size(134, 31);
             label1.TabIndex = 1;
             label1.Text = "实体名称：";
             // 
             // entityName
             // 
-            entityName.Location = new Point(102, 315);
+            entityName.Location = new Point(155, 471);
+            entityName.Margin = new Padding(5);
             entityName.Name = "entityName";
-            entityName.Size = new Size(192, 27);
+            entityName.Size = new Size(296, 38);
             entityName.TabIndex = 2;
             // 
             // button1
             // 
-            button1.Location = new Point(23, 434);
+            button1.Location = new Point(32, 656);
+            button1.Margin = new Padding(5);
             button1.Name = "button1";
-            button1.Size = new Size(94, 29);
+            button1.Size = new Size(146, 45);
             button1.TabIndex = 3;
             button1.Text = "生成代码";
             button1.UseVisualStyleBackColor = true;
@@ -126,49 +131,55 @@ namespace FlyFramework
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(28, 375);
+            label2.Location = new Point(40, 564);
+            label2.Margin = new Padding(5, 0, 5, 0);
             label2.Name = "label2";
-            label2.Size = new Size(0, 20);
+            label2.Size = new Size(0, 31);
             label2.TabIndex = 4;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(23, 395);
+            label3.Location = new Point(32, 595);
+            label3.Margin = new Padding(5, 0, 5, 0);
             label3.Name = "label3";
-            label3.Size = new Size(114, 20);
+            label3.Size = new Size(182, 31);
             label3.TabIndex = 5;
             label3.Text = "目标生成地址：\r\n";
             // 
             // projectPath
             // 
-            projectPath.Location = new Point(133, 392);
+            projectPath.Location = new Point(203, 591);
+            projectPath.Margin = new Padding(5);
             projectPath.Name = "projectPath";
-            projectPath.Size = new Size(604, 27);
+            projectPath.Size = new Size(937, 38);
             projectPath.TabIndex = 6;
+            projectPath.Text = "D:\\FaceMan\\FlyFrameWork";
             // 
             // label4
             // 
             label4.AutoSize = true;
             label4.ForeColor = SystemColors.ControlText;
-            label4.Location = new Point(23, 355);
+            label4.Location = new Point(32, 533);
+            label4.Margin = new Padding(5, 0, 5, 0);
             label4.Name = "label4";
-            label4.Size = new Size(84, 20);
+            label4.Size = new Size(134, 31);
             label4.TabIndex = 7;
             label4.Text = "实体描述：";
             // 
             // entityDescription
             // 
-            entityDescription.Location = new Point(102, 352);
+            entityDescription.Location = new Point(155, 529);
+            entityDescription.Margin = new Padding(5);
             entityDescription.Name = "entityDescription";
-            entityDescription.Size = new Size(192, 27);
+            entityDescription.Size = new Size(296, 38);
             entityDescription.TabIndex = 8;
             // 
             // Main
             // 
-            AutoScaleDimensions = new SizeF(9F, 20F);
+            AutoScaleDimensions = new SizeF(14F, 31F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(956, 589);
+            ClientSize = new Size(1487, 913);
             Controls.Add(entityDescription);
             Controls.Add(label4);
             Controls.Add(projectPath);
@@ -178,6 +189,7 @@ namespace FlyFramework
             Controls.Add(entityName);
             Controls.Add(label1);
             Controls.Add(entityTable);
+            Margin = new Padding(5);
             Name = "Main";
             Text = "FlyFrameWork框架代码生成器";
             Load += Main_Load;
