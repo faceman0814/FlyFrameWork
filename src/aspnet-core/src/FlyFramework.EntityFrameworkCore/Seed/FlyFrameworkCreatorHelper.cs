@@ -122,11 +122,8 @@ namespace FlyFramework.Seed
                 NeedToChangeThePassword = false,
                 IsActive = true
             };
-
-            user.Password =
-                new PasswordHasher<User>(new OptionsWrapper<PasswordHasherOptions>(new PasswordHasherOptions()))
-                    .HashPassword(user, User.DefaultPassword);
-
+            PasswordHasher<User> ph = new PasswordHasher<User>();
+            user.PasswordHash = ph.HashPassword(user, "bb123456");
             user.SetNormalizedNames();
 
             user = _context.Users.Add(user).Entity;
