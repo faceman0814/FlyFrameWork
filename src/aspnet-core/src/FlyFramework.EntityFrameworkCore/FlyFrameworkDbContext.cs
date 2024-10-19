@@ -1,6 +1,7 @@
 ﻿using FlyFramework.Entities;
 using FlyFramework.OrganizationalUnitModule;
 using FlyFramework.UserModule;
+using FlyFramework.UserSessions;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,7 @@ namespace FlyFramework
         public bool IgnoreDeleteFilter { get; set; } = false;
 
         public bool SuppressAutoSetTenantId { get; set; }
+        public IUserSession UserSessions { get; set; }
 
         public FlyFrameworkDbContext(DbContextOptions<FlyFrameworkDbContext> options)
         : base(options)
@@ -52,9 +54,9 @@ namespace FlyFramework
                 modelBuilder.Entity(entityType);
 
                 //动态地为每个注册的实体类型调用 ConfigureFilters 方法
-                configureFilters
-                    .MakeGenericMethod(entityType)
-                    .Invoke(this, new object[] { modelBuilder, entityType });
+                //configureFilters
+                //    .MakeGenericMethod(entityType)
+                //    .Invoke(this, new object[] { modelBuilder, entityType });
             }
 
             //自定义实体规则
@@ -81,7 +83,7 @@ namespace FlyFramework
 
             if (typeof(IMayHaveTenant).IsAssignableFrom(entityType))
             {
-                Expression<Func<TEntity, bool>> tenantExpression = e => EF.Property<string>(e, "TenantId") == "1";
+                Expression<Func<TEntity, bool>> tenantExpression = e => EF.Property<string>(e, "TenantId") == null;
                 expression = expression == null ? tenantExpression : CombineExpressions(expression, tenantExpression);
             }
 
@@ -138,5 +140,6 @@ namespace FlyFramework
 
         //需要显示调用时注册
         public DbSet<UserRole> UserRole { get; set; }
+        public DbSet<OrgUnitNode> OrgUnitNode { get; set; }
     }
 }

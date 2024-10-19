@@ -15,9 +15,10 @@ namespace FlyFramework.OrgUnitModule.DomainService.OrgUnits
     public class OrgUnitNodeManager : GuidDomainService<OrgUnitNode>, IOrgUnitNodeManager
     {
         readonly IRepository<OrgUnitNodeGranted> _orgNodeGrantedRepo;
+        readonly IOrgUnitNodeGrantedManager _orgNodeGrantedManager;
         public OrgUnitNodeManager(IServiceProvider serviceProvider) : base(serviceProvider)
         {
-            this._orgNodeGrantedRepo = this.GetService<IRepository<OrgUnitNodeGranted>>();
+            this._orgNodeGrantedManager = this.GetService<IOrgUnitNodeGrantedManager>();
         }
 
         /// <summary>
@@ -29,12 +30,13 @@ namespace FlyFramework.OrgUnitModule.DomainService.OrgUnits
         {
             if (!userId.HasValue())
             {
-                userId = UserSession.UserId;
+                userId = "12905daeb8b74f6d8a1de7544775db5b";
+                //userId = UserSession.UserId;
             }
             var nodeIdList = new List<string>();
 
             // 当前用户拥有的节点
-            nodeIdList = await _orgNodeGrantedRepo.GetAll()
+            nodeIdList = await _orgNodeGrantedManager.QueryAsNoTracking
                 .Where(o => o.UserId == userId)
                 .Select(o => o.OrgNodeId)
                 .AsNoTracking()
@@ -50,7 +52,7 @@ namespace FlyFramework.OrgUnitModule.DomainService.OrgUnits
             // 删除节点本身
             await this.Delete(node);
             // 删除关联的授权
-            await _orgNodeGrantedRepo.DeleteAsync(o => o.Id == node.Id);
+            await _orgNodeGrantedManager.Delete(node.Id);
 
             // 查询子节点
             var parentIdList = $"{node.ParentIdList}|{node.Id}";
@@ -64,7 +66,7 @@ namespace FlyFramework.OrgUnitModule.DomainService.OrgUnits
                 await this.Delete(item);
 
                 // 删除关联的授权
-                await _orgNodeGrantedRepo.DeleteAsync(o => o.Id == item.Id);
+                await _orgNodeGrantedManager.Delete(item.Id);
             }
         }
 

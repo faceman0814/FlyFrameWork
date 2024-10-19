@@ -38,11 +38,6 @@
              更换表达访问者
             </summary>
         </member>
-        <member name="T:FlyFramework.FlyFrameworkEFCoreInterceptor">
-            <summary>
-            EF拦截器
-            </summary>
-        </member>
         <member name="M:FlyFramework.IDatabaseChecker.Exist(System.String)">
             <summary>
             判断数据库是否存在

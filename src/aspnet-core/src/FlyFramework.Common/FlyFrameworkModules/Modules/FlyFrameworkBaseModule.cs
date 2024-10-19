@@ -69,10 +69,6 @@ namespace FlyFramework.FlyFrameworkModules.Modules
 
         }
 
-        protected virtual void Load(ContainerBuilder builder)
-        {
-
-        }
         public static bool IsModule(Type type)
         {
             var typeInfo = type.GetTypeInfo();
