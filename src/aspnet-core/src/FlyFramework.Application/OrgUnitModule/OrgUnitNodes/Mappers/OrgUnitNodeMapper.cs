@@ -17,8 +17,9 @@ namespace FlyFramework.OrgUnitModule.OrgUnitNodes.Mappers
     {
         public static void CreateMappings(IMapperConfigurationExpression configuration)
         {
-            configuration.CreateMap<List<OrgUnitNode>, List<OrgUnitNodeListDto>>().ReverseMap();
+            //configuration.CreateMap<List<OrgUnitNode>, List<OrgUnitNodeListDto>>().ReverseMap();
             configuration.CreateMap<OrgUnitNode, OrgUnitNodeEditDto>().ReverseMap().IgnoreNullSourceProperties();
+            configuration.CreateMap<OrgUnitNode, OrgUnitNodeListDto>().ReverseMap().IgnoreNullSourceProperties();
         }
     }
 }

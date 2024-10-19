@@ -6,8 +6,7 @@ using FlyFramework.LazyModule.LazyDefinition;
 using FlyFramework.OrganizationalUnitModule;
 using FlyFramework.OrgUnitModule.DomainService.OrgUnits;
 using FlyFramework.OrgUnitModule.OrgUnitNodes.Dtos;
-using FlyFramework.OrgUnitModule.OrgUnits.Dtos;
-using FlyFramework.UserModule;
+using FlyFramework.Repositories;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,20 +14,19 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FlyFramework.OrgUnitModule.OrgUnitNodes
 {
     public class OrgUnitNodeAppService : ApplicationService, IOrgUnitNodeAppService
     {
-        private readonly IOrgUnitManager _orgUnitManager;
         private readonly IOrgUnitNodeManager _orgUnitNodeManager;
+        private readonly IRepository<OrgUnitNode, string> _repository;
 
-        public OrgUnitNodeAppService(IFlyFrameworkLazy flyFrameworkLazy)
+        public OrgUnitNodeAppService(IOrgUnitNodeManager orgUnitNodeManager, IRepository<OrgUnitNode, string> repository)
         {
-            _orgUnitManager = flyFrameworkLazy.LazyGetRequiredService<IOrgUnitManager>().Value;
-            _orgUnitNodeManager = flyFrameworkLazy.LazyGetRequiredService<IOrgUnitNodeManager>().Value;
+            _orgUnitNodeManager = orgUnitNodeManager;
+            _repository = repository;
         }
 
         public async Task CreateOrUpdate(CreateOrUpdateOrgUnitNodeInput input)
@@ -60,6 +58,13 @@ namespace FlyFramework.OrgUnitModule.OrgUnitNodes
         private async Task Create(OrgUnitNodeEditDto input)
         {
             var entity = ObjectMapper.Map<OrgUnitNode>(input);
+            if (!entity.ParentId.IsNullOrEmpty())
+            {
+                // 父节点
+                var parent = await _orgUnitNodeManager.FindById(input.ParentId);
+                parent = await _repository.GetAll().FirstOrDefaultAsync(o => o.Id == input.ParentId);
+                entity.ParentIdList = parent.ParentIdList != null ? (parent.ParentIdList + "|" + parent.Id) : parent.Id;
+            }
             await _orgUnitNodeManager.Create(entity);
         }
 
@@ -71,7 +76,6 @@ namespace FlyFramework.OrgUnitModule.OrgUnitNodes
         }
         #endregion
 
-
         #region 树操作接口
 
         /// <summary>
@@ -81,11 +85,11 @@ namespace FlyFramework.OrgUnitModule.OrgUnitNodes
         /// <returns></returns>
         [HttpPost]
         //[AbpAuthorize(KnightOrgNodePermissions.Node)]
-        public async Task<List<OrgUnitNodeListDto>> GetTree(GetOrgUnitsInput input)
+        public async Task<List<OrgUnitNodeListDto>> GetTree(GetOrgUnitNodesInput input)
         {
             var result = new List<OrgUnitNodeListDto>();
             // 当前用户拥有的节点
-            var nodeIdList = await _orgUnitNodeManager.GetGrantedNodes();
+            //var nodeIdList = await _orgUnitNodeManager.GetGrantedNodes();
 
             // 如果有筛选条件
             if (input.FilterText.HasValue())
@@ -93,8 +97,12 @@ namespace FlyFramework.OrgUnitModule.OrgUnitNodes
                 // 筛选过的节点信息
                 var filterNodeList = await _orgUnitNodeManager.QueryAsNoTracking
                     .WhereIfThenElse(input.OrgUnitNodeId.HasValue(),
-                            o => nodeIdList.Contains(o.Id) && o.Name.Contains(input.FilterText) && o.Id == input.OrgUnitNodeId,
-                            o => nodeIdList.Contains(o.Id) && o.Name.Contains(input.FilterText)
+                            o =>
+                            //nodeIdList.Contains(o.Id) && 
+                            o.Name.Contains(input.FilterText) && o.Id == input.OrgUnitNodeId,
+                            o =>
+                            //nodeIdList.Contains(o.Id) && 
+                            o.Name.Contains(input.FilterText)
                             )
                     .Select(o => new { o.Id, o.ParentIdList })
                     .ToListAsync();
@@ -135,8 +143,11 @@ namespace FlyFramework.OrgUnitModule.OrgUnitNodes
             {
                 var nodeList = await _orgUnitNodeManager.QueryAsNoTracking
                         .WhereIfThenElse(input.OrgUnitNodeId.HasValue(),
-                            o => o.ParentId == input.ParentOrgUnitNodeId && nodeIdList.Contains(o.Id) && o.Id == input.OrgUnitNodeId,
-                            o => o.ParentId == input.ParentOrgUnitNodeId && nodeIdList.Contains(o.Id)
+                            o => o.ParentId == input.ParentOrgUnitNodeId
+                            //&& nodeIdList.Contains(o.Id)
+                            && o.Id == input.OrgUnitNodeId,
+                            o => o.ParentId == input.ParentOrgUnitNodeId
+                            //&& nodeIdList.Contains(o.Id)
                             )
                         .ToListAsync();
 
@@ -148,7 +159,9 @@ namespace FlyFramework.OrgUnitModule.OrgUnitNodes
             // 查询子节点总数，同时也要过滤有权限的子节点
             var resultNodeIdList = result.Select(o => o.Id).ToList();
             var totalChildMap = await _orgUnitNodeManager.Query
-                 .Where(o => nodeIdList.Contains(o.Id) && resultNodeIdList.Contains(o.ParentId))
+                 .Where(o =>
+                 //nodeIdList.Contains(o.Id) && 
+                 resultNodeIdList.Contains(o.ParentId))
                  .GroupBy(o => o.ParentId)
                  .Select(o => new
                  {

@@ -22,7 +22,6 @@ namespace FlyFramework.UserModule
         //工号最大长度
         public const int MaxEmployeeNumberLength = 1024;
         public string FullName { get; set; }
-        public string Password { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public bool NeedToChangeThePassword { get; set; }

@@ -46,7 +46,6 @@ namespace FlyFramework.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     NeedToChangeThePassword = table.Column<bool>(type: "bit", nullable: false),
@@ -79,37 +78,6 @@ namespace FlyFramework.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OrgUnit",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true, comment: "组织机构名称"),
-                    ParentId = table.Column<string>(type: "nvarchar(32)", nullable: true, comment: "父节点Id"),
-                    ParentIdList = table.Column<string>(type: "nvarchar(max)", nullable: true, comment: "父级数据id集合，aaa|bbb|ccc"),
-                    ConcurrencyToken = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatorUserId = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifierUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModifierUserId = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeleterUserId = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
-                    DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeleterUserName = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrgUnit", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OrgUnit_OrgUnit_ParentId",
-                        column: x => x.ParentId,
-                        principalTable: "OrgUnit",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -325,11 +293,6 @@ namespace FlyFramework.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrgUnit_ParentId",
-                table: "OrgUnit",
-                column: "ParentId");
         }
 
         /// <inheritdoc />
@@ -349,9 +312,6 @@ namespace FlyFramework.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
-
-            migrationBuilder.DropTable(
-                name: "OrgUnit");
 
             migrationBuilder.DropTable(
                 name: "OrgUnitNode");

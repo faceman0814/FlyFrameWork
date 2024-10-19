@@ -120,12 +120,12 @@ namespace FlyFramework.Seed
                 FullName = userName,
                 Email = $"{userName}@faceman.com",
                 NeedToChangeThePassword = false,
-                IsActive = true
+                IsActive = true,
+                SecurityStamp = Guid.NewGuid().ToString("N"),
             };
             PasswordHasher<User> ph = new PasswordHasher<User>();
             user.PasswordHash = ph.HashPassword(user, "bb123456");
             user.SetNormalizedNames();
-
             user = _context.Users.Add(user).Entity;
 
             // Assign role to user

@@ -68,27 +68,6 @@
             <param name="userId"></param>
             <returns></returns>
         </member>
-        <member name="T:FlyFramework.OrganizationalUnitModule.OrgUnit">
-            <summary>
-            组织机构
-            </summary>
-        </member>
-        <member name="P:FlyFramework.OrganizationalUnitModule.OrgUnit.Name">
-            <summary>
-            组织机构名称
-            </summary>
-        </member>
-        <member name="P:FlyFramework.OrganizationalUnitModule.OrgUnit.ParentId">
-            <summary>
-            父节点Id
-            <see cref="P:FlyFramework.OrganizationalUnitModule.OrgUnitNode.ParentId"/>
-            </summary>
-        </member>
-        <member name="P:FlyFramework.OrganizationalUnitModule.OrgUnit.ParentIdList">
-            <summary>
-            父级组织机构Id
-            </summary>
-        </member>
         <member name="T:FlyFramework.OrganizationalUnitModule.OrgUnitNode">
             <summary>
             组织机构节点
