@@ -266,6 +266,7 @@ namespace FlyFramework.Controllers
                 new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.Now.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
                 new Claim(FlyFrameworkConst.TokenValidityKey, tokenValidityKey),
                 new Claim(FlyFrameworkConst.UserIdentifier, user.Id.ToString()),
+                new Claim(UserClaimTypes.UserName, user.UserName.ToString()),
                 new Claim(UserClaimTypes.TenantId, user.TenantId!=null?user.TenantId.ToString():""),
                 new Claim(FlyFrameworkConst.TokenType, tokenType.ToDescription()),
             });
