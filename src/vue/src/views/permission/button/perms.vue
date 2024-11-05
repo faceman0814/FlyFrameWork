@@ -21,26 +21,22 @@ defineOptions({
         <div class="card-header">组件方式判断权限</div>
       </template>
       <el-space wrap>
-        <Perms value="permission:btn:add">
+        <Perms value="User.Node.Create">
           <el-button plain type="warning">
-            拥有code：'permission:btn:add' 权限可见
+            拥有code：'User.Node.Create' 权限可见
           </el-button>
         </Perms>
-        <Perms :value="['permission:btn:edit']">
+        <Perms :value="['User.Node.Update']">
           <el-button plain type="primary">
-            拥有code：['permission:btn:edit'] 权限可见
+            拥有code：['User.Node.Update'] 权限可见
           </el-button>
         </Perms>
         <Perms
-          :value="[
-            'permission:btn:add',
-            'permission:btn:edit',
-            'permission:btn:delete'
-          ]"
+          :value="['User.Node.Create', 'User.Node.Update', 'User.Node.Delete']"
         >
           <el-button plain type="danger">
-            拥有code：['permission:btn:add', 'permission:btn:edit',
-            'permission:btn:delete'] 权限可见
+            拥有code：['User.Node.Create', 'User.Node.Update',
+            'User.Node.Delete'] 权限可见
           </el-button>
         </Perms>
       </el-space>
@@ -51,29 +47,25 @@ defineOptions({
         <div class="card-header">函数方式判断权限</div>
       </template>
       <el-space wrap>
-        <el-button v-if="hasPerms('permission:btn:add')" plain type="warning">
-          拥有code：'permission:btn:add' 权限可见
+        <el-button v-if="hasPerms('User.Node')" plain type="warning">
+          拥有code：'User.Node.Create' 权限可见
         </el-button>
-        <el-button
-          v-if="hasPerms(['permission:btn:edit'])"
-          plain
-          type="primary"
-        >
-          拥有code：['permission:btn:edit'] 权限可见
+        <el-button v-if="hasPerms(['User.Node'])" plain type="primary">
+          拥有code：['User.Node.Update'] 权限可见
         </el-button>
         <el-button
           v-if="
             hasPerms([
-              'permission:btn:add',
-              'permission:btn:edit',
-              'permission:btn:delete'
+              'User.Node.Create',
+              'User.Node.Update',
+              'User.Node.Delete'
             ])
           "
           plain
           type="danger"
         >
-          拥有code：['permission:btn:add', 'permission:btn:edit',
-          'permission:btn:delete'] 权限可见
+          拥有code：['User.Node.Create', 'User.Node.Update', 'User.Node.Delete']
+          权限可见
         </el-button>
       </el-space>
     </el-card>
@@ -85,23 +77,19 @@ defineOptions({
         </div>
       </template>
       <el-space wrap>
-        <el-button v-perms="'permission:btn:add'" plain type="warning">
-          拥有code：'permission:btn:add' 权限可见
+        <el-button v-perms="'User.Node.Create'" plain type="warning">
+          拥有code：'User.Node.Create' 权限可见
         </el-button>
-        <el-button v-perms="['permission:btn:edit']" plain type="primary">
-          拥有code：['permission:btn:edit'] 权限可见
+        <el-button v-perms="['User.Node.Update']" plain type="primary">
+          拥有code：['User.Node.Update'] 权限可见
         </el-button>
         <el-button
-          v-perms="[
-            'permission:btn:add',
-            'permission:btn:edit',
-            'permission:btn:delete'
-          ]"
+          v-perms="['User.Node.Create', 'User.Node.Update', 'User.Node.Delete']"
           plain
           type="danger"
         >
-          拥有code：['permission:btn:add', 'permission:btn:edit',
-          'permission:btn:delete'] 权限可见
+          拥有code：['User.Node.Create', 'User.Node.Update', 'User.Node.Delete']
+          权限可见
         </el-button>
       </el-space>
     </el-card>

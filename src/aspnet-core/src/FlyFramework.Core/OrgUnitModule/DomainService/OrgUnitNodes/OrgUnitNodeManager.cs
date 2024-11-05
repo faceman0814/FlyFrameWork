@@ -30,8 +30,7 @@ namespace FlyFramework.OrgUnitModule.DomainService.OrgUnits
         {
             if (!userId.HasValue())
             {
-                userId = "12905daeb8b74f6d8a1de7544775db5b";
-                //userId = UserSession.UserId;
+                userId = UserSession.UserId;
             }
             var nodeIdList = new List<string>();
 

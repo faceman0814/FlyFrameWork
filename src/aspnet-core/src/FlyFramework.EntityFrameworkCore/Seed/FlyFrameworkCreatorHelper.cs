@@ -1,5 +1,7 @@
 ﻿using FlyFramework.Extentions.Object;
+using FlyFramework.PermissionModule;
 using FlyFramework.UserModule;
+using FlyFramework.UserModule.Authority;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -63,39 +65,20 @@ namespace FlyFramework.Seed
         /// </summary>
         /// <param name="roleId">角色id</param>
         /// <param name="authorizationProviders">权限定义</param>
-        //public void CreateRolePermissions(string roleId, List<AuthorizationProvider> authorizationProviders)
-        //{
-        //    var isHost = !_tenantId.HasValue();
-        //    var multiTenancySides = isHost ? MultiTenancySides.Host : MultiTenancySides.Tenant;
-
-        //    var grantedPermissions = _context.Permissions.IgnoreQueryFilters()
-        //       .OfType<RolePermissionSetting>()
-        //       .Where(p => p.TenantId == _tenantId && p.RoleId == roleId)
-        //       .Select(p => p.Name)
-        //       .ToList();
-
-        //    var permissions = PermissionFinder
-        //        .GetAllPermissions(
-        //            authorizationProviders.ToArray()
-        //        )
-        //        .Where(p => p.MultiTenancySides.HasFlag(multiTenancySides)
-        //            && !grantedPermissions.Contains(p.Name))
-        //        .ToList();
-
-        //    if (permissions.Any())
-        //    {
-        //        _context.Permissions.AddRange(
-        //            permissions.Select(permission => new RolePermissionSetting
-        //            {
-        //                TenantId = _tenantId,
-        //                RoleId = roleId,
-        //                Name = permission.Name,
-        //                IsGranted = true
-        //            })
-        //        );
-        //        _context.SaveChanges();
-        //    }
-        //}
+        public void CreateRolePermissions(string roleId)
+        {
+            //todo 权限定义
+            var isExists = _context.Permission.Any(t => t.Value.Contains(UserAuthority.User_Node));
+            if (!isExists)
+            {
+                var perssions = new List<Permission>();
+                perssions.Add(new Permission(roleId, UserAuthority.User_Node));
+                perssions.Add(new Permission(roleId, UserAuthority.User_Create));
+                perssions.Add(new Permission(roleId, UserAuthority.User_Update));
+                perssions.Add(new Permission(roleId, UserAuthority.User_Delete));
+                _context.Permission.AddRange(perssions);
+            }
+        }
 
 
         /// <summary>

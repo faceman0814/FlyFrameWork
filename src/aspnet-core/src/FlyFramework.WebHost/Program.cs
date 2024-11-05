@@ -49,9 +49,13 @@ public static class AppConfig
 
         services.AddHttpContextAccessor();
 
-        //// 添加应用程序模块
-        builder.Services.AddApplication<FlyFrameworkWebHostModule>();
+        //services.AddAutoGnarly();
 
+        //// 添加应用程序模块
+        services.AddApplication<FlyFrameworkWebHostModule>();
+
+        //动态注入仓储
+        //services.AddDynamicRepositories(configuration);
         // 添加Autofac依赖注入
         builder.Host.UseAutoFac();
 

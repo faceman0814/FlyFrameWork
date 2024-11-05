@@ -84,12 +84,11 @@ namespace FlyFramework.OrgUnitModule.OrgUnitNodes
         /// <param name="input"></param>
         /// <returns></returns>
         [HttpPost]
-        //[AbpAuthorize(KnightOrgNodePermissions.Node)]
         public async Task<List<OrgUnitNodeListDto>> GetTree(GetOrgUnitNodesInput input)
         {
             var result = new List<OrgUnitNodeListDto>();
             // 当前用户拥有的节点
-            //var nodeIdList = await _orgUnitNodeManager.GetGrantedNodes();
+            var nodeIdList = await _orgUnitNodeManager.GetGrantedNodes();
 
             // 如果有筛选条件
             if (input.FilterText.HasValue())
@@ -98,10 +97,10 @@ namespace FlyFramework.OrgUnitModule.OrgUnitNodes
                 var filterNodeList = await _orgUnitNodeManager.QueryAsNoTracking
                     .WhereIfThenElse(input.OrgUnitNodeId.HasValue(),
                             o =>
-                            //nodeIdList.Contains(o.Id) && 
+                            nodeIdList.Contains(o.Id) &&
                             o.Name.Contains(input.FilterText) && o.Id == input.OrgUnitNodeId,
                             o =>
-                            //nodeIdList.Contains(o.Id) && 
+                            nodeIdList.Contains(o.Id) &&
                             o.Name.Contains(input.FilterText)
                             )
                     .Select(o => new { o.Id, o.ParentIdList })
@@ -144,10 +143,10 @@ namespace FlyFramework.OrgUnitModule.OrgUnitNodes
                 var nodeList = await _orgUnitNodeManager.QueryAsNoTracking
                         .WhereIfThenElse(input.OrgUnitNodeId.HasValue(),
                             o => o.ParentId == input.ParentOrgUnitNodeId
-                            //&& nodeIdList.Contains(o.Id)
+                            && nodeIdList.Contains(o.Id)
                             && o.Id == input.OrgUnitNodeId,
                             o => o.ParentId == input.ParentOrgUnitNodeId
-                            //&& nodeIdList.Contains(o.Id)
+                            && nodeIdList.Contains(o.Id)
                             )
                         .ToListAsync();
 
@@ -160,7 +159,7 @@ namespace FlyFramework.OrgUnitModule.OrgUnitNodes
             var resultNodeIdList = result.Select(o => o.Id).ToList();
             var totalChildMap = await _orgUnitNodeManager.Query
                  .Where(o =>
-                 //nodeIdList.Contains(o.Id) && 
+                 nodeIdList.Contains(o.Id) &&
                  resultNodeIdList.Contains(o.ParentId))
                  .GroupBy(o => o.ParentId)
                  .Select(o => new

@@ -1,4 +1,5 @@
-﻿using FlyFramework.Dependencys;
+﻿using FlyFramework.Attributes;
+using FlyFramework.Dependencys;
 using FlyFramework.ErrorExceptions;
 using FlyFramework.Extentions;
 using FlyFramework.Extentions.Object;
@@ -25,6 +26,7 @@ namespace FlyFramework.Domains
         {
             ServiceProvider = serviceProvider;
             Repo = serviceProvider.GetRequiredService<IRepository<TEntity, TPrimaryKey>>();
+            UserSession = serviceProvider.GetRequiredService<IUserSession>();
         }
 
         public abstract IQueryable<TEntity> GetIncludeQuery();

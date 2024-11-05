@@ -126,5 +126,10 @@
             <param name="_app"></param>
             <returns></returns>
         </member>
+        <member name="M:System.GnarlyExtensions.AddAutoGnarly(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            SourceGenerator自动注入服务
+            </summary>
+        </member>
     </members>
 </doc>

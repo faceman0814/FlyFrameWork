@@ -35,11 +35,7 @@ const permissionRouter = {
           name: "PermissionButtonRouter",
           meta: {
             title: "路由返回按钮权限",
-            auths: [
-              "permission:btn:add",
-              "permission:btn:edit",
-              "permission:btn:delete"
-            ]
+            auths: ["User.Node.Create", "User.Node.Update", "User.Node.Delete"]
           }
         },
         {

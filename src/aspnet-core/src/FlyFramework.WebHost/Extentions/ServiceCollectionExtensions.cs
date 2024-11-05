@@ -9,6 +9,7 @@ using FlyFramework.Extensions;
 using FlyFramework.Extentions;
 using FlyFramework.Extentions.JsonOptions;
 using FlyFramework.Filters;
+using FlyFramework.Repositories;
 using FlyFramework.Utilities.EventBus;
 using FlyFramework.Utilities.EventBus.Distributed;
 using FlyFramework.Utilities.EventBus.Distributed.Cap;
@@ -422,9 +423,23 @@ namespace FlyFramework.Extentions
         }
 
 
-        public static void AddLocalizations(this IServiceCollection services)
+        public static void AddDynamicRepositories(this IServiceCollection services)
         {
-
+            //扫描继承了IEntity的接口
+            //注册IEntity接口的实现类
+            services.AddTransient(typeof(IRepository<,>), typeof(Repository<,>));
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var assembly in assemblies)
+            {
+                var types = assembly.GetTypes().Where(t => t.IsInterface);
+                foreach (var type in types)
+                {
+                    var entityType = type.GetGenericArguments().FirstOrDefault();
+                    if (entityType == null) continue;
+                    var repositoryType = typeof(IEntity<>).MakeGenericType(type, entityType);
+                    services.AddTransient(type, repositoryType);
+                }
+            }
         }
 
         /// <summary>

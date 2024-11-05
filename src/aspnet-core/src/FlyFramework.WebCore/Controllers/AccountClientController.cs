@@ -4,6 +4,8 @@ using FlyFramework.ErrorExceptions;
 using FlyFramework.Extensions;
 using FlyFramework.LazyModule.LazyDefinition;
 using FlyFramework.Models;
+using FlyFramework.PermissionModule;
+using FlyFramework.Repositories;
 using FlyFramework.UserModule;
 using FlyFramework.UserModule.DomainService;
 using FlyFramework.UserSessions;
@@ -42,6 +44,9 @@ namespace FlyFramework.Controllers
         readonly UserClaimsPrincipalFactory<User, Role> _claimsPrincipalFactory;
         readonly SignInManager<User> _signInManager;
         readonly IUserManager _userManager;
+        readonly IRepository<Role, string> _roleRepository;
+        readonly IRepository<UserRole, string> _userRoleRepository;
+        readonly IRepository<Permission, string> _permissionRepository;
         public AccountClientController(IFlyFrameworkLazy flyFrameworkLazy)
         {
             _userManager = flyFrameworkLazy.LazyGetService<IUserManager>().Value;
@@ -50,6 +55,9 @@ namespace FlyFramework.Controllers
             _tokenAuthConfiguration = flyFrameworkLazy.LazyGetService<TokenAuthConfiguration>().Value;
             _cacheManager = flyFrameworkLazy.LazyGetService<ICacheManager>().Value;
             _claimsPrincipalFactory = flyFrameworkLazy.LazyGetService<UserClaimsPrincipalFactory<User, Role>>().Value;
+            _roleRepository = flyFrameworkLazy.LazyGetService<IRepository<Role, string>>().Value;
+            _userRoleRepository = flyFrameworkLazy.LazyGetService<IRepository<UserRole, string>>().Value;
+            _permissionRepository = flyFrameworkLazy.LazyGetService<IRepository<Permission, string>>().Value;
         }
         private async Task<ClaimsIdentity> GetClaimsIdentityAsync(User user)
         {
@@ -131,6 +139,9 @@ namespace FlyFramework.Controllers
                 }
                 );
             }
+            var userRole = await _userRoleRepository.FirstOrDefaultAsync(t => t.UserId == user.Id);
+            var roles = await _roleRepository.GetAll().Where(t => t.Id == userRole.RoleId).Select(t => t.Name.ToLower()).ToListAsync();
+            var permissions = await _permissionRepository.GetAll().Where(t => t.RoleId == userRole.RoleId).Select(t => t.Value).ToListAsync();
             return new AuthenticateResultModel
             {
                 AccessToken = accessToken,
@@ -140,14 +151,12 @@ namespace FlyFramework.Controllers
                 UserId = user.Id,
                 UserName = user.UserName,
                 NickName = user.FullName,
-                Roles = new List<string>()
-                     {
-                         "admin"
-                     },
-                Permissions = new List<string>()
-                     {
-                         "*:*:*"
-                     },
+                Roles = roles,
+                Permissions = permissions,
+                //new List<string>()
+                //     {
+                //         "*:*:*"
+                //     },
                 Avatar = "https://avatars.githubusercontent.com/u/44761321",
             };
 

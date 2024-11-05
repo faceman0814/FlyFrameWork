@@ -26,10 +26,7 @@ namespace FlyFramework.Seed.Host
 
             //创建Host管理员角色
             var roleId = helper.CreateRole("Admin", "系统管理员", false);
-            //helper.CreateRolePermissions(
-            //    roleId,
-            //    TemplateAuthorizationProviderHelper.GetAllAuthorizationProviders(tenantId)
-            //    );
+            helper.CreateRolePermissions(roleId);
             helper.CreateUser(roleId, "admin");
         }
     }

@@ -63,6 +63,18 @@
         <member name="M:FlyFramework.Migrations.Init.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:FlyFramework.Migrations.AddPermission">
+            <inheritdoc />
+        </member>
+        <member name="M:FlyFramework.Migrations.AddPermission.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:FlyFramework.Migrations.AddPermission.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:FlyFramework.Migrations.AddPermission.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
         <member name="M:FlyFramework.Seed.FlyFrameworkCreatorHelper.SetContext(System.String,FlyFramework.FlyFrameworkDbContext)">
             <summary>
             设置上下文
@@ -78,6 +90,13 @@
             <param name="isDefault">是否为默认角色,默认值: false</param>
             <param name="isStatic">是否为系统角色,默认值: true</param>
             <returns></returns>
+        </member>
+        <member name="M:FlyFramework.Seed.FlyFrameworkCreatorHelper.CreateRolePermissions(System.String)">
+            <summary>
+            创建角色关联的权限
+            </summary>
+            <param name="roleId">角色id</param>
+            <param name="authorizationProviders">权限定义</param>
         </member>
         <member name="M:FlyFramework.Seed.FlyFrameworkCreatorHelper.CreateUser(System.String,System.String)">
             <summary>

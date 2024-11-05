@@ -100,7 +100,7 @@ namespace FlyFramework.FlyFrameworkModules
                     {
                         module.Instance.Initialize(context);
                     }
-                    catch (Exception ex)
+                    catch (Exception ex) 
                     {
                         throw new ArgumentException(
                             $"An error occurred during the {nameof(IFlyFrameworkBaseModule.Initialize)} phase of the module {module.ModuleType.AssemblyQualifiedName}.", ex);

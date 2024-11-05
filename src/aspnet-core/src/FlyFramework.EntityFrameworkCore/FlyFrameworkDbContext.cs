@@ -1,5 +1,6 @@
 ﻿using FlyFramework.Entities;
 using FlyFramework.OrganizationalUnitModule;
+using FlyFramework.PermissionModule;
 using FlyFramework.UserModule;
 using FlyFramework.UserSessions;
 
@@ -141,5 +142,6 @@ namespace FlyFramework
         //需要显示调用时注册
         public DbSet<UserRole> UserRole { get; set; }
         public DbSet<OrgUnitNode> OrgUnitNode { get; set; }
+        public DbSet<Permission> Permission { get; set; }
     }
 }
