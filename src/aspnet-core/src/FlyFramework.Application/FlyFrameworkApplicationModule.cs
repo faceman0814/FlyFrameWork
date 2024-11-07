@@ -10,12 +10,17 @@ using FlyFramework.Attributes;
 using FlyFramework.Authorizations;
 using FlyFramework.FlyFrameworkModules;
 using FlyFramework.FlyFrameworkModules.Modules;
+using FlyFramework.LazyModule.LazyDefinition;
 using FlyFramework.OrgUnitModule.OrgUnitNodes.Mappers;
+using FlyFramework.PermissionModule;
+using FlyFramework.Repositories;
 using FlyFramework.Uow;
 using FlyFramework.UserModule.Mappers;
 using FlyFramework.UserSessions;
 
 using Microsoft.Extensions.DependencyInjection;
+
+using ServiceStack;
 
 using System.Linq;
 using System.Reflection;
@@ -35,11 +40,6 @@ namespace FlyFramework
             }, typeof(FlyFrameworkApplicationModule));
         }
 
-        public override void Initialize(ServiceConfigerContext context)
-        {
-
-        }
-
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<UserSession>()
@@ -54,10 +54,6 @@ namespace FlyFramework
                  .As<IMapper>()
                  .SingleInstance();
 
-            builder.RegisterType<LogInManager>()
-                 .As<ILogInManager>()
-                 .SingleInstance();
-
             builder.Register(c => new ConsoleLogger())
                 .As<ILogger>()
                 .InstancePerLifetimeScope();
@@ -68,9 +64,9 @@ namespace FlyFramework
                    //.EnableClassInterceptors() // 如果使用拦截器
                    .PropertiesAutowired(new IocSelectPropertySelector()); // 启用属性注入
         }
-
+        
     }
-
+   
     /// <summary>
     /// 属性注入选择器
     /// </summary>

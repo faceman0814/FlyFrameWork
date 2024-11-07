@@ -1,7 +1,9 @@
 using FlyFramework;
+using FlyFramework.Authorizations;
 using FlyFramework.Extentions;
 using FlyFramework.FlyFrameworkModules.Extensions;
 using FlyFramework.Localizations;
+using FlyFramework.PermissionModule;
 
 using Hangfire;
 
@@ -54,8 +56,6 @@ public static class AppConfig
         //// 添加应用程序模块
         services.AddApplication<FlyFrameworkWebHostModule>();
 
-        //动态注入仓储
-        //services.AddDynamicRepositories(configuration);
         // 添加Autofac依赖注入
         builder.Host.UseAutoFac();
 

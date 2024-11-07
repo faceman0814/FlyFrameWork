@@ -25,7 +25,7 @@ namespace FlyFramework.Seed.Host
             helper.SetContext(null, _context);
 
             //创建Host管理员角色
-            var roleId = helper.CreateRole("Admin", "系统管理员", false);
+            var roleId = helper.CreateRole("admin", "系统管理员", false);
             helper.CreateRolePermissions(roleId);
             helper.CreateUser(roleId, "admin");
         }

@@ -183,6 +183,32 @@ namespace FlyFramework.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Permission",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "varchar(32)", maxLength: 32, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Name = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DisplayName = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ParentId = table.Column<string>(type: "varchar(32)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ConcurrencyToken = table.Column<string>(type: "varchar(32)", maxLength: 32, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Permission", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Permission_Permission_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "Permission",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "UserRole",
                 columns: table => new
                 {
@@ -382,6 +408,11 @@ namespace FlyFramework.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Permission_ParentId",
+                table: "Permission",
+                column: "ParentId");
         }
 
         /// <inheritdoc />
@@ -407,6 +438,9 @@ namespace FlyFramework.Migrations
 
             migrationBuilder.DropTable(
                 name: "OrgUnitNodeGranted");
+
+            migrationBuilder.DropTable(
+                name: "Permission");
 
             migrationBuilder.DropTable(
                 name: "UserRole");

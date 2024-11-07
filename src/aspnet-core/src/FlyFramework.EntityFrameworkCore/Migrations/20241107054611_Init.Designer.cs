@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlyFramework.Migrations
 {
     [DbContext(typeof(FlyFrameworkDbContext))]
-    [Migration("20241105073802_Init")]
+    [Migration("20241107054611_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -125,6 +125,32 @@ namespace FlyFramework.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OrgUnitNodeGranted");
+                });
+
+            modelBuilder.Entity("FlyFramework.PermissionModule.Permission", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)");
+
+                    b.Property<string>("ConcurrencyToken")
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)");
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ParentId")
+                        .HasColumnType("varchar(32)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("Permission");
                 });
 
             modelBuilder.Entity("FlyFramework.UserModule.Role", b =>
@@ -465,6 +491,15 @@ namespace FlyFramework.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("FlyFramework.PermissionModule.Permission", b =>
+                {
+                    b.HasOne("FlyFramework.PermissionModule.Permission", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("FlyFramework.UserModule.Role", null)
@@ -514,6 +549,11 @@ namespace FlyFramework.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("FlyFramework.PermissionModule.Permission", b =>
+                {
+                    b.Navigation("Children");
                 });
 #pragma warning restore 612, 618
         }

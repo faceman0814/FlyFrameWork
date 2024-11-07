@@ -138,10 +138,18 @@ namespace FlyFramework.Controllers
                     Expires = DateTimeOffset.Now.Add(_tokenAuthConfiguration.AccessTokenExpiration)
                 }
                 );
+                return null;
             }
-            var userRole = await _userRoleRepository.FirstOrDefaultAsync(t => t.UserId == user.Id);
-            var roles = await _roleRepository.GetAll().Where(t => t.Id == userRole.RoleId).Select(t => t.Name.ToLower()).ToListAsync();
-            var permissions = await _permissionRepository.GetAll().Where(t => t.RoleId == userRole.RoleId).Select(t => t.Value).ToListAsync();
+            var roleIds = await _userRoleRepository.GetAll().Where(t => t.UserId == user.Id).Select(t => t.RoleId).ToListAsync();
+            var roles = await _roleRepository.GetAll()
+                .Where(t => roleIds.Contains(t.Id))
+                .Select(t => t.Name)
+                .ToListAsync();
+            var permissions = await _permissionRepository.GetAll()
+                //.Where(t => roleIds.Contains(t.Id) || t.CreatorUserId == user.Id)
+                .Select(t => t.Name)
+                .Distinct()
+                .ToListAsync();
             return new AuthenticateResultModel
             {
                 AccessToken = accessToken,
@@ -153,13 +161,8 @@ namespace FlyFramework.Controllers
                 NickName = user.FullName,
                 Roles = roles,
                 Permissions = permissions,
-                //new List<string>()
-                //     {
-                //         "*:*:*"
-                //     },
                 Avatar = "https://avatars.githubusercontent.com/u/44761321",
             };
-
         }
 
         [HttpPost]
@@ -179,6 +182,7 @@ namespace FlyFramework.Controllers
             }
             return null;
         }
+
         #region 创建Token
         /// <summary>
         /// 创建jwt token

@@ -42,7 +42,7 @@ namespace FlyFramework
         //
         // 摘要:
         //     Admin角色
-        public const string AdminRoleName = "Admin";
+        public const string AdminRoleName = "admin";
 
         public static string SuperAdmin = "SuperAdmin";
 
@@ -59,7 +59,7 @@ namespace FlyFramework
         //
         // 摘要:
         //     门户端的管理中心常量
-        public const string PortalAdminName = "Admin";
+        public const string PortalAdminName = "admin";
 
         //
         // 摘要:

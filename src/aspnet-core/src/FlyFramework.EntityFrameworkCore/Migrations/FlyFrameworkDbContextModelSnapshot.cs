@@ -134,52 +134,18 @@ namespace FlyFramework.Migrations
                         .HasMaxLength(32)
                         .HasColumnType("varchar(32)");
 
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime(6)");
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("longtext");
 
-                    b.Property<string>("CreatorUserId")
-                        .HasMaxLength(32)
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ParentId")
                         .HasColumnType("varchar(32)");
-
-                    b.Property<string>("CreatorUserName")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("DeleterUserId")
-                        .HasMaxLength(32)
-                        .HasColumnType("varchar(32)");
-
-                    b.Property<string>("DeleterUserName")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("LastModifierUserId")
-                        .HasMaxLength(32)
-                        .HasColumnType("varchar(32)");
-
-                    b.Property<string>("LastModifierUserName")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("TenantId")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
 
                     b.ToTable("Permission");
                 });
@@ -522,6 +488,15 @@ namespace FlyFramework.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("FlyFramework.PermissionModule.Permission", b =>
+                {
+                    b.HasOne("FlyFramework.PermissionModule.Permission", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("FlyFramework.UserModule.Role", null)
@@ -571,6 +546,11 @@ namespace FlyFramework.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("FlyFramework.PermissionModule.Permission", b =>
+                {
+                    b.Navigation("Children");
                 });
 #pragma warning restore 612, 618
         }

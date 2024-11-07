@@ -25,6 +25,10 @@ namespace FlyFramework
         {
         }
 
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    //optionsBuilder.UseLazyLoadingProxies();
+        //}
         /// <summary>
         /// 动态注册实体和筛选器
         /// </summary>

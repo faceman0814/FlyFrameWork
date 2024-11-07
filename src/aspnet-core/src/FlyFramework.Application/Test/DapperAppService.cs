@@ -23,7 +23,7 @@ namespace FlyFramework.Test
 
         public async Task ExecuteAsync(string Id)
         {
-            await _dapperManager.ExecuteAsync($"Update  [User] Set FullName='Admin' where Id='{Id}'");
+            await _dapperManager.ExecuteAsync($"Update  [User] Set FullName='admin' where Id='{Id}'");
         }
     }
 }

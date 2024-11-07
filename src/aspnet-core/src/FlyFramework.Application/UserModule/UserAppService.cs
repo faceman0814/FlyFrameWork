@@ -1,5 +1,7 @@
 ﻿using FlyFramework.ApplicationServices;
+using FlyFramework.Authorizations;
 using FlyFramework.LazyModule.LazyDefinition;
+using FlyFramework.UserModule.Authority;
 using FlyFramework.UserModule.DomainService;
 using FlyFramework.UserModule.Dtos;
 
@@ -22,11 +24,13 @@ namespace FlyFramework.UserModule
             _userManager = flyFrameworkLazy.LazyGetRequiredService<IUserManager>().Value;
         }
 
+        [FlyFrameworkAuthorization("test1")]
         public async Task CreateUser(UserDto input)
         {
             var user = ObjectMapper.Map<User>(input);
             await _userManager.CreateUserAsync(user);
         }
+        [FlyFrameworkAuthorization("test2")]
         public async Task UpdateUser(UserDto input)
         {
             var user = await _userManager.FindByNameAsync(input.UserName);

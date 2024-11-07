@@ -5,6 +5,7 @@ using FlyFramework.UserModule.Authority;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 
 using System;
@@ -68,18 +69,20 @@ namespace FlyFramework.Seed
         public void CreateRolePermissions(string roleId)
         {
             //todo 权限定义
-            var isExists = _context.Permission.Any(t => t.Value.Contains(UserAuthority.User_Node));
-            if (!isExists)
-            {
-                var perssions = new List<Permission>();
-                perssions.Add(new Permission(roleId, UserAuthority.User_Node));
-                perssions.Add(new Permission(roleId, UserAuthority.User_Create));
-                perssions.Add(new Permission(roleId, UserAuthority.User_Update));
-                perssions.Add(new Permission(roleId, UserAuthority.User_Delete));
-                _context.Permission.AddRange(perssions);
-            }
+            //var isExists = _context.Permission.Any(t => t.Name.Contains(UserAuthority.User_Node));
+            //if (!isExists)
+            //{
+            //    var perssions = new List<Permission>();
+            //    var node = new Permission(UserAuthority.User_Node, "用户结点")
+            //    {
+            //        Id = Guid.NewGuid().ToString("N")
+            //    };
+            //    node.CreateChildPermission(UserAuthority.User_Create, "创建用户");
+            //    node.CreateChildPermission(UserAuthority.User_Delete, "删除用户");
+            //    node.CreateChildPermission(UserAuthority.User_Update, "更新用户");
+            //    _context.Permission.AddRange(perssions);
+            //}
         }
-
 
         /// <summary>
         /// 创建用户
