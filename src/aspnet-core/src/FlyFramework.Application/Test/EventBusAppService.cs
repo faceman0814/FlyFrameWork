@@ -1,5 +1,7 @@
 ﻿using DotNetCore.CAP;
 
+using FaceMan.DynamicWebAPI;
+
 using FlyFramework.ApplicationServices;
 using FlyFramework.Dependencys;
 using FlyFramework.Utilities.EventBus;

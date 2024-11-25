@@ -1,3 +1,7 @@
+using FaceMan.DynamicWebAPI;
+using FaceMan.DynamicWebAPI.Config;
+using FaceMan.DynamicWebAPI.Extensions;
+
 using FlyFramework;
 using FlyFramework.Authorizations;
 using FlyFramework.Extentions;
@@ -17,6 +21,7 @@ using Microsoft.Extensions.Hosting;
 using Minio;
 
 using System;
+using System.Collections.Generic;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +50,23 @@ public static class AppConfig
                        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                        .Build();
 
+        var _configParam = new SwaggerConfigParam
+        {
+            Title = "FlyFrameWork API",
+            Version = "v1",
+            Description = "FlyFrameWork API",
+            ContactName = "FaceMan",
+            EnableXmlComments = true,
+            ApiDocsPath = "ApiDocs",
+            EnableLoginPage = true,
+            LoginPagePath = "pages/swagger.html",
+            EnableApiResultFilter = true,
+            ContactEmail = "face<EMAIL>",
+            ContactUrl = "https://www.face-man.com",
+            ApiRoutePrefix="api",
+            RoutePrefix="swagger",
+        };
+        services.AddDynamicApi(builder.Environment.WebRootPath, _configParam);
         //单独注册某个服务，特殊情况
         //_services.AddSingleton<Ixxx, xxx>();
         services.AddCors(configuration);
@@ -65,21 +87,15 @@ public static class AppConfig
             Log4Extention.InitLog4(loggingBuilder);
         });
 
-        services.AddJsonOptions();
-
         services.AddFilters();
 
         services.AddHangfire(configuration);
-
-        services.AddDynamicApi(builder);
-
-        services.AddSwagger(builder);
 
         services.AddRedis(configuration);
 
         services.AddMinio(configuration);
 
-        services.AddEventBus(configuration);
+        //services.AddEventBus(configuration);
 
         services.AddRabbitMq(configuration);
 
@@ -120,7 +136,7 @@ public static class AppConfig
         });
 
         app.UseRouting();
-        app.UseSwagger(builder);
+        app.UseDynamicSwagger();
         app.UseAuthentication(); //使用验证方式 将身份认证中间件添加到管道中，因此将在每次调用API时自动执行身份验证。
         app.UseIdentityServer();
         app.UseHttpsRedirection();

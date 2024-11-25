@@ -1,4 +1,6 @@
-﻿using FlyFramework.ApplicationServices;
+﻿using FaceMan.DynamicWebAPI;
+
+using FlyFramework.ApplicationServices;
 using FlyFramework.Authorizations;
 using FlyFramework.LazyModule.LazyDefinition;
 using FlyFramework.UserModule.Authority;
@@ -12,6 +14,8 @@ using System.Threading.Tasks;
 namespace FlyFramework.UserModule
 {
     [Authorize]
+    [DynamicWebApi]
+
     public class UserAppService : ApplicationService, IUserAppService
     {
         private readonly IUserManager _userManager;

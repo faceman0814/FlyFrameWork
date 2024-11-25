@@ -42,7 +42,7 @@ namespace FlyFramework
                         option.UseSqlite(connectionString);
                         break;
 
-                    case DatabaseType.Psotgre:
+                    case DatabaseType.Postgre:
                         option.UseNpgsql(connectionString);
                         break;
 

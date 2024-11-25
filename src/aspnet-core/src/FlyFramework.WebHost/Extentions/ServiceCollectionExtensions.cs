@@ -3,8 +3,6 @@ using Autofac.Extensions.DependencyInjection;
 
 using DotNetCore.CAP.Internal;
 
-using FlyFramework.Attributes;
-using FlyFramework.DynamicWebAPI;
 using FlyFramework.Extensions;
 using FlyFramework.Extentions;
 using FlyFramework.Extentions.JsonOptions;
@@ -32,7 +30,6 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 
 using Minio;
 
@@ -43,13 +40,9 @@ using RabbitMQ.Client;
 using ServiceStack;
 using ServiceStack.Redis;
 
-using Swashbuckle.AspNetCore.Filters;
-using Swashbuckle.AspNetCore.SwaggerUI;
-
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
@@ -211,108 +204,6 @@ namespace FlyFramework.Extentions
         }
 
         /// <summary>
-        /// 配置动态API
-        /// </summary>
-        public static void AddDynamicApi(this IServiceCollection services, WebApplicationBuilder builder)
-        {
-            services.AddMvc(options => { })
-                    .AddRazorPagesOptions((options) => { })
-                    .AddRazorRuntimeCompilation()
-                    .AddDynamicWebApi(builder.Configuration);
-        }
-
-        /// <summary>
-        /// 配置Swagger
-        /// </summary>
-        public static void AddSwagger(this IServiceCollection services, WebApplicationBuilder builder)
-        {
-            services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen(options =>
-            {
-                //添加响应头信息。它可以帮助开发者查看 API 响应中包含的 HTTP 头信息，从而更好地理解 API 的行为。
-                options.OperationFilter<AddResponseHeadersFilter>();
-                //摘要中添加授权信息。它会在每个需要授权的操作旁边显示一个锁图标，提醒开发者该操作需要身份验证。
-                options.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
-                //加安全需求信息。它会根据 API 的安全配置（如 OAuth2、JWT 等）自动生成相应的安全需求描述，帮助开发者了解哪些操作需要特定的安全配置。
-                options.OperationFilter<SecurityRequirementsOperationFilter>();
-                options.DocumentFilter<RemoveAppFilter>();
-                //使Post请求的Body参数在Swagger UI中以Json格式显示。
-                options.OperationFilter<JsonBodyOperationFilter>();
-                options.OperationFilter<WrapResponseOperationFilter>(); // 添加自定义Swagger操作过滤器
-                //添加自定义文档信息
-                options.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "FlyFrameWork API",
-                    Version = "v1",
-                    Description = "FlyFrameWork API 接口文档",
-                    Contact = new OpenApiContact()
-                    {
-                        Name = "FaceMan",
-                        Email = "1002784867@qq.com",
-                        Url = new Uri("https://github.com/faceman0814")
-                    }
-                });
-
-                //遍历所有xml并加载
-                var binXmlFiles =
-                    new DirectoryInfo(Path.Join(builder.Environment.WebRootPath, "ApiDocs"))
-                        .GetFiles("*.xml", SearchOption.TopDirectoryOnly);
-                foreach (var filePath in binXmlFiles.Select(item => item.FullName))
-                {
-                    options.IncludeXmlComments(filePath, true);
-                }
-
-                //开启Authorize权限按钮——方式一
-                //options.AddSecurityDefinition("JWTBearer", new OpenApiSecurityScheme()
-                //{
-                //    Description = "这是方式一(直接在输入框中输入认证信息，不需要在开头添加Bearer) ",
-                //    Name = "Authorization",        //jwt默认的参数名称
-                //    In = ParameterLocation.Header,  //jwt默认存放Authorization信息的位置(请求头中)
-                //    Type = SecuritySchemeType.Http,
-                //    Scheme = "Bearer"
-                //});
-                //var scheme = new OpenApiSecurityScheme
-                //{
-                //    Reference = new OpenApiReference()
-                //    {
-                //        Id = "JWTBearer",
-                //        Type = ReferenceType.SecurityScheme
-                //    }
-                //};
-                ////开启Authorize权限按钮——方式二
-
-                //options.AddSecurityDefinition("JwtBearer", new OpenApiSecurityScheme()
-                //{
-                //    Description = "这是方式二(JWT授权(数据将在请求头中进行传输) 直接在下框中输入Bearer {token}（注意两者之间是一个空格）)",
-                //    Name = "Authorization",//jwt默认的参数名称
-                //    In = ParameterLocation.Header,//jwt默认存放Authorization信息的位置(请求头中)
-                //    Type = SecuritySchemeType.ApiKey
-                //});
-
-                ////开启Authorize权限按钮——默认
-                //options.AddSecurityRequirement(new OpenApiSecurityRequirement()
-                //{
-                //    {
-                //        new OpenApiSecurityScheme
-                //        {
-                //            Reference = new OpenApiReference
-                //            {
-                //                Type = ReferenceType.SecurityScheme,
-                //                Id = "Bearer"
-                //            },Scheme = "oauth2",Name = "Bearer",In=ParameterLocation.Header,
-                //        },new List<string>()
-                //    }
-                //});
-
-                //声明一个Scheme，注意下面的Id要和上面AddSecurityDefinition中的参数name一致
-                //options.AddSecurityRequirement(new OpenApiSecurityRequirement
-                //    {
-                //        { scheme, Array.Empty<string>() }
-                //    });
-            });
-        }
-
-        /// <summary>
         /// 配置格式化响应
         /// </summary>
         public static void AddJsonOptions(this IServiceCollection services)
@@ -337,14 +228,8 @@ namespace FlyFramework.Extentions
         {
             services.AddControllersWithViews(x =>
             {
-                //全局返回，异常处理，统一返回格式。
-                x.Filters.Add<ApiResultFilterAttribute>();
                 //全局事务
                 x.Filters.Add<UnitOfWorkFilter>();
-                //配置请求类型
-                //x.Filters.Add<EnsureJsonFilterAttribute>();
-                //解析Post请求参数，将json反序列化赋值参数
-                x.Filters.Add(new AutoFromBodyActionFilter());
             });
         }
 
@@ -483,7 +368,7 @@ namespace FlyFramework.Extentions
                     }));
                     break;
 
-                case DatabaseType.Psotgre:
+                case DatabaseType.Postgre:
                     break;
 
                 case DatabaseType.Sqlite:
@@ -494,36 +379,5 @@ namespace FlyFramework.Extentions
             }
             return globalConfiguration;
         }
-
-        /// <summary>
-        /// 启用Swagger
-        /// </summary>
-        public static void UseSwagger(this WebApplication app, WebApplicationBuilder builder)
-        {
-            //开发环境或测试环境才开启文档。
-            if (app.Environment.IsDevelopment() || app.Environment.IsTesting())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI(options =>
-                {
-                    //配置Endpoint路径和文档标题
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1 Docs");
-                    //配置路由前缀，RoutePrefix是Swagger UI的根路径。
-                    //options.RoutePrefix = String.Empty;
-                    //设置默认模型展开深度。默认值为3，可以设置成-1以完全展开所有模型。
-                    //options.DefaultModelExpandDepth(-1);
-                    // 启用深链接功能后，用户可以直接通过URL访问特定的API操作或模型，而不需要手动导航到相应的位置。
-                    options.EnableDeepLinking();
-                    options.DocExpansion(DocExpansion.None); //swagger文档展开方式，none为折叠，list为列表
-                    options.IndexStream = () =>
-                    {
-                        var path = Path.Join(builder.Environment.WebRootPath, "pages", "swagger.html");
-                        return new FileInfo(path).OpenRead();
-                    };
-                });
-
-            }
-        }
     }
-
 }

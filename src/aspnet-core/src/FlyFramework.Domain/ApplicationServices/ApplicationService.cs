@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 namespace FlyFramework.ApplicationServices
 {
-    public abstract class ApplicationService : ApplicationServiceBase, IApplicationService, ITransientDependency
+    public abstract class ApplicationService : ApplicationServiceBase, ITransientDependency
     {
         /// <summary>
         /// API 通用后缀
