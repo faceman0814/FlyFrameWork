@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace FlyFramework.UserModule.Authority
 {
-    public static class UserAuthority
+    public  class UserAuthority
     {
-        private static string User = "User.";
-        public static string User_Node = User + "Node";
-        public static string User_Create = User_Node + ".Create";
-        public static string User_Update = User_Node + ".Update";
-        public static string User_Delete = User_Node + ".Delete";
+        private const string User = "User.";
+        public const string User_Node = User + "Node";
+        public const string User_Create = User_Node + ".Create";
+        public const string User_Update = User_Node + ".Update";
+        public const string User_Delete = User_Node + ".Delete";
     }
 }

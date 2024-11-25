@@ -5,7 +5,7 @@
     <FlyFrameworkCommonVersion>1.0.0</FlyFrameworkCommonVersion>
     <FlyFrameworkDomainVersion>1.0.0</FlyFrameworkDomainVersion>
     <FlyFrameworkRepositoriesVersion>1.0.0</FlyFrameworkRepositoriesVersion>
-    <DotNetVersion>net8.0</DotNetVersion>
+    <DotNetVersion>net9.0</DotNetVersion>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 

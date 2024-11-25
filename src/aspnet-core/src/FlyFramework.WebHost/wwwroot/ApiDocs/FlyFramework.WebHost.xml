@@ -46,16 +46,6 @@
             </summary>
             <param name="configuration"></param>
         </member>
-        <member name="M:FlyFramework.Extentions.ServiceCollectionExtensions.AddDynamicApi(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
-            <summary>
-            配置动态API
-            </summary>
-        </member>
-        <member name="M:FlyFramework.Extentions.ServiceCollectionExtensions.AddSwagger(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
-            <summary>
-            配置Swagger
-            </summary>
-        </member>
         <member name="M:FlyFramework.Extentions.ServiceCollectionExtensions.AddJsonOptions(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
             配置格式化响应
@@ -91,11 +81,6 @@
             </summary>
             <param name="configuration"></param>
             <returns></returns>
-        </member>
-        <member name="M:FlyFramework.Extentions.ServiceCollectionExtensions.UseSwagger(Microsoft.AspNetCore.Builder.WebApplication,Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
-            <summary>
-            启用Swagger
-            </summary>
         </member>
         <member name="F:FlyFramework.Filters.UnitOfWorkFilter.FilterOrder">
             <summary>

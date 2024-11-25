@@ -5,6 +5,7 @@ using FlyFramework.UserModule;
 using FlyFramework.UserSessions;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,10 @@ namespace FlyFramework
         {
         }
 
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    //optionsBuilder.UseLazyLoadingProxies();
+        //}
         /// <summary>
         /// 动态注册实体和筛选器
         /// </summary>
@@ -53,13 +58,28 @@ namespace FlyFramework
             {
                 // 注册实体
                 modelBuilder.Entity(entityType);
-
+                
                 //动态地为每个注册的实体类型调用 ConfigureFilters 方法
                 //configureFilters
                 //    .MakeGenericMethod(entityType)
                 //    .Invoke(this, new object[] { modelBuilder, entityType });
             }
 
+            //全局设定时间转换策略，特别是针对时间类型的转换（如将所有 DateTime 类型自动处理为 UTC
+            foreach (var item in modelBuilder.Model.GetEntityTypes())
+            {
+                // 遍历所有实体的所有属性
+                foreach (var property in item.GetProperties())
+                {
+                    if (property.ClrType == typeof(DateTime) || property.ClrType == typeof(DateTime?))
+                    {
+                        // 为 DateTime 类型设置 UTC 转换
+                        property.SetValueConverter(new ValueConverter<DateTime, DateTime>(
+                            v => v.ToUniversalTime(),  // 将本地时间转为 UTC 时间
+                            v => DateTime.SpecifyKind(v, DateTimeKind.Utc)));  // 读取时将时间指定为 UTC
+                    }
+                }
+            }
             //自定义实体规则
             //modelBuilder.Entity<User>()
             //   .HasIndex(u => u.UserId)

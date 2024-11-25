@@ -1,4 +1,6 @@
-﻿using FlyFramework.ApplicationServices;
+﻿using FaceMan.DynamicWebAPI;
+
+using FlyFramework.ApplicationServices;
 using FlyFramework.UserModule;
 using FlyFramework.Utilities.Dappers;
 
@@ -23,7 +25,7 @@ namespace FlyFramework.Test
 
         public async Task ExecuteAsync(string Id)
         {
-            await _dapperManager.ExecuteAsync($"Update  [User] Set FullName='Admin' where Id='{Id}'");
+            await _dapperManager.ExecuteAsync($"Update  [User] Set FullName='admin' where Id='{Id}'");
         }
     }
 }

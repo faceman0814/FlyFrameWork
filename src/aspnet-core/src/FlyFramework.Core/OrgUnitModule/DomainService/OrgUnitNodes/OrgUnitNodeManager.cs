@@ -14,7 +14,7 @@ namespace FlyFramework.OrgUnitModule.DomainService.OrgUnits
 {
     public class OrgUnitNodeManager : GuidDomainService<OrgUnitNode>, IOrgUnitNodeManager
     {
-        readonly IRepository<OrgUnitNodeGranted> _orgNodeGrantedRepo;
+        readonly IRepository<OrgUnitNodeGranted,string> _orgNodeGrantedRepo;
         readonly IOrgUnitNodeGrantedManager _orgNodeGrantedManager;
         public OrgUnitNodeManager(IServiceProvider serviceProvider) : base(serviceProvider)
         {

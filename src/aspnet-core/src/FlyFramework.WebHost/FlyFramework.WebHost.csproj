@@ -6,15 +6,6 @@
 		<RootNamespace>FlyFramework</RootNamespace>
 		<ApiDocDir>wwwroot\ApiDocs</ApiDocDir>
 	</PropertyGroup>
-	<ItemGroup>
-		<Content Remove="wwwroot\pages\swagger.html" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<EmbeddedResource Include="wwwroot\pages\swagger.html">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</EmbeddedResource>
-	</ItemGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DocumentationFile>bin\Debug\FlyFramework.WebHost.xml</DocumentationFile>
@@ -23,15 +14,10 @@
 	<ItemGroup>
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
 		<PackageReference Include="Gnarly" Version="1.0.7" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.8" />
-		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.8" />
-		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.5" />
-		<!--<PackageReference Include="ServiceStack.Redis" Version="8.4.0" />-->
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="9.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.0" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
 		<PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.1.2" />
-		<!--<PackageReference Include="Autofac" Version="8.1.0" />
-		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />-->
 	</ItemGroup>
 
 	<!--在构建项目后，复制所有以FlyFramework开头的XML文档文件到指定的API文档目录。这通常用于将生成的XML文档文件（例如API注释）整理到一个目录中，便于进一步的处理或发布。这种做法可以适合于生成API文档如Swagger时的使用场景。-->
@@ -55,6 +41,11 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\FlyFramework.WebCore\FlyFramework.WebCore.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Update="wwwroot\pages\swagger.html">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Content>
 	</ItemGroup>
 
 </Project>

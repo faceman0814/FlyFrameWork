@@ -49,12 +49,51 @@ namespace FlyFramework.Uow
             }
         }
 
+        public void Begin()
+        {
+            _transaction = _context.Database.BeginTransaction();
+        }
+        public void SaveChanges()
+        {
+            try
+            {
+                _context.SaveChanges();
+                if (_transaction != null)
+                {
+                    _transaction.Commit();
+                }
+            }
+            catch (Exception ex)
+            {
+                Rollback();
+                throw new UserFriendlyException(ex.InnerException?.Message ?? ex.Message);
+            }
+            finally
+            {
+                if (_transaction != null)
+                {
+                    _transaction.Dispose();
+                    _transaction = null;
+                }
+            }
+        }
+
         public async Task RollbackAsync(CancellationToken cancellationToken = default)
         {
             if (_transaction != null)
             {
                 await _transaction.RollbackAsync(cancellationToken);
                 await _transaction.DisposeAsync();
+                _transaction = null;
+            }
+        }
+
+        public void Rollback(CancellationToken cancellationToken = default)
+        {
+            if (_transaction != null)
+            {
+                _transaction.Rollback();
+                _transaction.Dispose();
                 _transaction = null;
             }
         }

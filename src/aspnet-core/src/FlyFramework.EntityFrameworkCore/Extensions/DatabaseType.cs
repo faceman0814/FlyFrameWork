@@ -8,8 +8,8 @@ namespace FlyFramework.Extensions
         SqlServer,
         [Description("MySql")]
         MySql,
-        [Description("Psotgre")]
-        Psotgre,
+        [Description("Postgre")]
+        Postgre,
         [Description("Oracle")]
         Oracle,
         [Description("SQLite")]

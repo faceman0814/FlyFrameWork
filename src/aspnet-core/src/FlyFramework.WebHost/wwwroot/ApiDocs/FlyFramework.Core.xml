@@ -4,20 +4,6 @@
         <name>FlyFramework.Core</name>
     </assembly>
     <members>
-        <member name="M:FlyFramework.Authorizations.ILogInManager.LoginAsync(FlyFramework.UserModule.User)">
-            <summary>
-            获取登录用户信息
-            </summary>
-            <param name="user"></param>
-            <returns></returns>
-        </member>
-        <member name="M:FlyFramework.Authorizations.ILogInManager.GetClaims(System.String)">
-            <summary>
-            获取用户信息
-            </summary>
-            <param name="token"></param>
-            <returns></returns>
-        </member>
         <member name="T:FlyFramework.FlyFrameworkConfigs.Database">
             <summary>
             EFCore配置
@@ -102,6 +88,26 @@
             <summary>
             节点关联的数据Id
             <see cref="!:OrgUnitNode.Id"/>
+            </summary>
+        </member>
+        <member name="P:FlyFramework.PermissionModule.Permission.Name">
+            <summary>
+            权限Key
+            </summary>
+        </member>
+        <member name="P:FlyFramework.PermissionModule.Permission.DisplayName">
+            <summary>
+            权限名称
+            </summary>
+        </member>
+        <member name="P:FlyFramework.PermissionModule.Permission.Parent">
+            <summary>
+            父权限
+            </summary>
+        </member>
+        <member name="P:FlyFramework.PermissionModule.Permission.Children">
+            <summary>
+            子权限
             </summary>
         </member>
         <member name="M:FlyFramework.UserModule.DomainService.IUserManager.FindByNameAsync(System.String)">
