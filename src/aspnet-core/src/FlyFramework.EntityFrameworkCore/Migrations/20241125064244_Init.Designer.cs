@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlyFramework.Migrations
 {
     [DbContext(typeof(FlyFrameworkDbContext))]
-    [Migration("20241105073802_Init")]
+    [Migration("20241125064244_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -125,6 +125,66 @@ namespace FlyFramework.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OrgUnitNodeGranted");
+                });
+
+            modelBuilder.Entity("FlyFramework.PermissionModule.Permission", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)");
+
+                    b.Property<string>("ConcurrencyToken")
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatorUserId")
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)");
+
+                    b.Property<string>("CreatorUserName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DeleterUserId")
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)");
+
+                    b.Property<string>("DeleterUserName")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("LastModifierUserId")
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)");
+
+                    b.Property<string>("LastModifierUserName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TenantId")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Permission");
                 });
 
             modelBuilder.Entity("FlyFramework.UserModule.Role", b =>
