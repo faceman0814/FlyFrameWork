@@ -3,12 +3,25 @@
 using System.Threading.Tasks;
 namespace FlyFramework.Test
 {
+    /// <summary>
+    /// SignalR 测试 Hub
+    /// </summary>
     public class SignalRTestHub : Hub
     {
+        /// <summary>
+        /// SignalR 测试工作方法
+        /// </summary>
+        /// <returns></returns>
         public async Task DoWork()
         {
             //供客户端调用
         }
+
+        /// <summary>
+        /// 发送消息到所有连接的客户端
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <returns></returns>
         public async Task SendMessage(string msg)
         {
             // 当前连接用户的标志,是一个GUID，如：362d3597-041e-4d65-8fdf-e77e98425d38
@@ -23,6 +36,11 @@ namespace FlyFramework.Test
             await Clients.Caller.SendAsync(msg);
         }
 
+        /// <summary>
+        /// 加入组
+        /// </summary>
+        /// <param name="connectionId"></param>
+        /// <returns></returns>
         public async Task WhoIam(string connectionId)
         {
             // 当前连接用户的标志,是一个GUID，如：362d3597-041e-4d65-8fdf-e77e98425d38

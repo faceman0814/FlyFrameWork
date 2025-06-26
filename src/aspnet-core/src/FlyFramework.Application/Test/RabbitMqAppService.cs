@@ -11,6 +11,9 @@ using System.Text;
 
 namespace FlyFramework.Test
 {
+    /// <summary>
+    /// RabbitMQ 应用服务
+    /// </summary>
     public class RabbitMqAppService : ApplicationService, IApplicationService
     {
         private readonly IRabbitMqManager _rabbitMqManager;
@@ -20,6 +23,9 @@ namespace FlyFramework.Test
             _rabbitMqManager = rabbitMqManager;
         }
 
+        /// <summary>
+        /// 发布消息到 RabbitMQ 队列
+        /// </summary>
         public void Publish()
         {
             //创建一个AMQP 0-9-1频道,该对象提供了大部分 的操作(方法)协议。
@@ -32,6 +38,9 @@ namespace FlyFramework.Test
             }
         }
 
+        /// <summary>
+        /// 订阅 RabbitMQ 队列消息
+        /// </summary>
         public void Subscribe()
         {
             using (var channel = _rabbitMqManager.GetChannel())

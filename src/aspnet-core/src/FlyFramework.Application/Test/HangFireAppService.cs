@@ -9,13 +9,18 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 namespace FlyFramework.Test
 {
+    /// <summary>
+    /// HangFire应用服务
+    /// </summary>
     public class HangFireAppService : ApplicationService, IApplicationService
     {
         public HangFireAppService(IServiceProvider serviceProvider)
         {
         }
 
-        [HttpPost]
+        /// <summary>
+        /// HangFire测试方法
+        /// </summary>
         public void HangFireTest()
         {
             #region Hangfire延时执行作业

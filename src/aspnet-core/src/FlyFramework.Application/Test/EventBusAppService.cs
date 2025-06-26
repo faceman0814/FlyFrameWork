@@ -18,6 +18,9 @@ using System.Threading;
 using System.Threading.Tasks;
 namespace FlyFramework.Test
 {
+    /// <summary>
+    /// EventBus应用服务
+    /// </summary>
     public class EventBusAppService : ApplicationService, IApplicationService
     {
         private readonly ILocalEventBus _localEventBus;
@@ -28,25 +31,37 @@ namespace FlyFramework.Test
             _localEventBus = localEventBus;
             _distributedEventBus = distributedEventBus;
         }
-        [HttpGet("Local")]
+
+        /// <summary>
+        /// 本地事件总线发布测试事件
+        /// </summary>
+        /// <returns></returns>
         public async Task LocalPublish()
         {
             await _localEventBus.PublishAsync(new TestEventData { TestStr = "LocalEventBus" + Guid.NewGuid().ToString() });
         }
 
-        [HttpGet("Distributed")]
+        /// <summary>
+        /// 分布式事件总线发布测试事件
+        /// </summary>
+        /// <returns></returns>
         public async Task Distributed()
         {
             await _distributedEventBus.PublishAsync(new TestEventData { TestStr = "DistributedEventBus" + Guid.NewGuid().ToString() });
         }
 
-        [HttpGet]
+        /// <summary>
+        /// 检查接收到的消息
+        /// </summary>
+        /// <param name="test"></param>
         [CapSubscribe("Test")]
         public void CheckReceivedMessage(TestEventData test)
         {
             Console.WriteLine("~~~~~~~~" + test.TestStr);
         }
     }
+
+
     [EventName("Test")]
     public class TestEventData : INotification
     {

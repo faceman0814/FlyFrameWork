@@ -85,7 +85,6 @@ namespace FlyFramework.OrgUnitModule.OrgUnitNodes
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [HttpPost]
         public async Task<List<OrgUnitNodeListDto>> GetTree(GetOrgUnitNodesInput input)
         {
             var result = new List<OrgUnitNodeListDto>();

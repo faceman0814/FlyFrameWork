@@ -11,6 +11,9 @@ using System;
 using System.Threading.Tasks;
 namespace FlyFramework.Test
 {
+    /// <summary>
+    /// Minio 应用服务
+    /// </summary>
     public class MinioAppService : ApplicationService, IApplicationService
     {
         private readonly IMinioManager _minioManager;
@@ -25,7 +28,6 @@ namespace FlyFramework.Test
         /// </summary>
         /// <param name="bucketName">bucket 名称</param>
         /// <returns></returns>
-        [HttpPost]
         public async Task IsBucketExit()
         {
             await _minioManager.IsExistStr();
@@ -36,7 +38,6 @@ namespace FlyFramework.Test
         /// </summary>
         /// <param name="bucketName">bucket 名称</param>
         /// <returns></returns>
-        [HttpPost]
         public async Task CreateBucket()
         {
             await _minioManager.CreateBucketAsync();
@@ -47,7 +48,6 @@ namespace FlyFramework.Test
         /// </summary>
         /// <param name="bucketName">bucket 名称</param>
         /// <returns></returns>
-        [HttpDelete]
         public async Task DeleteBucket()
         {
             await _minioManager.DeleteBucketAsync();
@@ -57,7 +57,6 @@ namespace FlyFramework.Test
         /// 4、获取bucket列表
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
         public async Task<ListAllMyBucketsResult> GetBucketList()
         {
             return await _minioManager.GetList();
@@ -71,7 +70,6 @@ namespace FlyFramework.Test
         /// </remarks>
         /// <param name="objectName">文件名</param>
         /// <param name="bucketName">桶名，默认flyframework</param>
-        [HttpPost]
         public async Task DownloadObject(string objectName)
         {
             await _minioManager.DownloadFile(objectName, "D:\\minio-download-files\\");
@@ -85,7 +83,6 @@ namespace FlyFramework.Test
         /// </remarks>
         /// <param name="fileFullPath">上传文件的完整绝对路径，例如：D:\test\test.txt</param>
         /// <param name="bucketName">桶名，默认flyframework</param>
-        [HttpPost]
         public async Task UploadObject(string fileFullPath)
         {
             await _minioManager.UploadFile(fileFullPath);
@@ -96,7 +93,6 @@ namespace FlyFramework.Test
         /// </summary>
         /// <param name="objectName">文件名</param>
         /// <param name="bucketName">桶名，默认flyframework</param>
-        [HttpDelete]
         public async Task DeleteObject(string objectName)
         {
             await _minioManager.DeleteFile(objectName);
@@ -111,7 +107,6 @@ namespace FlyFramework.Test
         /// <param name="objectName">文件名</param>
         /// <param name="bucketName">桶名，默认flyframework</param>
         /// <returns></returns>
-        [HttpPost]
         public async Task<string> GetObjectUrl(string objectName)
         {
             return await _minioManager.GetFileUrl(objectName);

@@ -65,12 +65,102 @@
             属性注入选择器
             </summary>
         </member>
+        <member name="T:FlyFramework.OrgUnitModule.OrgUnitNodes.IOrgUnitNodeAppService">
+            <summary>
+            组织机构节点服务接口
+            </summary>
+        </member>
+        <member name="M:FlyFramework.OrgUnitModule.OrgUnitNodes.IOrgUnitNodeAppService.GetTree(FlyFramework.OrgUnitModule.OrgUnitNodes.Dtos.GetOrgUnitNodesInput)">
+            <summary>
+            获取组织机构节点树形结构
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.OrgUnitModule.OrgUnitNodes.IOrgUnitNodeAppService.GetForEdit(FlyFramework.Dtos.EntityDto{System.String})">
+            <summary>
+            获取组织机构节点编辑信息
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.OrgUnitModule.OrgUnitNodes.IOrgUnitNodeAppService.CreateOrUpdate(FlyFramework.OrgUnitModule.OrgUnitNodes.Dtos.CreateOrUpdateOrgUnitNodeInput)">
+            <summary>
+            创建或更新组织机构节点信息
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.OrgUnitModule.OrgUnitNodes.IOrgUnitNodeAppService.Delete(FlyFramework.Dtos.EntityDto{System.String})">
+            <summary>
+            删除组织机构节点信息
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
         <member name="M:FlyFramework.OrgUnitModule.OrgUnitNodes.OrgUnitNodeAppService.GetTree(FlyFramework.OrgUnitModule.OrgUnitNodes.Dtos.GetOrgUnitNodesInput)">
             <summary>
             获取树数据
             </summary>
             <param name="input"></param>
             <returns></returns>
+        </member>
+        <member name="T:FlyFramework.Test.DapperAppService">
+            <summary>
+            Dapper 应用服务
+            </summary>
+        </member>
+        <member name="M:FlyFramework.Test.DapperAppService.GetAsync(System.String)">
+            <summary>
+            获取
+            </summary>
+            <param name="Id">主键</param>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.Test.DapperAppService.ExecuteAsync(System.String)">
+            <summary>
+            执行
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FlyFramework.Test.EventBusAppService">
+            <summary>
+            EventBus应用服务
+            </summary>
+        </member>
+        <member name="M:FlyFramework.Test.EventBusAppService.LocalPublish">
+            <summary>
+            本地事件总线发布测试事件
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.Test.EventBusAppService.Distributed">
+            <summary>
+            分布式事件总线发布测试事件
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.Test.EventBusAppService.CheckReceivedMessage(FlyFramework.Test.TestEventData)">
+            <summary>
+            检查接收到的消息
+            </summary>
+            <param name="test"></param>
+        </member>
+        <member name="T:FlyFramework.Test.HangFireAppService">
+            <summary>
+            HangFire应用服务
+            </summary>
+        </member>
+        <member name="M:FlyFramework.Test.HangFireAppService.HangFireTest">
+            <summary>
+            HangFire测试方法
+            </summary>
+        </member>
+        <member name="T:FlyFramework.Test.MinioAppService">
+            <summary>
+            Minio 应用服务
+            </summary>
         </member>
         <member name="M:FlyFramework.Test.MinioAppService.IsBucketExit">
             <summary>
@@ -137,6 +227,51 @@
             <param name="objectName">文件名</param>
             <param name="bucketName">桶名，默认flyframework</param>
             <returns></returns>
+        </member>
+        <member name="T:FlyFramework.Test.RabbitMqAppService">
+            <summary>
+            RabbitMQ 应用服务
+            </summary>
+        </member>
+        <member name="M:FlyFramework.Test.RabbitMqAppService.Publish">
+            <summary>
+            发布消息到 RabbitMQ 队列
+            </summary>
+        </member>
+        <member name="M:FlyFramework.Test.RabbitMqAppService.Subscribe">
+            <summary>
+            订阅 RabbitMQ 队列消息
+            </summary>
+        </member>
+        <member name="T:FlyFramework.Test.SignalRTestHub">
+            <summary>
+            SignalR 测试 Hub
+            </summary>
+        </member>
+        <member name="M:FlyFramework.Test.SignalRTestHub.DoWork">
+            <summary>
+            SignalR 测试工作方法
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.Test.SignalRTestHub.SendMessage(System.String)">
+            <summary>
+            发送消息到所有连接的客户端
+            </summary>
+            <param name="msg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.Test.SignalRTestHub.WhoIam(System.String)">
+            <summary>
+            加入组
+            </summary>
+            <param name="connectionId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FlyFramework.UserModule.IUserAppService">
+            <summary>
+            用户应用服务接口
+            </summary>
         </member>
     </members>
 </doc>
