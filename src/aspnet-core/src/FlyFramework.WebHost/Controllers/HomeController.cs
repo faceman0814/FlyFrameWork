@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FlyFramework.Controllers
 {
-    [SkipActionFilter]
-    [DisabledUnitOfWork(true)]
+    //[SkipActionFilter]
+    //[DisabledUnitOfWork(true)]
     public class HomeController : Controller
     {
         // GET: HomeController

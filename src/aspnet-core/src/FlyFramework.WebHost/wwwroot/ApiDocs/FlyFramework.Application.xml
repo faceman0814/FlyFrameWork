@@ -65,6 +65,16 @@
             属性注入选择器
             </summary>
         </member>
+        <member name="P:FlyFramework.OrgUnitModule.OrgUnitNodes.Dtos.OrgUnitNodeEditDto.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:FlyFramework.OrgUnitModule.OrgUnitNodes.Dtos.OrgUnitNodeEditDto.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
         <member name="T:FlyFramework.OrgUnitModule.OrgUnitNodes.IOrgUnitNodeAppService">
             <summary>
             组织机构节点服务接口

@@ -12,7 +12,7 @@
 		<DocumentationFile>bin\Debug\FlyFramework.Application.xml</DocumentationFile>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="FaceMan.DynamicAPI" Version="1.0.5" />
+		<!--<PackageReference Include="FaceMan.DynamicAPI" Version="1.0.5" />-->
 		<PackageReference Include="FluentMigrator.Abstractions" Version="6.2.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
 
@@ -23,6 +23,7 @@
 
 	</ItemGroup>
 	<ItemGroup>
+	  <ProjectReference Include="..\..\..\..\..\FaceMan.Common\src\FaceMan.DynamicAPI\FaceMan.DynamicAPI.csproj" />
 	  <ProjectReference Include="..\FlyFramework.Core\FlyFramework.Core.csproj" />
 	</ItemGroup>
 

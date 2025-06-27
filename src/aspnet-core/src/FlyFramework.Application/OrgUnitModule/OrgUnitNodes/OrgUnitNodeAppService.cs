@@ -31,6 +31,11 @@ namespace FlyFramework.OrgUnitModule.OrgUnitNodes
             _repository = repository;
         }
 
+        /// <summary>
+        /// 创建或更新组织机构节点信息
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public async Task CreateOrUpdate(CreateOrUpdateOrgUnitNodeInput input)
         {
             if (input.OrgUnitNode.Id.HasValue())
@@ -43,11 +48,21 @@ namespace FlyFramework.OrgUnitModule.OrgUnitNodes
             }
         }
 
+        /// <summary>
+        /// 删除组织机构节点信息
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public async Task Delete(EntityDto<string> input)
         {
             await _orgUnitNodeManager.Delete(input.Id);
         }
 
+        /// <summary>
+        /// 获取组织机构节点编辑信息
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public async Task<OrgUnitNodeForEditOutput> GetForEdit(EntityDto<string> input)
         {
             var output = new OrgUnitNodeForEditOutput();
