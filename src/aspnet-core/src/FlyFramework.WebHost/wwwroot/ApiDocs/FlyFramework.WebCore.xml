@@ -28,6 +28,21 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:FlyFramework.Controllers.AccountClientController.Login(FlyFramework.Models.AccountLoginDto)">
+            <summary>
+            登录
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+            <exception cref="T:FlyFramework.ErrorExceptions.UserFriendlyException"></exception>
+        </member>
+        <member name="M:FlyFramework.Controllers.AccountClientController.RefreshToken(System.String)">
+            <summary>
+            刷新token
+            </summary>
+            <param name="refreshToken"></param>
+            <returns></returns>
+        </member>
         <member name="M:FlyFramework.Controllers.AccountClientController.CreateAccessToken(System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},System.Nullable{System.TimeSpan})">
             <summary>
             创建jwt token

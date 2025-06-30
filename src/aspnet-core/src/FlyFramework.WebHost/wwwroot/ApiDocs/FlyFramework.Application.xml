@@ -108,6 +108,27 @@
             <param name="input"></param>
             <returns></returns>
         </member>
+        <member name="M:FlyFramework.OrgUnitModule.OrgUnitNodes.OrgUnitNodeAppService.CreateOrUpdate(FlyFramework.OrgUnitModule.OrgUnitNodes.Dtos.CreateOrUpdateOrgUnitNodeInput)">
+            <summary>
+            创建或更新组织机构节点信息
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.OrgUnitModule.OrgUnitNodes.OrgUnitNodeAppService.Delete(FlyFramework.Dtos.EntityDto{System.String})">
+            <summary>
+            删除组织机构节点信息
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.OrgUnitModule.OrgUnitNodes.OrgUnitNodeAppService.GetForEdit(FlyFramework.Dtos.EntityDto{System.String})">
+            <summary>
+            获取组织机构节点编辑信息
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
         <member name="M:FlyFramework.OrgUnitModule.OrgUnitNodes.OrgUnitNodeAppService.GetTree(FlyFramework.OrgUnitModule.OrgUnitNodes.Dtos.GetOrgUnitNodesInput)">
             <summary>
             获取树数据

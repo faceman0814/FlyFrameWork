@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 
 using DotNetCore.CAP.Internal;
 
+using FlyFramework.Attributes;
 using FlyFramework.Extensions;
 using FlyFramework.Extentions;
 using FlyFramework.Extentions.JsonOptions;
@@ -230,6 +231,8 @@ namespace FlyFramework.Extentions
             {
                 //全局事务
                 x.Filters.Add<UnitOfWorkFilter>();
+                //接口返回
+                //x.Filters.Add<ApiResultFilterAttribute>();
             });
         }
 

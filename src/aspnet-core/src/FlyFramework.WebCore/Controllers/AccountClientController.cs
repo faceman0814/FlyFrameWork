@@ -1,7 +1,5 @@
-﻿using FlyFramework.Authorizations;
-using FlyFramework.Authorizations.JwtBearer;
+﻿using FlyFramework.Authorizations.JwtBearer;
 using FlyFramework.ErrorExceptions;
-using FlyFramework.Extensions;
 using FlyFramework.LazyModule.LazyDefinition;
 using FlyFramework.Models;
 using FlyFramework.PermissionModule;
@@ -18,10 +16,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-using MongoDB.Driver.Core.Configuration;
-
-using Newtonsoft.Json.Linq;
-
 using ServiceStack;
 
 using System;
@@ -29,7 +23,6 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FlyFramework.Controllers
@@ -81,6 +74,13 @@ namespace FlyFramework.Controllers
             ClaimsPrincipal principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
             return principal.Claims;
         }
+
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        /// <exception cref="UserFriendlyException"></exception>
         [HttpPost]
         public async Task<AuthenticateResultModel> Login(AccountLoginDto input)
         {
@@ -165,6 +165,11 @@ namespace FlyFramework.Controllers
             };
         }
 
+        /// <summary>
+        /// 刷新token
+        /// </summary>
+        /// <param name="refreshToken"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<AuthenticateResultModel> RefreshToken(string refreshToken)
         {

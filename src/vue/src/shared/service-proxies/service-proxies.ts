@@ -26,6 +26,7 @@ export class AccountClientServiceProxy {
     }
 
     /**
+     * 登录
      * @param body (optional) 
      * @return Success
      */
@@ -82,6 +83,7 @@ export class AccountClientServiceProxy {
     }
 
     /**
+     * 刷新token
      * @param refreshToken (optional) 
      * @return Success
      */
@@ -135,302 +137,6 @@ export class AccountClientServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Promise.resolve<AuthenticateResultModelApiResponse>(null as any);
-    }
-}
-
-export class DapperServiceProxy {
-    protected instance: AxiosInstance;
-    protected baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(baseUrl?: string, instance?: AxiosInstance) {
-
-        this.instance = instance || axios.create();
-
-        this.baseUrl = baseUrl ?? "";
-
-    }
-
-    /**
-     * @param id (optional) 
-     * @return Success
-     */
-    get(id: string | undefined, cancelToken?: CancelToken): Promise<UserApiResponse> {
-        let url_ = this.baseUrl + "/api/Dapper/Get?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processGet(_response);
-        });
-    }
-
-    protected processGet(response: AxiosResponse): Promise<UserApiResponse> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = UserApiResponse.fromJS(resultData200);
-            return Promise.resolve<UserApiResponse>(result200);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<UserApiResponse>(null as any);
-    }
-
-    /**
-     * @param id (optional) 
-     * @return Success - No return data
-     */
-    execute(id: string | undefined, cancelToken?: CancelToken): Promise<void> {
-        let url_ = this.baseUrl + "/api/Dapper/Execute?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "POST",
-            url: url_,
-            headers: {
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processExecute(_response);
-        });
-    }
-
-    protected processExecute(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(null as any);
-    }
-}
-
-export class ServiceProxy {
-    protected instance: AxiosInstance;
-    protected baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(baseUrl?: string, instance?: AxiosInstance) {
-
-        this.instance = instance || axios.create();
-
-        this.baseUrl = baseUrl ?? "";
-
-    }
-
-    /**
-     * @return Success - No return data
-     */
-    local( cancelToken?: CancelToken): Promise<void> {
-        let url_ = this.baseUrl + "/Local";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processLocal(_response);
-        });
-    }
-
-    protected processLocal(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(null as any);
-    }
-
-    /**
-     * @return Success - No return data
-     */
-    distributed( cancelToken?: CancelToken): Promise<void> {
-        let url_ = this.baseUrl + "/Distributed";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processDistributed(_response);
-        });
-    }
-
-    protected processDistributed(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(null as any);
-    }
-}
-
-export class EventBusServiceProxy {
-    protected instance: AxiosInstance;
-    protected baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(baseUrl?: string, instance?: AxiosInstance) {
-
-        this.instance = instance || axios.create();
-
-        this.baseUrl = baseUrl ?? "";
-
-    }
-
-    /**
-     * @param testStr (optional) 
-     * @return No Content - Method does not return any data
-     */
-    checkReceivedMessage(testStr: string | undefined, cancelToken?: CancelToken): Promise<void> {
-        let url_ = this.baseUrl + "/api/EventBus/CheckReceivedMessage?";
-        if (testStr === null)
-            throw new Error("The parameter 'testStr' cannot be null.");
-        else if (testStr !== undefined)
-            url_ += "TestStr=" + encodeURIComponent("" + testStr) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processCheckReceivedMessage(_response);
-        });
-    }
-
-    protected processCheckReceivedMessage(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 204) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(null as any);
     }
 }
 
@@ -500,7 +206,7 @@ export class FileServiceProxy {
     }
 }
 
-export class HangFireServiceProxy {
+export class OrgUnitNodeServiceProxy {
     protected instance: AxiosInstance;
     protected baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -514,78 +220,22 @@ export class HangFireServiceProxy {
     }
 
     /**
-     * @return No Content - Method does not return any data
-     */
-    hangFireTest( cancelToken?: CancelToken): Promise<void> {
-        let url_ = this.baseUrl + "/api/HangFire/HangFireTest";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "POST",
-            url: url_,
-            headers: {
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processHangFireTest(_response);
-        });
-    }
-
-    protected processHangFireTest(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 204) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(null as any);
-    }
-}
-
-export class MinioServiceProxy {
-    protected instance: AxiosInstance;
-    protected baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(baseUrl?: string, instance?: AxiosInstance) {
-
-        this.instance = instance || axios.create();
-
-        this.baseUrl = baseUrl ?? "";
-
-    }
-
-    /**
-     * 1、判断指定bucket是否存在
+     * 创建或更新组织机构节点信息
+     * @param body (optional) 
      * @return Success - No return data
      */
-    isBucketExit( cancelToken?: CancelToken): Promise<void> {
-        let url_ = this.baseUrl + "/api/Minio/IsBucketExit";
+    createOrUpdate(body: CreateOrUpdateOrgUnitNodeInput | undefined, cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/api/OrgUnitNode/CreateOrUpdate";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_: AxiosRequestConfig = {
+            data: content_,
             method: "POST",
             url: url_,
             headers: {
+                "Content-Type": "application/json",
             },
             cancelToken
         };
@@ -597,11 +247,11 @@ export class MinioServiceProxy {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processIsBucketExit(_response);
+            return this.processCreateOrUpdate(_response);
         });
     }
 
-    protected processIsBucketExit(response: AxiosResponse): Promise<void> {
+    protected processCreateOrUpdate(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -623,65 +273,22 @@ export class MinioServiceProxy {
     }
 
     /**
-     * 2、 创建bucket
+     * 删除组织机构节点信息
+     * @param body (optional) 
      * @return Success - No return data
      */
-    createBucket( cancelToken?: CancelToken): Promise<void> {
-        let url_ = this.baseUrl + "/api/Minio/CreateBucket";
+    delete(body: EntityDto | undefined, cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/api/OrgUnitNode/Delete";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
-            method: "POST",
-            url: url_,
-            headers: {
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processCreateBucket(_response);
-        });
-    }
-
-    protected processCreateBucket(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(null as any);
-    }
-
-    /**
-     * 3、移除bucket
-     * @return Success - No return data
-     */
-    deleteBucket( cancelToken?: CancelToken): Promise<void> {
-        let url_ = this.baseUrl + "/api/Minio/DeleteBucket";
-        url_ = url_.replace(/[?&]$/, "");
+        const content_ = JSON.stringify(body);
 
         let options_: AxiosRequestConfig = {
+            data: content_,
             method: "DELETE",
             url: url_,
             headers: {
+                "Content-Type": "application/json",
             },
             cancelToken
         };
@@ -693,11 +300,11 @@ export class MinioServiceProxy {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processDeleteBucket(_response);
+            return this.processDelete(_response);
         });
     }
 
-    protected processDeleteBucket(response: AxiosResponse): Promise<void> {
+    protected processDelete(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -719,11 +326,16 @@ export class MinioServiceProxy {
     }
 
     /**
-     * 4、获取bucket列表
+     * 获取组织机构节点编辑信息
+     * @param id (optional) 
      * @return Success
      */
-    getBucketList( cancelToken?: CancelToken): Promise<ListAllMyBucketsResultApiResponse> {
-        let url_ = this.baseUrl + "/api/Minio/GetBucketList";
+    getForEdit(id: string | undefined, cancelToken?: CancelToken): Promise<OrgUnitNodeForEditOutputApiResponse> {
+        let url_ = this.baseUrl + "/api/OrgUnitNode/GetForEdit?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -742,11 +354,11 @@ export class MinioServiceProxy {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processGetBucketList(_response);
+            return this.processGetForEdit(_response);
         });
     }
 
-    protected processGetBucketList(response: AxiosResponse): Promise<ListAllMyBucketsResultApiResponse> {
+    protected processGetForEdit(response: AxiosResponse): Promise<OrgUnitNodeForEditOutputApiResponse> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -760,190 +372,56 @@ export class MinioServiceProxy {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = ListAllMyBucketsResultApiResponse.fromJS(resultData200);
-            return Promise.resolve<ListAllMyBucketsResultApiResponse>(result200);
+            result200 = OrgUnitNodeForEditOutputApiResponse.fromJS(resultData200);
+            return Promise.resolve<OrgUnitNodeForEditOutputApiResponse>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ListAllMyBucketsResultApiResponse>(null as any);
+        return Promise.resolve<OrgUnitNodeForEditOutputApiResponse>(null as any);
     }
 
     /**
-     * 1、下载 bucket中的文件
-     * @param objectName (optional) 文件名
-     * @return Success - No return data
-     */
-    downloadObject(objectName: string | undefined, cancelToken?: CancelToken): Promise<void> {
-        let url_ = this.baseUrl + "/api/Minio/DownloadObject?";
-        if (objectName === null)
-            throw new Error("The parameter 'objectName' cannot be null.");
-        else if (objectName !== undefined)
-            url_ += "objectName=" + encodeURIComponent("" + objectName) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "POST",
-            url: url_,
-            headers: {
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processDownloadObject(_response);
-        });
-    }
-
-    protected processDownloadObject(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(null as any);
-    }
-
-    /**
-     * 2、上传 本地指定文件
-     * @param fileFullPath (optional) 上传文件的完整绝对路径，例如：D:\test\test.txt
-     * @return Success - No return data
-     */
-    uploadObject(fileFullPath: string | undefined, cancelToken?: CancelToken): Promise<void> {
-        let url_ = this.baseUrl + "/api/Minio/UploadObject?";
-        if (fileFullPath === null)
-            throw new Error("The parameter 'fileFullPath' cannot be null.");
-        else if (fileFullPath !== undefined)
-            url_ += "fileFullPath=" + encodeURIComponent("" + fileFullPath) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "POST",
-            url: url_,
-            headers: {
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processUploadObject(_response);
-        });
-    }
-
-    protected processUploadObject(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(null as any);
-    }
-
-    /**
-     * 3、删除 指定桶中的指定文件
-     * @param objectName (optional) 文件名
-     * @return Success - No return data
-     */
-    deleteObject(objectName: string | undefined, cancelToken?: CancelToken): Promise<void> {
-        let url_ = this.baseUrl + "/api/Minio/DeleteObject?";
-        if (objectName === null)
-            throw new Error("The parameter 'objectName' cannot be null.");
-        else if (objectName !== undefined)
-            url_ += "objectName=" + encodeURIComponent("" + objectName) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "DELETE",
-            url: url_,
-            headers: {
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processDeleteObject(_response);
-        });
-    }
-
-    protected processDeleteObject(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(null as any);
-    }
-
-    /**
-     * 4、获取 指定文件的Url链接 （有效期 7天）
-     * @param objectName (optional) 文件名
+     * 获取树数据
+     * @param orgUnitNodeId (optional) 
+     * @param parentOrgUnitNodeId (optional) 
+     * @param filterText (optional) 
+     * @param sorting (optional) 
+     * @param maxResultCount (optional) 
+     * @param skipCount (optional) 
      * @return Success
      */
-    getObjectUrl(objectName: string | undefined, cancelToken?: CancelToken): Promise<StringApiResponse> {
-        let url_ = this.baseUrl + "/api/Minio/GetObjectUrl?";
-        if (objectName === null)
-            throw new Error("The parameter 'objectName' cannot be null.");
-        else if (objectName !== undefined)
-            url_ += "objectName=" + encodeURIComponent("" + objectName) + "&";
+    getTree(orgUnitNodeId: string | undefined, parentOrgUnitNodeId: string | undefined, filterText: string | undefined, sorting: string | undefined, maxResultCount: number | undefined, skipCount: number | undefined, cancelToken?: CancelToken): Promise<ListApiResponse> {
+        let url_ = this.baseUrl + "/api/OrgUnitNode/GetTree?";
+        if (orgUnitNodeId === null)
+            throw new Error("The parameter 'orgUnitNodeId' cannot be null.");
+        else if (orgUnitNodeId !== undefined)
+            url_ += "OrgUnitNodeId=" + encodeURIComponent("" + orgUnitNodeId) + "&";
+        if (parentOrgUnitNodeId === null)
+            throw new Error("The parameter 'parentOrgUnitNodeId' cannot be null.");
+        else if (parentOrgUnitNodeId !== undefined)
+            url_ += "ParentOrgUnitNodeId=" + encodeURIComponent("" + parentOrgUnitNodeId) + "&";
+        if (filterText === null)
+            throw new Error("The parameter 'filterText' cannot be null.");
+        else if (filterText !== undefined)
+            url_ += "FilterText=" + encodeURIComponent("" + filterText) + "&";
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
-            method: "POST",
+            method: "GET",
             url: url_,
             headers: {
                 "Accept": "application/json"
@@ -958,11 +436,11 @@ export class MinioServiceProxy {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processGetObjectUrl(_response);
+            return this.processGetTree(_response);
         });
     }
 
-    protected processGetObjectUrl(response: AxiosResponse): Promise<StringApiResponse> {
+    protected processGetTree(response: AxiosResponse): Promise<ListApiResponse> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -976,242 +454,14 @@ export class MinioServiceProxy {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = StringApiResponse.fromJS(resultData200);
-            return Promise.resolve<StringApiResponse>(result200);
+            result200 = ListApiResponse.fromJS(resultData200);
+            return Promise.resolve<ListApiResponse>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<StringApiResponse>(null as any);
-    }
-}
-
-export class RabbitMqServiceProxy {
-    protected instance: AxiosInstance;
-    protected baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(baseUrl?: string, instance?: AxiosInstance) {
-
-        this.instance = instance || axios.create();
-
-        this.baseUrl = baseUrl ?? "";
-
-    }
-
-    /**
-     * @return No Content - Method does not return any data
-     */
-    publish( cancelToken?: CancelToken): Promise<void> {
-        let url_ = this.baseUrl + "/api/RabbitMq/Publish";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "POST",
-            url: url_,
-            headers: {
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processPublish(_response);
-        });
-    }
-
-    protected processPublish(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 204) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(null as any);
-    }
-
-    /**
-     * @return No Content - Method does not return any data
-     */
-    subscribe( cancelToken?: CancelToken): Promise<void> {
-        let url_ = this.baseUrl + "/api/RabbitMq/Subscribe";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "POST",
-            url: url_,
-            headers: {
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processSubscribe(_response);
-        });
-    }
-
-    protected processSubscribe(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 204) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(null as any);
-    }
-}
-
-export class UserServiceProxy {
-    protected instance: AxiosInstance;
-    protected baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(baseUrl?: string, instance?: AxiosInstance) {
-
-        this.instance = instance || axios.create();
-
-        this.baseUrl = baseUrl ?? "";
-
-    }
-
-    /**
-     * (Auth)
-     * @param body (optional) 
-     * @return Success - No return data
-     */
-    createUser(body: UserDto | undefined, cancelToken?: CancelToken): Promise<void> {
-        let url_ = this.baseUrl + "/api/User/CreateUser";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_: AxiosRequestConfig = {
-            data: content_,
-            method: "POST",
-            url: url_,
-            headers: {
-                "Content-Type": "application/json",
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processCreateUser(_response);
-        });
-    }
-
-    protected processCreateUser(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(null as any);
-    }
-
-    /**
-     * (Auth)
-     * @param body (optional) 
-     * @return Success - No return data
-     */
-    updateUser(body: UserDto | undefined, cancelToken?: CancelToken): Promise<void> {
-        let url_ = this.baseUrl + "/api/User/UpdateUser";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_: AxiosRequestConfig = {
-            data: content_,
-            method: "PUT",
-            url: url_,
-            headers: {
-                "Content-Type": "application/json",
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processUpdateUser(_response);
-        });
-    }
-
-    protected processUpdateUser(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(null as any);
+        return Promise.resolve<ListApiResponse>(null as any);
     }
 }
 
@@ -1434,9 +684,10 @@ export interface IAuthenticateResultModel {
 }
 
 export class AuthenticateResultModelApiResponse implements IAuthenticateResultModelApiResponse {
+    data: AuthenticateResultModel | undefined;
+    code: number;
     success: boolean;
     message: string | undefined;
-    data: AuthenticateResultModel;
 
     constructor(data?: IAuthenticateResultModelApiResponse) {
         if (data) {
@@ -1449,9 +700,10 @@ export class AuthenticateResultModelApiResponse implements IAuthenticateResultMo
 
     init(_data?: any) {
         if (_data) {
+            this.data = _data["Data"] ? AuthenticateResultModel.fromJS(_data["Data"]) : <any>undefined;
+            this.code = _data["Code"];
             this.success = _data["Success"];
             this.message = _data["Message"];
-            this.data = _data["Data"] ? AuthenticateResultModel.fromJS(_data["Data"]) : <any>undefined;
         }
     }
 
@@ -1464,9 +716,10 @@ export class AuthenticateResultModelApiResponse implements IAuthenticateResultMo
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["Data"] = this.data ? this.data.toJSON() : <any>undefined;
+        data["Code"] = this.code;
         data["Success"] = this.success;
         data["Message"] = this.message;
-        data["Data"] = this.data ? this.data.toJSON() : <any>undefined;
         return data;
     }
 
@@ -1479,172 +732,17 @@ export class AuthenticateResultModelApiResponse implements IAuthenticateResultMo
 }
 
 export interface IAuthenticateResultModelApiResponse {
+    data: AuthenticateResultModel | undefined;
+    code: number;
     success: boolean;
     message: string | undefined;
-    data: AuthenticateResultModel;
-}
-
-export class Bucket implements IBucket {
-    name: string | undefined;
-    creationDate: string | undefined;
-    readonly creationDateDateTime: moment.Moment;
-
-    constructor(data?: IBucket) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.name = _data["Name"];
-            this.creationDate = _data["CreationDate"];
-            (<any>this).creationDateDateTime = _data["CreationDateDateTime"] ? moment(_data["CreationDateDateTime"].toString()) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): Bucket {
-        data = typeof data === 'object' ? data : {};
-        let result = new Bucket();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["Name"] = this.name;
-        data["CreationDate"] = this.creationDate;
-        data["CreationDateDateTime"] = this.creationDateDateTime ? this.creationDateDateTime.toISOString() : <any>undefined;
-        return data;
-    }
-
-    clone(): Bucket {
-        const json = this.toJSON();
-        let result = new Bucket();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IBucket {
-    name: string | undefined;
-    creationDate: string | undefined;
-    creationDateDateTime: moment.Moment;
-}
-
-export class ListAllMyBucketsResult implements IListAllMyBucketsResult {
-    owner: string | undefined;
-    buckets: Bucket[] | undefined;
-
-    constructor(data?: IListAllMyBucketsResult) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.owner = _data["Owner"];
-            if (Array.isArray(_data["Buckets"])) {
-                this.buckets = [] as any;
-                for (let item of _data["Buckets"])
-                    this.buckets.push(Bucket.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): ListAllMyBucketsResult {
-        data = typeof data === 'object' ? data : {};
-        let result = new ListAllMyBucketsResult();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["Owner"] = this.owner;
-        if (Array.isArray(this.buckets)) {
-            data["Buckets"] = [];
-            for (let item of this.buckets)
-                data["Buckets"].push(item.toJSON());
-        }
-        return data;
-    }
-
-    clone(): ListAllMyBucketsResult {
-        const json = this.toJSON();
-        let result = new ListAllMyBucketsResult();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IListAllMyBucketsResult {
-    owner: string | undefined;
-    buckets: Bucket[] | undefined;
-}
-
-export class ListAllMyBucketsResultApiResponse implements IListAllMyBucketsResultApiResponse {
-    success: boolean;
-    message: string | undefined;
-    data: ListAllMyBucketsResult;
-
-    constructor(data?: IListAllMyBucketsResultApiResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.success = _data["Success"];
-            this.message = _data["Message"];
-            this.data = _data["Data"] ? ListAllMyBucketsResult.fromJS(_data["Data"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): ListAllMyBucketsResultApiResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new ListAllMyBucketsResultApiResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["Success"] = this.success;
-        data["Message"] = this.message;
-        data["Data"] = this.data ? this.data.toJSON() : <any>undefined;
-        return data;
-    }
-
-    clone(): ListAllMyBucketsResultApiResponse {
-        const json = this.toJSON();
-        let result = new ListAllMyBucketsResultApiResponse();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IListAllMyBucketsResultApiResponse {
-    success: boolean;
-    message: string | undefined;
-    data: ListAllMyBucketsResult;
 }
 
 export class StringApiResponse implements IStringApiResponse {
+    data: string | undefined;
+    code: number;
     success: boolean;
     message: string | undefined;
-    data: string | undefined;
 
     constructor(data?: IStringApiResponse) {
         if (data) {
@@ -1657,9 +755,10 @@ export class StringApiResponse implements IStringApiResponse {
 
     init(_data?: any) {
         if (_data) {
+            this.data = _data["Data"];
+            this.code = _data["Code"];
             this.success = _data["Success"];
             this.message = _data["Message"];
-            this.data = _data["Data"];
         }
     }
 
@@ -1672,9 +771,10 @@ export class StringApiResponse implements IStringApiResponse {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["Data"] = this.data;
+        data["Code"] = this.code;
         data["Success"] = this.success;
         data["Message"] = this.message;
-        data["Data"] = this.data;
         return data;
     }
 
@@ -1687,232 +787,21 @@ export class StringApiResponse implements IStringApiResponse {
 }
 
 export interface IStringApiResponse {
-    success: boolean;
-    message: string | undefined;
     data: string | undefined;
-}
-
-export class User implements IUser {
-    id: string | undefined;
-    userName: string | undefined;
-    normalizedUserName: string | undefined;
-    email: string | undefined;
-    normalizedEmail: string | undefined;
-    emailConfirmed: boolean;
-    passwordHash: string | undefined;
-    securityStamp: string | undefined;
-    concurrencyStamp: string | undefined;
-    phoneNumber: string | undefined;
-    phoneNumberConfirmed: boolean;
-    twoFactorEnabled: boolean;
-    lockoutEnd: moment.Moment | undefined;
-    lockoutEnabled: boolean;
-    accessFailedCount: number;
-    fullName: string | undefined;
-    password: string | undefined;
-    isActive: boolean;
-    isDeleted: boolean;
-    deleterUserId: string | undefined;
-    deletionTime: moment.Moment | undefined;
-    deleterUserName: string | undefined;
-    lastModificationTime: moment.Moment | undefined;
-    lastModifierUserName: string | undefined;
-    lastModifierUserId: string | undefined;
-    concurrencyToken: string | undefined;
-    creationTime: moment.Moment;
-    creatorUserName: string | undefined;
-    creatorUserId: string | undefined;
-    tenantId: string | undefined;
-
-    constructor(data?: IUser) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["Id"];
-            this.userName = _data["UserName"];
-            this.normalizedUserName = _data["NormalizedUserName"];
-            this.email = _data["Email"];
-            this.normalizedEmail = _data["NormalizedEmail"];
-            this.emailConfirmed = _data["EmailConfirmed"];
-            this.passwordHash = _data["PasswordHash"];
-            this.securityStamp = _data["SecurityStamp"];
-            this.concurrencyStamp = _data["ConcurrencyStamp"];
-            this.phoneNumber = _data["PhoneNumber"];
-            this.phoneNumberConfirmed = _data["PhoneNumberConfirmed"];
-            this.twoFactorEnabled = _data["TwoFactorEnabled"];
-            this.lockoutEnd = _data["LockoutEnd"] ? moment(_data["LockoutEnd"].toString()) : <any>undefined;
-            this.lockoutEnabled = _data["LockoutEnabled"];
-            this.accessFailedCount = _data["AccessFailedCount"];
-            this.fullName = _data["FullName"];
-            this.password = _data["Password"];
-            this.isActive = _data["IsActive"];
-            this.isDeleted = _data["IsDeleted"];
-            this.deleterUserId = _data["DeleterUserId"];
-            this.deletionTime = _data["DeletionTime"] ? moment(_data["DeletionTime"].toString()) : <any>undefined;
-            this.deleterUserName = _data["DeleterUserName"];
-            this.lastModificationTime = _data["LastModificationTime"] ? moment(_data["LastModificationTime"].toString()) : <any>undefined;
-            this.lastModifierUserName = _data["LastModifierUserName"];
-            this.lastModifierUserId = _data["LastModifierUserId"];
-            this.concurrencyToken = _data["ConcurrencyToken"];
-            this.creationTime = _data["CreationTime"] ? moment(_data["CreationTime"].toString()) : <any>undefined;
-            this.creatorUserName = _data["CreatorUserName"];
-            this.creatorUserId = _data["CreatorUserId"];
-            this.tenantId = _data["TenantId"];
-        }
-    }
-
-    static fromJS(data: any): User {
-        data = typeof data === 'object' ? data : {};
-        let result = new User();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["Id"] = this.id;
-        data["UserName"] = this.userName;
-        data["NormalizedUserName"] = this.normalizedUserName;
-        data["Email"] = this.email;
-        data["NormalizedEmail"] = this.normalizedEmail;
-        data["EmailConfirmed"] = this.emailConfirmed;
-        data["PasswordHash"] = this.passwordHash;
-        data["SecurityStamp"] = this.securityStamp;
-        data["ConcurrencyStamp"] = this.concurrencyStamp;
-        data["PhoneNumber"] = this.phoneNumber;
-        data["PhoneNumberConfirmed"] = this.phoneNumberConfirmed;
-        data["TwoFactorEnabled"] = this.twoFactorEnabled;
-        data["LockoutEnd"] = this.lockoutEnd ? this.lockoutEnd.toISOString() : <any>undefined;
-        data["LockoutEnabled"] = this.lockoutEnabled;
-        data["AccessFailedCount"] = this.accessFailedCount;
-        data["FullName"] = this.fullName;
-        data["Password"] = this.password;
-        data["IsActive"] = this.isActive;
-        data["IsDeleted"] = this.isDeleted;
-        data["DeleterUserId"] = this.deleterUserId;
-        data["DeletionTime"] = this.deletionTime ? this.deletionTime.toISOString() : <any>undefined;
-        data["DeleterUserName"] = this.deleterUserName;
-        data["LastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toISOString() : <any>undefined;
-        data["LastModifierUserName"] = this.lastModifierUserName;
-        data["LastModifierUserId"] = this.lastModifierUserId;
-        data["ConcurrencyToken"] = this.concurrencyToken;
-        data["CreationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
-        data["CreatorUserName"] = this.creatorUserName;
-        data["CreatorUserId"] = this.creatorUserId;
-        data["TenantId"] = this.tenantId;
-        return data;
-    }
-
-    clone(): User {
-        const json = this.toJSON();
-        let result = new User();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IUser {
-    id: string | undefined;
-    userName: string | undefined;
-    normalizedUserName: string | undefined;
-    email: string | undefined;
-    normalizedEmail: string | undefined;
-    emailConfirmed: boolean;
-    passwordHash: string | undefined;
-    securityStamp: string | undefined;
-    concurrencyStamp: string | undefined;
-    phoneNumber: string | undefined;
-    phoneNumberConfirmed: boolean;
-    twoFactorEnabled: boolean;
-    lockoutEnd: moment.Moment | undefined;
-    lockoutEnabled: boolean;
-    accessFailedCount: number;
-    fullName: string | undefined;
-    password: string | undefined;
-    isActive: boolean;
-    isDeleted: boolean;
-    deleterUserId: string | undefined;
-    deletionTime: moment.Moment | undefined;
-    deleterUserName: string | undefined;
-    lastModificationTime: moment.Moment | undefined;
-    lastModifierUserName: string | undefined;
-    lastModifierUserId: string | undefined;
-    concurrencyToken: string | undefined;
-    creationTime: moment.Moment;
-    creatorUserName: string | undefined;
-    creatorUserId: string | undefined;
-    tenantId: string | undefined;
-}
-
-export class UserApiResponse implements IUserApiResponse {
+    code: number;
     success: boolean;
     message: string | undefined;
-    data: User;
-
-    constructor(data?: IUserApiResponse) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.success = _data["Success"];
-            this.message = _data["Message"];
-            this.data = _data["Data"] ? User.fromJS(_data["Data"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): UserApiResponse {
-        data = typeof data === 'object' ? data : {};
-        let result = new UserApiResponse();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["Success"] = this.success;
-        data["Message"] = this.message;
-        data["Data"] = this.data ? this.data.toJSON() : <any>undefined;
-        return data;
-    }
-
-    clone(): UserApiResponse {
-        const json = this.toJSON();
-        let result = new UserApiResponse();
-        result.init(json);
-        return result;
-    }
 }
 
-export interface IUserApiResponse {
-    success: boolean;
-    message: string | undefined;
-    data: User;
-}
-
-export class UserDto implements IUserDto {
+export class OrgUnitNodeEditDto implements IOrgUnitNodeEditDto {
+    /** id */
     id: string | undefined;
+    /** 名称 */
     name: string | undefined;
-    password: string | undefined;
-    email: string | undefined;
-    fullName: string | undefined;
-    userName: string | undefined;
-    phoneNumber: string | undefined;
-    isActive: boolean;
+    parentIdList: string | undefined;
+    parentId: string | undefined;
 
-    constructor(data?: IUserDto) {
+    constructor(data?: IOrgUnitNodeEditDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -1925,18 +814,14 @@ export class UserDto implements IUserDto {
         if (_data) {
             this.id = _data["Id"];
             this.name = _data["Name"];
-            this.password = _data["Password"];
-            this.email = _data["Email"];
-            this.fullName = _data["FullName"];
-            this.userName = _data["UserName"];
-            this.phoneNumber = _data["PhoneNumber"];
-            this.isActive = _data["IsActive"];
+            this.parentIdList = _data["ParentIdList"];
+            this.parentId = _data["ParentId"];
         }
     }
 
-    static fromJS(data: any): UserDto {
+    static fromJS(data: any): OrgUnitNodeEditDto {
         data = typeof data === 'object' ? data : {};
-        let result = new UserDto();
+        let result = new OrgUnitNodeEditDto();
         result.init(data);
         return result;
     }
@@ -1945,32 +830,326 @@ export class UserDto implements IUserDto {
         data = typeof data === 'object' ? data : {};
         data["Id"] = this.id;
         data["Name"] = this.name;
-        data["Password"] = this.password;
-        data["Email"] = this.email;
-        data["FullName"] = this.fullName;
-        data["UserName"] = this.userName;
-        data["PhoneNumber"] = this.phoneNumber;
-        data["IsActive"] = this.isActive;
+        data["ParentIdList"] = this.parentIdList;
+        data["ParentId"] = this.parentId;
         return data;
     }
 
-    clone(): UserDto {
+    clone(): OrgUnitNodeEditDto {
         const json = this.toJSON();
-        let result = new UserDto();
+        let result = new OrgUnitNodeEditDto();
         result.init(json);
         return result;
     }
 }
 
-export interface IUserDto {
+export interface IOrgUnitNodeEditDto {
+    /** id */
     id: string | undefined;
+    /** 名称 */
     name: string | undefined;
-    password: string | undefined;
-    email: string | undefined;
-    fullName: string | undefined;
-    userName: string | undefined;
-    phoneNumber: string | undefined;
-    isActive: boolean;
+    parentIdList: string | undefined;
+    parentId: string | undefined;
+}
+
+export class CreateOrUpdateOrgUnitNodeInput implements ICreateOrUpdateOrgUnitNodeInput {
+    orgUnitNode: OrgUnitNodeEditDto;
+
+    constructor(data?: ICreateOrUpdateOrgUnitNodeInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.orgUnitNode = new OrgUnitNodeEditDto();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.orgUnitNode = _data["OrgUnitNode"] ? OrgUnitNodeEditDto.fromJS(_data["OrgUnitNode"]) : new OrgUnitNodeEditDto();
+        }
+    }
+
+    static fromJS(data: any): CreateOrUpdateOrgUnitNodeInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrUpdateOrgUnitNodeInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["OrgUnitNode"] = this.orgUnitNode ? this.orgUnitNode.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): CreateOrUpdateOrgUnitNodeInput {
+        const json = this.toJSON();
+        let result = new CreateOrUpdateOrgUnitNodeInput();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateOrUpdateOrgUnitNodeInput {
+    orgUnitNode: OrgUnitNodeEditDto;
+}
+
+export class EntityDto implements IEntityDto {
+    id: string | undefined;
+
+    constructor(data?: IEntityDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["Id"];
+        }
+    }
+
+    static fromJS(data: any): EntityDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EntityDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["Id"] = this.id;
+        return data;
+    }
+
+    clone(): EntityDto {
+        const json = this.toJSON();
+        let result = new EntityDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IEntityDto {
+    id: string | undefined;
+}
+
+export class OrgUnitNodeForEditOutput implements IOrgUnitNodeForEditOutput {
+    orgUnitNode: OrgUnitNodeEditDto;
+
+    constructor(data?: IOrgUnitNodeForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.orgUnitNode = new OrgUnitNodeEditDto();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.orgUnitNode = _data["OrgUnitNode"] ? OrgUnitNodeEditDto.fromJS(_data["OrgUnitNode"]) : new OrgUnitNodeEditDto();
+        }
+    }
+
+    static fromJS(data: any): OrgUnitNodeForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new OrgUnitNodeForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["OrgUnitNode"] = this.orgUnitNode ? this.orgUnitNode.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): OrgUnitNodeForEditOutput {
+        const json = this.toJSON();
+        let result = new OrgUnitNodeForEditOutput();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IOrgUnitNodeForEditOutput {
+    orgUnitNode: OrgUnitNodeEditDto;
+}
+
+export class OrgUnitNodeForEditOutputApiResponse implements IOrgUnitNodeForEditOutputApiResponse {
+    data: OrgUnitNodeForEditOutput | undefined;
+    code: number;
+    success: boolean;
+    message: string | undefined;
+
+    constructor(data?: IOrgUnitNodeForEditOutputApiResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.data = _data["Data"] ? OrgUnitNodeForEditOutput.fromJS(_data["Data"]) : <any>undefined;
+            this.code = _data["Code"];
+            this.success = _data["Success"];
+            this.message = _data["Message"];
+        }
+    }
+
+    static fromJS(data: any): OrgUnitNodeForEditOutputApiResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new OrgUnitNodeForEditOutputApiResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["Data"] = this.data ? this.data.toJSON() : <any>undefined;
+        data["Code"] = this.code;
+        data["Success"] = this.success;
+        data["Message"] = this.message;
+        return data;
+    }
+
+    clone(): OrgUnitNodeForEditOutputApiResponse {
+        const json = this.toJSON();
+        let result = new OrgUnitNodeForEditOutputApiResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IOrgUnitNodeForEditOutputApiResponse {
+    data: OrgUnitNodeForEditOutput | undefined;
+    code: number;
+    success: boolean;
+    message: string | undefined;
+}
+
+export class OrgUnitNodeListDto implements IOrgUnitNodeListDto {
+    id: string | undefined;
+    totalChild: number;
+
+    constructor(data?: IOrgUnitNodeListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["Id"];
+            this.totalChild = _data["TotalChild"];
+        }
+    }
+
+    static fromJS(data: any): OrgUnitNodeListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OrgUnitNodeListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["Id"] = this.id;
+        data["TotalChild"] = this.totalChild;
+        return data;
+    }
+
+    clone(): OrgUnitNodeListDto {
+        const json = this.toJSON();
+        let result = new OrgUnitNodeListDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IOrgUnitNodeListDto {
+    id: string | undefined;
+    totalChild: number;
+}
+
+export class ListApiResponse implements IListApiResponse {
+    data: OrgUnitNodeListDto[] | undefined;
+    code: number;
+    success: boolean;
+    message: string | undefined;
+
+    constructor(data?: IListApiResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["Data"])) {
+                this.data = [] as any;
+                for (let item of _data["Data"])
+                    this.data.push(OrgUnitNodeListDto.fromJS(item));
+            }
+            this.code = _data["Code"];
+            this.success = _data["Success"];
+            this.message = _data["Message"];
+        }
+    }
+
+    static fromJS(data: any): ListApiResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListApiResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["Data"] = [];
+            for (let item of this.data)
+                data["Data"].push(item.toJSON());
+        }
+        data["Code"] = this.code;
+        data["Success"] = this.success;
+        data["Message"] = this.message;
+        return data;
+    }
+
+    clone(): ListApiResponse {
+        const json = this.toJSON();
+        let result = new ListApiResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IListApiResponse {
+    data: OrgUnitNodeListDto[] | undefined;
+    code: number;
+    success: boolean;
+    message: string | undefined;
 }
 
 export class SwaggerException extends Error {
