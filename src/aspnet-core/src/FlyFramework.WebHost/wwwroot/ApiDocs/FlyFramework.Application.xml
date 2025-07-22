@@ -304,5 +304,24 @@
             用户应用服务接口
             </summary>
         </member>
+        <member name="M:FlyFramework.UserModule.UserAppService.GetPaged(FlyFramework.UserModule.GetUsersInput)">
+            <summary>
+            获取用户列表分页数据
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.UserModule.UserAppService.GetColumnList``1">
+            <summary>
+            获取用户列表的列信息
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.UserModule.GetUsersInput.Normalize">
+            <summary>
+            正常化排序使用
+            </summary>
+        </member>
     </members>
 </doc>

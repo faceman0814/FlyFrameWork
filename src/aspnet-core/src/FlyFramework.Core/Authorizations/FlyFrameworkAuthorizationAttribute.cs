@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System;
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using FlyFramework.UserModule.Authority;
+
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 namespace FlyFramework.Authorizations
 {
     [AttributeUsage(AttributeTargets.Method, Inherited = true)]

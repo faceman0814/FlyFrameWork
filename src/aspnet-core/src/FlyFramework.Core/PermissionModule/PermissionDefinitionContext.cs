@@ -1,19 +1,12 @@
 ﻿using FlyFramework.ErrorExceptions;
 using FlyFramework.Extentions;
-using FlyFramework.LazyModule.LazyDefinition;
-using FlyFramework.PermissionModule.DomainService;
 using FlyFramework.Repositories;
-using FlyFramework.UserModule.DomainService;
 
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FlyFramework.PermissionModule
 {
@@ -28,16 +21,18 @@ namespace FlyFramework.PermissionModule
 
         public Permission CreatePermission(string name, string displayName = null, Dictionary<string, object> properties = null)
         {
-            Check.NotNull(name, nameof(name));
-            var permission = new Permission(name, displayName, properties);
-            _permissionManager.Insert(permission);
-            return permission;
+            //Check.NotNull(name, nameof(name));
+            //var permission = new Permission(name, displayName, properties);
+            //_permissionManager.Insert(permission);
+            //return permission;
+            return null;
         }
 
         public Permission GetPermissionOrNull(string name)
         {
-            Check.NotNull(name, nameof(name));
-            return _permissionManager.GetAll().FirstOrDefault(t => t.Name == name);
+            //Check.NotNull(name, nameof(name));
+            //return _permissionManager.GetAll().FirstOrDefault(t => t.Name == name);
+            return null;
         }
 
         public void RemovePermission(string name)

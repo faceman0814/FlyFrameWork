@@ -36,7 +36,7 @@ namespace FlyFramework.OrgUnitModule.DomainService.OrgUnitNodes
 
             // 当前用户拥有的节点
             nodeIdList = await _orgNodeGrantedManager.QueryAsNoTracking
-                .Where(o => o.UserId == userId)
+                //.Where(o => o.UserId == userId)
                 .Select(o => o.OrgUnitNodeId)
                 .AsNoTracking()
                 .ToListAsync();

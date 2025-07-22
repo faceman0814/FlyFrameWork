@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FlyFramework.Migrations
 {
     [DbContext(typeof(FlyFrameworkDbContext))]
-    [Migration("20241125060957_Init")]
-    partial class Init
+    [Migration("20250722095701_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,132 +25,227 @@ namespace FlyFramework.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("FlyFramework.OrganizationalUnitModule.OrgUnitNode", b =>
+            modelBuilder.Entity("FlyFramework.OrgUnitModule.OrgUnitNode", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(32)
-                        .HasColumnType("character varying(32)");
+                        .HasColumnType("character varying(32)")
+                        .HasComment("主键");
 
                     b.Property<string>("ConcurrencyToken")
                         .HasMaxLength(32)
-                        .HasColumnType("character varying(32)");
+                        .HasColumnType("character varying(32)")
+                        .HasComment("并发令牌");
 
                     b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasComment("创建时间");
 
                     b.Property<string>("CreatorUserId")
                         .HasMaxLength(32)
-                        .HasColumnType("character varying(32)");
+                        .HasColumnType("character varying(32)")
+                        .HasComment("创建人Id");
 
                     b.Property<string>("CreatorUserName")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("创建人名称");
 
                     b.Property<string>("DeleterUserId")
                         .HasMaxLength(32)
-                        .HasColumnType("character varying(32)");
+                        .HasColumnType("character varying(32)")
+                        .HasComment("删除人Id");
 
                     b.Property<string>("DeleterUserName")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("删除人名称");
 
                     b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasComment("删除时间");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasComment("是否已删除");
 
                     b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasComment("最后修改时间");
 
                     b.Property<string>("LastModifierUserId")
                         .HasMaxLength(32)
-                        .HasColumnType("character varying(32)");
+                        .HasColumnType("character varying(32)")
+                        .HasComment("最后修改人Id");
 
                     b.Property<string>("LastModifierUserName")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("最后修改人名称");
+
+                    b.Property<string>("LeaderId")
+                        .HasColumnType("text")
+                        .HasComment("部门负责人ID");
 
                     b.Property<string>("Name")
                         .HasColumnType("text")
-                        .HasComment("节点显示名称");
+                        .HasComment("组织机构名称");
 
                     b.Property<string>("ParentId")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasComment("节点关联数据的父级数据Id");
-
-                    b.Property<string>("ParentIdList")
                         .HasColumnType("text")
-                        .HasComment("父级数据id集合，aaa|bbb|ccc");
+                        .HasComment("父级Id");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasComment("状态");
 
                     b.Property<string>("TenantId")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("租户ID");
 
                     b.HasKey("Id");
 
                     b.ToTable("OrgUnitNode");
                 });
 
-            modelBuilder.Entity("FlyFramework.OrganizationalUnitModule.OrgUnitNodeGranted", b =>
+            modelBuilder.Entity("FlyFramework.OrgUnitModule.OrgUnitNodeRole", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(32)
-                        .HasColumnType("character varying(32)");
+                        .HasColumnType("character varying(32)")
+                        .HasComment("主键");
 
                     b.Property<string>("ConcurrencyToken")
                         .HasMaxLength(32)
-                        .HasColumnType("character varying(32)");
+                        .HasColumnType("character varying(32)")
+                        .HasComment("并发令牌");
 
                     b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasComment("创建时间");
 
                     b.Property<string>("CreatorUserId")
                         .HasMaxLength(32)
-                        .HasColumnType("character varying(32)");
+                        .HasColumnType("character varying(32)")
+                        .HasComment("创建人Id");
 
                     b.Property<string>("CreatorUserName")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("创建人名称");
 
-                    b.Property<string>("OrgNodeId")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
+                    b.Property<string>("OrgUnitNodeId")
+                        .HasColumnType("text")
                         .HasComment("节点关联的数据Id");
 
-                    b.Property<string>("TenantId")
-                        .HasColumnType("text");
+                    b.Property<string>("RoleId")
+                        .HasColumnType("text")
+                        .HasComment("角色Id");
 
-                    b.Property<string>("UserId")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasComment("系统用户Id");
+                    b.Property<string>("TenantId")
+                        .HasColumnType("text")
+                        .HasComment("租户Id");
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrgUnitNodeGranted");
+                    b.ToTable("OrgUnitNodeRole");
                 });
 
             modelBuilder.Entity("FlyFramework.PermissionModule.Permission", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(32)
-                        .HasColumnType("character varying(32)");
+                        .HasColumnType("character varying(32)")
+                        .HasComment("主键");
 
                     b.Property<string>("ConcurrencyToken")
                         .HasMaxLength(32)
-                        .HasColumnType("character varying(32)");
+                        .HasColumnType("character varying(32)")
+                        .HasComment("并发令牌");
 
                     b.Property<string>("DisplayName")
                         .HasColumnType("text");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Key")
                         .HasColumnType("text");
 
-                    b.Property<string>("ParentId")
-                        .HasColumnType("character varying(32)");
+                    b.Property<string>("Module")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentId");
+                    b.ToTable("permission");
+                });
 
-                    b.ToTable("Permission");
+            modelBuilder.Entity("FlyFramework.PermissionModule.RolePermission", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasComment("主键");
+
+                    b.Property<string>("ConcurrencyToken")
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasComment("并发令牌");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasComment("创建时间");
+
+                    b.Property<string>("CreatorUserId")
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasComment("创建人Id");
+
+                    b.Property<string>("CreatorUserName")
+                        .HasColumnType("text")
+                        .HasComment("创建人名称");
+
+                    b.Property<string>("DeleterUserId")
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasComment("删除人Id");
+
+                    b.Property<string>("DeleterUserName")
+                        .HasColumnType("text")
+                        .HasComment("删除人名称");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasComment("删除时间");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean")
+                        .HasComment("是否已删除");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasComment("最后修改时间");
+
+                    b.Property<string>("LastModifierUserId")
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasComment("最后修改人Id");
+
+                    b.Property<string>("LastModifierUserName")
+                        .HasColumnType("text")
+                        .HasComment("最后修改人名称");
+
+                    b.Property<string>("PermissionId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TenantId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RolePermission");
                 });
 
             modelBuilder.Entity("FlyFramework.UserModule.Role", b =>
@@ -163,46 +258,60 @@ namespace FlyFramework.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyToken")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("并发令牌");
 
                     b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasComment("创建时间");
 
                     b.Property<string>("CreatorUserId")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("创建人Id");
 
                     b.Property<string>("CreatorUserName")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("创建人名称");
 
                     b.Property<string>("DeleterUserId")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("删除人Id");
 
                     b.Property<string>("DeleterUserName")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("删除人名称");
 
                     b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasComment("删除时间");
 
                     b.Property<string>("DisplayName")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("显示名称");
 
                     b.Property<bool>("IsDefault")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasComment("是否默认角色");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasComment("是否已删除");
 
                     b.Property<bool>("IsStatic")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasComment("是否静态角色");
 
                     b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasComment("最后修改时间");
 
                     b.Property<string>("LastModifierUserId")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("最后修改人Id");
 
                     b.Property<string>("LastModifierUserName")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("最后修改人名称");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
@@ -213,7 +322,8 @@ namespace FlyFramework.Migrations
                         .HasColumnType("character varying(256)");
 
                     b.Property<string>("TenantId")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("租户Id");
 
                     b.HasKey("Id");
 
@@ -237,25 +347,32 @@ namespace FlyFramework.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyToken")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("并发令牌");
 
                     b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasComment("创建时间");
 
                     b.Property<string>("CreatorUserId")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("创建人Id");
 
                     b.Property<string>("CreatorUserName")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("创建人名称");
 
                     b.Property<string>("DeleterUserId")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("删除人Id");
 
                     b.Property<string>("DeleterUserName")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("删除人名称");
 
                     b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasComment("删除时间");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -265,22 +382,28 @@ namespace FlyFramework.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("FullName")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("用户名称");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasComment("是否启用");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasComment("是否已删除");
 
                     b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasComment("最后修改时间");
 
                     b.Property<string>("LastModifierUserId")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("最后修改人Id");
 
                     b.Property<string>("LastModifierUserName")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("最后修改人名称");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
@@ -289,7 +412,8 @@ namespace FlyFramework.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("NeedToChangeThePassword")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasComment("是否需要修改密码");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -298,6 +422,10 @@ namespace FlyFramework.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
+
+                    b.Property<string>("OrgUnitNodeId")
+                        .HasColumnType("text")
+                        .HasComment("组织单元Id");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
@@ -312,7 +440,8 @@ namespace FlyFramework.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("TenantId")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasComment("租户Id");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
@@ -331,58 +460,6 @@ namespace FlyFramework.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("FlyFramework.UserModule.UserRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ConcurrencyToken")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatorUserId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CreatorUserName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("DeleterUserId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("DeleterUserName")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifierUserId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LastModifierUserName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("TenantId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserRole");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -465,11 +542,20 @@ namespace FlyFramework.Migrations
                     b.Property<string>("RoleId")
                         .HasColumnType("text");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(34)
+                        .HasColumnType("character varying(34)");
+
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasDiscriminator().HasValue("IdentityUserRole<string>");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -491,13 +577,62 @@ namespace FlyFramework.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("FlyFramework.PermissionModule.Permission", b =>
+            modelBuilder.Entity("FlyFramework.UserModule.UserRole", b =>
                 {
-                    b.HasOne("FlyFramework.PermissionModule.Permission", "Parent")
-                        .WithMany("Children")
-                        .HasForeignKey("ParentId");
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserRole<string>");
 
-                    b.Navigation("Parent");
+                    b.Property<string>("ConcurrencyToken")
+                        .HasColumnType("text")
+                        .HasComment("并发令牌");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasComment("创建时间");
+
+                    b.Property<string>("CreatorUserId")
+                        .HasColumnType("text")
+                        .HasComment("创建人Id");
+
+                    b.Property<string>("CreatorUserName")
+                        .HasColumnType("text")
+                        .HasComment("创建人名称");
+
+                    b.Property<string>("DeleterUserId")
+                        .HasColumnType("text")
+                        .HasComment("删除人Id");
+
+                    b.Property<string>("DeleterUserName")
+                        .HasColumnType("text")
+                        .HasComment("删除人名称");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasComment("删除时间");
+
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean")
+                        .HasComment("是否已删除");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasComment("最后修改时间");
+
+                    b.Property<string>("LastModifierUserId")
+                        .HasColumnType("text")
+                        .HasComment("最后修改人Id");
+
+                    b.Property<string>("LastModifierUserName")
+                        .HasColumnType("text")
+                        .HasComment("最后修改人名称");
+
+                    b.Property<string>("TenantId")
+                        .HasColumnType("text")
+                        .HasComment("租户Id");
+
+                    b.HasDiscriminator().HasValue("UserRole");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -549,11 +684,6 @@ namespace FlyFramework.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("FlyFramework.PermissionModule.Permission", b =>
-                {
-                    b.Navigation("Children");
                 });
 #pragma warning restore 612, 618
         }

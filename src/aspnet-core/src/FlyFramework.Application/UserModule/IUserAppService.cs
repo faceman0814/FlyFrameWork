@@ -1,8 +1,10 @@
 ﻿
 using FaceMan.DynamicWebAPI;
 
+using FlyFramework.Dtos;
 using FlyFramework.UserModule.Dtos;
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FlyFramework.UserModule
@@ -16,6 +18,7 @@ namespace FlyFramework.UserModule
 
         Task UpdateUser(UserDto input);
 
-        Task GetUserList();
+        Task<PagedResultDto<UserListDto>> GetPaged(GetUsersInput input);
+        List<ColumnDto> GetUserColumnList();
     }
 }

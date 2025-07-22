@@ -147,7 +147,7 @@ namespace FlyFramework.Controllers
                 .ToListAsync();
             var permissions = await _permissionRepository.GetAll()
                 //.Where(t => roleIds.Contains(t.Id) || t.CreatorUserId == user.Id)
-                .Select(t => t.Name)
+                .Select(t => t.DisplayName)
                 .Distinct()
                 .ToListAsync();
             return new AuthenticateResultModel

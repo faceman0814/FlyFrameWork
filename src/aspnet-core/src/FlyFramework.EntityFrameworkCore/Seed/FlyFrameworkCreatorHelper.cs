@@ -1,18 +1,11 @@
 ﻿using FlyFramework.Extentions.Object;
-using FlyFramework.PermissionModule;
 using FlyFramework.UserModule;
-using FlyFramework.UserModule.Authority;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Extensions.Options;
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FlyFramework.Seed
 {

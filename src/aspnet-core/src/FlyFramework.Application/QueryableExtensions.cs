@@ -12,6 +12,7 @@ namespace FlyFramework.Extentions
 {
     public static class QueryableExtensions
     {
+
         public static IQueryable<T> PageBy<T>(this IQueryable<T> query, int skipCount, int maxResultCount)
         {
             if (query == null)

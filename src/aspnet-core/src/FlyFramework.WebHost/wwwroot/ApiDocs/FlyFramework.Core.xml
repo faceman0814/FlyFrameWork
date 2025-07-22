@@ -39,7 +39,7 @@
             RefreshToken过期时间 默认30h
             </summary>
         </member>
-        <member name="M:FlyFramework.OrgUnitModule.DomainService.OrgUnits.IOrgUnitNodeManager.GetGrantedNodes(System.String)">
+        <member name="M:FlyFramework.OrgUnitModule.DomainService.OrgUnitNodes.IOrgUnitNodeManager.GetGrantedNodes(System.String)">
             <summary>
             获取用户能访问的节点id列表
             </summary>
@@ -47,50 +47,81 @@
             <param name="nodeType">节点类型</param>
             <returns></returns>
         </member>
-        <member name="M:FlyFramework.OrgUnitModule.DomainService.OrgUnits.OrgUnitNodeManager.GetGrantedNodes(System.String)">
+        <member name="M:FlyFramework.OrgUnitModule.DomainService.OrgUnitNodes.OrgUnitNodeManager.GetGrantedNodes(System.String)">
             <summary>
             获取用户有权访问的节点
             </summary>
             <param name="userId"></param>
             <returns></returns>
         </member>
-        <member name="T:FlyFramework.OrganizationalUnitModule.OrgUnitNode">
+        <member name="T:FlyFramework.OrgUnitModule.OrgUnitNode">
             <summary>
             组织机构节点
             </summary>
         </member>
-        <member name="P:FlyFramework.OrganizationalUnitModule.OrgUnitNode.Name">
+        <member name="P:FlyFramework.OrgUnitModule.OrgUnitNode.Name">
             <summary>
             组织机构名称
             </summary>
         </member>
-        <member name="P:FlyFramework.OrganizationalUnitModule.OrgUnitNode.ParentIdList">
+        <member name="P:FlyFramework.OrgUnitModule.OrgUnitNode.LeaderId">
             <summary>
-            父级组织机构Id
+            部门负责人ID
             </summary>
         </member>
-        <member name="P:FlyFramework.OrganizationalUnitModule.OrgUnitNode.ParentId">
+        <member name="P:FlyFramework.OrgUnitModule.OrgUnitNode.ParentId">
             <summary>
-            节点关联数据的父级数据Id
+            父级Id
             </summary>
         </member>
-        <member name="T:FlyFramework.OrganizationalUnitModule.OrgUnitNodeGranted">
+        <member name="P:FlyFramework.OrgUnitModule.OrgUnitNode.TenantId">
             <summary>
-            组织节点授权
+            租户ID
             </summary>
         </member>
-        <member name="P:FlyFramework.OrganizationalUnitModule.OrgUnitNodeGranted.UserId">
+        <member name="P:FlyFramework.OrgUnitModule.OrgUnitNode.Status">
             <summary>
-            系统用户Id
+            状态
             </summary>
         </member>
-        <member name="P:FlyFramework.OrganizationalUnitModule.OrgUnitNodeGranted.OrgNodeId">
+        <member name="F:FlyFramework.OrgUnitModule.OrgUnitNodeStatus.Enabled">
+            <summary>
+            启用
+            </summary>
+        </member>
+        <member name="F:FlyFramework.OrgUnitModule.OrgUnitNodeStatus.Disabled">
+            <summary>
+            禁用
+            </summary>
+        </member>
+        <member name="T:FlyFramework.OrgUnitModule.OrgUnitNodeRole">
+            <summary>
+            部门角色关系
+            </summary>
+        </member>
+        <member name="P:FlyFramework.OrgUnitModule.OrgUnitNodeRole.OrgUnitNodeId">
             <summary>
             节点关联的数据Id
             <see cref="!:OrgUnitNode.Id"/>
             </summary>
         </member>
-        <member name="P:FlyFramework.PermissionModule.Permission.Name">
+        <member name="P:FlyFramework.OrgUnitModule.OrgUnitNodeRole.RoleId">
+            <summary>
+            节点关联的数据Id
+            <see cref="!:Role.Id"/>
+            </summary>
+        </member>
+        <member name="P:FlyFramework.OrgUnitModule.OrgUnitNodeRole.TenantId">
+            <summary>
+            租户ID
+            </summary>
+        </member>
+        <member name="T:FlyFramework.PermissionModule.Permission">
+            <summary>
+            权限表
+            </summary>
+        </member>
+        <member name="P:FlyFramework.PermissionModule.Permission.Key">
             <summary>
             权限Key
             </summary>
@@ -100,14 +131,39 @@
             权限名称
             </summary>
         </member>
-        <member name="P:FlyFramework.PermissionModule.Permission.Parent">
+        <member name="P:FlyFramework.PermissionModule.Permission.Module">
             <summary>
-            父权限
+            所属模块
             </summary>
         </member>
-        <member name="P:FlyFramework.PermissionModule.Permission.Children">
+        <member name="P:FlyFramework.PermissionModule.Permission.Type">
             <summary>
-            子权限
+            权限类型
+            </summary>
+        </member>
+        <member name="T:FlyFramework.PermissionModule.RolePermission">
+            <summary>
+            角色权限关联表
+            </summary>
+        </member>
+        <member name="P:FlyFramework.PermissionModule.RolePermission.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:FlyFramework.PermissionModule.RolePermission.RoleId">
+            <summary>
+            角色Id
+            </summary>
+        </member>
+        <member name="P:FlyFramework.PermissionModule.RolePermission.PermissionId">
+            <summary>
+            权限Id
+            </summary>
+        </member>
+        <member name="P:FlyFramework.PermissionModule.RolePermission.TenantId">
+            <summary>
+            租户Id
             </summary>
         </member>
         <member name="M:FlyFramework.UserModule.DomainService.IUserManager.FindByNameAsync(System.String)">
@@ -131,12 +187,212 @@
         </member>
         <member name="P:FlyFramework.UserModule.Role.IsStatic">
             <summary>
-            这是静态角色吗？静态角色无法删除，无法更改其名称。它们可以通过编程方式使用。
+            是否静态角色，静态角色无法删除，无法更改其名称。它们可以通过编程方式使用。
             </summary>
         </member>
         <member name="P:FlyFramework.UserModule.Role.IsDefault">
             <summary>
             该角色是否将被分配给新用户？
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.Role.IsDeleted">
+            <summary>
+            是否已删除
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.Role.DeleterUserId">
+            <summary>
+            删除人Id
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.Role.DeletionTime">
+            <summary>
+            删除时间
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.Role.DeleterUserName">
+            <summary>
+            删除人名称
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.Role.LastModificationTime">
+            <summary>
+            最后修改时间
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.Role.LastModifierUserName">
+            <summary>
+            最后修改人名称
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.Role.LastModifierUserId">
+            <summary>
+            最后修改人Id
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.Role.ConcurrencyToken">
+            <summary>
+            并发令牌
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.Role.CreationTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.Role.CreatorUserName">
+            <summary>
+            创建人名称
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.Role.CreatorUserId">
+            <summary>
+            创建人Id
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.Role.TenantId">
+            <summary>
+            租户Id
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.User.FullName">
+            <summary>
+            用户名称
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.User.OrgUnitNodeId">
+            <summary>
+            组织单元Id
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.User.IsActive">
+            <summary>
+            是否启用
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.User.NeedToChangeThePassword">
+            <summary>
+            是否需要修改密码
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.User.IsDeleted">
+            <summary>
+            是否已删除
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.User.DeleterUserId">
+            <summary>
+            删除人Id
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.User.DeletionTime">
+            <summary>
+            删除时间
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.User.DeleterUserName">
+            <summary>
+            删除人名称
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.User.LastModificationTime">
+            <summary>
+            最后修改时间
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.User.LastModifierUserName">
+            <summary>
+            最后修改人名称
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.User.LastModifierUserId">
+            <summary>
+            最后修改人Id
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.User.ConcurrencyToken">
+            <summary>
+            并发令牌
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.User.CreationTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.User.CreatorUserName">
+            <summary>
+            创建人名称
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.User.CreatorUserId">
+            <summary>
+            创建人Id
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.User.TenantId">
+            <summary>
+            租户Id
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.UserRole.IsDeleted">
+            <summary>
+            是否已删除
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.UserRole.DeleterUserId">
+            <summary>
+            删除人Id
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.UserRole.DeletionTime">
+            <summary>
+            删除时间
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.UserRole.DeleterUserName">
+            <summary>
+            删除人名称
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.UserRole.LastModificationTime">
+            <summary>
+            最后修改时间
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.UserRole.LastModifierUserName">
+            <summary>
+            最后修改人名称
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.UserRole.LastModifierUserId">
+            <summary>
+            最后修改人Id
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.UserRole.ConcurrencyToken">
+            <summary>
+            并发令牌
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.UserRole.CreationTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.UserRole.CreatorUserName">
+            <summary>
+            创建人名称
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.UserRole.CreatorUserId">
+            <summary>
+            创建人Id
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.UserRole.TenantId">
+            <summary>
+            租户Id
             </summary>
         </member>
     </members>
