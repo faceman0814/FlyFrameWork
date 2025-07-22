@@ -23,6 +23,14 @@ const permissionRouter = {
       }
     },
     {
+      path: "/user/index",
+      name: "UserPage",
+      meta: {
+        title: "用户列表",
+        roles: ["admin", "common"]
+      }
+    },
+    {
       path: "/permission/button",
       meta: {
         title: "按钮权限",

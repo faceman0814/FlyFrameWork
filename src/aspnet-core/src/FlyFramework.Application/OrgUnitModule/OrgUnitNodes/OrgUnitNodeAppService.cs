@@ -5,8 +5,7 @@ using FlyFramework.Dtos;
 using FlyFramework.Extentions;
 using FlyFramework.Extentions.Object;
 using FlyFramework.LazyModule.LazyDefinition;
-using FlyFramework.OrganizationalUnitModule;
-using FlyFramework.OrgUnitModule.DomainService.OrgUnits;
+using FlyFramework.OrgUnitModule.DomainService.OrgUnitNodes;
 using FlyFramework.OrgUnitModule.OrgUnitNodes.Dtos;
 using FlyFramework.Repositories;
 

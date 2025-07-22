@@ -39,7 +39,8 @@ namespace FlyFramework
                 entity.Name = this.entityTable.Rows[i].Cells[0].Value.ToString();
                 entity.Name = char.ToUpper(entity.Name[0]) + entity.Name.Substring(1);
                 entity.Type = this.entityTable.Rows[i].Cells[1].Value.ToString();
-                entity.Length = int.Parse(this.entityTable.Rows[i].Cells[2].Value.ToString());
+                int.TryParse(this.entityTable.Rows[i].Cells[2].Value?.ToString(), out var length);
+                entity.Length = length;
                 entity.Description = this.entityTable.Rows[i].Cells[3].Value.ToString();
                 entityList.Add(entity);
             }

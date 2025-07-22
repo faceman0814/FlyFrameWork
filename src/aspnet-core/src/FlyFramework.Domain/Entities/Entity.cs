@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,15 +14,20 @@ namespace FlyFramework.Entities
     [Serializable]
     public abstract class Entity<TPrimaryKey> : IEntity<TPrimaryKey>
     {
+        /// <summary>
+        /// 主键
+        /// </summary>
+        [Comment("主键")]
         [MaxLength(32)]
         public virtual TPrimaryKey Id { get; set; }
+
+        /// <summary>
+        /// 并发令牌
+        /// </summary>
+        [Comment("并发令牌")]
         [MaxLength(32)]
         public virtual string ConcurrencyToken { get; set; }
 
-        //
-        // 摘要:
-        //     用于检查实体是否是瞬态的（即没有主键或主键为默认值）。
-        //
         public virtual bool IsTransient()
         {
             if (EqualityComparer<TPrimaryKey>.Default.Equals(Id, default))

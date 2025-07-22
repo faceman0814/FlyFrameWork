@@ -7,6 +7,7 @@ using ServiceStack;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -14,65 +15,35 @@ using System.Threading.Tasks;
 
 namespace FlyFramework.PermissionModule
 {
+    /// <summary>
+    /// 权限表
+    /// </summary>
+    [Table("permission")]
     public class Permission : Entity<string>
     {
         /// <summary>
         /// 权限Key
         /// </summary>
-        public string Name { get; set; }
+        public string Key { get; set; }
         /// <summary>
         /// 权限名称
         /// </summary>
         public string DisplayName { get; set; }
-
         /// <summary>
-        /// 父权限
+        /// 所属模块
         /// </summary>
-        public Permission Parent { get; set; }
+        public string Module { get; set; }
         /// <summary>
-        /// 子权限
+        /// 权限类型
         /// </summary>
-        public IReadOnlyList<Permission> Children => _children.ToImmutableList();
-        private readonly List<Permission> _children;
+        public PermissionType Type { get; set; }
+    }
 
-        public Permission()
-        {
-
-        }
-        public Permission(
-           string name,
-           string displayName = null,
-           Dictionary<string, object> properties = null)
-        {
-            if (name == null)
-            {
-                throw new ArgumentNullException("name");
-            }
-            
-            Name = name;
-            DisplayName = displayName;
-
-            _children = new List<Permission>();
-        }
-
-        public Permission CreateChildPermission(
-           string name,
-           string displayName = null,
-           Dictionary<string, object> properties = null)
-        {
-            var permission = new Permission(name, displayName, properties) { Parent = this };
-            _children.Add(permission);
-            return permission;
-        }
-
-        public void RemoveChildPermission(string name)
-        {
-            _children.RemoveAll(p => p.Name == name);
-        }
-
-        public override string ToString()
-        {
-            return string.Format("[Permission: {0}]", Name);
-        }
+    public enum PermissionType
+    {
+        [Description("操作权限")]
+        Operation,
+        [Description("数据权限")]
+        Data
     }
 }

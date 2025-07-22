@@ -47,6 +47,7 @@ namespace FlyFramework
         /// {field.Description}
         /// </summary>
         {(field.Length != null ? $"[MaxLength({field.Length})]" : "")}
+        {($"[Comment(\"{field.Description})\"]")}
         public {field.Type} {field.Name} {{ get; set; }}
 ";
                 CodeSnippetTypeMember snippet = new CodeSnippetTypeMember(propertyCode);

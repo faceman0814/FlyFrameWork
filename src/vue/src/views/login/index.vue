@@ -37,7 +37,8 @@ const input = new AccountLoginDto({
   phoneNumber: undefined,
   clientType: "web",
   rememberMe: false,
-  isRefresh: false
+  isRefresh: false,
+  isApiLogin1: false
 });
 const ruleForm = reactive(input);
 

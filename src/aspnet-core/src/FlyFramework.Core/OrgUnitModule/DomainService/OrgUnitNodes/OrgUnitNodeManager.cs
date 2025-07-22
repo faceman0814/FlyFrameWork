@@ -1,6 +1,6 @@
 ﻿using FlyFramework.Domains;
 using FlyFramework.Extentions.Object;
-using FlyFramework.OrganizationalUnitModule;
+using FlyFramework.OrgUnitModule.DomainService.OrgUnitNodeRoles;
 using FlyFramework.Repositories;
 
 using Microsoft.EntityFrameworkCore;
@@ -10,15 +10,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FlyFramework.OrgUnitModule.DomainService.OrgUnits
+namespace FlyFramework.OrgUnitModule.DomainService.OrgUnitNodes
 {
     public class OrgUnitNodeManager : GuidDomainService<OrgUnitNode>, IOrgUnitNodeManager
     {
-        readonly IRepository<OrgUnitNodeGranted,string> _orgNodeGrantedRepo;
-        readonly IOrgUnitNodeGrantedManager _orgNodeGrantedManager;
+        readonly IRepository<OrgUnitNodeRole, string> _orgNodeGrantedRepo;
+        readonly IOrgUnitNodeRoleManager _orgNodeGrantedManager;
         public OrgUnitNodeManager(IServiceProvider serviceProvider) : base(serviceProvider)
         {
-            this._orgNodeGrantedManager = this.GetService<IOrgUnitNodeGrantedManager>();
+            _orgNodeGrantedManager = GetService<IOrgUnitNodeRoleManager>();
         }
 
         /// <summary>
@@ -37,37 +37,13 @@ namespace FlyFramework.OrgUnitModule.DomainService.OrgUnits
             // 当前用户拥有的节点
             nodeIdList = await _orgNodeGrantedManager.QueryAsNoTracking
                 .Where(o => o.UserId == userId)
-                .Select(o => o.OrgNodeId)
+                .Select(o => o.OrgUnitNodeId)
                 .AsNoTracking()
                 .ToListAsync();
 
             return nodeIdList;
         }
 
-        public async Task DeleteRelation(string nodeId)
-        {
-            // 要删除的节点
-            var node = await this.FindById(nodeId);
-            // 删除节点本身
-            await this.Delete(node);
-            // 删除关联的授权
-            await _orgNodeGrantedManager.Delete(node.Id);
-
-            // 查询子节点
-            var parentIdList = $"{node.ParentIdList}|{node.Id}";
-            var deleteNodes = await this.QueryAsNoTracking.Where(o => o.ParentIdList.StartsWith(parentIdList))
-                .ToListAsync();
-
-            // 遍历删除子节点
-            foreach (var item in deleteNodes)
-            {
-                // 删除子节点
-                await this.Delete(item);
-
-                // 删除关联的授权
-                await _orgNodeGrantedManager.Delete(item.Id);
-            }
-        }
 
         public Task<OrgUnitNode> FindByNameAsync(string name)
         {

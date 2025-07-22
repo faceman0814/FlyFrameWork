@@ -1,6 +1,10 @@
 ﻿
 using FaceMan.DynamicWebAPI;
 
+using FlyFramework.UserModule.Dtos;
+
+using System.Threading.Tasks;
+
 namespace FlyFramework.UserModule
 {
     /// <summary>
@@ -8,5 +12,10 @@ namespace FlyFramework.UserModule
     /// </summary>
     public interface IUserAppService : IApplicationService
     {
+        Task CreateUser(UserDto input);
+
+        Task UpdateUser(UserDto input);
+
+        Task GetUserList();
     }
 }

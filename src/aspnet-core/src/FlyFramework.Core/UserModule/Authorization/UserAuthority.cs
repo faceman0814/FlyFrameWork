@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlyFramework.UserModule.Authority
+namespace FlyFramework.UserModule.Authorization
 {
-    public  class UserAuthority
+    public class UserAuthority
     {
         private const string User = "User.";
         public const string User_Node = User + "Node";

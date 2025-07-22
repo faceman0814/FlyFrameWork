@@ -13,27 +13,24 @@ using System;
 using System.Threading.Tasks;
 namespace FlyFramework.UserModule
 {
-    [Authorize]
+    //[Authorize]
     [DynamicWebApi]
-
     public class UserAppService : ApplicationService, IUserAppService
     {
         private readonly IUserManager _userManager;
 
-        public UserAppService(IServiceProvider serviceProvider
-            , IFlyFrameworkLazy flyFrameworkLazy
-            , IUserManager userManager
-            )
+        public UserAppService(IServiceProvider serviceProvider, IFlyFrameworkLazy flyFrameworkLazy, IUserManager userManager)
         {
             _userManager = flyFrameworkLazy.LazyGetRequiredService<IUserManager>().Value;
         }
 
-        [FlyFrameworkAuthorization("test1")]
+        [FlyFrameworkAuthorization("test")]
         public async Task CreateUser(UserDto input)
         {
             var user = ObjectMapper.Map<User>(input);
             await _userManager.CreateUserAsync(user);
         }
+
         [FlyFrameworkAuthorization("test2")]
         public async Task UpdateUser(UserDto input)
         {
