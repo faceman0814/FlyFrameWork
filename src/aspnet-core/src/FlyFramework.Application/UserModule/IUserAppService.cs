@@ -18,7 +18,8 @@ namespace FlyFramework.UserModule
 
         Task UpdateUser(UserDto input);
 
-        Task<PagedResultDto<UserListDto>> GetPaged(GetUsersInput input);
+        //Task<PagedResultDto<UserListDto>> GetPaged(GetUsersInput input);
+        Task<GetPagedResult<UserListDto>> GetPaged(GetUsersInput input);
         List<ColumnDto> GetUserColumnList();
     }
 }

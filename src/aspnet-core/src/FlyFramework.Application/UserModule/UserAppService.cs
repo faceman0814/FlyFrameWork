@@ -1,4 +1,6 @@
-﻿using FaceMan.DynamicWebAPI;
+﻿using AngleSharp.Html.Dom.Events;
+
+using FaceMan.DynamicWebAPI;
 
 using FlyFramework.ApplicationServices;
 using FlyFramework.Authorizations;
@@ -11,11 +13,14 @@ using FlyFramework.UserModule.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+using ServiceStack;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Reflection;
 using System.Threading.Tasks;
 namespace FlyFramework.UserModule
 {
@@ -51,25 +56,21 @@ namespace FlyFramework.UserModule
         /// <param name="input"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<PagedResultDto<UserListDto>> GetPaged(GetUsersInput input)
+        public async Task<GetPagedResult<UserListDto>> GetPaged(GetUsersInput input)
         {
-            //var res = new GetUserResult()
-            //{
-            //    columns = GetColumnList<UserListDto>()
-            //};
+            var res = new GetPagedResult<UserListDto>()
+            {
+                columns = GetColumnList<UserListDto>()
+            };
 
-            var query = _userManager.QueryAsNoTracking
-                .Select(t => new UserListDto
-                {
-                    Id = t.Id,
-                    UserName ="test",
-                    Email ="1002784867@qq.com",
-                    CreationTime = t.CreationTime
-                });
+            var query = _userManager.QueryAsNoTracking;
 
             var datas = await query.PageBy(input).ToListAsync();
 
-            return new PagedResultDto<UserListDto>(await query.CountAsync(), datas);
+            var resDatas = ObjectMapper.Map<List<UserListDto>>(datas);
+
+            res.datas = new PagedResultDto<UserListDto>(await query.CountAsync(), resDatas);
+            return res;
         }
 
         public List<ColumnDto> GetUserColumnList()
@@ -84,24 +85,56 @@ namespace FlyFramework.UserModule
         /// <returns></returns>
         public List<ColumnDto> GetColumnList<T>() where T : class
         {
-            //使用反射获取标注了Column属性的字段列信息
-            var properties = typeof(T).GetProperties()
-                .Where(p => p.GetCustomAttributes(typeof(ColumnAttribute), false).Any())
-                .Select(p => new ColumnDto
+            // 使用缓存避免重复反射（如果方法会被频繁调用）
+            return typeof(T).GetProperties()
+                .Select(p => (Property: p, Attribute: p.GetCustomAttribute<ColumnAttribute>()))
+                .Where(x => x.Attribute != null)
+                .Select(x =>
                 {
-                    label = p.GetCustomAttributes(typeof(ColumnAttribute), false)
-                        .Cast<ColumnAttribute>().FirstOrDefault()?.Name ?? p.Name,
-                    prop = p.Name
-                }).ToList();
+                    var propName = ToCamelCase(x.Property.Name);
+                    return new ColumnDto
+                    {
+                        label = x.Attribute.Name ?? x.Property.Name,
+                        prop = propName,
+                        slot = propName  // 复用已转换的驼峰命名值
+                    };
+                })
+                .ToList();
+        }
 
-            return properties;
+        // 高效的首字母小写转换方法
+        private string ToCamelCase(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return input;
+
+            // 处理单个字符的情况
+            if (input.Length == 1)
+                return char.ToLowerInvariant(input[0]).ToString();
+
+            // 使用Span进行高效内存操作
+            return string.Create(input.Length, input, (chars, src) =>
+            {
+                chars[0] = char.ToLowerInvariant(src[0]);  // 首字母小写
+                src.AsSpan(1).CopyTo(chars[1..]);          // 复制剩余字符
+            });
         }
     }
 
     public class ColumnDto
     {
+        /// <summary>
+        /// 字段名称
+        /// </summary>
         public string label { get; set; }
+        /// <summary>
+        /// 字段key
+        /// </summary>
         public string prop { get; set; }
+        /// <summary>
+        /// 指定插槽
+        /// </summary>
+        public string slot { get; set; }
     }
 
     public class UserListDto : UserDto
@@ -123,4 +156,9 @@ namespace FlyFramework.UserModule
         }
     }
 
+    public class GetPagedResult<T> where T : class
+    {
+        public List<ColumnDto> columns { get; set; }
+        public PagedResultDto<T> datas { get; set; }
+    }
 }

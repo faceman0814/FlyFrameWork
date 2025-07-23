@@ -9,6 +9,7 @@ namespace FlyFramework.UserModule.Mappers
         public static void CreateMappings(IMapperConfigurationExpression configuration)
         {
             configuration.CreateMap<User, UserDto>().ReverseMap().IgnoreNullSourceProperties();
+            configuration.CreateMap<UserListDto, User>().ReverseMap();
         }
     }
 }

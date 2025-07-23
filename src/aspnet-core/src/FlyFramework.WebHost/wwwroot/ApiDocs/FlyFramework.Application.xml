@@ -318,6 +318,21 @@
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
+        <member name="P:FlyFramework.UserModule.ColumnDto.label">
+            <summary>
+            字段名称
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.ColumnDto.prop">
+            <summary>
+            字段key
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.ColumnDto.slot">
+            <summary>
+            指定插槽
+            </summary>
+        </member>
         <member name="M:FlyFramework.UserModule.GetUsersInput.Normalize">
             <summary>
             正常化排序使用
