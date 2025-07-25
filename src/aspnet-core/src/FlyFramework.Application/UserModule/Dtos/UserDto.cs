@@ -22,4 +22,13 @@ namespace FlyFramework.UserModule.Dtos
         [Column("创建时间")]
         public DateTime CreationTime { get; set; }
     }
+
+    public class CreateOrUpdateUserParam
+    {
+        public int? id { get; set; }
+        /// <summary>
+        /// 实体
+        /// </summary>
+        public UserDto Entity { get; set; }
+    }
 }

@@ -3,6 +3,7 @@
 using FaceMan.DynamicWebAPI;
 
 using FlyFramework.ApplicationServices;
+using FlyFramework.Attributes;
 using FlyFramework.Authorizations;
 using FlyFramework.Dtos;
 using FlyFramework.Extentions;
@@ -39,17 +40,17 @@ namespace FlyFramework.UserModule
         }
 
         [FlyFrameworkAuthorization("test")]
-        public async Task CreateUser(UserDto input)
+        public async Task CreateUser(CreateOrUpdateUserParam input)
         {
-            var user = ObjectMapper.Map<User>(input);
+            var user = ObjectMapper.Map<User>(input.Entity);
             await _userManager.CreateUserAsync(user);
         }
 
         [FlyFrameworkAuthorization("test2")]
-        public async Task UpdateUser(UserDto input)
+        public async Task UpdateUser(CreateOrUpdateUserParam input)
         {
-            var user = await _userManager.FindByNameAsync(input.UserName);
-            ObjectMapper.Map(input, user);
+            var user = await _userManager.FindByNameAsync(input.Entity.UserName);
+            ObjectMapper.Map(input.Entity, user);
             await _userManager.Update(user);
         }
 
@@ -88,31 +89,47 @@ namespace FlyFramework.UserModule
         /// <returns></returns>
         public async Task<List<ColumnDto>> GetColumnList<T>() where T : class
         {
-            // 可以根据类型T来缓存结果
             var findkey = $"GetColumnList_{typeof(T).FullName}";
             var res = await _cacheManager.GetCacheAsync<List<ColumnDto>>(findkey);
+
             if (res == null)
             {
-                res = typeof(T).GetProperties()
-               .Select(p => (Property: p, Attribute: p.GetCustomAttribute<ColumnAttribute>()))
-               .Where(x => x.Attribute != null)
-               .Select(x =>
-               {
-                   var propName = ToCamelCase(x.Property.Name);
-                   return new ColumnDto
-                   {
-                       label = x.Attribute.Name ?? x.Property.Name,
-                       prop = propName,
-                       slot = propName  // 复用已转换的驼峰命名值
-                   };
-               })
-               .ToList();
-                //设置缓存
+                var properties = typeof(T).GetProperties();
+                var indexedProperties = properties
+                    .Select((p, index) =>
+                    {
+                        var sort = p.GetCustomAttribute<SortAttribute>();
+                        return new
+                        {
+                            Property = p,
+                            ColumnAttribute = p.GetCustomAttribute<ColumnAttribute>(),
+                            Index = sort != null ? sort.Order : index // 记录原始顺序
+                        };
+                    })
+                    .Where(x => x.ColumnAttribute != null)
+                    .ToList();
+
+                // 排序逻辑：
+                // 1. 先按 SortAttribute.Order 升序排列
+                // 2. 如果未配置 SortAttribute，则按原始声明顺序排列
+                res = indexedProperties
+                    .OrderBy(x => x.Index) // 确保未标记 SortAttribute 的属性保持原始顺序
+                    .Select(x =>
+                    {
+                        var propName = ToCamelCase(x.Property.Name);
+                        return new ColumnDto
+                        {
+                            label = x.ColumnAttribute.Name ?? x.Property.Name,
+                            prop = propName,
+                            slot = propName
+                        };
+                    })
+                    .ToList();
+
                 await _cacheManager.SetCacheAsync(findkey, res);
             }
 
             return res;
-
         }
 
         // 高效的首字母小写转换方法
@@ -152,7 +169,12 @@ namespace FlyFramework.UserModule
 
     public class UserListDto : UserDto
     {
-
+        /// <summary>
+        /// 操作
+        /// </summary>
+        [Column("操作")]
+        [Sort(99)]
+        public String Opertion { get; set; }
     }
 
     public class GetUsersInput : PagedSortedAndFilteredInputDto, IShouldNormalize

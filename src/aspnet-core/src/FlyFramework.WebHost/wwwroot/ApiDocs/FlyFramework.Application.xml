@@ -299,6 +299,11 @@
             <param name="connectionId"></param>
             <returns></returns>
         </member>
+        <member name="P:FlyFramework.UserModule.Dtos.CreateOrUpdateUserParam.Entity">
+            <summary>
+            实体
+            </summary>
+        </member>
         <member name="T:FlyFramework.UserModule.IUserAppService">
             <summary>
             用户应用服务接口
@@ -331,6 +336,11 @@
         <member name="P:FlyFramework.UserModule.ColumnDto.slot">
             <summary>
             指定插槽
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.UserListDto.Opertion">
+            <summary>
+            操作
             </summary>
         </member>
         <member name="M:FlyFramework.UserModule.GetUsersInput.Normalize">
