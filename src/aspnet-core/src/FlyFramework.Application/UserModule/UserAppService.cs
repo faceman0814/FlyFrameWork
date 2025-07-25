@@ -9,6 +9,7 @@ using FlyFramework.Extentions;
 using FlyFramework.LazyModule.LazyDefinition;
 using FlyFramework.UserModule.DomainService;
 using FlyFramework.UserModule.Dtos;
+using FlyFramework.Utilities.Redis;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,10 +30,12 @@ namespace FlyFramework.UserModule
     public class UserAppService : ApplicationService, IUserAppService
     {
         private readonly IUserManager _userManager;
+        private readonly ICacheManager _cacheManager;
 
-        public UserAppService(IServiceProvider serviceProvider, IFlyFrameworkLazy flyFrameworkLazy, IUserManager userManager)
+        public UserAppService(IFlyFrameworkLazy flyFrameworkLazy)
         {
             _userManager = flyFrameworkLazy.LazyGetRequiredService<IUserManager>().Value;
+            _cacheManager = flyFrameworkLazy.LazyGetRequiredService<ICacheManager>().Value;
         }
 
         [FlyFrameworkAuthorization("test")]
@@ -60,7 +63,7 @@ namespace FlyFramework.UserModule
         {
             var res = new GetPagedResult<UserListDto>()
             {
-                columns = GetColumnList<UserListDto>()
+                columns = await GetColumnList<UserListDto>()
             };
 
             var query = _userManager.QueryAsNoTracking;
@@ -73,33 +76,43 @@ namespace FlyFramework.UserModule
             return res;
         }
 
-        public List<ColumnDto> GetUserColumnList()
+        public async Task<List<ColumnDto>> GetUserColumnList()
         {
             //获取用户列表的列信息
-            return GetColumnList<UserListDto>();
+            return await GetColumnList<UserListDto>();
         }
         /// <summary>
         /// 获取用户列表的列信息
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public List<ColumnDto> GetColumnList<T>() where T : class
+        public async Task<List<ColumnDto>> GetColumnList<T>() where T : class
         {
-            // 使用缓存避免重复反射（如果方法会被频繁调用）
-            return typeof(T).GetProperties()
-                .Select(p => (Property: p, Attribute: p.GetCustomAttribute<ColumnAttribute>()))
-                .Where(x => x.Attribute != null)
-                .Select(x =>
-                {
-                    var propName = ToCamelCase(x.Property.Name);
-                    return new ColumnDto
-                    {
-                        label = x.Attribute.Name ?? x.Property.Name,
-                        prop = propName,
-                        slot = propName  // 复用已转换的驼峰命名值
-                    };
-                })
-                .ToList();
+            // 可以根据类型T来缓存结果
+            var findkey = $"UserColumnList_{typeof(T).FullName}";
+            var res = await _cacheManager.GetCacheAsync<List<ColumnDto>>(findkey);
+            if (res == null)
+            {
+                res = typeof(T).GetProperties()
+               .Select(p => (Property: p, Attribute: p.GetCustomAttribute<ColumnAttribute>()))
+               .Where(x => x.Attribute != null)
+               .Select(x =>
+               {
+                   var propName = ToCamelCase(x.Property.Name);
+                   return new ColumnDto
+                   {
+                       label = x.Attribute.Name ?? x.Property.Name,
+                       prop = propName,
+                       slot = propName  // 复用已转换的驼峰命名值
+                   };
+               })
+               .ToList();
+                //设置缓存
+                await _cacheManager.SetCacheAsync(findkey, res);
+            }
+
+            return res;
+
         }
 
         // 高效的首字母小写转换方法
