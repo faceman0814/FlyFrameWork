@@ -89,7 +89,7 @@ namespace FlyFramework.UserModule
         public async Task<List<ColumnDto>> GetColumnList<T>() where T : class
         {
             // 可以根据类型T来缓存结果
-            var findkey = $"UserColumnList_{typeof(T).FullName}";
+            var findkey = $"GetColumnList_{typeof(T).FullName}";
             var res = await _cacheManager.GetCacheAsync<List<ColumnDto>>(findkey);
             if (res == null)
             {
