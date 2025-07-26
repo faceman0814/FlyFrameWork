@@ -15,7 +15,7 @@
             <param name="ignoreProperties">指定需要忽略的属性名称列表</param>
             <returns></returns>
         </member>
-        <member name="M:FlyFramework.Common.CommonService.GetColumnList``1">
+        <member name="M:FlyFramework.Common.CommonAppService.GetColumnList``1">
             <summary>
             获取用户列表的列信息
             </summary>
@@ -468,9 +468,9 @@
             实体
             </summary>
         </member>
-        <member name="P:FlyFramework.UserModule.Dtos.UserListDto.Opertion">
+        <member name="P:FlyFramework.UserModule.Dtos.UserListDto.Id">
             <summary>
-            操作
+            主键
             </summary>
         </member>
         <member name="M:FlyFramework.UserModule.Dtos.GetUsersInput.Normalize">
@@ -482,6 +482,13 @@
             <summary>
             用户应用服务接口
             </summary>
+        </member>
+        <member name="M:FlyFramework.UserModule.UserAppService.GetUserInfo(System.String)">
+            <summary>
+            获取用户信息
+            </summary>
+            <param name="id">主键</param>
+            <returns></returns>
         </member>
         <member name="M:FlyFramework.UserModule.UserAppService.GetPaged(FlyFramework.UserModule.Dtos.GetUsersInput)">
             <summary>

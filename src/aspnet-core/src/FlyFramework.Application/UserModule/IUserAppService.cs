@@ -14,10 +14,10 @@ namespace FlyFramework.UserModule
     /// </summary>
     public interface IUserAppService : IApplicationService
     {
-        Task CreateUser(CreateOrUpdateUserParam input);
-
-        Task UpdateUser(CreateOrUpdateUserParam input);
+        Task CreateOrUpdateUser(CreateOrUpdateUserParam input);
 
         Task<GetPagedResult<UserListDto>> GetPaged(GetUsersInput input);
+
+        Task<UserDto> GetUserInfo(string id);
     }
 }

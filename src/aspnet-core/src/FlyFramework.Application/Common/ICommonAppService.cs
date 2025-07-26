@@ -1,4 +1,6 @@
-﻿using FlyFramework.Dtos;
+﻿using FaceMan.DynamicWebAPI;
+
+using FlyFramework.Dtos;
 
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FlyFramework.Common
 {
-    public interface ICommonService
+    public interface ICommonAppService: IApplicationService
     {
         Task<List<ColumnDto>> GetColumnList<T>() where T : class;
 

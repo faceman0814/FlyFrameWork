@@ -1,4 +1,5 @@
-﻿using FlyFramework.Attributes;
+﻿using FlyFramework.ApplicationServices;
+using FlyFramework.Attributes;
 using FlyFramework.Dtos;
 using FlyFramework.UserModule.Dtos;
 using FlyFramework.Utilities.Redis;
@@ -13,10 +14,10 @@ using System.Threading.Tasks;
 
 namespace FlyFramework.Common
 {
-    public class CommonService: ICommonService
+    public class CommonAppService: ApplicationService,ICommonAppService
     {
         private readonly ICacheManager _cacheManager;
-        public CommonService(ICacheManager cacheManager)
+        public CommonAppService(ICacheManager cacheManager)
         {
             _cacheManager = cacheManager;
         }

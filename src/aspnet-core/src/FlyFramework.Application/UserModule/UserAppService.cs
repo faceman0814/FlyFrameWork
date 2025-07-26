@@ -32,29 +32,50 @@ namespace FlyFramework.UserModule
     public class UserAppService : ApplicationService, IUserAppService
     {
         private readonly IUserManager _userManager;
-        private readonly ICacheManager _cacheManager;
-        private readonly ICommonService _commonService;
+        private readonly ICommonAppService _commonService;
 
-        public UserAppService(IFlyFrameworkLazy flyFrameworkLazy)
+        public UserAppService(IFlyFrameworkLazy flyFrameworkLazy, ICommonAppService commonAppService)
         {
             _userManager = flyFrameworkLazy.LazyGetRequiredService<IUserManager>().Value;
-            _cacheManager = flyFrameworkLazy.LazyGetRequiredService<ICacheManager>().Value;
-            _commonService = flyFrameworkLazy.LazyGetRequiredService<ICommonService>().Value;
+            _commonService = commonAppService;
         }
 
         [FlyFrameworkAuthorization("test")]
-        public async Task CreateUser(CreateOrUpdateUserParam input)
+        public async Task CreateOrUpdateUser(CreateOrUpdateUserParam input)
+        {
+            if (!string.IsNullOrWhiteSpace(input.Entity.Id))
+            {
+                await UpdateUser(input);
+            }
+            else
+            {
+                await CreateUser(input);
+            }
+        }
+
+        private async Task CreateUser(CreateOrUpdateUserParam input)
         {
             var user = ObjectMapper.Map<User>(input.Entity);
             await _userManager.CreateUserAsync(user);
         }
 
-        [FlyFrameworkAuthorization("test2")]
-        public async Task UpdateUser(CreateOrUpdateUserParam input)
+        private async Task UpdateUser(CreateOrUpdateUserParam input)
         {
             var user = await _userManager.FindByNameAsync(input.Entity.UserName);
             ObjectMapper.Map(input.Entity, user);
             await _userManager.Update(user);
+        }
+
+        /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <param name="id">主键</param>
+        /// <returns></returns>
+        public async Task<UserDto> GetUserInfo(string id)
+        {
+            var entity = await _userManager.FindById(id);
+            var user = ObjectMapper.Map<UserDto>(entity);
+            return user;
         }
 
         /// <summary>
