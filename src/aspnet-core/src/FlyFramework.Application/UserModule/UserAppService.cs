@@ -1,9 +1,4 @@
-﻿using AngleSharp.Html.Dom.Events;
-
-using FaceMan.DynamicWebAPI;
-
-using FlyFramework.ApplicationServices;
-using FlyFramework.Attributes;
+﻿using FlyFramework.ApplicationServices;
 using FlyFramework.Authorizations;
 using FlyFramework.Common;
 using FlyFramework.Dtos;
@@ -11,19 +6,11 @@ using FlyFramework.Extentions;
 using FlyFramework.LazyModule.LazyDefinition;
 using FlyFramework.UserModule.DomainService;
 using FlyFramework.UserModule.Dtos;
-using FlyFramework.Utilities.Redis;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-using ServiceStack;
-
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Linq.Dynamic.Core;
-using System.Reflection;
 using System.Threading.Tasks;
 namespace FlyFramework.UserModule
 {
@@ -40,6 +27,11 @@ namespace FlyFramework.UserModule
             _commonService = commonAppService;
         }
 
+        /// <summary>
+        /// 创建或更新用户
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         [FlyFrameworkAuthorization("test")]
         public async Task CreateOrUpdateUser(CreateOrUpdateUserParam input)
         {
@@ -53,18 +45,6 @@ namespace FlyFramework.UserModule
             }
         }
 
-        private async Task CreateUser(CreateOrUpdateUserParam input)
-        {
-            var user = ObjectMapper.Map<User>(input.Entity);
-            await _userManager.CreateUserAsync(user);
-        }
-
-        private async Task UpdateUser(CreateOrUpdateUserParam input)
-        {
-            var user = await _userManager.FindByNameAsync(input.Entity.UserName);
-            ObjectMapper.Map(input.Entity, user);
-            await _userManager.Update(user);
-        }
 
         /// <summary>
         /// 获取用户信息
@@ -100,5 +80,21 @@ namespace FlyFramework.UserModule
             res.datas = new PagedResultDto<UserListDto>(await query.CountAsync(), resDatas);
             return res;
         }
+
+        #region 私有方法
+        private async Task CreateUser(CreateOrUpdateUserParam input)
+        {
+            var user = ObjectMapper.Map<User>(input.Entity);
+            await _userManager.CreateUserAsync(user);
+        }
+
+        private async Task UpdateUser(CreateOrUpdateUserParam input)
+        {
+            var user = await _userManager.FindByNameAsync(input.Entity.UserName);
+            ObjectMapper.Map(input.Entity, user);
+            await _userManager.Update(user);
+        }
+
+        #endregion
     }
 }
