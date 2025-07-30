@@ -1,7 +1,9 @@
 ﻿using FlyFramework.Attributes;
 using FlyFramework.Dtos;
+using FlyFramework.OrgUnitModule.OrgUnitNodes.Dtos;
 
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FlyFramework.UserModule.Dtos
@@ -18,13 +20,10 @@ namespace FlyFramework.UserModule.Dtos
         public DateTime CreationTime { get; set; }
     }
 
-    public class CreateOrUpdateUserParam
+    public class CreateOrUpdateUserInput
     {
-        public string id { get; set; }
-        /// <summary>
-        /// 实体
-        /// </summary>
-        public UserDto Entity { get; set; }
+        [Required]
+        public UserDto User { get; set; }
     }
 
     public class UserListDto
@@ -46,8 +45,16 @@ namespace FlyFramework.UserModule.Dtos
         [Column("手机号码")]
         public string PhoneNumber { get; set; }
 
+        [Column("组织单元")]
+        public string OrgUnitNodeName { get; set; }
+
         [Column("是否启用")]
         public bool IsActive { get; set; }
+
+        /// <summary>
+        /// 是否管理员
+        /// </summary>
+        public bool IsSuperAdmin { get; set; }
 
         [Column("创建时间")]
         public DateTime CreationTime { get; set; }

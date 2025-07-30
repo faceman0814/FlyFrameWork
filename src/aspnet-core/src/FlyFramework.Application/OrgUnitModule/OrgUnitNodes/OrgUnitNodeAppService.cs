@@ -70,13 +70,6 @@ namespace FlyFramework.OrgUnitModule.OrgUnitNodes
         private async Task Create(OrgUnitNodeEditDto input)
         {
             var entity = ObjectMapper.Map<OrgUnitNode>(input);
-            //if (!entity.ParentId.IsNullOrEmpty())
-            //{
-            //    // 父节点
-            //    var parent = await _orgUnitNodeManager.FindById(input.ParentId);
-            //    parent = await _repository.GetAll().FirstOrDefaultAsync(o => o.Id == input.ParentId);
-            //    entity.ParentIdList = parent.ParentIdList != null ? (parent.ParentIdList + "|" + parent.Id) : parent.Id;
-            //}
             await _orgUnitNodeManager.Create(entity);
         }
 

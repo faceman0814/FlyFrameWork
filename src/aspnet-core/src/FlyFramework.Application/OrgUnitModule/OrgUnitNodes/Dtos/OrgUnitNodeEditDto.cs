@@ -14,11 +14,20 @@ namespace FlyFramework.OrgUnitModule.OrgUnitNodes.Dtos
         /// id
         /// </summary>
         public string Id { get; set; }
+
         /// <summary>
         /// 名称
         /// </summary>
         public string Name { get; set; }
-        public string ParentIdList { get; set; }
+
+        /// <summary>
+        /// 父级Id
+        /// </summary>
         public string ParentId { get; set; }
+
+        /// <summary>
+        /// 状态
+        /// </summary>
+        public OrgUnitNodeStatus Status { get; set; }
     }
 }

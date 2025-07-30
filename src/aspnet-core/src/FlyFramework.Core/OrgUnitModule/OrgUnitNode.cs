@@ -24,12 +24,6 @@ namespace FlyFramework.OrgUnitModule
         public string Name { get; set; }
 
         /// <summary>
-        /// 部门负责人ID
-        /// </summary>
-        [Comment("部门负责人ID")]
-        public string LeaderId { get; set; }
-
-        /// <summary>
         /// 父级Id
         /// </summary>
         [Comment("父级Id")]

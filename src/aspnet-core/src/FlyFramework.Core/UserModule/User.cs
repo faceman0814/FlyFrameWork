@@ -29,6 +29,12 @@ namespace FlyFramework.UserModule
         [Comment("是否启用")]
         public bool IsActive { get; set; }
 
+        /// <summary>
+        /// 是否超级管理员
+        /// </summary>
+        [Comment("是否超级管理员")]
+        public bool IsSuperAdmin { get; set; }
+
 
         /// <summary>
         /// 是否需要修改密码
