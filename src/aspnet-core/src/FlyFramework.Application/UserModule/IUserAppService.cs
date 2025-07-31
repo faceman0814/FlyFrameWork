@@ -18,6 +18,6 @@ namespace FlyFramework.UserModule
 
         Task<GetPagedResult<UserListDto>> GetPaged(GetUsersInput input);
 
-        Task<UserDto> GetUserInfo(string id);
+        Task<UserDto> GetForEdit(EntityDto<string> input);
     }
 }

@@ -42,11 +42,11 @@ namespace FlyFramework.UserModule
         {
             if (input.User.Id.HasValue())
             {
-                await UpdateUser(input);
+                await Update(input);
             }
             else
             {
-                await CreateUser(input);
+                await Create(input);
             }
         }
 
@@ -56,9 +56,9 @@ namespace FlyFramework.UserModule
         /// </summary>
         /// <param name="id">主键</param>
         /// <returns></returns>
-        public async Task<UserDto> GetUserInfo(string id)
+        public async Task<UserDto> GetForEdit(EntityDto<string> input)
         {
-            var entity = await _userManager.FindById(id);
+            var entity = await _userManager.FindById(input.Id);
             var user = ObjectMapper.Map<UserDto>(entity);
             return user;
         }
@@ -98,16 +98,16 @@ namespace FlyFramework.UserModule
         }
 
         #region 私有方法
-        private async Task CreateUser(CreateOrUpdateUserInput input)
+        private async Task Create(CreateOrUpdateUserInput input)
         {
-            var user = ObjectMapper.Map<User>(input.Entity);
+            var user = ObjectMapper.Map<User>(input.User);
             await _userManager.CreateUserAsync(user);
         }
 
-        private async Task UpdateUser(CreateOrUpdateUserInput input)
+        private async Task Update(CreateOrUpdateUserInput input)
         {
-            var user = await _userManager.FindByNameAsync(input.Entity.UserName);
-            ObjectMapper.Map(input.Entity, user);
+            var user = await _userManager.FindById(input.User.Id);
+            ObjectMapper.Map(input.User, user);
             await _userManager.Update(user);
         }
 

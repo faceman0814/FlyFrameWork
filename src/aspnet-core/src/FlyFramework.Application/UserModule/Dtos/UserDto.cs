@@ -64,18 +64,9 @@ namespace FlyFramework.UserModule.Dtos
         public String Opertion { get; set; }
     }
 
-    public class GetUsersInput : PagedSortedAndFilteredInputDto, IShouldNormalize
+    public class GetUsersInput : GetListInput
     {
-        /// <summary>
-		/// 正常化排序使用
-		/// </summary>
-		public void Normalize()
-        {
-            if (string.IsNullOrEmpty(Sorting))
-            {
-                Sorting = "CreationTime desc";
-            }
-        }
+
     }
 
 }

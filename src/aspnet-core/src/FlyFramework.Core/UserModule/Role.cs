@@ -119,6 +119,11 @@ namespace FlyFramework.UserModule
             return false;
         }
 
+        public Role()
+        {
+
+        }
+
         public Role(string tenantId, string name, string displayName)
         {
             Id = Guid.NewGuid().ToString("N");
