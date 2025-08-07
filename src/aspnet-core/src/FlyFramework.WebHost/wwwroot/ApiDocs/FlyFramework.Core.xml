@@ -64,11 +64,6 @@
             组织机构名称
             </summary>
         </member>
-        <member name="P:FlyFramework.OrgUnitModule.OrgUnitNode.LeaderId">
-            <summary>
-            部门负责人ID
-            </summary>
-        </member>
         <member name="P:FlyFramework.OrgUnitModule.OrgUnitNode.ParentId">
             <summary>
             父级Id
@@ -268,6 +263,11 @@
         <member name="P:FlyFramework.UserModule.User.IsActive">
             <summary>
             是否启用
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.User.IsSuperAdmin">
+            <summary>
+            是否超级管理员
             </summary>
         </member>
         <member name="P:FlyFramework.UserModule.User.NeedToChangeThePassword">

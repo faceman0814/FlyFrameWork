@@ -3,7 +3,9 @@ using FlyFramework.Authorizations;
 using FlyFramework.Common;
 using FlyFramework.Dtos;
 using FlyFramework.Extentions;
+using FlyFramework.Extentions.Object;
 using FlyFramework.LazyModule.LazyDefinition;
+using FlyFramework.OrgUnitModule.DomainService.OrgUnitNodes;
 using FlyFramework.UserModule.DomainService;
 using FlyFramework.UserModule.Dtos;
 
@@ -11,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 namespace FlyFramework.UserModule
 {
@@ -19,11 +22,13 @@ namespace FlyFramework.UserModule
     public class UserAppService : ApplicationService, IUserAppService
     {
         private readonly IUserManager _userManager;
+        private readonly IOrgUnitNodeManager _orgUnitNodeManager;
         private readonly ICommonAppService _commonService;
 
         public UserAppService(IFlyFrameworkLazy flyFrameworkLazy, ICommonAppService commonAppService)
         {
             _userManager = flyFrameworkLazy.LazyGetRequiredService<IUserManager>().Value;
+            _orgUnitNodeManager = flyFrameworkLazy.LazyGetRequiredService<IOrgUnitNodeManager>().Value;
             _commonService = commonAppService;
         }
 
@@ -33,15 +38,15 @@ namespace FlyFramework.UserModule
         /// <param name="input"></param>
         /// <returns></returns>
         [FlyFrameworkAuthorization("test")]
-        public async Task CreateOrUpdateUser(CreateOrUpdateUserParam input)
+        public async Task CreateOrUpdate(CreateOrUpdateUserInput input)
         {
-            if (!string.IsNullOrWhiteSpace(input.Entity.Id))
+            if (input.User.Id.HasValue())
             {
-                await UpdateUser(input);
+                await Update(input);
             }
             else
             {
-                await CreateUser(input);
+                await Create(input);
             }
         }
 
@@ -51,9 +56,9 @@ namespace FlyFramework.UserModule
         /// </summary>
         /// <param name="id">主键</param>
         /// <returns></returns>
-        public async Task<UserDto> GetUserInfo(string id)
+        public async Task<UserDto> GetForEdit(EntityDto<string> input)
         {
-            var entity = await _userManager.FindById(id);
+            var entity = await _userManager.FindById(input.Id);
             var user = ObjectMapper.Map<UserDto>(entity);
             return user;
         }
@@ -70,8 +75,19 @@ namespace FlyFramework.UserModule
             {
                 columns = await _commonService.GetColumnList<UserListDto>()
             };
-
-            var query = _userManager.QueryAsNoTracking;
+            var query = from user in _userManager.QueryAsNoTracking
+                        join org in _orgUnitNodeManager.QueryAsNoTracking on user.OrgUnitNodeId equals org.Id
+                        select new UserListDto()
+                        {
+                            Id = user.Id,
+                            UserName = user.UserName,
+                            OrgUnitNodeName = org.Name,
+                            Email = user.Email,
+                            PhoneNumber = user.PhoneNumber,
+                            IsActive = user.IsActive,
+                            IsSuperAdmin = user.IsSuperAdmin,
+                            CreationTime = user.CreationTime,
+                        };
 
             var datas = await query.PageBy(input).ToListAsync();
 
@@ -82,16 +98,16 @@ namespace FlyFramework.UserModule
         }
 
         #region 私有方法
-        private async Task CreateUser(CreateOrUpdateUserParam input)
+        private async Task Create(CreateOrUpdateUserInput input)
         {
-            var user = ObjectMapper.Map<User>(input.Entity);
+            var user = ObjectMapper.Map<User>(input.User);
             await _userManager.CreateUserAsync(user);
         }
 
-        private async Task UpdateUser(CreateOrUpdateUserParam input)
+        private async Task Update(CreateOrUpdateUserInput input)
         {
-            var user = await _userManager.FindByNameAsync(input.Entity.UserName);
-            ObjectMapper.Map(input.Entity, user);
+            var user = await _userManager.FindById(input.User.Id);
+            ObjectMapper.Map(input.User, user);
             await _userManager.Update(user);
         }
 

@@ -30,7 +30,7 @@ namespace FlyFramework.UserModule.DomainService
 
         public override IQueryable<User> GetIncludeQuery()
         {
-            throw new NotImplementedException();
+            return this.Query;
         }
 
         public override Task ValidateOnCreateOrUpdate(User entity)

@@ -179,6 +179,11 @@
             选中的数据过滤项，如果需要自定义表头过滤的渲染方式，可能会需要此属性
             </summary>
         </member>
+        <member name="M:FlyFramework.Dtos.GetListInput.Normalize">
+            <summary>
+            正常化排序使用
+            </summary>
+        </member>
         <member name="M:FlyFramework.Dtos.IShouldNormalize.Normalize">
             <summary>
             这种方法称为最后执行方法（如果存在验证后）。
@@ -237,6 +242,16 @@
         <member name="P:FlyFramework.OrgUnitModule.OrgUnitNodes.Dtos.OrgUnitNodeEditDto.Name">
             <summary>
             名称
+            </summary>
+        </member>
+        <member name="P:FlyFramework.OrgUnitModule.OrgUnitNodes.Dtos.OrgUnitNodeEditDto.ParentId">
+            <summary>
+            父级Id
+            </summary>
+        </member>
+        <member name="P:FlyFramework.OrgUnitModule.OrgUnitNodes.Dtos.OrgUnitNodeEditDto.Status">
+            <summary>
+            状态
             </summary>
         </member>
         <member name="T:FlyFramework.OrgUnitModule.OrgUnitNodes.IOrgUnitNodeAppService">
@@ -298,6 +313,52 @@
             获取树数据
             </summary>
             <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="P:FlyFramework.RoleModule.Dtos.RoleDto.Id">
+            <summary>
+            主键
+            </summary>
+        </member>
+        <member name="P:FlyFramework.RoleModule.Dtos.RoleDto.DisplayName">
+            <summary>
+            显示名称
+            </summary>
+        </member>
+        <member name="P:FlyFramework.RoleModule.Dtos.RoleDto.Name">
+            <summary>
+            角色名称
+            </summary>
+        </member>
+        <member name="P:FlyFramework.RoleModule.Dtos.RoleDto.IsStatic">
+            <summary>
+            是否静态角色，静态角色无法删除，无法更改其名称。它们可以通过编程方式使用。
+            </summary>
+        </member>
+        <member name="P:FlyFramework.RoleModule.Dtos.RoleDto.IsDefault">
+            <summary>
+            该角色是否将被分配给新用户？
+            </summary>
+        </member>
+        <member name="M:FlyFramework.RoleModule.RoleAppService.GetPaged(FlyFramework.RoleModule.Dtos.GetRolesInput)">
+            <summary>
+            获取角色列表分页数据
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.RoleModule.RoleAppService.CreateOrUpdate(FlyFramework.RoleModule.Dtos.CreateOrUpdateRoleInput)">
+            <summary>
+            创建或更新角色
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.RoleModule.RoleAppService.GetForEdit(FlyFramework.Dtos.EntityDto{System.String})">
+            <summary>
+            获取角色信息
+            </summary>
+            <param name="id">主键</param>
             <returns></returns>
         </member>
         <member name="T:FlyFramework.Test.DapperAppService">
@@ -463,19 +524,14 @@
             <param name="connectionId"></param>
             <returns></returns>
         </member>
-        <member name="P:FlyFramework.UserModule.Dtos.CreateOrUpdateUserParam.Entity">
-            <summary>
-            实体
-            </summary>
-        </member>
         <member name="P:FlyFramework.UserModule.Dtos.UserListDto.Id">
             <summary>
             主键
             </summary>
         </member>
-        <member name="M:FlyFramework.UserModule.Dtos.GetUsersInput.Normalize">
+        <member name="P:FlyFramework.UserModule.Dtos.UserListDto.IsSuperAdmin">
             <summary>
-            正常化排序使用
+            是否管理员
             </summary>
         </member>
         <member name="T:FlyFramework.UserModule.IUserAppService">
@@ -483,14 +539,14 @@
             用户应用服务接口
             </summary>
         </member>
-        <member name="M:FlyFramework.UserModule.UserAppService.CreateOrUpdateUser(FlyFramework.UserModule.Dtos.CreateOrUpdateUserParam)">
+        <member name="M:FlyFramework.UserModule.UserAppService.CreateOrUpdate(FlyFramework.UserModule.Dtos.CreateOrUpdateUserInput)">
             <summary>
             创建或更新用户
             </summary>
             <param name="input"></param>
             <returns></returns>
         </member>
-        <member name="M:FlyFramework.UserModule.UserAppService.GetUserInfo(System.String)">
+        <member name="M:FlyFramework.UserModule.UserAppService.GetForEdit(FlyFramework.Dtos.EntityDto{System.String})">
             <summary>
             获取用户信息
             </summary>

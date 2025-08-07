@@ -14,6 +14,7 @@ using FlyFramework.LazyModule.LazyDefinition;
 using FlyFramework.OrgUnitModule.OrgUnitNodes.Mappers;
 using FlyFramework.PermissionModule;
 using FlyFramework.Repositories;
+using FlyFramework.RoleModule.Mappers;
 using FlyFramework.Uow;
 using FlyFramework.UserModule.Mappers;
 using FlyFramework.UserSessions;
@@ -37,6 +38,7 @@ namespace FlyFramework
             {
                 UserMapper.CreateMappings(configuration);
                 OrgUnitNodeMapper.CreateMappings(configuration);
+                RoleMapper.CreateMappings(configuration);
             }, typeof(FlyFrameworkApplicationModule));
         }
 
@@ -64,9 +66,9 @@ namespace FlyFramework
                    //.EnableClassInterceptors() // 如果使用拦截器
                    .PropertiesAutowired(new IocSelectPropertySelector()); // 启用属性注入
         }
-        
+
     }
-   
+
     /// <summary>
     /// 属性注入选择器
     /// </summary>

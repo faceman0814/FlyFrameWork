@@ -29,4 +29,7 @@
 	<ItemGroup Condition="'$(FlyFrameworkDomainRefMode)'=='src'">
 		<ProjectReference Include="..\FlyFramework.Domain\FlyFramework.Domain.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="RoleModule\" />
+	</ItemGroup>
 </Project>

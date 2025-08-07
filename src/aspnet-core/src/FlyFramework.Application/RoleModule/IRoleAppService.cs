@@ -1,0 +1,18 @@
+﻿using FaceMan.DynamicWebAPI;
+
+using FlyFramework.Dtos;
+using FlyFramework.RoleModule.Dtos;
+
+using System.Threading.Tasks;
+
+namespace FlyFramework.RoleModule
+{
+    public interface IRoleAppService : IApplicationService
+    {
+        Task<GetPagedResult<RoleListDto>> GetPaged(GetRolesInput input);
+
+        Task CreateOrUpdate(CreateOrUpdateRoleInput input);
+
+        Task<RoleDto> GetForEdit(EntityDto<string> input);
+    }
+}

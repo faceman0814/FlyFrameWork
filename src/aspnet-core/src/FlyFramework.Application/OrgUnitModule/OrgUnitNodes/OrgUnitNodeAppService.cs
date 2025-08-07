@@ -70,13 +70,6 @@ namespace FlyFramework.OrgUnitModule.OrgUnitNodes
         private async Task Create(OrgUnitNodeEditDto input)
         {
             var entity = ObjectMapper.Map<OrgUnitNode>(input);
-            //if (!entity.ParentId.IsNullOrEmpty())
-            //{
-            //    // 父节点
-            //    var parent = await _orgUnitNodeManager.FindById(input.ParentId);
-            //    parent = await _repository.GetAll().FirstOrDefaultAsync(o => o.Id == input.ParentId);
-            //    entity.ParentIdList = parent.ParentIdList != null ? (parent.ParentIdList + "|" + parent.Id) : parent.Id;
-            //}
             await _orgUnitNodeManager.Create(entity);
         }
 
@@ -100,71 +93,6 @@ namespace FlyFramework.OrgUnitModule.OrgUnitNodes
             var result = new List<OrgUnitNodeListDto>();
             // 当前用户拥有的节点
             var nodeIdList = await _orgUnitNodeManager.GetGrantedNodes();
-
-            //// 如果有筛选条件
-            //if (input.FilterText.HasValue())
-            //{
-            //    // 筛选过的节点信息
-            //    var filterNodeList = await _orgUnitNodeManager.QueryAsNoTracking
-            //        .WhereIfThenElse(input.OrgUnitNodeId.HasValue(),
-            //                o =>
-            //                nodeIdList.Contains(o.Id) &&
-            //                o.Name.Contains(input.FilterText) && o.Id == input.OrgUnitNodeId,
-            //                o =>
-            //                nodeIdList.Contains(o.Id) &&
-            //                o.Name.Contains(input.FilterText)
-            //                )
-            //        .Select(o => new { o.Id, o.ParentIdList })
-            //        .ToListAsync();
-
-            //    var nodeIdList2 = filterNodeList.Select(o => o.Id).ToList();
-
-            //    // 父级节点Id集合
-            //    var nodeParentIdList = filterNodeList.Select(o => o.ParentIdList).ToList();
-            //    var parentIdDict = new Dictionary<string, bool>();
-            //    foreach (var item in nodeParentIdList)
-            //    {
-            //        if (!item.HasValue())
-            //        {
-            //            continue;
-            //        }
-
-            //        var parentIdArray = item.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-            //        foreach (var parentId in parentIdArray)
-            //        {
-            //            if (parentIdDict.ContainsKey(parentId))
-            //            {
-            //                continue;
-            //            }
-            //            parentIdDict[parentId] = true;
-            //        }
-            //    }
-            //    var nodeIdList3 = parentIdDict.Keys.ToList().Concat(nodeIdList2).Distinct().ToList();
-
-            //    // 只获取顶级节点
-            //    var nodeList = await _orgUnitNodeManager.QueryAsNoTracking
-            //        .Where(o => o.ParentId == input.ParentOrgUnitNodeId && nodeIdList3.Contains(o.Id))
-            //        .ToListAsync();
-            //    // 最终数据
-            //    result = ObjectMapper.Map<List<OrgUnitNodeListDto>>(nodeList);
-            //}
-            //// 默认展开
-            //else
-            //{
-            //    var nodeList = await _orgUnitNodeManager.QueryAsNoTracking
-            //            .WhereIfThenElse(input.OrgUnitNodeId.HasValue(),
-            //                o => o.ParentId == input.ParentOrgUnitNodeId
-            //                && nodeIdList.Contains(o.Id)
-            //                && o.Id == input.OrgUnitNodeId,
-            //                o => o.ParentId == input.ParentOrgUnitNodeId
-            //                && nodeIdList.Contains(o.Id)
-            //                )
-            //            .ToListAsync();
-
-            //    // 最终数据
-            //    result = ObjectMapper.Map<List<OrgUnitNodeListDto>>(nodeList);
-            //}
-
 
             // 查询子节点总数，同时也要过滤有权限的子节点
             var resultNodeIdList = result.Select(o => o.Id).ToList();
