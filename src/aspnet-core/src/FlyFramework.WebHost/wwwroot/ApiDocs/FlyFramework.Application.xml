@@ -483,6 +483,13 @@
             用户应用服务接口
             </summary>
         </member>
+        <member name="M:FlyFramework.UserModule.UserAppService.CreateOrUpdateUser(FlyFramework.UserModule.Dtos.CreateOrUpdateUserParam)">
+            <summary>
+            创建或更新用户
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
         <member name="M:FlyFramework.UserModule.UserAppService.GetUserInfo(System.String)">
             <summary>
             获取用户信息
