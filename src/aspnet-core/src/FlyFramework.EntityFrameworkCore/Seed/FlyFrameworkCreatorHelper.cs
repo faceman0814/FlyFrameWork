@@ -1,10 +1,14 @@
 ﻿using FlyFramework.Extentions.Object;
+using FlyFramework.PermissionModule;
+using FlyFramework.RoleModule.Authorization;
 using FlyFramework.UserModule;
+using FlyFramework.UserModule.Authorization;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace FlyFramework.Seed
@@ -53,30 +57,6 @@ namespace FlyFramework.Seed
             return role.Id;
         }
 
-
-        /// <summary>
-        /// 创建角色关联的权限
-        /// </summary>
-        /// <param name="roleId">角色id</param>
-        /// <param name="authorizationProviders">权限定义</param>
-        public void CreateRolePermissions(string roleId)
-        {
-            //todo 权限定义
-            //var isExists = _context.Permission.Any(t => t.Name.Contains(UserAuthority.User_Node));
-            //if (!isExists)
-            //{
-            //    var perssions = new List<Permission>();
-            //    var node = new Permission(UserAuthority.User_Node, "用户结点")
-            //    {
-            //        Id = Guid.NewGuid().ToString("N")
-            //    };
-            //    node.CreateChildPermission(UserAuthority.User_Create, "创建用户");
-            //    node.CreateChildPermission(UserAuthority.User_Delete, "删除用户");
-            //    node.CreateChildPermission(UserAuthority.User_Update, "更新用户");
-            //    _context.Permission.AddRange(perssions);
-            //}
-        }
-
         /// <summary>
         /// 创建用户
         /// </summary>
@@ -113,6 +93,40 @@ namespace FlyFramework.Seed
                 var userRole = new UserRole(_tenantId, user.Id, roleId);
                 _context.UserRole.Add(userRole);
             }
+
+            //todo 权限定义
+            var isExists = _context.Permission.Any(t => t.Key.Contains(UserAuthority.User_Node));
+            if (!isExists)
+            {
+                var perssions = new List<Permission>()
+                {
+                    new Permission(UserAuthority.User_Node, UserAuthority.User_Node_Name,UserAuthority.User),
+                    new Permission(UserAuthority.User_Create, UserAuthority.User_Create_Name,UserAuthority.User),
+                    new Permission(UserAuthority.User_Update,UserAuthority.User_Update_Name, UserAuthority.User),
+                    new Permission(UserAuthority.User_Delete, UserAuthority.User_Delete_Name, UserAuthority.User),
+
+                    new Permission(RoleAuthority.Role_Node, RoleAuthority.Role_Node,RoleAuthority.Role),
+                    new Permission(RoleAuthority.Role_Create, RoleAuthority.Role_Create_Name,RoleAuthority.Role),
+                    new Permission(RoleAuthority.Role_Update, RoleAuthority.Role_Update_Name,RoleAuthority.Role),
+                    new Permission(RoleAuthority.Role_Delete, RoleAuthority.Role_Delete_Name,RoleAuthority.Role)
+                };
+
+                _context.AddRange(perssions);
+
+                var rolePermissions = new List<RolePermission>();
+                foreach (var item in perssions)
+                {
+                    rolePermissions.Add(new RolePermission()
+                    {
+                        RoleId = roleId,
+                        PermissionId = item.Id,
+                        Id = Guid.NewGuid().ToString("N")
+                    });
+                }
+
+                _context.AddRange(rolePermissions);
+            }
         }
+
     }
 }

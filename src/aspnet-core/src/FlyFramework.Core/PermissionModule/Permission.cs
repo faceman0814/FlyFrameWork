@@ -21,6 +21,14 @@ namespace FlyFramework.PermissionModule
     [Table("permission")]
     public class Permission : Entity<string>
     {
+        public Permission(string key, string displayName, string module)
+        {
+            Key = key;
+            DisplayName = displayName;
+            Id = Guid.NewGuid().ToString("N");
+            Module = module;
+        }
+
         /// <summary>
         /// 权限Key
         /// </summary>
@@ -37,12 +45,14 @@ namespace FlyFramework.PermissionModule
         /// 权限类型
         /// </summary>
         public PermissionType Type { get; set; }
+
     }
 
     public enum PermissionType
     {
         [Description("操作权限")]
         Operation,
+
         [Description("数据权限")]
         Data
     }

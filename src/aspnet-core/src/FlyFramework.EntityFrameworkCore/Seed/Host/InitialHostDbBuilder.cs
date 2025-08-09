@@ -22,6 +22,7 @@ namespace FlyFramework.Seed.Host
         public void Create()
         {
             new HostRoleAndUserCreator(_context).Create();
+
             _context.SaveChanges();
         }
     }

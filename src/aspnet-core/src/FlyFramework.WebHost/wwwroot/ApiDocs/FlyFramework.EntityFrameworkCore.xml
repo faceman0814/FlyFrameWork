@@ -91,13 +91,6 @@
             <param name="isStatic">是否为系统角色,默认值: true</param>
             <returns></returns>
         </member>
-        <member name="M:FlyFramework.Seed.FlyFrameworkCreatorHelper.CreateRolePermissions(System.String)">
-            <summary>
-            创建角色关联的权限
-            </summary>
-            <param name="roleId">角色id</param>
-            <param name="authorizationProviders">权限定义</param>
-        </member>
         <member name="M:FlyFramework.Seed.FlyFrameworkCreatorHelper.CreateUser(System.String,System.String)">
             <summary>
             创建用户

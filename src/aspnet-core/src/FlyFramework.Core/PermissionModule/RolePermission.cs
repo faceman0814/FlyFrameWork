@@ -7,27 +7,18 @@ namespace FlyFramework.PermissionModule
     public class RolePermission : FullAuditedEntity<string>, IMustHaveTenant
     {
         /// <summary>
-        /// 用户Id
-        /// </summary>
-
-        public string UserId { get; set; }
-
-        /// <summary>
         /// 角色Id
         /// </summary>
-
         public string RoleId { get; set; }
 
         /// <summary>
         /// 权限Id
         /// </summary>
-
         public string PermissionId { get; set; }
 
         /// <summary>
         /// 租户Id
         /// </summary>
-
         public string TenantId { get; set; }
 
     }

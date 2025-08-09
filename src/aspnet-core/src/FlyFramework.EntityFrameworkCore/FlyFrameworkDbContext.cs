@@ -163,5 +163,6 @@ namespace FlyFramework
         public DbSet<UserRole> UserRole { get; set; }
         public DbSet<OrgUnitNode> OrgUnitNode { get; set; }
         public DbSet<Permission> Permission { get; set; }
+        public DbSet<RolePermission> RolePermission { get; set; }
     }
 }

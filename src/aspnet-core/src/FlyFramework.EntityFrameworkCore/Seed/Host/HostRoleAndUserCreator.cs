@@ -1,12 +1,4 @@
-﻿using FlyFramework.UserModule;
-
-using Microsoft.EntityFrameworkCore;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace FlyFramework.Seed.Host
 {
@@ -23,10 +15,10 @@ namespace FlyFramework.Seed.Host
             var helper = new FlyFrameworkCreatorHelper();
 
             helper.SetContext(null, _context);
-
             //创建Host管理员角色
             var roleId = helper.CreateRole("admin", "系统管理员", false);
-            helper.CreateRolePermissions(roleId);
+          
+            //创建用户
             helper.CreateUser(roleId, "admin");
         }
     }

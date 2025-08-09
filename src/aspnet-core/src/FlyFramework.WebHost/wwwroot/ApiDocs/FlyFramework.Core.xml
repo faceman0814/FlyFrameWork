@@ -141,11 +141,6 @@
             角色权限关联表
             </summary>
         </member>
-        <member name="P:FlyFramework.PermissionModule.RolePermission.UserId">
-            <summary>
-            用户Id
-            </summary>
-        </member>
         <member name="P:FlyFramework.PermissionModule.RolePermission.RoleId">
             <summary>
             角色Id
