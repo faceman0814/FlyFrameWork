@@ -3,6 +3,7 @@ using FlyFramework.Dtos;
 using FlyFramework.OrgUnitModule.OrgUnitNodes.Dtos;
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -48,6 +49,9 @@ namespace FlyFramework.UserModule.Dtos
         [Column("组织单元")]
         public string OrgUnitNodeName { get; set; }
 
+        [Column("角色")]
+        public List<string> RoleName { get; set; }
+
         [Column("是否启用")]
         public bool IsActive { get; set; }
 
@@ -69,4 +73,16 @@ namespace FlyFramework.UserModule.Dtos
 
     }
 
+    public class AssignRoleInput
+    {
+        /// <summary>
+        /// 用户Ids
+        /// </summary>
+        public List<string> UserIds { get; set; }
+
+        /// <summary>
+        /// 角色Ids
+        /// </summary>
+        public List<string> RoleIds { get; set; }
+    }
 }

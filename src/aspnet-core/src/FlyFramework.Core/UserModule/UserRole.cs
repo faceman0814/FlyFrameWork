@@ -112,7 +112,7 @@ namespace FlyFramework.UserModule
             return false;
         }
 
-        public UserRole(string tenantId, string userId, string roleId)
+        public UserRole(string userId, string roleId, string tenantId = null)
         {
             Id = Guid.NewGuid().ToString("N");
             TenantId = tenantId;

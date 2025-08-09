@@ -1,4 +1,6 @@
-﻿using FlyFramework.ApplicationServices;
+﻿using AngleSharp.Css;
+
+using FlyFramework.ApplicationServices;
 using FlyFramework.Authorizations;
 using FlyFramework.Common;
 using FlyFramework.Dtos;
@@ -6,14 +8,18 @@ using FlyFramework.Extentions;
 using FlyFramework.Extentions.Object;
 using FlyFramework.LazyModule.LazyDefinition;
 using FlyFramework.OrgUnitModule.DomainService.OrgUnitNodes;
+using FlyFramework.Repositories;
 using FlyFramework.UserModule.DomainService;
 using FlyFramework.UserModule.Dtos;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+using Minio.DataModel;
+
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 namespace FlyFramework.UserModule
 {
@@ -22,14 +28,18 @@ namespace FlyFramework.UserModule
     public class UserAppService : ApplicationService, IUserAppService
     {
         private readonly IUserManager _userManager;
+        private readonly IRoleManager _roleManager;
+        private readonly IRepository<UserRole, string> _repository;
         private readonly IOrgUnitNodeManager _orgUnitNodeManager;
         private readonly ICommonAppService _commonService;
 
-        public UserAppService(IFlyFrameworkLazy flyFrameworkLazy, ICommonAppService commonAppService)
+        public UserAppService(IFlyFrameworkLazy flyFrameworkLazy, ICommonAppService commonAppService, IRepository<UserRole, string> repository)
         {
             _userManager = flyFrameworkLazy.LazyGetRequiredService<IUserManager>().Value;
             _orgUnitNodeManager = flyFrameworkLazy.LazyGetRequiredService<IOrgUnitNodeManager>().Value;
+            _roleManager = flyFrameworkLazy.LazyGetRequiredService<IRoleManager>().Value;
             _commonService = commonAppService;
+            _repository = repository;
         }
 
         /// <summary>
@@ -76,7 +86,8 @@ namespace FlyFramework.UserModule
                 columns = await _commonService.GetColumnList<UserListDto>()
             };
             var query = from user in _userManager.QueryAsNoTracking
-                        join org in _orgUnitNodeManager.QueryAsNoTracking on user.OrgUnitNodeId equals org.Id
+                        join org in _orgUnitNodeManager.QueryAsNoTracking on user.OrgUnitNodeId equals org.Id into oGroup
+                        from org in oGroup.DefaultIfEmpty()
                         select new UserListDto()
                         {
                             Id = user.Id,
@@ -87,14 +98,52 @@ namespace FlyFramework.UserModule
                             IsActive = user.IsActive,
                             IsSuperAdmin = user.IsSuperAdmin,
                             CreationTime = user.CreationTime,
+
                         };
 
             var datas = await query.PageBy(input).ToListAsync();
 
             var resDatas = ObjectMapper.Map<List<UserListDto>>(datas);
 
+            var userIds = datas
+                .Select(t => t.Id)
+                .ToList();
+
+            var roleQuery = from ur in _repository.GetAll()
+                            join r in _roleManager.QueryAsNoTracking on ur.RoleId equals r.Id
+                            where userIds.Contains(ur.UserId)
+                            select new
+                            {
+                                ur.UserId,
+                                r.DisplayName
+                            };
+
+            var roles = await roleQuery.ToListAsync();
+            foreach (var item in datas)
+            {
+                item.RoleName = roles.Where(t => t.UserId == item.Id).Select(t => t.DisplayName).ToList();
+            }
             res.datas = new PagedResultDto<UserListDto>(await query.CountAsync(), resDatas);
             return res;
+        }
+
+        /// <summary>
+        /// 批量分配角色
+        /// </summary>
+        /// <param name="input"></param>
+        public async Task AssignRole(AssignRoleInput input)
+        {
+            //删除旧用户角色关系
+            await _repository.DeleteAsync(t => input.UserIds.Contains(t.UserId));
+
+            //遍历添加新用户角色关系
+            foreach (var user in input.UserIds)
+            {
+                foreach (var role in input.RoleIds)
+                {
+                    await _repository.InsertAsync(new UserRole(user, role));
+                }
+            }
         }
 
         #region 私有方法

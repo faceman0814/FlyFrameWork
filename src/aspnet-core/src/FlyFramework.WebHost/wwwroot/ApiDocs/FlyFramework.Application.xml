@@ -534,6 +534,16 @@
             是否管理员
             </summary>
         </member>
+        <member name="P:FlyFramework.UserModule.Dtos.AssignRoleInput.UserIds">
+            <summary>
+            用户Ids
+            </summary>
+        </member>
+        <member name="P:FlyFramework.UserModule.Dtos.AssignRoleInput.RoleIds">
+            <summary>
+            角色Ids
+            </summary>
+        </member>
         <member name="T:FlyFramework.UserModule.IUserAppService">
             <summary>
             用户应用服务接口
@@ -559,6 +569,12 @@
             </summary>
             <param name="input"></param>
             <returns></returns>
+        </member>
+        <member name="M:FlyFramework.UserModule.UserAppService.AssignRole(FlyFramework.UserModule.Dtos.AssignRoleInput)">
+            <summary>
+            批量分配角色
+            </summary>
+            <param name="input"></param>
         </member>
     </members>
 </doc>
