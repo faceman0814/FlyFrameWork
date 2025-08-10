@@ -3,6 +3,7 @@
 using FlyFramework.Dtos;
 using FlyFramework.RoleModule.Dtos;
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FlyFramework.RoleModule
@@ -14,5 +15,7 @@ namespace FlyFramework.RoleModule
         Task CreateOrUpdate(CreateOrUpdateRoleInput input);
 
         Task<RoleDto> GetForEdit(EntityDto<string> input);
+
+        Task<List<DropDownListDto>> GetDropDownList(GetDropDownListInput input);
     }
 }

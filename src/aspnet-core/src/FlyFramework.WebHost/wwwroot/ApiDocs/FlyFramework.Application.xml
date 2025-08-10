@@ -179,6 +179,11 @@
             选中的数据过滤项，如果需要自定义表头过滤的渲染方式，可能会需要此属性
             </summary>
         </member>
+        <member name="P:FlyFramework.Dtos.GetDropDownListInput.Ids">
+            <summary>
+            已选的ids值
+            </summary>
+        </member>
         <member name="M:FlyFramework.Dtos.GetListInput.Normalize">
             <summary>
             正常化排序使用
@@ -360,6 +365,11 @@
             </summary>
             <param name="id">主键</param>
             <returns></returns>
+        </member>
+        <member name="M:FlyFramework.RoleModule.RoleAppService.GetDropDownList(FlyFramework.Dtos.GetDropDownListInput)">
+            <summary>
+            获取下拉列表
+            </summary>
         </member>
         <member name="T:FlyFramework.Test.DapperAppService">
             <summary>

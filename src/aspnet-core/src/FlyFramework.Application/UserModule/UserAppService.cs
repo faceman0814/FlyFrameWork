@@ -1,6 +1,4 @@
-﻿using AngleSharp.Css;
-
-using FlyFramework.ApplicationServices;
+﻿using FlyFramework.ApplicationServices;
 using FlyFramework.Authorizations;
 using FlyFramework.Common;
 using FlyFramework.Dtos;
@@ -8,6 +6,7 @@ using FlyFramework.Extentions;
 using FlyFramework.Extentions.Object;
 using FlyFramework.LazyModule.LazyDefinition;
 using FlyFramework.OrgUnitModule.DomainService.OrgUnitNodes;
+using FlyFramework.PermissionModule.DomainService;
 using FlyFramework.Repositories;
 using FlyFramework.UserModule.DomainService;
 using FlyFramework.UserModule.Dtos;
@@ -15,11 +14,8 @@ using FlyFramework.UserModule.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-using Minio.DataModel;
-
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 namespace FlyFramework.UserModule
 {
@@ -32,12 +28,14 @@ namespace FlyFramework.UserModule
         private readonly IRepository<UserRole, string> _repository;
         private readonly IOrgUnitNodeManager _orgUnitNodeManager;
         private readonly ICommonAppService _commonService;
+        private readonly IPermissionManager _permissionManager;
 
         public UserAppService(IFlyFrameworkLazy flyFrameworkLazy, ICommonAppService commonAppService, IRepository<UserRole, string> repository)
         {
             _userManager = flyFrameworkLazy.LazyGetRequiredService<IUserManager>().Value;
             _orgUnitNodeManager = flyFrameworkLazy.LazyGetRequiredService<IOrgUnitNodeManager>().Value;
             _roleManager = flyFrameworkLazy.LazyGetRequiredService<IRoleManager>().Value;
+            _permissionManager = flyFrameworkLazy.LazyGetRequiredService<IPermissionManager>().Value;
             _commonService = commonAppService;
             _repository = repository;
         }
@@ -59,7 +57,6 @@ namespace FlyFramework.UserModule
                 await Create(input);
             }
         }
-
 
         /// <summary>
         /// 获取用户信息
@@ -143,6 +140,15 @@ namespace FlyFramework.UserModule
                     await _repository.InsertAsync(new UserRole(user, role));
                 }
             }
+        }
+
+        /// <summary>
+        /// 获取所有权限
+        /// </summary>
+        /// <returns></returns>
+        public async Task GetAllPermission()
+        {
+            var query = await _permissionManager.QueryAsNoTracking.ToListAsync();
         }
 
         #region 私有方法

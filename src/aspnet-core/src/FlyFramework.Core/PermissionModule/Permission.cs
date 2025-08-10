@@ -18,15 +18,15 @@ namespace FlyFramework.PermissionModule
     /// <summary>
     /// 权限表
     /// </summary>
-    [Table("permission")]
     public class Permission : Entity<string>
     {
-        public Permission(string key, string displayName, string module)
+        private readonly List<Permission> _children;
+
+        public Permission(string key, string displayName)
         {
             Key = key;
             DisplayName = displayName;
             Id = Guid.NewGuid().ToString("N");
-            Module = module;
         }
 
         /// <summary>
@@ -37,23 +37,38 @@ namespace FlyFramework.PermissionModule
         /// 权限名称
         /// </summary>
         public string DisplayName { get; set; }
-        /// <summary>
-        /// 所属模块
-        /// </summary>
-        public string Module { get; set; }
+
         /// <summary>
         /// 权限类型
         /// </summary>
         public PermissionType Type { get; set; }
 
-    }
+        /// <summary>
+        /// 父节点
+        /// </summary>
+        public string ParentId { get; set; }
 
-    public enum PermissionType
-    {
-        [Description("操作权限")]
-        Operation,
+        public Permission Parent { get; private set; }
 
-        [Description("数据权限")]
-        Data
+        public IReadOnlyList<Permission> Children => _children.ToImmutableList();
+
+        public Permission CreateChildPermission(string name, string displayName)
+        {
+            var permission = new Permission(name, displayName)
+            {
+                Parent = this
+            };
+            _children.Add(permission);
+            return permission;
+        }
+
+        public enum PermissionType
+        {
+            [Description("操作权限")]
+            Operation,
+
+            [Description("数据权限")]
+            Data
+        }
     }
 }

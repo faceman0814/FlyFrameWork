@@ -95,36 +95,32 @@ namespace FlyFramework.Seed
             }
 
             //todo 权限定义
-            var isExists = _context.Permission.Any(t => t.Key.Contains(UserAuthority.User_Node));
+            var isExists = _context.Permission.Any(t => t.Key.Contains(UserAuthority.UserManager));
             if (!isExists)
             {
-                var perssions = new List<Permission>()
-                {
-                    new Permission(UserAuthority.User_Node, UserAuthority.User_Node_Name,UserAuthority.User),
-                    new Permission(UserAuthority.User_Create, UserAuthority.User_Create_Name,UserAuthority.User),
-                    new Permission(UserAuthority.User_Update,UserAuthority.User_Update_Name, UserAuthority.User),
-                    new Permission(UserAuthority.User_Delete, UserAuthority.User_Delete_Name, UserAuthority.User),
+                var userManager = new Permission(UserAuthority.UserManager, UserAuthority.UserManager_Name);
+                var userAuth = userManager.CreateChildPermission(UserAuthority.User_Node, UserAuthority.User_Node_Name);
+                userAuth.CreateChildPermission(UserAuthority.User_Create, UserAuthority.User_Create_Name);
+                userAuth.CreateChildPermission(UserAuthority.User_Update, UserAuthority.User_Update_Name);
+                userAuth.CreateChildPermission(UserAuthority.User_Delete, UserAuthority.User_Delete_Name);
 
-                    new Permission(RoleAuthority.Role_Node, RoleAuthority.Role_Node,RoleAuthority.Role),
-                    new Permission(RoleAuthority.Role_Create, RoleAuthority.Role_Create_Name,RoleAuthority.Role),
-                    new Permission(RoleAuthority.Role_Update, RoleAuthority.Role_Update_Name,RoleAuthority.Role),
-                    new Permission(RoleAuthority.Role_Delete, RoleAuthority.Role_Delete_Name,RoleAuthority.Role)
-                };
+                var roleAuth = userManager.CreateChildPermission(RoleAuthority.Role_Node, RoleAuthority.Role_Node_Name);
+                userManager.CreateChildPermission(RoleAuthority.Role_Create, RoleAuthority.Role_Create_Name);
+                userManager.CreateChildPermission(RoleAuthority.Role_Update, RoleAuthority.Role_Update_Name);
+                userManager.CreateChildPermission(RoleAuthority.Role_Delete, RoleAuthority.Role_Delete_Name);
 
-                _context.AddRange(perssions);
+                //var rolePermissions = new List<RolePermission>();
+                //foreach (var item in perssions)
+                //{
+                //    rolePermissions.Add(new RolePermission()
+                //    {
+                //        RoleId = roleId,
+                //        PermissionId = item.Id,
+                //        Id = Guid.NewGuid().ToString("N")
+                //    });
+                //}
 
-                var rolePermissions = new List<RolePermission>();
-                foreach (var item in perssions)
-                {
-                    rolePermissions.Add(new RolePermission()
-                    {
-                        RoleId = roleId,
-                        PermissionId = item.Id,
-                        Id = Guid.NewGuid().ToString("N")
-                    });
-                }
-
-                _context.AddRange(rolePermissions);
+                //_context.AddRange(rolePermissions);
             }
         }
 

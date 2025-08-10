@@ -1,17 +1,13 @@
 ﻿using FlyFramework.ApplicationServices;
-using FlyFramework.Authorizations;
 using FlyFramework.Common;
 using FlyFramework.Dtos;
 using FlyFramework.Extentions;
 using FlyFramework.Extentions.Object;
 using FlyFramework.LazyModule.LazyDefinition;
-using FlyFramework.OrgUnitModule.DomainService.OrgUnitNodes;
 using FlyFramework.RoleModule.Dtos;
 using FlyFramework.UserModule;
 using FlyFramework.UserModule.DomainService;
-using FlyFramework.UserModule.Dtos;
 
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using System.Collections.Generic;
@@ -34,7 +30,6 @@ namespace FlyFramework.RoleModule
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [HttpPost]
         public async Task<GetPagedResult<RoleListDto>> GetPaged(GetRolesInput input)
         {
             var res = new GetPagedResult<RoleListDto>()
@@ -84,7 +79,6 @@ namespace FlyFramework.RoleModule
         /// <summary>
         /// 获取下拉列表
         /// </summary>
-        [HttpPost]
         public async Task<List<DropDownListDto>> GetDropDownList(GetDropDownListInput input)
         {
             var query = _roleManager.QueryAsNoTracking.Select(t => new DropDownListDto

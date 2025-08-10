@@ -2,6 +2,7 @@
 using FlyFramework.Extentions.Object;
 using FlyFramework.OrgUnitModule.DomainService.OrgUnitNodeRoles;
 using FlyFramework.Repositories;
+using FlyFramework.UserModule.DomainService;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,7 @@ namespace FlyFramework.OrgUnitModule.DomainService.OrgUnitNodes
     {
         readonly IRepository<OrgUnitNodeRole, string> _orgNodeGrantedRepo;
         readonly IOrgUnitNodeRoleManager _orgNodeGrantedManager;
+        readonly IUserManager _userManager;
         public OrgUnitNodeManager(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _orgNodeGrantedManager = GetService<IOrgUnitNodeRoleManager>();
@@ -32,6 +34,8 @@ namespace FlyFramework.OrgUnitModule.DomainService.OrgUnitNodes
             {
                 userId = UserSession.UserId;
             }
+
+            var roles = _
             var nodeIdList = new List<string>();
 
             // 当前用户拥有的节点

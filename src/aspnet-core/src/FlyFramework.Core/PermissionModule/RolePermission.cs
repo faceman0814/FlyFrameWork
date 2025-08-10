@@ -21,5 +21,6 @@ namespace FlyFramework.PermissionModule
         /// </summary>
         public string TenantId { get; set; }
 
+
     }
 }
