@@ -98,7 +98,6 @@ namespace FlyFramework.UserModule
                             IsActive = user.IsActive,
                             IsSuperAdmin = user.IsSuperAdmin,
                             CreationTime = user.CreationTime,
-
                         };
 
             var datas = await query.PageBy(input).ToListAsync();

@@ -81,6 +81,32 @@ namespace FlyFramework.RoleModule
             return role;
         }
 
+        /// <summary>
+        /// 获取下拉列表
+        /// </summary>
+        [HttpPost]
+        public async Task<List<DropDownListDto>> GetDropDownList(GetDropDownListInput input)
+        {
+            var query = _roleManager.QueryAsNoTracking.Select(t => new DropDownListDto
+            {
+                Key = t.Id,
+                Value = t.DisplayName
+            });
+
+            var res = await query
+                .WhereIf(!string.IsNullOrWhiteSpace(input.FilterText), t => t.Value.Contains(input.FilterText))
+                .PageBy(input)
+                .ToListAsync();
+
+            if (input.Ids != null && input.Ids.Count > 0)
+            {
+                var hasValue = await query.Where(t => input.Ids.Contains(t.Key)).ToListAsync();
+                res.AddRange(hasValue);
+            }
+
+            return res;
+        }
+
         #region 私有方法
 
         private async Task Create(CreateOrUpdateRoleInput input)
