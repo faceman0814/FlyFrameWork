@@ -13,5 +13,12 @@ namespace FlyFramework.PermissionModule.DomainService
         /// </summary>
         /// <returns></returns>
         Task<List<PermissionDto>> GetAllPermission();
+
+        /// <summary>
+        /// 分配权限
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        Task AssignPermission(AssignPermissionInput input);
     }
 }

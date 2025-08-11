@@ -4,6 +4,8 @@ using FlyFramework.Dtos;
 using FlyFramework.Extentions;
 using FlyFramework.Extentions.Object;
 using FlyFramework.LazyModule.LazyDefinition;
+using FlyFramework.PermissionModule.DomainService;
+using FlyFramework.PermissionModule.Dtos;
 using FlyFramework.RoleModule.Dtos;
 using FlyFramework.UserModule;
 using FlyFramework.UserModule.DomainService;
@@ -18,10 +20,12 @@ namespace FlyFramework.RoleModule
     public class RoleAppService : ApplicationService, IRoleAppService
     {
         private readonly IRoleManager _roleManager;
+        private readonly IPermissionManager _permissionManager;
         private readonly ICommonAppService _commonService;
         public RoleAppService(IFlyFrameworkLazy flyFrameworkLazy, ICommonAppService commonAppService)
         {
             _roleManager = flyFrameworkLazy.LazyGetRequiredService<IRoleManager>().Value;
+            _permissionManager = flyFrameworkLazy.LazyGetRequiredService<IPermissionManager>().Value;
             _commonService = commonAppService;
         }
 
@@ -99,6 +103,15 @@ namespace FlyFramework.RoleModule
             }
 
             return res;
+        }
+
+        /// <summary>
+        /// 分配权限
+        /// </summary>
+        /// <returns></returns>
+        public async Task AssignPermission(AssignPermissionInput input)
+        {
+            await _permissionManager.AssignPermission(input);
         }
 
         #region 私有方法

@@ -1,7 +1,12 @@
 ﻿using FlyFramework.Domains;
+using FlyFramework.OrgUnitModule;
 using FlyFramework.PermissionModule.Dtos;
+using FlyFramework.Repositories;
+using FlyFramework.UserModule;
+using FlyFramework.UserModule.DomainService;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 using System;
 using System.Collections.Generic;
@@ -12,8 +17,10 @@ namespace FlyFramework.PermissionModule.DomainService
 {
     public class PermissionManager : GuidDomainService<Permission>, IPermissionManager
     {
+        readonly IRolePermissionManager _rolePermissionManager;
         public PermissionManager(IServiceProvider serviceProvider) : base(serviceProvider)
         {
+            _rolePermissionManager = serviceProvider.GetService<IRolePermissionManager>();
         }
 
         public override IQueryable<Permission> GetIncludeQuery()
@@ -51,6 +58,27 @@ namespace FlyFramework.PermissionModule.DomainService
             return BuildPermissionTree(allPermissions);
         }
 
+        public async Task AssignPermission(AssignPermissionInput input)
+        {
+            switch (input.Type)
+            {
+                case AssignPermissionEnum.OrgUnit:
+                case AssignPermissionEnum.User:
+                    break;
+                case AssignPermissionEnum.Role:
+                    foreach (var item in input.PermissionIds)
+                    {
+                        await _rolePermissionManager.Create(new RolePermission()
+                        {
+                            RoleId = input.Id,
+                            PermissionId = item
+                        });
+                    }
+                    break;
+            }
+        }
+
+        #region 私有方法
 
         private List<PermissionDto> BuildPermissionTree(List<PermissionDto> allPermissions)
         {
@@ -114,5 +142,7 @@ namespace FlyFramework.PermissionModule.DomainService
 
             return children;
         }
+
+        #endregion
     }
 }
