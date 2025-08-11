@@ -51,28 +51,16 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:FlyFramework.Migrations.init">
+        <member name="T:FlyFramework.Migrations.Init">
             <inheritdoc />
         </member>
-        <member name="M:FlyFramework.Migrations.init.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:FlyFramework.Migrations.Init.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:FlyFramework.Migrations.init.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:FlyFramework.Migrations.Init.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:FlyFramework.Migrations.init.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:FlyFramework.Migrations.AddData">
-            <inheritdoc />
-        </member>
-        <member name="M:FlyFramework.Migrations.AddData.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:FlyFramework.Migrations.AddData.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:FlyFramework.Migrations.AddData.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:FlyFramework.Migrations.Init.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
         <member name="M:FlyFramework.Seed.FlyFrameworkCreatorHelper.SetContext(System.String,FlyFramework.FlyFrameworkDbContext)">

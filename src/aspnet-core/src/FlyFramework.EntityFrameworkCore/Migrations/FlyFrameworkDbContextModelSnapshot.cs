@@ -158,15 +158,17 @@ namespace FlyFramework.Migrations
                     b.Property<string>("Key")
                         .HasColumnType("text");
 
-                    b.Property<string>("Module")
-                        .HasColumnType("text");
+                    b.Property<string>("ParentId")
+                        .HasColumnType("character varying(32)");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.ToTable("permission");
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("Permission");
                 });
 
             modelBuilder.Entity("FlyFramework.PermissionModule.RolePermission", b =>
@@ -231,9 +233,6 @@ namespace FlyFramework.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("TenantId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserId")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -632,6 +631,15 @@ namespace FlyFramework.Migrations
                     b.HasDiscriminator().HasValue("UserRole");
                 });
 
+            modelBuilder.Entity("FlyFramework.PermissionModule.Permission", b =>
+                {
+                    b.HasOne("FlyFramework.PermissionModule.Permission", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("FlyFramework.UserModule.Role", null)
@@ -681,6 +689,11 @@ namespace FlyFramework.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("FlyFramework.PermissionModule.Permission", b =>
+                {
+                    b.Navigation("Children");
                 });
 #pragma warning restore 612, 618
         }

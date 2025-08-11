@@ -371,6 +371,12 @@
             获取下拉列表
             </summary>
         </member>
+        <member name="M:FlyFramework.RoleModule.RoleAppService.AssignPermission(FlyFramework.PermissionModule.Dtos.AssignPermissionInput)">
+            <summary>
+            分配权限
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:FlyFramework.Test.DapperAppService">
             <summary>
             Dapper 应用服务

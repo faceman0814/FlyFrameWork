@@ -117,11 +117,33 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:FlyFramework.PermissionModule.DomainService.IPermissionManager.AssignPermission(FlyFramework.PermissionModule.Dtos.AssignPermissionInput)">
+            <summary>
+            分配权限
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
         <member name="M:FlyFramework.PermissionModule.DomainService.PermissionManager.GetAllPermission">
             <summary>
             获取所有权限
             </summary>
             <returns></returns>
+        </member>
+        <member name="P:FlyFramework.PermissionModule.Dtos.AssignPermissionInput.Id">
+            <summary>
+            主键Id
+            </summary>
+        </member>
+        <member name="P:FlyFramework.PermissionModule.Dtos.AssignPermissionInput.Type">
+            <summary>
+            分配类型
+            </summary>
+        </member>
+        <member name="P:FlyFramework.PermissionModule.Dtos.AssignPermissionInput.PermissionIds">
+            <summary>
+            权限Ids
+            </summary>
         </member>
         <member name="P:FlyFramework.PermissionModule.Dtos.PermissionDto.Key">
             <summary>

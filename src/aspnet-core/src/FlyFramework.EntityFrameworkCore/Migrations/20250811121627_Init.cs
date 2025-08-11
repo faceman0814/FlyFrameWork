@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FlyFramework.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -49,6 +49,7 @@ namespace FlyFramework.Migrations
                     FullName = table.Column<string>(type: "text", nullable: true, comment: "用户名称"),
                     OrgUnitNodeId = table.Column<string>(type: "text", nullable: true, comment: "组织单元Id"),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false, comment: "是否启用"),
+                    IsSuperAdmin = table.Column<bool>(type: "boolean", nullable: false, comment: "是否超级管理员"),
                     NeedToChangeThePassword = table.Column<bool>(type: "boolean", nullable: false, comment: "是否需要修改密码"),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false, comment: "是否已删除"),
                     DeleterUserId = table.Column<string>(type: "text", nullable: true, comment: "删除人Id"),
@@ -88,7 +89,6 @@ namespace FlyFramework.Migrations
                 {
                     Id = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false, comment: "主键"),
                     Name = table.Column<string>(type: "text", nullable: true, comment: "组织机构名称"),
-                    LeaderId = table.Column<string>(type: "text", nullable: true, comment: "部门负责人ID"),
                     ParentId = table.Column<string>(type: "text", nullable: true, comment: "父级Id"),
                     TenantId = table.Column<string>(type: "text", nullable: true, comment: "租户ID"),
                     Status = table.Column<int>(type: "integer", nullable: false, comment: "状态"),
@@ -128,19 +128,24 @@ namespace FlyFramework.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "permission",
+                name: "Permission",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false, comment: "主键"),
                     Key = table.Column<string>(type: "text", nullable: true),
                     DisplayName = table.Column<string>(type: "text", nullable: true),
-                    Module = table.Column<string>(type: "text", nullable: true),
                     Type = table.Column<int>(type: "integer", nullable: false),
+                    ParentId = table.Column<string>(type: "character varying(32)", nullable: true),
                     ConcurrencyToken = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true, comment: "并发令牌")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_permission", x => x.Id);
+                    table.PrimaryKey("PK_Permission", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Permission_Permission_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "Permission",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -148,7 +153,6 @@ namespace FlyFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false, comment: "主键"),
-                    UserId = table.Column<string>(type: "text", nullable: true),
                     RoleId = table.Column<string>(type: "text", nullable: true),
                     PermissionId = table.Column<string>(type: "text", nullable: true),
                     TenantId = table.Column<string>(type: "text", nullable: true),
@@ -325,6 +329,11 @@ namespace FlyFramework.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Permission_ParentId",
+                table: "Permission",
+                column: "ParentId");
         }
 
         /// <inheritdoc />
@@ -352,7 +361,7 @@ namespace FlyFramework.Migrations
                 name: "OrgUnitNodeRole");
 
             migrationBuilder.DropTable(
-                name: "permission");
+                name: "Permission");
 
             migrationBuilder.DropTable(
                 name: "RolePermission");
