@@ -586,5 +586,11 @@
             </summary>
             <param name="input"></param>
         </member>
+        <member name="M:FlyFramework.UserModule.UserAppService.GetAllPermission">
+            <summary>
+            获取所有权限
+            </summary>
+            <returns></returns>
+        </member>
     </members>
 </doc>

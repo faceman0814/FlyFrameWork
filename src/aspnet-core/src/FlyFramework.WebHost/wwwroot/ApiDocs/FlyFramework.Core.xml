@@ -111,6 +111,43 @@
             租户ID
             </summary>
         </member>
+        <member name="M:FlyFramework.PermissionModule.DomainService.IPermissionManager.GetAllPermission">
+            <summary>
+            获取所有权限
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.PermissionModule.DomainService.PermissionManager.GetAllPermission">
+            <summary>
+            获取所有权限
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:FlyFramework.PermissionModule.Dtos.PermissionDto.Key">
+            <summary>
+            权限Key
+            </summary>
+        </member>
+        <member name="P:FlyFramework.PermissionModule.Dtos.PermissionDto.DisplayName">
+            <summary>
+            权限名称
+            </summary>
+        </member>
+        <member name="P:FlyFramework.PermissionModule.Dtos.PermissionDto.Type">
+            <summary>
+            权限类型
+            </summary>
+        </member>
+        <member name="P:FlyFramework.PermissionModule.Dtos.PermissionDto.ParentId">
+            <summary>
+            父节点
+            </summary>
+        </member>
+        <member name="P:FlyFramework.PermissionModule.Dtos.PermissionDto.Children">
+            <summary>
+            子集
+            </summary>
+        </member>
         <member name="T:FlyFramework.PermissionModule.Permission">
             <summary>
             权限表
@@ -126,14 +163,14 @@
             权限名称
             </summary>
         </member>
-        <member name="P:FlyFramework.PermissionModule.Permission.Module">
-            <summary>
-            所属模块
-            </summary>
-        </member>
         <member name="P:FlyFramework.PermissionModule.Permission.Type">
             <summary>
             权限类型
+            </summary>
+        </member>
+        <member name="P:FlyFramework.PermissionModule.Permission.ParentId">
+            <summary>
+            父节点
             </summary>
         </member>
         <member name="T:FlyFramework.PermissionModule.RolePermission">

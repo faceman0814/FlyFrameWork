@@ -1,6 +1,8 @@
 ﻿using FlyFramework.Domains;
 using FlyFramework.Extentions.Object;
 using FlyFramework.OrgUnitModule.DomainService.OrgUnitNodeRoles;
+using FlyFramework.PermissionModule;
+using FlyFramework.PermissionModule.DomainService;
 using FlyFramework.Repositories;
 using FlyFramework.UserModule.DomainService;
 
@@ -18,9 +20,12 @@ namespace FlyFramework.OrgUnitModule.DomainService.OrgUnitNodes
         readonly IRepository<OrgUnitNodeRole, string> _orgNodeGrantedRepo;
         readonly IOrgUnitNodeRoleManager _orgNodeGrantedManager;
         readonly IUserManager _userManager;
+        readonly IRolePermissionManager _rolePermissionManager;
         public OrgUnitNodeManager(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _orgNodeGrantedManager = GetService<IOrgUnitNodeRoleManager>();
+            _userManager = GetService<IUserManager>();
+            _rolePermissionManager = GetService<IRolePermissionManager>();
         }
 
         /// <summary>
@@ -35,12 +40,15 @@ namespace FlyFramework.OrgUnitModule.DomainService.OrgUnitNodes
                 userId = UserSession.UserId;
             }
 
-            var roles = _
+            var user =await _userManager.FindById(userId);
+
+            //_rolePermissionManager.QueryAsNoTracking.Where(t => t.;
+
             var nodeIdList = new List<string>();
 
             // 当前用户拥有的节点
             nodeIdList = await _orgNodeGrantedManager.QueryAsNoTracking
-                //.Where(o => o.UserId == userId)
+                //.Where(o => o.RoleId == user.)
                 .Select(o => o.OrgUnitNodeId)
                 .AsNoTracking()
                 .ToListAsync();

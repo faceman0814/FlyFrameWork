@@ -7,6 +7,8 @@ using FlyFramework.UserModule.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+using ServiceStack;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,29 +100,35 @@ namespace FlyFramework.Seed
             var isExists = _context.Permission.Any(t => t.Key.Contains(UserAuthority.UserManager));
             if (!isExists)
             {
+                var ids = new List<string>();
                 var userManager = new Permission(UserAuthority.UserManager, UserAuthority.UserManager_Name);
+                ids.Add(userManager.Id);
                 var userAuth = userManager.CreateChildPermission(UserAuthority.User_Node, UserAuthority.User_Node_Name);
-                userAuth.CreateChildPermission(UserAuthority.User_Create, UserAuthority.User_Create_Name);
-                userAuth.CreateChildPermission(UserAuthority.User_Update, UserAuthority.User_Update_Name);
-                userAuth.CreateChildPermission(UserAuthority.User_Delete, UserAuthority.User_Delete_Name);
+                ids.Add(userAuth.Id);
+
+                ids.Add(userAuth.CreateChildPermission(UserAuthority.User_Create, UserAuthority.User_Create_Name).Id);
+                ids.Add(userAuth.CreateChildPermission(UserAuthority.User_Update, UserAuthority.User_Update_Name).Id);
+                ids.Add(userAuth.CreateChildPermission(UserAuthority.User_Delete, UserAuthority.User_Delete_Name).Id);
 
                 var roleAuth = userManager.CreateChildPermission(RoleAuthority.Role_Node, RoleAuthority.Role_Node_Name);
-                userManager.CreateChildPermission(RoleAuthority.Role_Create, RoleAuthority.Role_Create_Name);
-                userManager.CreateChildPermission(RoleAuthority.Role_Update, RoleAuthority.Role_Update_Name);
-                userManager.CreateChildPermission(RoleAuthority.Role_Delete, RoleAuthority.Role_Delete_Name);
+                ids.Add(roleAuth.Id);
 
-                //var rolePermissions = new List<RolePermission>();
-                //foreach (var item in perssions)
-                //{
-                //    rolePermissions.Add(new RolePermission()
-                //    {
-                //        RoleId = roleId,
-                //        PermissionId = item.Id,
-                //        Id = Guid.NewGuid().ToString("N")
-                //    });
-                //}
+                ids.Add(userManager.CreateChildPermission(RoleAuthority.Role_Create, RoleAuthority.Role_Create_Name).Id);
+                ids.Add(userManager.CreateChildPermission(RoleAuthority.Role_Update, RoleAuthority.Role_Update_Name).Id);
+                ids.Add(userManager.CreateChildPermission(RoleAuthority.Role_Delete, RoleAuthority.Role_Delete_Name).Id);
 
-                //_context.AddRange(rolePermissions);
+                var rolePermissions = new List<RolePermission>();
+                foreach (var item in ids)
+                {
+                    rolePermissions.Add(new RolePermission()
+                    {
+                        RoleId = roleId,
+                        PermissionId = item,
+                        Id = Guid.NewGuid().ToString("N")
+                    });
+                }
+
+                _context.AddRange(rolePermissions);
             }
         }
 

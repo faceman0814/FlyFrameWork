@@ -7,6 +7,7 @@ using FlyFramework.Extentions.Object;
 using FlyFramework.LazyModule.LazyDefinition;
 using FlyFramework.OrgUnitModule.DomainService.OrgUnitNodes;
 using FlyFramework.PermissionModule.DomainService;
+using FlyFramework.PermissionModule.Dtos;
 using FlyFramework.Repositories;
 using FlyFramework.UserModule.DomainService;
 using FlyFramework.UserModule.Dtos;
@@ -146,9 +147,9 @@ namespace FlyFramework.UserModule
         /// 获取所有权限
         /// </summary>
         /// <returns></returns>
-        public async Task GetAllPermission()
+        public async Task<List<PermissionDto>> GetAllPermission()
         {
-            var query = await _permissionManager.QueryAsNoTracking.ToListAsync();
+            return await _permissionManager.GetAllPermission();
         }
 
         #region 私有方法
