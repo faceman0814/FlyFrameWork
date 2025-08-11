@@ -92,7 +92,7 @@ namespace FlyFramework.Seed
             // Assign role to user
             if (roleId.HasValue())
             {
-                var userRole = new UserRole(_tenantId, user.Id, roleId);
+                var userRole = new UserRole(user.Id, roleId, _tenantId);
                 _context.UserRole.Add(userRole);
             }
 

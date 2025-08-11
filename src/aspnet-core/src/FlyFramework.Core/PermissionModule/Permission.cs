@@ -20,7 +20,7 @@ namespace FlyFramework.PermissionModule
     /// </summary>
     public class Permission : Entity<string>
     {
-        private readonly List<Permission> _children;
+        private readonly List<Permission> _children = [];
 
         public Permission(string key, string displayName)
         {

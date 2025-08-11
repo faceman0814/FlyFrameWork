@@ -14,11 +14,6 @@ namespace FlyFramework.UserModule
         IMustHaveTenant
     {
         public string Id { get; set; }
-        ///// <summary>
-        ///// 用户Id
-        ///// </summary>
-        //public string UserId { get; set; }
-        //public string RoleId { get; set; }
 
         /// <summary>
         /// 是否已删除
