@@ -61,7 +61,7 @@ namespace FlyFramework.FlyFrameworkModules
             {
                 if (module.Instance is FlyFrameworkBaseModule baseModule)
                 {
-                    baseModule.ServiceConfigerContext = context;
+                    baseModule.Configuration = context;
                 }
             }
 
@@ -72,7 +72,7 @@ namespace FlyFramework.FlyFrameworkModules
                 {
                     try
                     {
-                        module.Instance.PreInitialize(context);
+                        module.Instance.PreInitialize();
                     }
                     catch (Exception ex)
                     {
@@ -98,7 +98,7 @@ namespace FlyFramework.FlyFrameworkModules
                     }
                     try
                     {
-                        module.Instance.Initialize(context);
+                        module.Instance.Initialize();
                     }
                     catch (Exception ex) 
                     {
@@ -119,7 +119,7 @@ namespace FlyFramework.FlyFrameworkModules
                 {
                     try
                     {
-                        module.Instance.PostInitialize(context);
+                        module.Instance.PostInitialize();
                     }
                     catch (Exception ex)
                     {

@@ -1,10 +1,7 @@
-﻿using Autofac.Core;
-
-using FlyFramework.FlyFrameworkModules;
-using FlyFramework.FlyFrameworkModules.Modules;
+﻿using FlyFramework.FlyFrameworkModules.Modules;
+using FlyFramework.FlyFrameworkModules.Permissions;
 using FlyFramework.LazyModule.LazyDefinition;
 using FlyFramework.PermissionModule;
-using FlyFramework.PermissionModule.DomainService;
 using FlyFramework.Repositories;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -16,11 +13,11 @@ namespace FlyFramework
     [DependOn(typeof(FlyFrameworkDomainModule))]
     public class FlyFrameworkCoreModule : FlyFrameworkBaseModule
     {
-        public override void Initialize(ServiceConfigerContext context)
+        public override void Initialize()
         {
-            context.Services.AddTransient(typeof(IFlyFrameworkLazy), typeof(FlyFrameworkLazy));
-            context.Services.AddTransient(typeof(IPermissionDefinitionContext), typeof(PermissionDefinitionContext));
-            context.Services.AddTransient(typeof(IRepository<Permission, string>), typeof(Repository<Permission, string>));
+            Configuration.Services.AddTransient(typeof(IFlyFrameworkLazy), typeof(FlyFrameworkLazy));
+            Configuration.Services.AddTransient(typeof(IPermissionDefinitionContext), typeof(PermissionDefinitionContext));
+            Configuration.Services.AddTransient(typeof(IRepository<PermissionSetting, string>), typeof(Repository<PermissionSetting, string>));
         }
 
     }

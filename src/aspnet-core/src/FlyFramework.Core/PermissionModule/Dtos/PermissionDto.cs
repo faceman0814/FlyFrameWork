@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using static FlyFramework.PermissionModule.Permission;
+using static FlyFramework.PermissionModule.PermissionSetting;
 
 namespace FlyFramework.PermissionModule.Dtos
 {
@@ -11,18 +11,9 @@ namespace FlyFramework.PermissionModule.Dtos
         /// </summary>
         public string Id { get; set; }
         /// <summary>
-        /// 权限Key
-        /// </summary>
-        public string Key { get; set; }
-        /// <summary>
         /// 权限名称
         /// </summary>
-        public string DisplayName { get; set; }
-
-        /// <summary>
-        /// 权限类型
-        /// </summary>
-        public PermissionType Type { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// 父节点

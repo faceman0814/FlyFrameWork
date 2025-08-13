@@ -1,4 +1,5 @@
-﻿using FlyFramework.PermissionModule;
+﻿using FlyFramework.FlyFrameworkModules.Permissions;
+using FlyFramework.PermissionModule;
 
 using ServiceStack;
 

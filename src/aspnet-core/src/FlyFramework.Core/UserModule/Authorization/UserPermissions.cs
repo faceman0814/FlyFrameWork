@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FlyFramework.UserModule.Authorization
+﻿namespace FlyFramework.UserModule.Authorization
 {
-    public class UserAuthority
+    public class UserPermissions
     {
         public const string UserManager = "UserManager";
         public const string User_Node = "User.Node";

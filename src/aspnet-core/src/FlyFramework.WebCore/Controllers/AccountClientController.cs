@@ -39,7 +39,7 @@ namespace FlyFramework.Controllers
         readonly IUserManager _userManager;
         readonly IRepository<Role, string> _roleRepository;
         readonly IRepository<UserRole, string> _userRoleRepository;
-        readonly IRepository<Permission, string> _permissionRepository;
+        readonly IRepository<PermissionSetting, string> _permissionRepository;
         public AccountClientController(IFlyFrameworkLazy flyFrameworkLazy)
         {
             _userManager = flyFrameworkLazy.LazyGetService<IUserManager>().Value;
@@ -50,7 +50,7 @@ namespace FlyFramework.Controllers
             _claimsPrincipalFactory = flyFrameworkLazy.LazyGetService<UserClaimsPrincipalFactory<User, Role>>().Value;
             _roleRepository = flyFrameworkLazy.LazyGetService<IRepository<Role, string>>().Value;
             _userRoleRepository = flyFrameworkLazy.LazyGetService<IRepository<UserRole, string>>().Value;
-            _permissionRepository = flyFrameworkLazy.LazyGetService<IRepository<Permission, string>>().Value;
+            _permissionRepository = flyFrameworkLazy.LazyGetService<IRepository<PermissionSetting, string>>().Value;
         }
         private async Task<ClaimsIdentity> GetClaimsIdentityAsync(User user)
         {

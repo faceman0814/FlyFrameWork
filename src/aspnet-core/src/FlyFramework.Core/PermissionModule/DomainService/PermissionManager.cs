@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace FlyFramework.PermissionModule.DomainService
 {
-    public class PermissionManager : GuidDomainService<Permission>, IPermissionManager
+    public class PermissionManager : GuidDomainService<PermissionSetting>, IPermissionManager
     {
         readonly IRolePermissionManager _rolePermissionManager;
         public PermissionManager(IServiceProvider serviceProvider) : base(serviceProvider)
@@ -23,17 +23,17 @@ namespace FlyFramework.PermissionModule.DomainService
             _rolePermissionManager = serviceProvider.GetService<IRolePermissionManager>();
         }
 
-        public override IQueryable<Permission> GetIncludeQuery()
+        public override IQueryable<PermissionSetting> GetIncludeQuery()
         {
             throw new NotImplementedException();
         }
 
-        public override Task ValidateOnDelete(Permission entity)
+        public override Task ValidateOnDelete(PermissionSetting entity)
         {
             return Task.CompletedTask;
         }
 
-        public override Task ValidateOnCreateOrUpdate(Permission entity)
+        public override Task ValidateOnCreateOrUpdate(PermissionSetting entity)
         {
             return Task.CompletedTask;
         }
@@ -48,10 +48,7 @@ namespace FlyFramework.PermissionModule.DomainService
                 .Select(t => new PermissionDto
                 {
                     Id = t.Id,
-                    Key = t.Key,
-                    DisplayName = t.DisplayName,
-                    Type = t.Type,
-                    ParentId = t.ParentId
+                    Name = t.Name,
                 })
                 .ToListAsync();
 

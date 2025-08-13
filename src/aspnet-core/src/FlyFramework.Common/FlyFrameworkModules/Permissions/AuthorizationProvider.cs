@@ -1,6 +1,5 @@
 ﻿using FlyFramework.Dependencys;
-using FlyFramework.PermissionModule;
-namespace FlyFramework.Authorizations
+namespace FlyFramework.FlyFrameworkModules.Permissions
 {
     public abstract class AuthorizationProvider : ITransientDependency
     {

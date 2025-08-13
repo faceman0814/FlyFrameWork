@@ -220,6 +220,13 @@
             租户Id
             </summary>
         </member>
+        <member name="T:FlyFramework.UserModule.Authorization.UserAuthorizationProvider">
+             <summary>
+             权限配置都在这里。
+             给权限默认设置服务
+             See <see cref="T:FlyFramework.UserModule.Authorization.UserPermissions" /> 
+            </summary>
+        </member>
         <member name="M:FlyFramework.UserModule.DomainService.IUserManager.FindByNameAsync(System.String)">
             <summary>
             根据用户名查找用户

@@ -1,4 +1,5 @@
 ﻿using FlyFramework.Entities;
+using FlyFramework.FlyFrameworkModules.Permissions;
 using FlyFramework.OrgUnitModule;
 using FlyFramework.PermissionModule;
 using FlyFramework.UserModule;
@@ -166,6 +167,7 @@ namespace FlyFramework
         public DbSet<UserRole> UserRole { get; set; }
         public DbSet<OrgUnitNode> OrgUnitNode { get; set; }
         public DbSet<Permission> Permission { get; set; }
+        public DbSet<PermissionSetting> PermissionSetting { get; set; }
         public DbSet<RolePermission> RolePermission { get; set; }
     }
 }

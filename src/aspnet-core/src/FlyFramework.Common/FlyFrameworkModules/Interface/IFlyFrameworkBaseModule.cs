@@ -4,10 +4,10 @@ namespace FlyFramework.FlyFrameworkModules.Interface
 {
     public interface IFlyFrameworkBaseModule : IPreInitialize
     {
-        void Initialize(ServiceConfigerContext context);
+        void Initialize();
 
-        void InitApplication(InitApplicationContext context);
+        void InitApplication();
 
-        void PostInitialize(ServiceConfigerContext context);
+        void PostInitialize();
     }
 }

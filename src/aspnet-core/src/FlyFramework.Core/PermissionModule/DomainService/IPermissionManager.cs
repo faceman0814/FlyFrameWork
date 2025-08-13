@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FlyFramework.PermissionModule.DomainService
 {
-    public interface IPermissionManager : IGuidDomainService<Permission>
+    public interface IPermissionManager : IGuidDomainService<PermissionSetting>
     {
         /// <summary>
         /// 获取所有权限

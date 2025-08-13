@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FlyFramework.RoleModule.Authorization
 {
-    public class RoleAuthority
+    public class RolePermissions
     {
         public const string Role = "Role";
         public const string Role_Node = "Role.Node";

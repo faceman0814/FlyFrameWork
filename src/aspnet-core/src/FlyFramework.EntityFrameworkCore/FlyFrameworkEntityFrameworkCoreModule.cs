@@ -27,24 +27,24 @@ namespace FlyFramework
    )]
     public class FlyFrameworkEntityFrameworkCoreModule : FlyFrameworkBaseModule
     {
-        public override void PreInitialize(ServiceConfigerContext context)
+        public override void PreInitialize()
         {
-            FlyFrameworkDbContextConfigurer.UsingDatabaseServices(context);
+            FlyFrameworkDbContextConfigurer.UsingDatabaseServices(Configuration);
 
-            context.Services.AddTransient<IDbContextProvider, DbContextProvider>();
-            context.Services.AddTransient<IDatabaseChecker, DatabaseChecker<FlyFrameworkDbContext>>();
-            context.Services.AddTransient<IUnitOfWorkManager, UnitOfWorkManager>();
+            Configuration.Services.AddTransient<IDbContextProvider, DbContextProvider>();
+            Configuration.Services.AddTransient<IDatabaseChecker, DatabaseChecker<FlyFrameworkDbContext>>();
+            Configuration.Services.AddTransient<IUnitOfWorkManager, UnitOfWorkManager>();
         }
-        public override void Initialize(ServiceConfigerContext context)
+        public override void Initialize()
         {
 
         }
-        public override void PostInitialize(ServiceConfigerContext context)
+        public override void PostInitialize()
         {
             //获取配置访问器：
-            var configuration = context.Provider.GetRequiredService<IConfiguration>();
+            var configuration = Configuration.Provider.GetRequiredService<IConfiguration>();
             //创建作用域：
-            using (var scope = context.Provider.CreateScope())
+            using (var scope = Configuration.Provider.CreateScope())
             {
                 //获取数据库连接字符串：
                 var connectionString = configuration.GetConnectionString("Default");
@@ -54,7 +54,7 @@ namespace FlyFramework
 
                 if (!FlyFrameworkConfigs.Database.SkipDbSeed && dbExist)
                 {
-                    SeedHelper.SeedHostDb(context.Provider);
+                    SeedHelper.SeedHostDb(Configuration.Provider);
                 }
             }
         }

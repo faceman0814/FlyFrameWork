@@ -16,7 +16,7 @@ namespace FlyFramework.FlyFrameworkModules.Modules
     public abstract class FlyFrameworkBaseModule : Module, IFlyFrameworkBaseModule
     {
 
-        protected internal ServiceConfigerContext ServiceConfigerContext
+        protected internal ServiceConfigerContext Configuration
         {
             get
             {
@@ -36,7 +36,7 @@ namespace FlyFramework.FlyFrameworkModules.Modules
         /// </summary>
         /// <param name="context"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public virtual void PreInitialize(ServiceConfigerContext context)
+        public virtual void PreInitialize()
         {
 
         }
@@ -46,7 +46,7 @@ namespace FlyFramework.FlyFrameworkModules.Modules
         /// </summary>
         /// <param name="context"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public virtual void Initialize(ServiceConfigerContext context)
+        public virtual void Initialize()
         {
 
         }
@@ -56,7 +56,7 @@ namespace FlyFramework.FlyFrameworkModules.Modules
         /// </summary>
         /// <param name="context"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public virtual void InitApplication(InitApplicationContext context)
+        public virtual void InitApplication()
         {
         }
 
@@ -64,7 +64,7 @@ namespace FlyFramework.FlyFrameworkModules.Modules
         /// 加载后处理程序
         /// </summary>
         /// <param name="context"></param>
-        public virtual void PostInitialize(ServiceConfigerContext context)
+        public virtual void PostInitialize()
         {
 
         }
@@ -90,7 +90,7 @@ namespace FlyFramework.FlyFrameworkModules.Modules
 
         public void Configure<TOptions>(Action<TOptions> action) where TOptions : class
         {
-            ServiceConfigerContext.Services.Configure(action);
+            Configuration.Services.Configure(action);
         }
     }
 }

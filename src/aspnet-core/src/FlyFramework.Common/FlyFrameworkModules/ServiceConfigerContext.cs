@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FlyFramework.FlyFrameworkModules.Interface;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using System;
 using System.Collections.Generic;
@@ -20,6 +22,8 @@ namespace FlyFramework.FlyFrameworkModules
                 return Services.BuildServiceProvider();
             }
         }
+
+        public IAuthorizationConfiguration Authorization { get; }
 
         public ServiceConfigerContext(IServiceCollection services)
         {

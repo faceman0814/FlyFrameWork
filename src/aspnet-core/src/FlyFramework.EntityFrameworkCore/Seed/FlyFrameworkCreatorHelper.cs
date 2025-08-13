@@ -97,25 +97,25 @@ namespace FlyFramework.Seed
             }
 
             //todo 权限定义
-            var isExists = _context.Permission.Any(t => t.Key.Contains(UserAuthority.UserManager));
+            var isExists = _context.Permission.Any(t => t.Key.Contains(UserPermissions.UserManager));
             if (!isExists)
             {
                 var ids = new List<string>();
-                var userManager = new Permission(UserAuthority.UserManager, UserAuthority.UserManager_Name);
+                var userManager = new PermissionSetting(UserPermissions.UserManager, UserPermissions.UserManager_Name);
                 ids.Add(userManager.Id);
-                var userAuth = userManager.CreateChildPermission(UserAuthority.User_Node, UserAuthority.User_Node_Name);
+                var userAuth = userManager.CreateChildPermission(UserPermissions.User_Node, UserPermissions.User_Node_Name);
                 ids.Add(userAuth.Id);
 
-                ids.Add(userAuth.CreateChildPermission(UserAuthority.User_Create, UserAuthority.User_Create_Name).Id);
-                ids.Add(userAuth.CreateChildPermission(UserAuthority.User_Update, UserAuthority.User_Update_Name).Id);
-                ids.Add(userAuth.CreateChildPermission(UserAuthority.User_Delete, UserAuthority.User_Delete_Name).Id);
+                ids.Add(userAuth.CreateChildPermission(UserPermissions.User_Create, UserPermissions.User_Create_Name).Id);
+                ids.Add(userAuth.CreateChildPermission(UserPermissions.User_Update, UserPermissions.User_Update_Name).Id);
+                ids.Add(userAuth.CreateChildPermission(UserPermissions.User_Delete, UserPermissions.User_Delete_Name).Id);
 
-                var roleAuth = userManager.CreateChildPermission(RoleAuthority.Role_Node, RoleAuthority.Role_Node_Name);
+                var roleAuth = userManager.CreateChildPermission(RolePermissions.Role_Node, RolePermissions.Role_Node_Name);
                 ids.Add(roleAuth.Id);
 
-                ids.Add(roleAuth.CreateChildPermission(RoleAuthority.Role_Create, RoleAuthority.Role_Create_Name).Id);
-                ids.Add(roleAuth.CreateChildPermission(RoleAuthority.Role_Update, RoleAuthority.Role_Update_Name).Id);
-                ids.Add(roleAuth.CreateChildPermission(RoleAuthority.Role_Delete, RoleAuthority.Role_Delete_Name).Id);
+                ids.Add(roleAuth.CreateChildPermission(RolePermissions.Role_Create, RolePermissions.Role_Create_Name).Id);
+                ids.Add(roleAuth.CreateChildPermission(RolePermissions.Role_Update, RolePermissions.Role_Update_Name).Id);
+                ids.Add(roleAuth.CreateChildPermission(RolePermissions.Role_Delete, RolePermissions.Role_Delete_Name).Id);
 
                 _context.Add(userManager);
                 _context.SaveChanges();

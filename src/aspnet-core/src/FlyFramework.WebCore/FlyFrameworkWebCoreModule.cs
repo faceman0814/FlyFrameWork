@@ -24,15 +24,15 @@ namespace FlyFramework
     [DependOn(typeof(FlyFrameworkEntityFrameworkCoreModule))]
     public class FlyFrameworkWebCoreModule : FlyFrameworkBaseModule
     {
-        public override void Initialize(ServiceConfigerContext context)
+        public override void Initialize()
         {
-            var configuration = context.GetConfiguration();
-            var services = context.Services;
+            var configuration = Configuration.GetConfiguration();
+            var services = Configuration.Services;
 
             //Identity必须在JWT之前注册
-            AddIdentity(services);
+            AddIdentity(Configuration.Services);
 
-            AddJWT(services, configuration);
+            AddJWT(Configuration.Services, configuration);
 
         }
 

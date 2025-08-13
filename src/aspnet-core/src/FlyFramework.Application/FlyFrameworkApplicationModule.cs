@@ -7,21 +7,16 @@ using AutoMapper;
 using Castle.Core.Logging;
 
 using FlyFramework.Attributes;
-using FlyFramework.Authorizations;
 using FlyFramework.FlyFrameworkModules;
 using FlyFramework.FlyFrameworkModules.Modules;
-using FlyFramework.LazyModule.LazyDefinition;
 using FlyFramework.OrgUnitModule.OrgUnitNodes.Mappers;
-using FlyFramework.PermissionModule;
-using FlyFramework.Repositories;
 using FlyFramework.RoleModule.Mappers;
 using FlyFramework.Uow;
+using FlyFramework.UserModule.Authorization;
 using FlyFramework.UserModule.Mappers;
 using FlyFramework.UserSessions;
 
 using Microsoft.Extensions.DependencyInjection;
-
-using ServiceStack;
 
 using System.Linq;
 using System.Reflection;
@@ -31,15 +26,10 @@ namespace FlyFramework
     [DependOn(typeof(FlyFrameworkCoreModule))]
     public class FlyFrameworkApplicationModule : FlyFrameworkBaseModule
     {
-        public override void PreInitialize(ServiceConfigerContext context)
+        public override void PreInitialize()
         {
-            // 配置 AutoMapper
-            context.Services.AddAutoMapper((serviceProvider, configuration) =>
-            {
-                UserMapper.CreateMappings(configuration);
-                OrgUnitNodeMapper.CreateMappings(configuration);
-                RoleMapper.CreateMappings(configuration);
-            }, typeof(FlyFrameworkApplicationModule));
+            ConfigurePermissionProvider();
+            ConfigureAutoMapper();
         }
 
         protected override void Load(ContainerBuilder builder)
@@ -67,6 +57,21 @@ namespace FlyFramework
                    .PropertiesAutowired(new IocSelectPropertySelector()); // 启用属性注入
         }
 
+        private void ConfigureAutoMapper()
+        {
+            // 配置 AutoMapper
+            Configuration.Services.AddAutoMapper((serviceProvider, configuration) =>
+            {
+                UserMapper.CreateMappings(configuration);
+                OrgUnitNodeMapper.CreateMappings(configuration);
+                RoleMapper.CreateMappings(configuration);
+            }, typeof(FlyFrameworkApplicationModule));
+        }
+
+        private void ConfigurePermissionProvider()
+        {
+            Configuration.Authorization.Providers.Add<UserAuthorizationProvider>();
+        }
     }
 
     /// <summary>
@@ -80,4 +85,6 @@ namespace FlyFramework
             return propertyInfo.CustomAttributes.Any(it => it.AttributeType == typeof(IocSelectAttribute));
         }
     }
+
+
 }
