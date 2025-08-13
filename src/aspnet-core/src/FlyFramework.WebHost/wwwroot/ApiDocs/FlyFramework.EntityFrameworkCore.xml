@@ -63,6 +63,18 @@
         <member name="M:FlyFramework.Migrations.Init.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:FlyFramework.Migrations.AddEntity">
+            <inheritdoc />
+        </member>
+        <member name="M:FlyFramework.Migrations.AddEntity.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:FlyFramework.Migrations.AddEntity.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:FlyFramework.Migrations.AddEntity.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
         <member name="M:FlyFramework.Seed.FlyFrameworkCreatorHelper.SetContext(System.String,FlyFramework.FlyFrameworkDbContext)">
             <summary>
             设置上下文

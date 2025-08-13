@@ -47,6 +47,7 @@ namespace FlyFramework.PermissionModule.DomainService
             var allPermissions = await this.QueryAsNoTracking
                 .Select(t => new PermissionDto
                 {
+                    Id = t.Id,
                     Key = t.Key,
                     DisplayName = t.DisplayName,
                     Type = t.Type,
@@ -88,7 +89,7 @@ namespace FlyFramework.PermissionModule.DomainService
             foreach (var rootPermission in rootPermissions)
             {
                 // 递归构建子树
-                rootPermission.Children = GetChildPermissions(rootPermission.Key, allPermissions);
+                rootPermission.Children = GetChildPermissions(rootPermission.Id, allPermissions);
             }
 
             return rootPermissions;
@@ -102,7 +103,7 @@ namespace FlyFramework.PermissionModule.DomainService
             // 递归获取每个子节点的子节点
             foreach (var child in children)
             {
-                child.Children = GetChildPermissions(child.Key, allPermissions);
+                child.Children = GetChildPermissions(child.Id, allPermissions);
             }
 
             return children;
@@ -115,7 +116,7 @@ namespace FlyFramework.PermissionModule.DomainService
 
             foreach (var rootPermission in rootPermissions)
             {
-                rootPermission.Children = GetChildPermissionsSafe(rootPermission.Key, allPermissions, visited);
+                rootPermission.Children = GetChildPermissionsSafe(rootPermission.Id, allPermissions, visited);
             }
 
             return rootPermissions;
@@ -135,7 +136,7 @@ namespace FlyFramework.PermissionModule.DomainService
 
             foreach (var child in children)
             {
-                child.Children = GetChildPermissionsSafe(child.Key, allPermissions, visited);
+                child.Children = GetChildPermissionsSafe(child.Id, allPermissions, visited);
             }
 
             visited.Remove(parentId);

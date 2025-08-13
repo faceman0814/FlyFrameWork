@@ -2,6 +2,7 @@
 using FaceMan.DynamicWebAPI;
 
 using FlyFramework.Dtos;
+using FlyFramework.PermissionModule.Dtos;
 using FlyFramework.UserModule.Dtos;
 
 using System.Collections.Generic;
@@ -21,5 +22,7 @@ namespace FlyFramework.UserModule
         Task<UserDto> GetForEdit(EntityDto<string> input);
 
         Task AssignRole(AssignRoleInput input);
+
+        Task<List<PermissionDto>> GetAllPermission();
     }
 }

@@ -145,6 +145,11 @@
             权限Ids
             </summary>
         </member>
+        <member name="P:FlyFramework.PermissionModule.Dtos.PermissionDto.Id">
+            <summary>
+            主键
+            </summary>
+        </member>
         <member name="P:FlyFramework.PermissionModule.Dtos.PermissionDto.Key">
             <summary>
             权限Key

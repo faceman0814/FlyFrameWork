@@ -56,7 +56,8 @@ namespace FlyFramework.PermissionModule
         {
             var permission = new Permission(name, displayName)
             {
-                Parent = this
+                Parent = this,
+                ParentId = this.Id
             };
             _children.Add(permission);
             return permission;

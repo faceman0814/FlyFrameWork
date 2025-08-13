@@ -58,7 +58,7 @@ namespace FlyFramework
             {
                 // 注册实体
                 modelBuilder.Entity(entityType);
-                
+
                 //动态地为每个注册的实体类型调用 ConfigureFilters 方法
                 //configureFilters
                 //    .MakeGenericMethod(entityType)
@@ -80,10 +80,13 @@ namespace FlyFramework
                     }
                 }
             }
+
             //自定义实体规则
-            //modelBuilder.Entity<User>()
-            //   .HasIndex(u => u.UserId)
-            //   .IsUnique();
+            modelBuilder.Entity<Permission>()
+             .HasOne(x => x.Parent)
+             .WithMany()
+             .HasForeignKey(x => x.ParentId)
+             .IsRequired(false);
         }
 
         /// <summary>

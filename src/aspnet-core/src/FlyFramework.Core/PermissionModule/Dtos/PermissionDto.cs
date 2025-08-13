@@ -7,6 +7,10 @@ namespace FlyFramework.PermissionModule.Dtos
     public class PermissionDto
     {
         /// <summary>
+        /// 主键
+        /// </summary>
+        public string Id { get; set; }
+        /// <summary>
         /// 权限Key
         /// </summary>
         public string Key { get; set; }

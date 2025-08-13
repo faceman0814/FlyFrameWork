@@ -113,9 +113,12 @@ namespace FlyFramework.Seed
                 var roleAuth = userManager.CreateChildPermission(RoleAuthority.Role_Node, RoleAuthority.Role_Node_Name);
                 ids.Add(roleAuth.Id);
 
-                ids.Add(userManager.CreateChildPermission(RoleAuthority.Role_Create, RoleAuthority.Role_Create_Name).Id);
-                ids.Add(userManager.CreateChildPermission(RoleAuthority.Role_Update, RoleAuthority.Role_Update_Name).Id);
-                ids.Add(userManager.CreateChildPermission(RoleAuthority.Role_Delete, RoleAuthority.Role_Delete_Name).Id);
+                ids.Add(roleAuth.CreateChildPermission(RoleAuthority.Role_Create, RoleAuthority.Role_Create_Name).Id);
+                ids.Add(roleAuth.CreateChildPermission(RoleAuthority.Role_Update, RoleAuthority.Role_Update_Name).Id);
+                ids.Add(roleAuth.CreateChildPermission(RoleAuthority.Role_Delete, RoleAuthority.Role_Delete_Name).Id);
+
+                _context.Add(userManager);
+                _context.SaveChanges();
 
                 var rolePermissions = new List<RolePermission>();
                 foreach (var item in ids)

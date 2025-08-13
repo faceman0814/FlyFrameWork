@@ -19,6 +19,8 @@ namespace FlyFramework.Entities
         /// </summary>
         [Comment("主键")]
         [MaxLength(32)]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public virtual TPrimaryKey Id { get; set; }
 
         /// <summary>
