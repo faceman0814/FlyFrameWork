@@ -31,10 +31,10 @@ namespace FlyFramework
     [DependOn(typeof(FlyFrameworkCoreModule))]
     public class FlyFrameworkApplicationModule : FlyFrameworkBaseModule
     {
-        public override void PreInitialize(ServiceConfigerContext context)
+        public override void PreInitialize()
         {
             // 配置 AutoMapper
-            context.Services.AddAutoMapper((serviceProvider, configuration) =>
+            Configuration.Services.AddAutoMapper((serviceProvider, configuration) =>
             {
                 UserMapper.CreateMappings(configuration);
                 OrgUnitNodeMapper.CreateMappings(configuration);

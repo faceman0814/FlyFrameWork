@@ -4,6 +4,6 @@ namespace FlyFramework.FlyFrameworkModules.Interface
 {
     public interface IPreInitialize
     {
-        void PreInitialize(ServiceConfigerContext context);
+        void PreInitialize();
     }
 }
