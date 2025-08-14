@@ -24,5 +24,7 @@ namespace FlyFramework.UserModule
         Task AssignRole(AssignRoleInput input);
 
         Task<List<PermissionDto>> GetAllPermission();
+
+        void InitPermission();
     }
 }

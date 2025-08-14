@@ -7,6 +7,7 @@ using FlyFramework.Extentions;
 using FlyFramework.Extentions.Object;
 using FlyFramework.LazyModule.LazyDefinition;
 using FlyFramework.OrgUnitModule.DomainService.OrgUnitNodes;
+using FlyFramework.PermissionModule;
 using FlyFramework.PermissionModule.DomainService;
 using FlyFramework.PermissionModule.Dtos;
 using FlyFramework.Repositories;
@@ -33,8 +34,14 @@ namespace FlyFramework.UserModule
         private readonly IOrgUnitNodeManager _orgUnitNodeManager;
         private readonly ICommonAppService _commonService;
         private readonly IPermissionManager _permissionManager;
+        private readonly IAuthorizationConfiguration _configuration;
+        private readonly IPermissionDefinitionContext _context;
+        private readonly IServiceProvider _serviceProvider;
 
-        public UserAppService(IFlyFrameworkLazy flyFrameworkLazy, ICommonAppService commonAppService, IRepository<UserRole, string> repository)
+        public UserAppService(IFlyFrameworkLazy flyFrameworkLazy, ICommonAppService commonAppService,
+            IRepository<UserRole, string> repository,
+            IServiceProvider serviceProvider,
+            IPermissionDefinitionContext context)
         {
             _userManager = flyFrameworkLazy.LazyGetRequiredService<IUserManager>().Value;
             _orgUnitNodeManager = flyFrameworkLazy.LazyGetRequiredService<IOrgUnitNodeManager>().Value;
@@ -42,6 +49,9 @@ namespace FlyFramework.UserModule
             _permissionManager = flyFrameworkLazy.LazyGetRequiredService<IPermissionManager>().Value;
             _commonService = commonAppService;
             _repository = repository;
+            _serviceProvider = serviceProvider;
+            _configuration = serviceProvider.GetService<IAuthorizationConfiguration>();
+            _context = context;
         }
 
         /// <summary>
@@ -155,6 +165,14 @@ namespace FlyFramework.UserModule
             return await _permissionManager.GetAllPermission();
         }
 
+        public void InitPermission()
+        {
+            foreach (var providerType in _configuration.Providers)
+            {
+                var provider = (AuthorizationProvider)_serviceProvider.GetRequiredService(providerType);
+                provider.SetPermissions(_context);
+            }
+        }
         #region 私有方法
         private async Task Create(CreateOrUpdateUserInput input)
         {

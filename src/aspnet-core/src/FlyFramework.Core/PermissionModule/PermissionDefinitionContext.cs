@@ -2,6 +2,7 @@
 using FlyFramework.Extentions;
 using FlyFramework.Repositories;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 using System;
@@ -30,7 +31,7 @@ namespace FlyFramework.PermissionModule
         public Permission GetPermissionOrNull(string name)
         {
             Check.NotNull(name, nameof(name));
-            return _permissionManager.GetAll().FirstOrDefault(t => t.Name == name);
+            return _permissionManager.GetAll().Include(t => t.Children).FirstOrDefault(t => t.Name == name);
         }
 
         public void RemovePermission(string name)
