@@ -34,8 +34,6 @@ namespace FlyFramework.FlyFrameworkModules.Modules
         /// <summary>
         /// 预处理程序
         /// </summary>
-        /// <param name="context"></param>
-        /// <exception cref="NotImplementedException"></exception>
         public virtual void PreInitialize()
         {
 
@@ -44,8 +42,6 @@ namespace FlyFramework.FlyFrameworkModules.Modules
         /// <summary>
         /// 服务注册与配置
         /// </summary>
-        /// <param name="context"></param>
-        /// <exception cref="NotImplementedException"></exception>
         public virtual void Initialize()
         {
 
@@ -54,8 +50,6 @@ namespace FlyFramework.FlyFrameworkModules.Modules
         /// <summary>
         /// 配置中间件
         /// </summary>
-        /// <param name="context"></param>
-        /// <exception cref="NotImplementedException"></exception>
         public virtual void InitApplication()
         {
         }

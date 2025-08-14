@@ -158,23 +158,15 @@ namespace FlyFramework.Migrations
                     b.Property<string>("DisplayName")
                         .HasColumnType("text");
 
-                    b.Property<string>("Key")
+                    b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.Property<string>("ParentId")
                         .HasColumnType("character varying(32)");
 
-                    b.Property<string>("PermissionId")
-                        .HasColumnType("character varying(32)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ParentId");
-
-                    b.HasIndex("PermissionId");
 
                     b.ToTable("Permission");
                 });
@@ -643,12 +635,8 @@ namespace FlyFramework.Migrations
             modelBuilder.Entity("FlyFramework.PermissionModule.Permission", b =>
                 {
                     b.HasOne("FlyFramework.PermissionModule.Permission", "Parent")
-                        .WithMany()
-                        .HasForeignKey("ParentId");
-
-                    b.HasOne("FlyFramework.PermissionModule.Permission", null)
                         .WithMany("Children")
-                        .HasForeignKey("PermissionId");
+                        .HasForeignKey("ParentId");
 
                     b.Navigation("Parent");
                 });

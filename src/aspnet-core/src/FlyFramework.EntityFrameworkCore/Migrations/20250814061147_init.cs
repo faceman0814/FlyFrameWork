@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FlyFramework.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -132,9 +132,8 @@ namespace FlyFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false, comment: "主键"),
-                    Key = table.Column<string>(type: "text", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: true),
                     DisplayName = table.Column<string>(type: "text", nullable: true),
-                    Type = table.Column<int>(type: "integer", nullable: false),
                     ParentId = table.Column<string>(type: "character varying(32)", nullable: true),
                     ConcurrencyToken = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: true, comment: "并发令牌")
                 },

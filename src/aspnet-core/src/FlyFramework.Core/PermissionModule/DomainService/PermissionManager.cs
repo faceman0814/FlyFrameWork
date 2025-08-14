@@ -48,9 +48,8 @@ namespace FlyFramework.PermissionModule.DomainService
                 .Select(t => new PermissionDto
                 {
                     Id = t.Id,
-                    Key = t.Key,
+                    Name = t.Name,
                     DisplayName = t.DisplayName,
-                    Type = t.Type,
                     ParentId = t.ParentId
                 })
                 .ToListAsync();

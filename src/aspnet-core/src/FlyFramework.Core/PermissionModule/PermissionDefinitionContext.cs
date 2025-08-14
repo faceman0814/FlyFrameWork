@@ -21,18 +21,16 @@ namespace FlyFramework.PermissionModule
 
         public Permission CreatePermission(string name, string displayName = null, Dictionary<string, object> properties = null)
         {
-            //Check.NotNull(name, nameof(name));
-            //var permission = new Permission(name, displayName, properties);
-            //_permissionManager.Insert(permission);
-            //return permission;
-            return null;
+            Check.NotNull(name, nameof(name));
+            var permission = new Permission(name, displayName);
+            _permissionManager.Insert(permission);
+            return permission;
         }
 
         public Permission GetPermissionOrNull(string name)
         {
-            //Check.NotNull(name, nameof(name));
-            //return _permissionManager.GetAll().FirstOrDefault(t => t.Name == name);
-            return null;
+            Check.NotNull(name, nameof(name));
+            return _permissionManager.GetAll().FirstOrDefault(t => t.Name == name);
         }
 
         public void RemovePermission(string name)

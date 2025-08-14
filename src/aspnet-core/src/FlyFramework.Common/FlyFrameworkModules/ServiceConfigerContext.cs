@@ -9,6 +9,7 @@ namespace FlyFramework.FlyFrameworkModules
     {
         public IServiceCollection Services { get; private set; }
 
+        //瞬态
         public IServiceProvider Provider
         {
             get
@@ -31,4 +32,5 @@ namespace FlyFramework.FlyFrameworkModules
             return AppDomain.CurrentDomain.GetAssemblies();
         }
     }
+
 }

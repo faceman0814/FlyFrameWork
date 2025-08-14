@@ -7,13 +7,10 @@ using AutoMapper;
 using Castle.Core.Logging;
 
 using FlyFramework.Attributes;
-using FlyFramework.Authorizations;
-using FlyFramework.FlyFrameworkModules;
+using FlyFramework.Authorization;
 using FlyFramework.FlyFrameworkModules.Modules;
-using FlyFramework.LazyModule.LazyDefinition;
+using FlyFramework.OrgUnitModule.Authorization;
 using FlyFramework.OrgUnitModule.OrgUnitNodes.Mappers;
-using FlyFramework.PermissionModule;
-using FlyFramework.Repositories;
 using FlyFramework.RoleModule.Mappers;
 using FlyFramework.Uow;
 using FlyFramework.UserModule.Mappers;
@@ -26,20 +23,19 @@ using ServiceStack;
 using System.Linq;
 using System.Reflection;
 
+using static System.Net.Mime.MediaTypeNames;
+
 namespace FlyFramework
 {
+
+
     [DependOn(typeof(FlyFrameworkCoreModule))]
     public class FlyFrameworkApplicationModule : FlyFrameworkBaseModule
     {
         public override void PreInitialize()
         {
-            // 配置 AutoMapper
-            Configuration.Services.AddAutoMapper((serviceProvider, configuration) =>
-            {
-                UserMapper.CreateMappings(configuration);
-                OrgUnitNodeMapper.CreateMappings(configuration);
-                RoleMapper.CreateMappings(configuration);
-            }, typeof(FlyFrameworkApplicationModule));
+            ConfigurePermissionProvider();
+            ConfigureAutoMapper();
         }
 
         protected override void Load(ContainerBuilder builder)
@@ -67,6 +63,24 @@ namespace FlyFramework
                    .PropertiesAutowired(new IocSelectPropertySelector()); // 启用属性注入
         }
 
+        private void ConfigurePermissionProvider()
+        {
+            var Authorization = new AuthorizationConfiguration();
+            Configuration.Services.AddSingleton<IAuthorizationConfiguration, AuthorizationConfiguration>();
+
+            Authorization.Providers.Add<OrgUnitAuthorizationProvider>();
+        }
+
+        private void ConfigureAutoMapper()
+        {
+            // 配置 AutoMapper
+            Configuration.Services.AddAutoMapper((serviceProvider, configuration) =>
+            {
+                UserMapper.CreateMappings(configuration);
+                OrgUnitNodeMapper.CreateMappings(configuration);
+                RoleMapper.CreateMappings(configuration);
+            }, typeof(FlyFrameworkApplicationModule));
+        }
     }
 
     /// <summary>

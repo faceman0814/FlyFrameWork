@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FlyFramework.Migrations
 {
     [DbContext(typeof(FlyFrameworkDbContext))]
-    [Migration("20250811121627_Init")]
-    partial class Init
+    [Migration("20250814061147_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,6 +28,7 @@ namespace FlyFramework.Migrations
             modelBuilder.Entity("FlyFramework.OrgUnitModule.OrgUnitNode", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasComment("主键");
@@ -104,6 +105,7 @@ namespace FlyFramework.Migrations
             modelBuilder.Entity("FlyFramework.OrgUnitModule.OrgUnitNodeRole", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasComment("主键");
@@ -146,6 +148,7 @@ namespace FlyFramework.Migrations
             modelBuilder.Entity("FlyFramework.PermissionModule.Permission", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasComment("主键");
@@ -158,14 +161,11 @@ namespace FlyFramework.Migrations
                     b.Property<string>("DisplayName")
                         .HasColumnType("text");
 
-                    b.Property<string>("Key")
+                    b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.Property<string>("ParentId")
                         .HasColumnType("character varying(32)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -177,6 +177,7 @@ namespace FlyFramework.Migrations
             modelBuilder.Entity("FlyFramework.PermissionModule.RolePermission", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)")
                         .HasComment("主键");

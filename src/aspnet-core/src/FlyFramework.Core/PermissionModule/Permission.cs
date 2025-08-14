@@ -1,17 +1,8 @@
 ﻿using FlyFramework.Entities;
 
-using Microsoft.AspNet.SignalR.Hubs;
-
-using ServiceStack;
-
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FlyFramework.PermissionModule
 {
@@ -22,26 +13,21 @@ namespace FlyFramework.PermissionModule
     {
         private readonly List<Permission> _children = [];
 
-        public Permission(string key, string displayName)
+        public Permission(string name, string displayName)
         {
-            Key = key;
+            Name = name;
             DisplayName = displayName;
             Id = Guid.NewGuid().ToString("N");
         }
 
         /// <summary>
-        /// 权限Key
+        /// 权限名称
         /// </summary>
-        public string Key { get; set; }
+        public string Name { get; set; }
         /// <summary>
         /// 权限名称
         /// </summary>
         public string DisplayName { get; set; }
-
-        /// <summary>
-        /// 权限类型
-        /// </summary>
-        public PermissionType Type { get; set; }
 
         /// <summary>
         /// 父节点
@@ -61,15 +47,6 @@ namespace FlyFramework.PermissionModule
             };
             _children.Add(permission);
             return permission;
-        }
-
-        public enum PermissionType
-        {
-            [Description("操作权限")]
-            Operation,
-
-            [Description("数据权限")]
-            Data
         }
     }
 }

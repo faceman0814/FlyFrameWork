@@ -3,10 +3,12 @@ using FaceMan.DynamicWebAPI.Config;
 using FaceMan.DynamicWebAPI.Extensions;
 
 using FlyFramework;
+using FlyFramework.Authorization;
 using FlyFramework.Authorizations;
 using FlyFramework.Extentions;
 using FlyFramework.FlyFrameworkModules.Extensions;
 using FlyFramework.Localizations;
+using FlyFramework.OrgUnitModule.Authorization;
 using FlyFramework.PermissionModule;
 
 using Hangfire;
@@ -22,6 +24,7 @@ using Minio;
 
 using System;
 using System.Collections.Generic;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -74,6 +77,7 @@ public static class AppConfig
         services.AddHttpContextAccessor();
 
         //services.AddAutoGnarly();
+
 
         //// 添加应用程序模块
         services.AddApplication<FlyFrameworkWebHostModule>();

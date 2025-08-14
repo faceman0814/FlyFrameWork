@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FlyFramework.UserModule.Authorization
 {
-    public class UserAuthority
+    public class UserPermissions
     {
         public const string UserManager = "UserManager";
         public const string User_Node = "User.Node";

@@ -82,11 +82,11 @@ namespace FlyFramework
             }
 
             //自定义实体规则
-            modelBuilder.Entity<Permission>()
-             .HasOne(x => x.Parent)
-             .WithMany()
-             .HasForeignKey(x => x.ParentId)
-             .IsRequired(false);
+            //modelBuilder.Entity<Permission>()
+            // .HasOne(x => x.Parent)
+            // .WithMany()
+            // .HasForeignKey(x => x.ParentId)
+            // .IsRequired(false);
         }
 
         /// <summary>
