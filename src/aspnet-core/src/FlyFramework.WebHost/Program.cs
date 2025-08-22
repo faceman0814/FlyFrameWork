@@ -19,6 +19,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Serilog;
+using FlyFramework.Models.Options;
 
 using Minio;
 
@@ -27,14 +29,36 @@ using System.Collections.Generic;
 using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
+// Serilog bootstrap logger
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateBootstrapLogger();
+//builder.Host.UseSerilog((context, services, configuration) =>
+//{
+//    var serilogSection = context.Configuration.GetSection("Serilog");
+//    var writeToConsole = serilogSection.GetValue("WriteToConsole", true);
+//    var writeToFile = serilogSection.GetValue("WriteToFile", true);
+//    var filePath = serilogSection.GetValue("FilePath", "App_Data/Log/log-.txt");
 
-//ÅúÁ¿×¢²á·þÎñ²¢¹¹½¨
+//    configuration = configuration
+//        .MinimumLevel.Information();
+//    if (writeToConsole)
+//    {
+//        configuration = configuration.WriteTo.Console();
+//    }
+//    if (writeToFile)
+//    {
+//        configuration = configuration.WriteTo.File(filePath, rollingInterval: RollingInterval.Day, retainedFileCountLimit: 10);
+//    }
+//});
+
+//ï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½ñ²¢¹ï¿½ï¿½ï¿½
 var app = builder.ConfigurationServices().Build();
-//ÅúÁ¿ÆôÓÃ·þÎñ²¢ÔËÐÐ
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 app.Configuration().Run();
 
 /// <summary>
-/// ÅäÖÃÀà
+/// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 /// </summary>
 public static class AppConfig
 {
@@ -70,7 +94,7 @@ public static class AppConfig
             RoutePrefix="swagger",
         };
         services.AddDynamicApi(builder.Environment.WebRootPath, _configParam);
-        //µ¥¶À×¢²áÄ³¸ö·þÎñ£¬ÌØÊâÇé¿ö
+        //ï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         //_services.AddSingleton<Ixxx, xxx>();
         services.AddCors(configuration);
 
@@ -79,17 +103,14 @@ public static class AppConfig
         //services.AddAutoGnarly();
 
 
-        //// Ìí¼ÓÓ¦ÓÃ³ÌÐòÄ£¿é
+        //// ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Ã³ï¿½ï¿½ï¿½Ä£ï¿½ï¿½
         services.AddApplication<FlyFrameworkWebHostModule>();
 
-        // Ìí¼ÓAutofacÒÀÀµ×¢Èë
+        // ï¿½ï¿½ï¿½ï¿½Autofacï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½
         builder.Host.UseAutoFac();
 
-        // ÅäÖÃÈÕÖ¾
-        builder.Host.ConfigureLogging((context, loggingBuilder) =>
-        {
-            Log4Extention.InitLog4(loggingBuilder);
-        });
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾
+        // Log4 removed in favor of Serilog configuration above
 
         services.AddFilters();
 
@@ -105,29 +126,36 @@ public static class AppConfig
 
         services.AddSignalR();
 
-        // Ìí¼ÓJSON¶àÓïÑÔ
+        // ï¿½ï¿½ï¿½ï¿½JSONï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         services.AddJsonLocalization(options =>
         {
             options.ResourcesPath = "Localizations";
 
         }, typeof(FlyFrameworkWebHostModule));
 
-        // Ìæ»»¿ØÖÆÆ÷¹¹ÔìÆ÷¼¤»îÆ÷ÒÔÖ§³ÖÍ¨¹ýAutofac½øÐÐÒÀÀµ×¢Èë
+        // Options binding with validation
+        services.AddOptions<JwtOptions>().Bind(builder.Configuration.GetSection("JwtBearer")).ValidateDataAnnotations().ValidateOnStart();
+        services.AddOptions<RedisOptions>().Bind(builder.Configuration.GetSection("Redis")).ValidateDataAnnotations().ValidateOnStart();
+        services.AddOptions<MinioOptions>().Bind(builder.Configuration.GetSection("Minio")).ValidateDataAnnotations().ValidateOnStart();
+        services.AddOptions<RabbitMqOptions>().Bind(builder.Configuration.GetSection("RabbitMq")).ValidateDataAnnotations().ValidateOnStart();
+        services.AddOptions<DatabaseOptions>().Bind(builder.Configuration.GetSection("ConnectionStrings")).ValidateDataAnnotations().ValidateOnStart();
+
+        // ï¿½æ»»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö§ï¿½ï¿½Í¨ï¿½ï¿½Autofacï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½
         builder.Services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
         return builder;
     }
 
     /// <summary>
-    /// ÆôÓÃ·þÎñ¼¯ºÏ
+    /// ï¿½ï¿½ï¿½Ã·ï¿½ï¿½ñ¼¯ºï¿½
     /// </summary>
     /// <param name="_app"></param>
     /// <returns></returns>
     public static WebApplication Configuration(this WebApplication _app)
     {
         app = _app;
-        // ÆôÓÃ¿çÓò
+        // ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½
         app.UseCors("DefaultCorsPolicy");
-        // ÆôÓÃÖÐ¼ä¼þ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½
         app.UseRequestLocalization(options =>
         {
             var cultures = new[] { "zh-CN", "en-US", "zh-TW" };
@@ -135,13 +163,13 @@ public static class AppConfig
             options.AddSupportedUICultures(cultures);
             options.SetDefaultCulture(cultures[0]);
 
-            // µ±HttpÏìÓ¦Ê±£¬½« µ±Ç°ÇøÓòÐÅÏ¢ ÉèÖÃµ½ Response Header£ºContent-Language ÖÐ
+            // ï¿½ï¿½Httpï¿½ï¿½Ó¦Ê±ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ ï¿½ï¿½ï¿½Ãµï¿½ Response Headerï¿½ï¿½Content-Language ï¿½ï¿½
             options.ApplyCurrentCultureToResponseHeaders = true;
         });
 
         app.UseRouting();
         app.UseDynamicSwagger();
-        app.UseAuthentication(); //Ê¹ÓÃÑéÖ¤·½Ê½ ½«Éí·ÝÈÏÖ¤ÖÐ¼ä¼þÌí¼Óµ½¹ÜµÀÖÐ£¬Òò´Ë½«ÔÚÃ¿´Îµ÷ÓÃAPIÊ±×Ô¶¯Ö´ÐÐÉí·ÝÑéÖ¤¡£
+        app.UseAuthentication(); //Ê¹ï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½Ê½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½Üµï¿½ï¿½Ð£ï¿½ï¿½ï¿½Ë½ï¿½ï¿½ï¿½Ã¿ï¿½Îµï¿½ï¿½ï¿½APIÊ±ï¿½Ô¶ï¿½Ö´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½
         app.UseIdentityServer();
         app.UseHttpsRedirection();
         app.UseAuthorization();
@@ -153,13 +181,13 @@ public static class AppConfig
             //name: "default",
             //pattern: "{controller=Home}/{action=Index}/{id?}");
             //endpoints.MapRazorPages();
-            //Ìí¼Ó SignalR ¶Ëµã
+            //ï¿½ï¿½ï¿½ï¿½ SignalR ï¿½Ëµï¿½
             //endpoints.MapHub<SignalRTestHub>("/Hubs");
 
         });
         if (configuration.GetSection("HangFire:Enable").Get<bool>())
         {
-            // ÆôÓÃHangfireÒÇ±íÅÌ
+            // ï¿½ï¿½ï¿½ï¿½Hangfireï¿½Ç±ï¿½ï¿½ï¿½
             app.UseHangfireDashboard();
         }
 

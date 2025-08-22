@@ -4,6 +4,8 @@
 		<LangVersion>$(LangVersion)</LangVersion>
 		<TargetFramework>$(DotNetVersion)</TargetFramework>
 		<RootNamespace>FlyFramework</RootNamespace>
+		<Nullable>disable</Nullable>
+		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
 	</PropertyGroup>
 	<!-- Common -->
 	<ItemGroup Condition="'$(FlyFrameworkCommonRefMode)'=='nuget'">

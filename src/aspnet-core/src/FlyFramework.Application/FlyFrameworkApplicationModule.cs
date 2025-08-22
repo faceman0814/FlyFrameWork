@@ -8,22 +8,18 @@ using Castle.Core.Logging;
 
 using FlyFramework.Attributes;
 using FlyFramework.Authorization;
-using FlyFramework.Authorizations;
 using FlyFramework.FlyFrameworkModules.Modules;
 using FlyFramework.OrgUnitModule.Authorization;
 using FlyFramework.OrgUnitModule.OrgUnitNodes.Mappers;
-using FlyFramework.PermissionModule;
 using FlyFramework.RoleModule.Mappers;
 using FlyFramework.Uow;
 using FlyFramework.UserModule.Mappers;
 using FlyFramework.UserSessions;
 
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 using ServiceStack;
 
-using System;
 using System.Linq;
 using System.Reflection;
 

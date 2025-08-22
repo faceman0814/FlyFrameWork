@@ -40,8 +40,7 @@ namespace FlyFramework
                     option.UseSqlServer(connectionString);
                     break;
                 case DatabaseType.MySql:
-                    option.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 31)));
-                    break;
+                    throw new Exception("MySql provider not included. Switch DatabaseType or add Pomelo provider.");
 
                 case DatabaseType.Sqlite:
                     option.UseSqlite(connectionString);

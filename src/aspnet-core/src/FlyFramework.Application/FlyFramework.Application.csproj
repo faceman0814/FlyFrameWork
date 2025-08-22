@@ -4,12 +4,14 @@
 		<LangVersion>$(LangVersion)</LangVersion>
 		<TargetFramework>$(DotNetVersion)</TargetFramework>
 		<RootNamespace>FlyFramework</RootNamespace>
-
+		<Nullable>disable</Nullable>
+		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DocumentationFile>bin\Debug\FlyFramework.Application.xml</DocumentationFile>
+		<NoWarn>$(NoWarn);NU1903</NoWarn>
 	</PropertyGroup>
 	<ItemGroup>
 		<!--<PackageReference Include="FaceMan.DynamicAPI" Version="1.0.8" />-->
@@ -19,7 +21,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.4.9" />
+		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.5.1" />
 
 	</ItemGroup>
 	<ItemGroup>

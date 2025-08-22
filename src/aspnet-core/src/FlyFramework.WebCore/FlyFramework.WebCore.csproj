@@ -4,7 +4,9 @@
 		<LangVersion>$(LangVersion)</LangVersion>
 		<TargetFramework>$(DotNetVersion)</TargetFramework>
 		<RootNamespace>FlyFramework</RootNamespace>
-
+		<Nullable>disable</Nullable>
+		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+		<NoWarn>$(NoWarn);ASP0019</NoWarn>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
