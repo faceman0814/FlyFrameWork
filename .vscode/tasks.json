@@ -1,0 +1,17 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+        {
+            "label": "构建优化 - 快速模式",
+            "type": "shell",
+            "command": "pnpm",
+            "args": [
+                "run",
+                "build:fast"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "isBackground": false
+        }
+    ]
+}

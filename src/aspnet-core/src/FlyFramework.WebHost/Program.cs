@@ -15,6 +15,7 @@ using Hangfire;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -26,15 +27,21 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 
+using Minio;
+
+using System;
+using System.Collections.Generic;
+using System.Net;
+
 var builder = WebApplication.CreateBuilder(args);
 
-//ÅúÁ¿×¢²á·şÎñ²¢¹¹½¨
+//é…ç½®æ³¨å†ŒæœåŠ¡å¹¶æ„å»º
 var app = builder.ConfigurationServices().Build();
-//ÅúÁ¿ÆôÓÃ·şÎñ²¢ÔËĞĞ
+//å¯åŠ¨é…ç½®æœåŠ¡ç®¡é“
 app.Configuration().Run();
 
 /// <summary>
-/// ÅäÖÃÀà
+/// é…ç½®ç±»
 /// </summary>
 public static class AppConfig
 {
@@ -66,30 +73,45 @@ public static class AppConfig
             EnableApiResultFilter = true,
             ContactEmail = "face<EMAIL>",
             ContactUrl = "https://www.face-man.com",
-            ApiRoutePrefix="api",
-            RoutePrefix="swagger",
+            ApiRoutePrefix = "api",
+            RoutePrefix = "swagger",
         };
         services.AddDynamicApi(builder.Environment.WebRootPath, _configParam);
-        //µ¥¶À×¢²áÄ³¸ö·şÎñ£¬ÌØÊâÇé¿ö
+        //å¯ä»¥æ³¨å†Œå…¶ä»–è‡ªå®šä¹‰æœåŠ¡
         //_services.AddSingleton<Ixxx, xxx>();
         services.AddCors(configuration);
 
         services.AddHttpContextAccessor();
 
+        // æ·»åŠ å“åº”å‹ç¼©
+        services.AddResponseCompression(options =>
+        {
+            options.EnableForHttps = true;
+            options.Providers.Add<Microsoft.AspNetCore.ResponseCompression.BrotliCompressionProvider>();
+            options.Providers.Add<Microsoft.AspNetCore.ResponseCompression.GzipCompressionProvider>();
+        });
+
+        // æ·»åŠ å†…å­˜ç¼“å­˜
+        services.AddMemoryCache();
+
+        // æ·»åŠ åˆ†å¸ƒå¼ç¼“å­˜ï¼ˆå¦‚æœRediså¯ç”¨ï¼‰
+        var redisConfig = configuration.GetSection("Redis");
+        if (redisConfig.GetValue<bool>("Enable"))
+        {
+            services.AddDistributedMemoryCache(); // å¯ä»¥æ›¿æ¢ä¸ºRediså®ç°
+        }
+
         //services.AddAutoGnarly();
 
 
-        //// Ìí¼ÓÓ¦ÓÃ³ÌĞòÄ£¿é
+        //// é…ç½®åº”ç”¨ç¨‹åºæ¨¡å—
         services.AddApplication<FlyFrameworkWebHostModule>();
 
-        // Ìí¼ÓAutofacÒÀÀµ×¢Èë
+        // é…ç½®Autofacå®¹å™¨æ³¨å…¥
         builder.Host.UseAutoFac();
 
-        // ÅäÖÃÈÕÖ¾
-        builder.Host.ConfigureLogging((context, loggingBuilder) =>
-        {
-            Log4Extention.InitLog4(loggingBuilder);
-        });
+        // é…ç½®æ—¥å¿—
+        Log4Extention.InitLog4(builder.Logging);
 
         services.AddFilters();
 
@@ -105,29 +127,39 @@ public static class AppConfig
 
         services.AddSignalR();
 
-        // Ìí¼ÓJSON¶àÓïÑÔ
+        // é…ç½®JSONæœ¬åœ°åŒ–
         services.AddJsonLocalization(options =>
         {
             options.ResourcesPath = "Localizations";
 
         }, typeof(FlyFrameworkWebHostModule));
 
-        // Ìæ»»¿ØÖÆÆ÷¹¹ÔìÆ÷¼¤»îÆ÷ÒÔÖ§³ÖÍ¨¹ıAutofac½øĞĞÒÀÀµ×¢Èë
+        // æ›¿æ¢æ§åˆ¶å™¨æ¿€æ´»å™¨ï¼Œä½¿å…¶æ”¯æŒé€šè¿‡Autofacå®¹å™¨è¿›è¡Œæ³¨å…¥
         builder.Services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
         return builder;
     }
 
     /// <summary>
-    /// ÆôÓÃ·şÎñ¼¯ºÏ
+    /// å¯ç”¨æœåŠ¡é›†åˆ
     /// </summary>
     /// <param name="_app"></param>
     /// <returns></returns>
     public static WebApplication Configuration(this WebApplication _app)
     {
         app = _app;
-        // ÆôÓÃ¿çÓò
+        // æ·»åŠ è¯·æ±‚éªŒè¯ä¸­é—´ä»¶
+        app.UseMiddleware<FlyFramework.Middlewares.RequestValidationMiddleware>();
+
+        // æ·»åŠ æ€§èƒ½ç›‘æ§ä¸­é—´ä»¶
+        app.UseMiddleware<FlyFramework.Middlewares.PerformanceMonitoringMiddleware>();
+
+        // æ·»åŠ å…¨å±€å¼‚å¸¸å¤„ç†ä¸­é—´ä»¶
+        app.UseMiddleware<FlyFramework.Middlewares.GlobalExceptionHandlerMiddleware>();
+
+        // é…ç½®CORS
         app.UseCors("DefaultCorsPolicy");
-        // ÆôÓÃÖĞ¼ä¼ş
+
+        // é…ç½®å›½é™…åŒ–ä¸­é—´ä»¶
         app.UseRequestLocalization(options =>
         {
             var cultures = new[] { "zh-CN", "en-US", "zh-TW" };
@@ -135,31 +167,32 @@ public static class AppConfig
             options.AddSupportedUICultures(cultures);
             options.SetDefaultCulture(cultures[0]);
 
-            // µ±HttpÏìÓ¦Ê±£¬½« µ±Ç°ÇøÓòĞÅÏ¢ ÉèÖÃµ½ Response Header£ºContent-Language ÖĞ
+            // åœ¨Httpå“åº”æ—¶æ·»åŠ  å½“å‰è¯­è¨€ä¿¡æ¯ è®¾ç½®åˆ° Response Headerçš„Content-Language ä¸­
             options.ApplyCurrentCultureToResponseHeaders = true;
         });
 
         app.UseRouting();
         app.UseDynamicSwagger();
-        app.UseAuthentication(); //Ê¹ÓÃÑéÖ¤·½Ê½ ½«Éí·İÈÏÖ¤ÖĞ¼ä¼şÌí¼Óµ½¹ÜµÀÖĞ£¬Òò´Ë½«ÔÚÃ¿´Îµ÷ÓÃAPIÊ±×Ô¶¯Ö´ĞĞÉí·İÑéÖ¤¡£
+        app.UseAuthentication(); //ä½¿ç”¨èº«ä»½éªŒè¯æ–¹å¼ èº«ä»½éªŒè¯ä¸­é—´ä»¶æ·»åŠ åˆ°ç®¡é“ä¸­ï¼Œè¿™æ ·åœ¨è°ƒç”¨æ¯ä¸ªAPIæ—¶ä¼šè‡ªåŠ¨æ‰§è¡Œèº«ä»½éªŒè¯
         app.UseIdentityServer();
         app.UseHttpsRedirection();
         app.UseAuthorization();
-        app.MapControllers();
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapDefaultControllerRoute();
-            //endpoints.MapControllerRoute(
-            //name: "default",
-            //pattern: "{controller=Home}/{action=Index}/{id?}");
-            //endpoints.MapRazorPages();
-            //Ìí¼Ó SignalR ¶Ëµã
-            //endpoints.MapHub<SignalRTestHub>("/Hubs");
 
-        });
+        // å¯ç”¨å“åº”å‹ç¼©
+        app.UseResponseCompression();
+
+        // é…ç½®è·¯ç”±
+        app.MapControllers();
+        app.MapDefaultControllerRoute();
+        //app.MapControllerRoute(
+        //    name: "default",
+        //    pattern: "{controller=Home}/{action=Index}/{id?}");
+        //app.MapRazorPages();
+        //é…ç½® SignalR ç«¯ç‚¹
+        //app.MapHub<SignalRTestHub>("/Hubs");
         if (configuration.GetSection("HangFire:Enable").Get<bool>())
         {
-            // ÆôÓÃHangfireÒÇ±íÅÌ
+            // é…ç½®Hangfireä»ªè¡¨æ¿
             app.UseHangfireDashboard();
         }
 

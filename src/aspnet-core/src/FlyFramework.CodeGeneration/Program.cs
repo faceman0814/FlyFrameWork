@@ -3,14 +3,14 @@ namespace FlyFramework.CodeGeneration
     internal static class Program
     {
         /// <summary>
-        /// Ó¦ÓÃ³ÌĞòµÄÖ÷ÒªÈë¿Úµã¡£
+        /// åº”ç”¨ç¨‹åºçš„ä¸»è¦å…¥å£ç‚¹ã€‚
         /// </summary>
         [STAThread]
         static void Main()
         {
-            // ¼ÓÔØÓ¦ÓÃ³ÌĞòÅäÖÃ
+            // åˆå§‹åŒ–åº”ç”¨ç¨‹åºè®¾ç½®
             ApplicationConfiguration.Initialize();
-            // ´´½¨Ö÷´°Ìå
+            // è¿è¡Œä¸»çª—ä½“
             Application.Run(new Main());
         }
     }

@@ -1,0 +1,107 @@
+{
+    "terminal.integrated.rendererType": "dom",
+    // 打开代码自动提示
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    // 文件格式
+    "emmet.syntaxProfiles": {
+        "vue-html": "html",
+        "vue": "html"
+    },
+    // tab 自动补全标签
+    "emmet.triggerExpansionOnTab": true,
+    // 代码缩进修改成4个空格 如果同时设置了eslint缩进会和其冲突(如果你不要eslint 可以放开下面三个配置)
+    // "editor.tabSize": 4,
+    // "editor.formatOnType": true, // 代码格式化 同eslint冲突
+    "editor.formatOnSave": true, // 代码保存时自动格式化 同eslint冲突
+    // 不檢查縮進，保存后統一按設置項來設置
+    "editor.detectIndentation": false,
+    // 控制 Markdown 预览中使用的字号(以像素为单位)。
+    "markdown.preview.fontSize": 13,
+    // 控制终端的字号(以像素为单位)。
+    "terminal.integrated.fontSize": 12,
+    // 切换文件时自动保存
+    "files.autoSave": "off",
+    // 文件保存时自动去除多余的空格
+    "files.trimTrailingWhitespace": true,
+    // 终端选中即复制
+    "terminal.integrated.copyOnSelection": true,
+    // "eslint.autoFixOnSave": true,
+    // "eslint.validate": [
+    //     "javascript",
+    //     "javascriptreact",
+    //     "html",
+    //     {
+    //         "language": "vue",
+    //         "autoFix": true
+    //     }
+    // ],
+    "eslint.options": {
+        "plugins": [
+            "html"
+        ]
+    },
+    "vetur.validation.template": true,
+    "vetur.format.defaultFormatter.html": "js-beautify-html",
+    "vetur.format.defaultFormatter.js": "vscode-typescript",
+    "vetur.format.defaultFormatterOptions": {
+        "js-beautify-html": {
+            // 属性强制折行对齐
+            "wrap_attributes": "force-aligned",
+            "wrap_line_length": 900, // 数值越大，一行放的属性越多
+            "end_with_newline": false
+        },
+        "prettyhtml": {
+            "printWidth": 100,
+            "singleQuote": false,
+            "wrapAttributes": false,
+            "sortAttributes": false
+        }
+    },
+    //空格
+    "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+    "i18n-ally.localesPaths": [
+        "src/shared/i18n",
+        "public/resource/tinymce/langs",
+        "src/app/admin/languages"
+    ],
+    "ipynb.pasteImagesAsAttachments.enabled": false,
+    "prettier.configPath": ".prettierrc",
+    "prettier.requireConfig": true,
+    "prettier.useEditorConfig": false,
+    // 換行
+    "editor.wordWrap": "on",
+    // MCP (Model Context Protocol) 配置
+    "chat.agent.maxRequests": 200,
+    "chat.mcp.serverSampling": {
+        "src/.vscode/mcp.json: chrome-playwright": {
+            "allowedModels": [
+                "copilot/claude-3.7-sonnet",
+                "copilot/claude-3.7-sonnet-thought",
+                "copilot/claude-sonnet-4",
+                "copilot/gpt-5"
+            ]
+        },
+        "src/.vscode/mcp.json: edge-playwright": {
+            "allowedModels": [
+                "copilot/claude-3.7-sonnet",
+                "copilot/claude-3.7-sonnet-thought",
+                "copilot/claude-sonnet-4",
+                "copilot/gpt-5"
+            ]
+        },
+        "src/.vscode/mcp.json: ctx7": {
+            "allowedModels": [
+                "copilot/claude-3.7-sonnet",
+                "copilot/claude-3.7-sonnet-thought",
+                "copilot/claude-sonnet-4",
+                "copilot/gpt-5"
+            ]
+        }
+    },
+    "dotnet.defaultSolution": "aspnet-core/Knight.Boss.sln",
+    "Lingma.aI Chat.mcpToolsInAgentMode": true,
+    "chat.mcp.discovery.enabled": {
+        "cursor-workspace": true,
+        "cursor-global": true
+    },
+}

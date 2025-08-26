@@ -15,6 +15,46 @@
             <param name="ignoreProperties">指定需要忽略的属性名称列表</param>
             <returns></returns>
         </member>
+        <member name="T:FlyFramework.Application.ApplicationService">
+            <summary>
+            应用服务基类
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Application.ApplicationService.Logger">
+            <summary>
+            日志记录器
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Application.ApplicationService.UnitOfWorkManager">
+            <summary>
+            工作单元管理器
+            </summary>
+        </member>
+        <member name="P:FlyFramework.Application.ApplicationService.CacheService">
+            <summary>
+            缓存服务
+            </summary>
+        </member>
+        <member name="M:FlyFramework.Application.ApplicationService.ExecuteWithCacheAsync``1(System.String,System.Func{System.Threading.Tasks.Task{``0}},System.Nullable{System.TimeSpan})">
+            <summary>
+            执行带缓存的操作
+            </summary>
+        </member>
+        <member name="M:FlyFramework.Application.ApplicationService.ExecuteInTransactionAsync``1(System.Func{System.Threading.Tasks.Task{``0}})">
+            <summary>
+            执行带事务的操作
+            </summary>
+        </member>
+        <member name="M:FlyFramework.Application.ApplicationService.ExecuteInTransactionAsync(System.Func{System.Threading.Tasks.Task})">
+            <summary>
+            执行带事务的操作（无返回值）
+            </summary>
+        </member>
+        <member name="M:FlyFramework.Application.ApplicationService.ClearCacheAsync(System.String[])">
+            <summary>
+            清除相关缓存
+            </summary>
+        </member>
         <member name="M:FlyFramework.Common.CommonAppService.GetColumnList``1">
             <summary>
             获取用户列表的列信息

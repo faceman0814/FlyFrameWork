@@ -1,0 +1,38 @@
+{
+  "inputs": [],
+  "servers": {
+    "chrome-playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"],
+      "type": "stdio",
+      "env": {
+        "PLAYWRIGHT_BROWSERS_PATH": "0",
+
+      }
+    },
+
+
+    "edge-playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest", "--browser", "msedge"],
+      "type": "stdio",
+      "env": {
+        "PLAYWRIGHT_BROWSERS_PATH": "0",
+
+      }
+    },
+
+    "ctx7": {
+      "command": "npx",
+      "args": ["@upstash/context7-mcp@latest"],
+      "type": "stdio",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    },
+    //推荐一些实用的mcp
+
+
+
+  }
+}

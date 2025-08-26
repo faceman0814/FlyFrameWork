@@ -82,6 +82,11 @@
             <param name="configuration"></param>
             <returns></returns>
         </member>
+        <member name="T:FlyFramework.Filters.ApiResultWrapperFilter">
+            <summary>
+            API 结果包装过滤器
+            </summary>
+        </member>
         <member name="F:FlyFramework.Filters.UnitOfWorkFilter.FilterOrder">
             <summary>
             过滤器排序
@@ -98,6 +103,26 @@
             </summary>
             <param name="context">动作方法上下文</param>
             <param name="next">中间件委托</param>
+        </member>
+        <member name="T:FlyFramework.HealthChecks.DatabaseHealthCheck">
+            <summary>
+            数据库健康检查
+            </summary>
+        </member>
+        <member name="T:FlyFramework.Middlewares.GlobalExceptionHandlerMiddleware">
+            <summary>
+            全局异常处理中间件
+            </summary>
+        </member>
+        <member name="T:FlyFramework.Middlewares.PerformanceMonitoringMiddleware">
+            <summary>
+            性能监控中间件
+            </summary>
+        </member>
+        <member name="T:FlyFramework.Middlewares.RequestValidationMiddleware">
+            <summary>
+            请求验证中间件
+            </summary>
         </member>
         <member name="T:AppConfig">
             <summary>
