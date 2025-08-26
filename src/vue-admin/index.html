@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FlyFramework Admin</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        overflow: hidden;
+      }
+
+      .loading-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+      }
+
+      /* 背景装饰 */
+      .background-decoration {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 1;
+      }
+
+      .decoration-circle {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+      }
+
+      .circle-1 {
+        width: 300px;
+        height: 300px;
+        top: -150px;
+        right: -150px;
+        animation: float 6s ease-in-out infinite;
+      }
+
+      .circle-2 {
+        width: 200px;
+        height: 200px;
+        bottom: -100px;
+        left: -100px;
+        animation: float 8s ease-in-out infinite reverse;
+      }
+
+      .circle-3 {
+        width: 150px;
+        height: 150px;
+        top: 50%;
+        left: 20%;
+        animation: float 10s ease-in-out infinite;
+      }
+
+      .floating-particles {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+
+      .particle {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        width: 4px;
+        height: 4px;
+        animation: particle-float 20s linear infinite;
+      }
+
+      .particle:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 15s; }
+      .particle:nth-child(2) { left: 20%; animation-delay: 2s; animation-duration: 18s; }
+      .particle:nth-child(3) { left: 30%; animation-delay: 4s; animation-duration: 12s; }
+      .particle:nth-child(4) { left: 40%; animation-delay: 1s; animation-duration: 20s; }
+      .particle:nth-child(5) { left: 50%; animation-delay: 3s; animation-duration: 16s; }
+      .particle:nth-child(6) { left: 60%; animation-delay: 5s; animation-duration: 14s; }
+      .particle:nth-child(7) { left: 70%; animation-delay: 2.5s; animation-duration: 19s; }
+      .particle:nth-child(8) { left: 80%; animation-delay: 4.5s; animation-duration: 13s; }
+      .particle:nth-child(9) { left: 90%; animation-delay: 1.5s; animation-duration: 17s; }
+      .particle:nth-child(10) { left: 15%; animation-delay: 3.5s; animation-duration: 21s; }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(180deg); }
+      }
+
+      @keyframes particle-float {
+        0% {
+          opacity: 0;
+          transform: translateY(100vh) rotateX(0deg);
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-10vh) rotateX(360deg);
+        }
+      }
+
+      /* 加载内容 */
+      .loading-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 60px 80px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        color: white;
+        max-width: 500px;
+        width: 90%;
+      }
+
+      .logo-wrapper {
+        margin-bottom: 40px;
+      }
+
+      .logo-icon {
+        width: 80px;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 20px;
+        margin: 0 auto 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        position: relative;
+      }
+
+      .logo-icon::before {
+        content: '';
+        width: 32px;
+        height: 32px;
+        background: currentColor;
+        border-radius: 4px;
+        position: relative;
+      }
+
+      .logo-icon::after {
+        content: '';
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 2px;
+        top: 24px;
+        left: 32px;
+      }
+
+      .brand-title {
+        font-size: 36px;
+        font-weight: 700;
+        margin: 0 0 12px 0;
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .brand-subtitle {
+        font-size: 16px;
+        opacity: 0.9;
+        font-weight: 300;
+        margin-bottom: 40px;
+      }
+
+      /* 加载动画 */
+      .loading-spinner {
+        margin: 30px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .spinner {
+        width: 48px;
+        height: 48px;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top: 4px solid rgba(255, 255, 255, 0.9);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      .loading-text {
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+
+      .loading-desc {
+        font-size: 14px;
+        opacity: 0.8;
+        line-height: 1.5;
+      }
+
+      /* 进度条 */
+      .progress-bar {
+        width: 100%;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 2px;
+        margin: 24px 0;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 1) 100%);
+        border-radius: 2px;
+        animation: loading-progress 2s ease-in-out infinite;
+      }
+
+      @keyframes loading-progress {
+        0% {
+          width: 0%;
+          transform: translateX(-100%);
+        }
+        50% {
+          width: 100%;
+          transform: translateX(0%);
+        }
+        100% {
+          width: 100%;
+          transform: translateX(100%);
+        }
+      }
+
+      /* 响应式设计 */
+      @media (max-width: 768px) {
+        .loading-content {
+          padding: 40px 30px;
+          border-radius: 20px;
+        }
+
+        .brand-title {
+          font-size: 28px;
+        }
+
+        .logo-icon {
+          width: 60px;
+          height: 60px;
+          border-radius: 15px;
+        }
+
+        .logo-icon::before {
+          width: 24px;
+          height: 24px;
+        }
+
+        .logo-icon::after {
+          width: 12px;
+          height: 12px;
+          top: 18px;
+          left: 24px;
+        }
+
+        .circle-1, .circle-2, .circle-3 {
+          opacity: 0.5;
+        }
+      }
+
+      /* 淡出动画 */
+      .fade-out {
+        animation: fadeOut 0.5s ease-out forwards;
+      }
+
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+          transform: scale(1);
+        }
+        to {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="loading-container" id="loading-screen">
+        <!-- 背景装饰 -->
+        <div class="background-decoration">
+          <div class="decoration-circle circle-1"></div>
+          <div class="decoration-circle circle-2"></div>
+          <div class="decoration-circle circle-3"></div>
+          <div class="floating-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+          </div>
+        </div>
+        
+        <!-- 加载内容 -->
+        <div class="loading-content">
+          <div class="logo-wrapper">
+            <div class="logo-icon"></div>
+            <h1 class="brand-title">FlyFrameWork</h1>
+            <p class="brand-subtitle">Modern Admin Dashboard</p>
+          </div>
+          
+          <div class="loading-spinner">
+            <div class="spinner"></div>
+          </div>
+          
+          <div class="loading-text">正在加载应用...</div>
+          <div class="loading-desc">请稍候，系统正在初始化</div>
+          
+          <div class="progress-bar">
+            <div class="progress-fill"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script type="module" src="/src/main.ts"></script>
+    
+    <script>
+      // 应用加载完成后隐藏加载屏幕
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          const loadingScreen = document.getElementById('loading-screen');
+          if (loadingScreen) {
+            loadingScreen.classList.add('fade-out');
+            setTimeout(function() {
+              loadingScreen.style.display = 'none';
+            }, 500);
+          }
+        }, 1000); // 至少显示1秒加载屏幕
+      });
+      
+      // 如果加载时间过长，显示错误提示
+      setTimeout(function() {
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen && loadingScreen.style.display !== 'none') {
+          const loadingDesc = document.querySelector('.loading-desc');
+          if (loadingDesc) {
+            loadingDesc.innerHTML = '加载时间较长，请检查网络连接或控制台错误信息';
+            loadingDesc.style.color = 'rgba(255, 255, 255, 0.9)';
+          }
+        }
+      }, 10000); // 10秒后显示提示
+    </script>
+  </body>
+</html>

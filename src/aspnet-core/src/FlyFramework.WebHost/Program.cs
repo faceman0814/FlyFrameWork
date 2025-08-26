@@ -1,37 +1,23 @@
-using FaceMan.DynamicWebAPI;
 using FaceMan.DynamicWebAPI.Config;
 using FaceMan.DynamicWebAPI.Extensions;
 
 using FlyFramework;
-using FlyFramework.Authorization;
-using FlyFramework.Authorizations;
 using FlyFramework.Extentions;
 using FlyFramework.FlyFrameworkModules.Extensions;
 using FlyFramework.Localizations;
-using FlyFramework.OrgUnitModule.Authorization;
-using FlyFramework.PermissionModule;
+using FlyFramework.Middlewares;
 
 using Hangfire;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.Controllers;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Hosting;
 
 using Minio;
 
 using System;
-using System.Collections.Generic;
-using System.Net;
-
-using Minio;
-
-using System;
-using System.Collections.Generic;
-using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -147,14 +133,14 @@ public static class AppConfig
     public static WebApplication Configuration(this WebApplication _app)
     {
         app = _app;
-        // 添加请求验证中间件
-        app.UseMiddleware<FlyFramework.Middlewares.RequestValidationMiddleware>();
+        //添加请求验证中间件
+        app.UseMiddleware<RequestValidationMiddleware>();
 
-        // 添加性能监控中间件
-        app.UseMiddleware<FlyFramework.Middlewares.PerformanceMonitoringMiddleware>();
+        //添加性能监控中间件
+        //app.UseMiddleware<PerformanceMonitoringMiddleware>();
 
-        // 添加全局异常处理中间件
-        app.UseMiddleware<FlyFramework.Middlewares.GlobalExceptionHandlerMiddleware>();
+        //添加全局异常处理中间件
+        app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
         // 配置CORS
         app.UseCors("DefaultCorsPolicy");

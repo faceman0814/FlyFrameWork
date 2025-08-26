@@ -1,0 +1,84 @@
+{
+  "navbar": {
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Log Out"
+  },
+  "login": {
+    "title": "Login Form",
+    "username": "Username",
+    "password": "Password",
+    "login": "Login",
+    "remember": "Remember me",
+    "usernameRequired": "Please input the username",
+    "passwordRequired": "Please input the password",
+    "loginSuccess": "Login success",
+    "loginError": "Username or password is incorrect"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome to FlyFramework Admin System"
+  },
+  "system": {
+    "title": "System Management",
+    "user": "User Management",
+    "role": "Role Management"
+  },
+  "user": {
+    "title": "User Management",
+    "username": "Username",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "status": "Status",
+    "createTime": "Create Time",
+    "actions": "Actions",
+    "add": "Add User",
+    "edit": "Edit User",
+    "delete": "Delete User",
+    "search": "Search",
+    "reset": "Reset",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "deleteConfirm": "Are you sure to delete this user?",
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "role": {
+    "title": "Role Management",
+    "name": "Role Name",
+    "code": "Role Code",
+    "description": "Description",
+    "permissions": "Permissions",
+    "createTime": "Create Time",
+    "actions": "Actions",
+    "add": "Add Role",
+    "edit": "Edit Role",
+    "delete": "Delete Role",
+    "assign": "Assign Permissions",
+    "deleteConfirm": "Are you sure to delete this role?"
+  },
+  "common": {
+    "search": "Search",
+    "reset": "Reset",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "loading": "Loading...",
+    "noData": "No Data",
+    "operation": "Operation",
+    "status": "Status",
+    "createTime": "Create Time",
+    "updateTime": "Update Time",
+    "remark": "Remark",
+    "refresh": "Refresh",
+    "close": "Close",
+    "closeOthers": "Close Others",
+    "closeAll": "Close All"
+  }
+}

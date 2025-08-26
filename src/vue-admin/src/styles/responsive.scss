@@ -1,0 +1,70 @@
+// 响应式变量
+:root {
+  // 断点
+  --breakpoint-mobile: 768px;
+  --breakpoint-tablet: 992px;
+  --breakpoint-desktop: 1200px;
+  --breakpoint-large: 1920px;
+
+  // 侧边栏
+  --sidebar-width: 210px;
+  --sidebar-collapsed-width: 54px;
+  --sidebar-mobile-width: 210px;
+
+  // 导航栏
+  --navbar-height: 50px;
+
+  // 标签栏
+  --tagsview-height: 34px;
+
+  // Z-index
+  --z-sidebar: 1001;
+  --z-navbar: 1000;
+  --z-tagsview: 999;
+  --z-drawer-bg: 999;
+
+  // 过渡动画
+  --transition-sidebar: width 0.28s ease-in-out;
+  --transition-margin: margin-left 0.28s ease-in-out;
+  --transition-transform: transform 0.28s ease-in-out;
+
+  // 阴影
+  --box-shadow-sidebar: 2px 0 6px rgba(0, 0, 0, 0.1);
+  --box-shadow-navbar: 0 1px 4px rgba(0, 21, 41, 0.08);
+
+  // 颜色
+  --color-primary: #409eff;
+  --color-success: #67c23a;
+  --color-warning: #e6a23c;
+  --color-danger: #f56c6c;
+  --color-info: #909399;
+
+  // 背景色
+  --bg-main: #f0f2f5;
+  --bg-sidebar: #304156;
+  --bg-navbar: #ffffff;
+  --bg-tagsview: #ffffff;
+}
+
+// 移动端变量覆盖
+@media (max-width: 768px) {
+  :root {
+    --navbar-height: 44px;
+    --tagsview-height: 32px;
+  }
+}
+
+// 平板端变量覆盖
+@media (min-width: 769px) and (max-width: 992px) {
+  :root {
+    --sidebar-width: 180px;
+  }
+}
+
+// 大屏变量覆盖
+@media (min-width: 1920px) {
+  :root {
+    --sidebar-width: 240px;
+    --navbar-height: 56px;
+  }
+}
