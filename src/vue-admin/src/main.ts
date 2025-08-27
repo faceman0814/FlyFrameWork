@@ -25,6 +25,16 @@ import './styles/index.scss'
 // 国际化配置
 import zhLocale from './locales/zh-cn.json'
 import enLocale from './locales/en.json'
+import jaLocale from './locales/ja.json'
+import ruLocale from './locales/ru.json'
+import frLocale from './locales/fr.json'
+import esLocale from './locales/es.json'
+
+// Element Plus 语言包
+import ja from 'element-plus/es/locale/lang/ja'
+import ru from 'element-plus/es/locale/lang/ru'
+import fr from 'element-plus/es/locale/lang/fr'
+import es from 'element-plus/es/locale/lang/es'
 
 console.log('✅ 所有模块导入成功')
 
@@ -37,7 +47,33 @@ const messages = {
   en: {
     ...enLocale,
     el: en.el
+  },
+  ja: {
+    ...jaLocale,
+    el: ja.el
+  },
+  ru: {
+    ...ruLocale,
+    el: ru.el
+  },
+  fr: {
+    ...frLocale,
+    el: fr.el
+  },
+  es: {
+    ...esLocale,
+    el: es.el
   }
+}
+
+// 语言映射
+const elementLocales = {
+  'zh-cn': zhCn,
+  en: en,
+  ja: ja,
+  ru: ru,
+  fr: fr,
+  es: es
 }
 
 const i18n = createI18n({
@@ -65,7 +101,7 @@ Object.entries(icons).forEach(([key, component]) => {
 app.use(pinia)
 app.use(router)
 app.use(ElementPlus, {
-  locale: i18n.global.locale.value === 'zh-cn' ? zhCn : en
+  locale: elementLocales[i18n.global.locale.value as keyof typeof elementLocales] || zhCn
 })
 app.use(i18n)
 

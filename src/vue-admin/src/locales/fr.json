@@ -1,0 +1,145 @@
+{
+  "navbar": {
+    "dashboard": "Tableau de bord",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "logout": "Se déconnecter",
+    "language": "Langue",
+    "switchLanguageSuccess": "Changé en {language}",
+    "logoutConfirm": "Êtes-vous sûr de vouloir vous déconnecter ?"
+  },
+  "login": {
+    "title": "Formulaire de connexion",
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe",
+    "login": "Se connecter",
+    "remember": "Se souvenir de moi",
+    "usernameRequired": "Veuillez saisir le nom d'utilisateur",
+    "passwordRequired": "Veuillez saisir le mot de passe",
+    "loginSuccess": "Connexion réussie",
+    "loginError": "Nom d'utilisateur ou mot de passe incorrect",
+    "subtitle": "Content de vous revoir ! Veuillez vous connecter à votre compte",
+    "forgotPassword": "Mot de passe oublié ?",
+    "signingIn": "Connexion en cours...",
+    "demoAccount": "Compte de démonstration",
+    "capsLockOn": "Caps Lock est activé",
+    "brand": {
+      "title": "FlyFrameWork",
+      "subtitle": "Tableau de bord administrateur moderne",
+      "feature1": "Sécurité avant tout",
+      "feature2": "Haute performance",
+      "feature3": "Configuration facile"
+    }
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "welcome": "Bienvenue dans le système d'administration FlyFramework",
+    "currentTime": "Heure actuelle",
+    "stats": {
+      "totalUsers": "Total des utilisateurs",
+      "totalRoles": "Total des rôles",
+      "onlineUsers": "Utilisateurs en ligne",
+      "todayVisits": "Visites d'aujourd'hui"
+    },
+    "quickActions": {
+      "title": "Actions rapides",
+      "userManagement": "Gestion des utilisateurs",
+      "roleManagement": "Gestion des rôles",
+      "dataAnalysis": "Analyse des données",
+      "documentCenter": "Centre de documentation",
+      "systemSettings": "Paramètres système",
+      "systemMonitor": "Surveillance du système"
+    }
+  },
+  "system": {
+    "title": "Gestion du système",
+    "user": "Gestion des utilisateurs",
+    "role": "Gestion des rôles",
+    "apiTest": "Test de connexion API"
+  },
+  "user": {
+    "title": "Gestion des utilisateurs",
+    "list": "Liste des utilisateurs",
+    "username": "Nom d'utilisateur",
+    "name": "Nom",
+    "email": "Courriel",
+    "phone": "Téléphone",
+    "status": "Statut",
+    "createTime": "Date de création",
+    "actions": "Actions",
+    "add": "Ajouter un utilisateur",
+    "edit": "Modifier l'utilisateur",
+    "delete": "Supprimer l'utilisateur",
+    "search": "Rechercher",
+    "reset": "Réinitialiser",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cet utilisateur ?",
+    "active": "Actif",
+    "inactive": "Inactif",
+    "batchDelete": "Suppression en lot",
+    "export": "Exporter",
+    "totalRecords": "Total {count} enregistrements"
+  },
+  "role": {
+    "title": "Gestion des rôles",
+    "list": "Liste des rôles",
+    "name": "Nom du rôle",
+    "code": "Code du rôle",
+    "description": "Description",
+    "createTime": "Date de création",
+    "actions": "Actions",
+    "add": "Ajouter un rôle",
+    "edit": "Modifier le rôle",
+    "delete": "Supprimer le rôle",
+    "assign": "Assigner des permissions",
+    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce rôle ?"
+  },
+  "common": {
+    "search": "Rechercher",
+    "reset": "Réinitialiser",
+    "add": "Ajouter",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "loading": "Chargement...",
+    "noData": "Aucune donnée",
+    "operation": "Opération",
+    "status": "Statut",
+    "createTime": "Date de création",
+    "updateTime": "Date de modification",
+    "refresh": "Actualiser",
+    "total": "Total {count}",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "finish": "Terminer"
+  },
+  "theme": {
+    "light": "Thème clair",
+    "dark": "Thème sombre",
+    "auto": "Suivre le système",
+    "switchSuccess": "Thème changé avec succès"
+  },
+  "errors": {
+    "401": "Non autorisé",
+    "403": "Accès interdit",
+    "404": "Page non trouvée",
+    "500": "Erreur interne du serveur",
+    "networkError": "Erreur de connexion réseau",
+    "unknownError": "Erreur inconnue",
+    "pageNotFoundDescription": "Désolé, la page que vous avez visitée n'existe pas...",
+    "pageNotFoundMessage": "Veuillez vérifier si l'URL que vous avez saisie est correcte, ou cliquez sur le bouton ci-dessous pour retourner à la page d'accueil.",
+    "backToHome": "Retour à l'accueil"
+  },
+  "pagination": {
+    "total": "Total {total} éléments",
+    "page": "Page {current} de {total}",
+    "itemsPerPage": "Éléments par page",
+    "jumper": "Aller à",
+    "pageText": "page"
+  }
+}

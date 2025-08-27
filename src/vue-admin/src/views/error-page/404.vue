@@ -9,7 +9,7 @@
       </div>
       <div class="bullshit">
         <div class="bullshit__oops">OOPS!</div>
-        <div class="bullshit__headline">{{ message }}</div>
+        <div class="bullshit__headline">{{ displayMessage }}</div>
         <div class="bullshit__info">{{ $t('errors.pageNotFoundMessage') }}</div>
         <router-link to="/" class="bullshit__return-home">{{ $t('errors.backToHome') }}</router-link>
       </div>
@@ -18,6 +18,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -26,8 +27,13 @@ interface Props {
   message?: string
 }
 
-withDefaults(defineProps<Props>(), {
-  message: () => t('errors.pageNotFoundDescription')
+const props = withDefaults(defineProps<Props>(), {
+  message: ''
+})
+
+// 使用计算属性处理默认消息
+const displayMessage = computed(() => {
+  return props.message || t('errors.pageNotFoundDescription')
 })
 </script>
 

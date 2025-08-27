@@ -5,7 +5,7 @@
     "settings": "Settings",
     "logout": "Log Out",
     "language": "Language",
-    "switchLanguageSuccess": "Language switched successfully",
+    "switchLanguageSuccess": "Switched to {language}",
     "logoutConfirm": "Are you sure you want to log out?"
   },
   "login": {

@@ -1,0 +1,145 @@
+{
+  "navbar": {
+    "dashboard": "Panel de Control",
+    "profile": "Perfil",
+    "settings": "Configuración",
+    "logout": "Cerrar Sesión",
+    "language": "Idioma",
+    "switchLanguageSuccess": "Cambiado a {language}",
+    "logoutConfirm": "¿Estás seguro de que quieres cerrar sesión?"
+  },
+  "login": {
+    "title": "Formulario de Acceso",
+    "username": "Nombre de Usuario",
+    "password": "Contraseña",
+    "login": "Iniciar Sesión",
+    "remember": "Recordarme",
+    "usernameRequired": "Por favor ingresa el nombre de usuario",
+    "passwordRequired": "Por favor ingresa la contraseña",
+    "loginSuccess": "Inicio de sesión exitoso",
+    "loginError": "Nombre de usuario o contraseña incorrectos",
+    "subtitle": "¡Bienvenido de nuevo! Por favor inicia sesión en tu cuenta",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "signingIn": "Iniciando sesión...",
+    "demoAccount": "Cuenta Demo",
+    "capsLockOn": "Bloq Mayús está activado",
+    "brand": {
+      "title": "FlyFrameWork",
+      "subtitle": "Panel de Administración Moderno",
+      "feature1": "Seguridad Primero",
+      "feature2": "Alto Rendimiento",
+      "feature3": "Fácil Configuración"
+    }
+  },
+  "dashboard": {
+    "title": "Panel de Control",
+    "welcome": "Bienvenido al Sistema de Administración FlyFramework",
+    "currentTime": "Hora Actual",
+    "stats": {
+      "totalUsers": "Total de Usuarios",
+      "totalRoles": "Total de Roles",
+      "onlineUsers": "Usuarios En Línea",
+      "todayVisits": "Visitas de Hoy"
+    },
+    "quickActions": {
+      "title": "Acciones Rápidas",
+      "userManagement": "Gestión de Usuarios",
+      "roleManagement": "Gestión de Roles",
+      "dataAnalysis": "Análisis de Datos",
+      "documentCenter": "Centro de Documentos",
+      "systemSettings": "Configuración del Sistema",
+      "systemMonitor": "Monitor del Sistema"
+    }
+  },
+  "system": {
+    "title": "Gestión del Sistema",
+    "user": "Gestión de Usuarios",
+    "role": "Gestión de Roles",
+    "apiTest": "Prueba de Conexión API"
+  },
+  "user": {
+    "title": "Gestión de Usuarios",
+    "list": "Lista de Usuarios",
+    "username": "Nombre de Usuario",
+    "name": "Nombre",
+    "email": "Correo Electrónico",
+    "phone": "Teléfono",
+    "status": "Estado",
+    "createTime": "Fecha de Creación",
+    "actions": "Acciones",
+    "add": "Agregar Usuario",
+    "edit": "Editar Usuario",
+    "delete": "Eliminar Usuario",
+    "search": "Buscar",
+    "reset": "Restablecer",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "deleteConfirm": "¿Estás seguro de que quieres eliminar este usuario?",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "batchDelete": "Eliminación Masiva",
+    "export": "Exportar",
+    "totalRecords": "Total {count} registros"
+  },
+  "role": {
+    "title": "Gestión de Roles",
+    "list": "Lista de Roles",
+    "name": "Nombre del Rol",
+    "code": "Código del Rol",
+    "description": "Descripción",
+    "createTime": "Fecha de Creación",
+    "actions": "Acciones",
+    "add": "Agregar Rol",
+    "edit": "Editar Rol",
+    "delete": "Eliminar Rol",
+    "assign": "Asignar Permisos",
+    "deleteConfirm": "¿Estás seguro de que quieres eliminar este rol?"
+  },
+  "common": {
+    "search": "Buscar",
+    "reset": "Restablecer",
+    "add": "Agregar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "loading": "Cargando...",
+    "noData": "Sin Datos",
+    "operation": "Operación",
+    "status": "Estado",
+    "createTime": "Fecha de Creación",
+    "updateTime": "Fecha de Actualización",
+    "refresh": "Actualizar",
+    "total": "Total {count}",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "finish": "Finalizar"
+  },
+  "theme": {
+    "light": "Tema Claro",
+    "dark": "Tema Oscuro",
+    "auto": "Seguir Sistema",
+    "switchSuccess": "Tema cambiado exitosamente"
+  },
+  "errors": {
+    "401": "No Autorizado",
+    "403": "Acceso Prohibido",
+    "404": "Página No Encontrada",
+    "500": "Error Interno del Servidor",
+    "networkError": "Error de Conexión de Red",
+    "unknownError": "Error Desconocido",
+    "pageNotFoundDescription": "Lo siento, la página que visitaste no existe...",
+    "pageNotFoundMessage": "Por favor verifica si la URL que ingresaste es correcta, o haz clic en el botón de abajo para regresar a la página principal.",
+    "backToHome": "Volver al Inicio"
+  },
+  "pagination": {
+    "total": "Total {total} elementos",
+    "page": "Página {current} de {total}",
+    "itemsPerPage": "Elementos por página",
+    "jumper": "Ir a",
+    "pageText": "página"
+  }
+}

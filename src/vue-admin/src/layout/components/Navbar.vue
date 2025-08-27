@@ -19,9 +19,31 @@
             <el-icon><Operation /></el-icon>
           </div>
           <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item command="zh-cn">中文</el-dropdown-item>
-              <el-dropdown-item command="en">English</el-dropdown-item>
+            <el-dropdown-menu class="language-dropdown">
+              <el-dropdown-item command="zh-cn" :class="{ 'is-active': locale === 'zh-cn' }">
+                <span class="flag">🇨🇳</span>
+                <span class="text">中文简体</span>
+              </el-dropdown-item>
+              <el-dropdown-item command="en" :class="{ 'is-active': locale === 'en' }">
+                <span class="flag">🇺🇸</span>
+                <span class="text">English</span>
+              </el-dropdown-item>
+              <el-dropdown-item command="ja" :class="{ 'is-active': locale === 'ja' }">
+                <span class="flag">🇯🇵</span>
+                <span class="text">日本語</span>
+              </el-dropdown-item>
+              <el-dropdown-item command="ru" :class="{ 'is-active': locale === 'ru' }">
+                <span class="flag">🇷🇺</span>
+                <span class="text">Русский</span>
+              </el-dropdown-item>
+              <el-dropdown-item command="fr" :class="{ 'is-active': locale === 'fr' }">
+                <span class="flag">🇫🇷</span>
+                <span class="text">Français</span>
+              </el-dropdown-item>
+              <el-dropdown-item command="es" :class="{ 'is-active': locale === 'es' }">
+                <span class="flag">🇪🇸</span>
+                <span class="text">Español</span>
+              </el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -92,9 +114,21 @@ const toggleSidebar = () => {
 const handleSetLanguage = (lang: string) => {
   locale.value = lang
   appStore.setLanguage(lang)
+  
+  // 根据不同语言显示不同的成功消息
+  const languageNames = {
+    'zh-cn': '中文简体',
+    'en': 'English',
+    'ja': '日本語',
+    'ru': 'Русский',
+    'fr': 'Français',
+    'es': 'Español'
+  }
+  
   ElMessage({
-    message: t('navbar.switchLanguageSuccess'),
-    type: 'success'
+    message: t('navbar.switchLanguageSuccess', { language: languageNames[lang as keyof typeof languageNames] }),
+    type: 'success',
+    duration: 2000
   })
 }
 
@@ -349,6 +383,64 @@ const handleLogout = async () => {
       .el-icon,
       span {
         color: var(--primary-color);
+      }
+    }
+  }
+}
+
+:deep(.language-dropdown) {
+  min-width: 180px;
+  
+  .el-dropdown-menu__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    transition: all 0.3s ease;
+    position: relative;
+    
+    .flag {
+      font-size: 16px;
+      flex-shrink: 0;
+      width: 20px;
+      text-align: center;
+    }
+    
+    .text {
+      font-size: 14px;
+      color: var(--text-primary);
+      flex: 1;
+      font-weight: 400;
+    }
+    
+    &.is-active {
+      background: var(--primary-color-light-9);
+      color: var(--primary-color);
+      
+      .text {
+        color: var(--primary-color);
+        font-weight: 500;
+      }
+      
+      &::after {
+        content: '✓';
+        position: absolute;
+        right: 16px;
+        color: var(--primary-color);
+        font-weight: bold;
+        font-size: 12px;
+      }
+    }
+    
+    &:hover {
+      background: var(--bg-hover);
+      
+      .text {
+        color: var(--primary-color);
+      }
+      
+      &.is-active {
+        background: var(--primary-color-light-8);
       }
     }
   }

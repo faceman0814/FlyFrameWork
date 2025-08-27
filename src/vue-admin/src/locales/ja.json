@@ -1,0 +1,145 @@
+{
+  "navbar": {
+    "dashboard": "ダッシュボード",
+    "profile": "プロフィール",
+    "settings": "設定",
+    "logout": "ログアウト",
+    "language": "言語",
+    "switchLanguageSuccess": "{language}に切り替えました",
+    "logoutConfirm": "本当にログアウトしますか？"
+  },
+  "login": {
+    "title": "ログインフォーム",
+    "username": "ユーザー名",
+    "password": "パスワード",
+    "login": "ログイン",
+    "remember": "記憶する",
+    "usernameRequired": "ユーザー名を入力してください",
+    "passwordRequired": "パスワードを入力してください",
+    "loginSuccess": "ログイン成功",
+    "loginError": "ユーザー名またはパスワードが正しくありません",
+    "subtitle": "お帰りなさい！アカウントにサインインしてください",
+    "forgotPassword": "パスワードを忘れましたか？",
+    "signingIn": "ログイン中...",
+    "demoAccount": "デモアカウント",
+    "capsLockOn": "Caps Lockがオンです",
+    "brand": {
+      "title": "FlyFrameWork",
+      "subtitle": "モダン管理ダッシュボード",
+      "feature1": "セキュリティ第一",
+      "feature2": "高性能",
+      "feature3": "簡単設定"
+    }
+  },
+  "dashboard": {
+    "title": "ダッシュボード",
+    "welcome": "FlyFramework管理システムへようこそ",
+    "currentTime": "現在時刻",
+    "stats": {
+      "totalUsers": "総ユーザー数",
+      "totalRoles": "総ロール数",
+      "onlineUsers": "オンラインユーザー",
+      "todayVisits": "本日の訪問数"
+    },
+    "quickActions": {
+      "title": "クイックアクション",
+      "userManagement": "ユーザー管理",
+      "roleManagement": "ロール管理",
+      "dataAnalysis": "データ分析",
+      "documentCenter": "ドキュメントセンター",
+      "systemSettings": "システム設定",
+      "systemMonitor": "システム監視"
+    }
+  },
+  "system": {
+    "title": "システム管理",
+    "user": "ユーザー管理",
+    "role": "ロール管理",
+    "apiTest": "API接続テスト"
+  },
+  "user": {
+    "title": "ユーザー管理",
+    "list": "ユーザーリスト",
+    "username": "ユーザー名",
+    "name": "名前",
+    "email": "メールアドレス",
+    "phone": "電話番号",
+    "status": "ステータス",
+    "createTime": "作成日時",
+    "actions": "操作",
+    "add": "ユーザー追加",
+    "edit": "ユーザー編集",
+    "delete": "ユーザー削除",
+    "search": "検索",
+    "reset": "リセット",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "confirm": "確認",
+    "deleteConfirm": "このユーザーを削除しますか？",
+    "active": "有効",
+    "inactive": "無効",
+    "batchDelete": "一括削除",
+    "export": "エクスポート",
+    "totalRecords": "合計{count}件のレコード"
+  },
+  "role": {
+    "title": "ロール管理",
+    "list": "ロールリスト",
+    "name": "ロール名",
+    "code": "ロールコード",
+    "description": "説明",
+    "createTime": "作成日時",
+    "actions": "操作",
+    "add": "ロール追加",
+    "edit": "ロール編集",
+    "delete": "ロール削除",
+    "assign": "権限割り当て",
+    "deleteConfirm": "このロールを削除しますか？"
+  },
+  "common": {
+    "search": "検索",
+    "reset": "リセット",
+    "add": "追加",
+    "edit": "編集",
+    "delete": "削除",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "confirm": "確認",
+    "loading": "読み込み中...",
+    "noData": "データなし",
+    "operation": "操作",
+    "status": "ステータス",
+    "createTime": "作成日時",
+    "updateTime": "更新日時",
+    "refresh": "更新",
+    "total": "合計{count}件",
+    "back": "戻る",
+    "next": "次へ",
+    "previous": "前へ",
+    "finish": "完了"
+  },
+  "theme": {
+    "light": "ライトテーマ",
+    "dark": "ダークテーマ",
+    "auto": "システムに従う",
+    "switchSuccess": "テーマの切り替えが完了しました"
+  },
+  "errors": {
+    "401": "認証されていません",
+    "403": "アクセス禁止",
+    "404": "ページが見つかりません",
+    "500": "内部サーバーエラー",
+    "networkError": "ネットワーク接続エラー",
+    "unknownError": "不明なエラー",
+    "pageNotFoundDescription": "申し訳ありません。お探しのページは存在しません...",
+    "pageNotFoundMessage": "入力されたURLが正しいかご確認いただくか、下のボタンをクリックしてホームページに戻ってください。",
+    "backToHome": "ホームに戻る"
+  },
+  "pagination": {
+    "total": "合計{total}件",
+    "page": "{current}ページ目 / 全{total}ページ",
+    "itemsPerPage": "1ページあたりの件数",
+    "jumper": "ページへ移動",
+    "pageText": "ページ"
+  }
+}

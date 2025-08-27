@@ -5,7 +5,7 @@
     "settings": "设置",
     "logout": "退出登录",
     "language": "语言",
-    "switchLanguageSuccess": "语言切换成功",
+    "switchLanguageSuccess": "已切换到{language}",
     "logoutConfirm": "确定要退出登录吗？"
   },
   "login": {

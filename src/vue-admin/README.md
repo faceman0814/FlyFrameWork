@@ -86,22 +86,26 @@ src/
 ## 🎨 页面预览
 
 ### 登录页面
+
 - 响应式设计
 - 表单验证
 - 记住密码功能
 
 ### 仪表盘
+
 - 数据统计卡片
 - 快捷操作面板
 - 实时时间显示
 
 ### 用户管理
+
 - 用户列表展示
 - 添加/编辑/删除用户
 - 状态管理
 - 分页功能
 
 ### 角色管理
+
 - 角色列表管理
 - 权限分配
 - 角色权限树形选择
@@ -112,10 +116,10 @@ src/
 
 ```bash
 # 开发环境
-VITE_API_BASE_URL=http://localhost:21021
+VITE_API_BASE_URL=http://localhost:3000
 
 # 生产环境
-VITE_API_BASE_URL=https://your-api-domain.com
+VITE_API_BASE_URL=https://flyframework.faceman.cn
 ```
 
 ### 代理配置
@@ -126,9 +130,10 @@ VITE_API_BASE_URL=https://your-api-domain.com
 server: {
   proxy: {
     '/api': {
-      target: 'http://localhost:21021',
+      target: 'http://localhost:3000',
       changeOrigin: true,
-      rewrite: (path) => path.replace(/^\/api/, '')
+        // 不重写路径，因为我们需要保持 /api 前缀
+        // rewrite: (path: string) => path.replace(/^\/api/, '')
     }
   }
 }
@@ -151,7 +156,7 @@ server: {
 ## 📱 响应式支持
 
 - 桌面端 (≥1200px)
-- 平板端 (768px-1199px)  
+- 平板端 (768px-1199px)
 - 移动端 (<768px)
 
 ## 🤝 贡献指南
