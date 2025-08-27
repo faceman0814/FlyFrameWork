@@ -169,7 +169,7 @@ onMounted(() => {
 .tags-view-container {
   height: 34px;
   width: 100%;
-  background: var(--bg-color);
+  background: var(--tags-bg);
   border-bottom: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
   transition: all 0.3s ease;
@@ -183,8 +183,8 @@ onMounted(() => {
       cursor: pointer;
       height: 26px;
       border: 1px solid var(--border-color);
-      color: var(--text-secondary);
-      background: var(--bg-color);
+      color: var(--tags-item-text);
+      background: var(--tags-item-bg);
       padding: 0 8px;
       font-size: 12px;
       margin-left: 5px;
@@ -203,14 +203,14 @@ onMounted(() => {
       }
 
       &:hover {
-        background: var(--hover-bg);
-        color: var(--text-primary);
+        background: var(--tags-item-hover-bg);
+        color: var(--primary-color);
         border-color: var(--primary-color);
       }
 
       &.active {
-        background: var(--primary-gradient);
-        color: #fff;
+        background: var(--tags-item-active-bg);
+        color: var(--tags-item-active-text);
         border: 1px solid transparent;
         box-shadow: var(--shadow-sm);
 
@@ -230,7 +230,7 @@ onMounted(() => {
 
   .contextmenu {
     margin: 0;
-    background: var(--bg-color);
+    background: var(--bg-container);
     z-index: 3000;
     position: absolute;
     list-style-type: none;

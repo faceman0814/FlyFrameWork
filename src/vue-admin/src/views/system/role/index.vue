@@ -1,88 +1,123 @@
 <template>
-  <div class="app-container">
+  <div class="app-container modern-table-wrapper">
     <!-- 搜索表单 -->
-    <el-form :model="queryParams" ref="queryRef" :inline="true" class="search-form">
-      <el-form-item :label="$t('role.name')" prop="name">
-        <el-input
-          v-model="queryParams.name"
-          :placeholder="$t('role.name')"
-          clearable
-          @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item :label="$t('role.code')" prop="code">
-        <el-input
-          v-model="queryParams.code"
-          :placeholder="$t('role.code')"
-          clearable
-          @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="handleQuery">{{ $t('common.search') }}</el-button>
-        <el-button @click="resetQuery">{{ $t('common.reset') }}</el-button>
-      </el-form-item>
-    </el-form>
+    <div class="search-wrapper">
+      <el-card shadow="never" class="search-card">
+        <el-form :model="queryParams" ref="queryRef" :inline="true" class="search-form">
+          <el-form-item :label="$t('role.name')" prop="name">
+            <el-input
+              v-model="queryParams.name"
+              :placeholder="$t('role.name')"
+              clearable
+              style="width: 180px"
+              @keyup.enter="handleQuery"
+            />
+          </el-form-item>
+          <el-form-item :label="$t('role.code')" prop="code">
+            <el-input
+              v-model="queryParams.code"
+              :placeholder="$t('role.code')"
+              clearable
+              style="width: 180px"
+              @keyup.enter="handleQuery"
+            />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="handleQuery">
+              <el-icon><Search /></el-icon>
+              {{ $t('common.search') }}
+            </el-button>
+            <el-button @click="resetQuery">
+              <el-icon><Refresh /></el-icon>
+              {{ $t('common.reset') }}
+            </el-button>
+          </el-form-item>
+        </el-form>
+      </el-card>
+    </div>
 
-    <!-- 操作按钮 -->
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          @click="handleAdd"
-        >
-          <el-icon><Plus /></el-icon>
-          {{ $t('role.add') }}
-        </el-button>
-      </el-col>
-    </el-row>
+    <!-- 表格操作区 -->
+    <div class="table-wrapper">
+      <el-card shadow="never" class="table-card">
+        <!-- 操作按钮栏 -->
+        <div class="table-header">
+          <div class="table-title">
+            <h3>{{ $t('role.list') }}</h3>
+            <span class="table-count">{{ t('role.totalRecords', { count: total }) }}</span>
+          </div>
+          <div class="table-actions">
+            <el-button
+              type="primary"
+              @click="handleAdd"
+            >
+              <el-icon><Plus /></el-icon>
+              {{ $t('role.add') }}
+            </el-button>
+          </div>
+        </div>
 
-    <!-- 角色表格 -->
-    <el-table v-loading="loading" :data="roleList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column :label="$t('role.name')" align="center" prop="name" />
-      <el-table-column :label="$t('role.code')" align="center" prop="code" />
-      <el-table-column :label="$t('role.description')" align="center" prop="description" />
-      <el-table-column :label="$t('role.createTime')" align="center" prop="createTime" width="180" />
-      <el-table-column :label="$t('role.actions')" align="center" width="200">
-        <template #default="scope">
-          <el-button
-            type="primary"
-            text
-            @click="handleEdit(scope.row)"
+        <!-- 角色表格 -->
+        <div class="table-content">
+          <el-table 
+            v-loading="loading" 
+            :data="roleList" 
+            @selection-change="handleSelectionChange"
+            class="modern-table"
+            stripe
+            border
+            highlight-current-row
           >
-            <el-icon><Edit /></el-icon>
-            {{ $t('common.edit') }}
-          </el-button>
-          <el-button
-            type="warning"
-            text
-            @click="handlePermission(scope.row)"
-          >
-            <el-icon><Key /></el-icon>
-            {{ $t('role.assign') }}
-          </el-button>
-          <el-button
-            type="danger"
-            text
-            @click="handleDelete(scope.row)"
-          >
-            <el-icon><Delete /></el-icon>
-            {{ $t('common.delete') }}
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+            <el-table-column type="selection" width="50" align="center" />
+            <el-table-column :label="$t('role.name')" prop="name" min-width="120" />
+            <el-table-column :label="$t('role.code')" prop="code" min-width="120" />
+            <el-table-column :label="$t('role.description')" prop="description" min-width="200" />
+            <el-table-column :label="$t('role.createTime')" prop="createTime" width="180" />
+            <el-table-column :label="$t('role.actions')" width="220" align="center">
+              <template #default="scope">
+                <div class="action-buttons">
+                  <el-button
+                    type="primary"
+                    text
+                    @click="handleEdit(scope.row)"
+                    :title="$t('common.edit')"
+                  >
+                    <el-icon><Edit /></el-icon>
+                  </el-button>
+                  <el-button
+                    type="warning"
+                    text
+                    @click="handlePermission(scope.row)"
+                    :title="$t('role.assign')"
+                  >
+                    <el-icon><Key /></el-icon>
+                  </el-button>
+                  <el-button
+                    type="danger"
+                    text
+                    @click="handleDelete(scope.row)"
+                    :title="$t('common.delete')"
+                  >
+                    <el-icon><Delete /></el-icon>
+                  </el-button>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
 
-    <!-- 分页 -->
-    <pagination
-      v-show="total > 0"
-      :total="total"
-      v-model:page="queryParams.pageNum"
-      v-model:limit="queryParams.pageSize"
-      @pagination="getList"
-    />
+        <!-- 表格底部 -->
+        <div class="table-footer">
+          <pagination
+            v-show="total > 0"
+            :total="total"
+            v-model:page="queryParams.pageNum"
+            v-model:limit="queryParams.pageSize"
+            @pagination="getList"
+            class="modern-pagination"
+          />
+        </div>
+      </el-card>
+    </div>
 
     <!-- 添加或修改角色对话框 -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
@@ -111,14 +146,14 @@
     </el-dialog>
 
     <!-- 分配权限对话框 -->
-    <el-dialog title="分配权限" v-model="openPermission" width="600px" append-to-body>
+    <el-dialog :title="$t('role.assignPermissions')" v-model="openPermission" width="600px" append-to-body>
       <el-tree
         ref="permissionRef"
         :data="permissionList"
         show-checkbox
         node-key="id"
         :check-strictly="true"
-        empty-text="暂无数据"
+        :empty-text="$t('common.noData')"
         :props="defaultProps"
       />
       <template #footer>
@@ -134,7 +169,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Plus, Edit, Delete, Key } from '@element-plus/icons-vue'
+import { Plus, Edit, Delete, Key, Search, Refresh } from '@element-plus/icons-vue'
 import { getRoleList, createRole, updateRole, deleteRole, getRolePermissions, updateRolePermissions } from '@/api/role'
 import Pagination from '@/components/Pagination/index.vue'
 import type { FormInstance } from 'element-plus'
@@ -176,8 +211,8 @@ const permissionRef = ref()
 
 // 表单验证
 const rules = reactive({
-  name: [{ required: true, message: 'Role name is required', trigger: 'blur' }],
-  code: [{ required: true, message: 'Role code is required', trigger: 'blur' }]
+  name: [{ required: true, message: () => t('role.validation.nameRequired'), trigger: 'blur' }],
+  code: [{ required: true, message: () => t('role.validation.codeRequired'), trigger: 'blur' }]
 })
 
 const queryRef = ref<FormInstance>()
@@ -216,19 +251,19 @@ const mockRoleData = [
 const mockPermissionData = [
   {
     id: 1,
-    name: '系统管理',
+    name: t('role.permissionTypes.systemManagement'),
     children: [
-      { id: 11, name: '用户管理' },
-      { id: 12, name: '角色管理' },
-      { id: 13, name: '菜单管理' }
+      { id: 11, name: t('role.permissionTypes.userManagement') },
+      { id: 12, name: t('role.permissionTypes.roleManagement') },
+      { id: 13, name: t('role.permissionTypes.menuManagement') }
     ]
   },
   {
     id: 2,
-    name: '业务管理',
+    name: t('role.permissionTypes.businessManagement'),
     children: [
-      { id: 21, name: '订单管理' },
-      { id: 22, name: '商品管理' }
+      { id: 21, name: t('role.permissionTypes.orderManagement') },
+      { id: 22, name: t('role.permissionTypes.productManagement') }
     ]
   }
 ]
@@ -290,10 +325,10 @@ const submitForm = () => {
     if (valid) {
       if (form.id) {
         await updateRole(form.id, form)
-        ElMessage.success('修改成功')
+        ElMessage.success(t('user.updateSuccess'))
       } else {
         await createRole(form)
-        ElMessage.success('新增成功')
+        ElMessage.success(t('user.createSuccess'))
       }
       open.value = false
       getList()
@@ -306,10 +341,10 @@ const submitPermission = async () => {
   const checkedKeys = permissionRef.value?.getCheckedKeys()
   try {
     await updateRolePermissions(currentRoleId.value, checkedKeys)
-    ElMessage.success('权限分配成功')
+    ElMessage.success(t('role.permissionAssignSuccess'))
     openPermission.value = false
   } catch (error) {
-    ElMessage.success('权限分配成功') // 模拟成功
+    ElMessage.success(t('role.permissionAssignSuccess')) // 模拟成功
     openPermission.value = false
   }
 }
@@ -319,7 +354,7 @@ const handleDelete = (row: any) => {
   const roleIds = row.id || ids.value
   ElMessageBox.confirm(
     t('role.deleteConfirm'),
-    'Warning',
+    t('common.warning'),
     {
       confirmButtonText: t('common.confirm'),
       cancelButtonText: t('common.cancel'),
@@ -328,7 +363,7 @@ const handleDelete = (row: any) => {
   ).then(async () => {
     await deleteRole(roleIds)
     getList()
-    ElMessage.success('删除成功')
+    ElMessage.success(t('user.deleteSuccess'))
   })
 }
 
@@ -358,14 +393,5 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.search-form {
-  padding: 20px;
-  background: #fff;
-  border-radius: 4px;
-  margin-bottom: 20px;
-}
-
-.mb8 {
-  margin-bottom: 8px;
-}
+// 移除独立样式，使用统一的现代化表格样式
 </style>

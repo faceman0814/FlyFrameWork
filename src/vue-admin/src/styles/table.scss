@@ -1,0 +1,249 @@
+// 表格暗黑模式样式优化
+.el-table {
+  background-color: var(--table-bg) !important;
+  color: var(--table-text) !important;
+  
+  // 表格头部样式
+  .el-table__header-wrapper {
+    .el-table__header {
+      background-color: var(--table-header-bg) !important;
+      
+      th {
+        background-color: var(--table-header-bg) !important;
+        color: var(--table-header-text) !important;
+        border-bottom: 1px solid var(--table-border) !important;
+        font-weight: 600;
+      }
+    }
+  }
+  
+  // 表格主体样式
+  .el-table__body-wrapper {
+    .el-table__body {
+      tr {
+        background-color: var(--table-bg) !important;
+        
+        &:hover {
+          background-color: var(--table-row-hover) !important;
+          
+          td {
+            background-color: transparent !important;
+          }
+        }
+        
+        td {
+          background-color: var(--table-bg) !important;
+          color: var(--table-text) !important;
+          border-bottom: 1px solid var(--table-border) !important;
+        }
+      }
+    }
+  }
+  
+  // 空数据样式
+  .el-table__empty-block {
+    background-color: var(--table-bg) !important;
+    color: var(--text-placeholder) !important;
+  }
+  
+  // 固定列样式
+  .el-table__fixed,
+  .el-table__fixed-right {
+    background-color: var(--table-bg) !important;
+    
+    .el-table__fixed-header-wrapper,
+    .el-table__fixed-body-wrapper {
+      background-color: var(--table-bg) !important;
+    }
+  }
+  
+  // 表格边框
+  &.el-table--border {
+    border: 1px solid var(--table-border) !important;
+    
+    &::after {
+      background-color: var(--table-border) !important;
+    }
+    
+    &::before {
+      background-color: var(--table-border) !important;
+    }
+  }
+  
+  // 斑马纹样式
+  &.el-table--striped {
+    .el-table__body {
+      tr.el-table__row--striped {
+        td {
+          background-color: var(--table-row-striped) !important;
+        }
+        
+        &:hover {
+          td {
+            background-color: var(--table-row-hover) !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 分页组件样式
+.el-pagination {
+  color: var(--text-regular) !important;
+  
+  .el-pagination__total,
+  .el-pagination__jump {
+    color: var(--text-regular) !important;
+  }
+  
+  .el-pager {
+    li {
+      background-color: var(--bg-container) !important;
+      color: var(--text-regular) !important;
+      border: 1px solid var(--border-light) !important;
+      
+      &:hover {
+        background-color: var(--bg-hover) !important;
+        color: var(--primary-color) !important;
+      }
+      
+      &.is-active {
+        background-color: var(--primary-color) !important;
+        color: #ffffff !important;
+        border-color: var(--primary-color) !important;
+      }
+    }
+  }
+  
+  .btn-prev,
+  .btn-next {
+    background-color: var(--bg-container) !important;
+    color: var(--text-regular) !important;
+    border: 1px solid var(--border-light) !important;
+    
+    &:hover {
+      background-color: var(--bg-hover) !important;
+      color: var(--primary-color) !important;
+    }
+    
+    &:disabled {
+      background-color: var(--bg-container) !important;
+      color: var(--text-disabled) !important;
+    }
+  }
+  
+  .el-pagination__sizes {
+    .el-select {
+      .el-select__wrapper {
+        background-color: var(--bg-container) !important;
+        border-color: var(--border-light) !important;
+        color: var(--text-regular) !important;
+        box-shadow: 0 0 0 1px var(--border-light) inset !important;
+        
+        &:hover {
+          border-color: var(--primary-color) !important;
+          box-shadow: 0 0 0 1px var(--primary-color) inset !important;
+        }
+        
+        .el-select__placeholder {
+          color: var(--text-placeholder) !important;
+        }
+        
+        .el-select__selected-item {
+          color: var(--text-primary) !important;
+        }
+        
+        .el-select__caret {
+          color: var(--text-regular) !important;
+        }
+      }
+    }
+  }
+  
+  .el-pagination__jump {
+    .el-pagination__editor {
+      background-color: var(--bg-container) !important;
+      border-color: var(--border-light) !important;
+      color: var(--text-regular) !important;
+      box-shadow: 0 0 0 1px var(--border-light) inset !important;
+      
+      &:hover {
+        border-color: var(--primary-color) !important;
+        box-shadow: 0 0 0 1px var(--primary-color) inset !important;
+      }
+      
+      &:focus {
+        border-color: var(--primary-color) !important;
+        box-shadow: 0 0 0 1px var(--primary-color) inset !important;
+      }
+      
+      .el-input__inner {
+        color: var(--text-primary) !important;
+        
+        &::placeholder {
+          color: var(--text-placeholder) !important;
+        }
+      }
+    }
+  }
+}
+
+// Element Plus 表格行选择样式
+.el-table__row {
+  .el-checkbox {
+    .el-checkbox__input {
+      .el-checkbox__inner {
+        background-color: var(--bg-container) !important;
+        border-color: var(--border-base) !important;
+        
+        &:hover {
+          border-color: var(--primary-color) !important;
+        }
+      }
+      
+      &.is-checked {
+        .el-checkbox__inner {
+          background-color: var(--primary-color) !important;
+          border-color: var(--primary-color) !important;
+        }
+      }
+      
+      &.is-indeterminate {
+        .el-checkbox__inner {
+          background-color: var(--primary-color) !important;
+          border-color: var(--primary-color) !important;
+        }
+      }
+    }
+  }
+}
+
+// 表格标签样式
+.el-table {
+  .el-tag {
+    &.el-tag--success {
+      background-color: rgba(103, 194, 58, 0.1) !important;
+      border-color: rgba(103, 194, 58, 0.2) !important;
+      color: var(--success-color) !important;
+    }
+    
+    &.el-tag--danger {
+      background-color: rgba(245, 108, 108, 0.1) !important;
+      border-color: rgba(245, 108, 108, 0.2) !important;
+      color: var(--danger-color) !important;
+    }
+    
+    &.el-tag--warning {
+      background-color: rgba(230, 162, 60, 0.1) !important;
+      border-color: rgba(230, 162, 60, 0.2) !important;
+      color: var(--warning-color) !important;
+    }
+    
+    &.el-tag--info {
+      background-color: rgba(144, 147, 153, 0.1) !important;
+      border-color: rgba(144, 147, 153, 0.2) !important;
+      color: var(--info-color) !important;
+    }
+  }
+}

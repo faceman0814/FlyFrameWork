@@ -14,7 +14,6 @@
         <!-- 主题切换 -->
         <theme-switcher class="right-menu-item" />
         
-        <!-- 语言切换 -->
         <el-dropdown class="right-menu-item" trigger="click" @command="handleSetLanguage">
           <div class="icon-wrapper">
             <el-icon><Operation /></el-icon>
@@ -77,7 +76,7 @@ import { useUserStore } from '@/stores/user'
 import { useAppStore } from '@/stores/app'
 
 const router = useRouter()
-const { locale } = useI18n()
+const { locale, t } = useI18n()
 const userStore = useUserStore()
 const appStore = useAppStore()
 
@@ -94,7 +93,7 @@ const handleSetLanguage = (lang: string) => {
   locale.value = lang
   appStore.setLanguage(lang)
   ElMessage({
-    message: 'Switch Language Success',
+    message: t('navbar.switchLanguageSuccess'),
     type: 'success'
   })
 }
@@ -116,11 +115,11 @@ const handleCommand = (command: string) => {
 const handleLogout = async () => {
   try {
     await ElMessageBox.confirm(
-      'Are you sure you want to log out?',
-      'Confirm',
+      t('navbar.logoutConfirm'),
+      t('common.warning'),
       {
-        confirmButtonText: 'Confirm',
-        cancelButtonText: 'Cancel',
+        confirmButtonText: t('common.confirm'),
+        cancelButtonText: t('common.cancel'),
         type: 'warning'
       }
     )

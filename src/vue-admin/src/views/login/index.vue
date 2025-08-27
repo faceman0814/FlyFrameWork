@@ -12,21 +12,21 @@
     
     <!-- 左侧品牌区域 -->
     <div class="brand-section">
-      <div class="brand-content">
-        <div class="logo-wrapper">
-          <div class="logo-icon">
-            <el-icon size="60"><Monitor /></el-icon>
+        <div class="brand-content">
+          <div class="logo-wrapper">
+            <div class="logo-icon">
+              <el-icon size="60"><Monitor /></el-icon>
+            </div>
+            <h1 class="brand-title">{{ $t('login.brand.title') }}</h1>
+            <p class="brand-subtitle">{{ $t('login.brand.subtitle') }}</p>
           </div>
-          <h1 class="brand-title">FlyFrameWork</h1>
-          <p class="brand-subtitle">Modern Admin Dashboard</p>
-        </div>
-        <div class="feature-list">
-          <div class="feature-item" v-for="(feature, index) in features" :key="index">
-            <el-icon class="feature-icon"><component :is="feature.icon" /></el-icon>
-            <span>{{ feature.text }}</span>
+          <div class="feature-list">
+            <div class="feature-item" v-for="(feature, index) in features" :key="index">
+              <el-icon class="feature-icon"><component :is="feature.icon" /></el-icon>
+              <span>{{ feature.text }}</span>
+            </div>
           </div>
         </div>
-      </div>
     </div>
 
     <!-- 登录表单区域 -->
@@ -40,9 +40,9 @@
           autocomplete="on"
           label-position="left"
         >
-          <div class="form-header">
+        <div class="form-header">
             <h2 class="form-title">{{ $t('login.title') }}</h2>
-            <p class="form-subtitle">Welcome back! Please sign in to your account</p>
+            <p class="form-subtitle">{{ $t('login.subtitle') }}</p>
           </div>
 
           <el-form-item prop="username" class="input-item">
@@ -62,7 +62,7 @@
             </div>
           </el-form-item>
 
-          <el-tooltip :visible="capsTooltip" :content="'Caps lock is On'" placement="right">
+          <el-tooltip :visible="capsTooltip" :content="$t('login.capsLockOn')" placement="right">
             <el-form-item prop="password" class="input-item">
               <div class="input-wrapper">
                 <el-icon class="input-icon"><Lock /></el-icon>
@@ -90,9 +90,9 @@
 
           <div class="form-options">
             <el-checkbox v-model="rememberMe" class="remember-checkbox">
-              Remember me
+              {{ $t('login.remember') }}
             </el-checkbox>
-            <a href="#" class="forgot-link">Forgot password?</a>
+            <a href="#" class="forgot-link">{{ $t('login.forgotPassword') }}</a>
           </div>
 
           <el-button
@@ -103,13 +103,13 @@
             @click.prevent="handleLogin"
           >
             <span v-if="!loading">{{ $t('login.login') }}</span>
-            <span v-else>Signing in...</span>
+            <span v-else>{{ $t('login.signingIn') }}</span>
           </el-button>
 
           <div class="demo-tips">
             <div class="tips-header">
               <el-icon><InfoFilled /></el-icon>
-              <span>Demo Account</span>
+              <span>{{ $t('login.demoAccount') }}</span>
             </div>
           </div>
         </el-form>
@@ -119,7 +119,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, onMounted, nextTick } from 'vue'
+import { reactive, ref, onMounted, nextTick, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
@@ -153,9 +153,9 @@ const rememberMe = ref(true)
 
 // 功能特性列表
 const features = ref([
-  { icon: Shield, text: 'Security First' },
-  { icon: Cpu, text: 'High Performance' },
-  { icon: Setting, text: 'Easy Configuration' }
+  { icon: Shield, text: computed(() => t('login.brand.feature1')) },
+  { icon: Cpu, text: computed(() => t('login.brand.feature2')) },
+  { icon: Setting, text: computed(() => t('login.brand.feature3')) }
 ])
 
 // 生成随机粒子样式

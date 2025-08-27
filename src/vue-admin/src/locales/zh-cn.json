@@ -3,7 +3,10 @@
     "dashboard": "首页",
     "profile": "个人中心",
     "settings": "设置",
-    "logout": "退出登录"
+    "logout": "退出登录",
+    "language": "语言",
+    "switchLanguageSuccess": "语言切换成功",
+    "logoutConfirm": "确定要退出登录吗？"
   },
   "login": {
     "title": "系统登录",
@@ -14,19 +17,73 @@
     "usernameRequired": "请输入用户名",
     "passwordRequired": "请输入密码",
     "loginSuccess": "登录成功",
-    "loginError": "用户名或密码错误"
+    "loginError": "用户名或密码错误",
+    "subtitle": "欢迎回来！请登录您的账户",
+    "forgotPassword": "忘记密码？",
+    "signingIn": "登录中...",
+    "demoAccount": "演示账户",
+    "capsLockOn": "大写锁定已开启",
+    "brand": {
+      "title": "FlyFrameWork",
+      "subtitle": "现代化管理后台",
+      "feature1": "安全第一",
+      "feature2": "高性能",
+      "feature3": "易配置"
+    }
   },
   "dashboard": {
     "title": "首页",
-    "welcome": "欢迎使用 FlyFramework Admin 管理系统"
+    "welcome": "欢迎使用 FlyFramework Admin 管理系统",
+    "currentTime": "当前时间",
+    "stats": {
+      "totalUsers": "用户总数",
+      "totalRoles": "角色总数",
+      "onlineUsers": "在线用户",
+      "todayVisits": "今日访问"
+    },
+    "quickActions": {
+      "title": "快捷操作",
+      "userManagement": "用户管理",
+      "roleManagement": "角色管理",
+      "dataAnalysis": "数据分析",
+      "documentCenter": "文档中心",
+      "systemSettings": "系统设置",
+      "systemMonitor": "系统监控"
+    },
+    "features": {
+      "title": "主题特性",
+      "smartTheme": "智能白天/深夜模式切换",
+      "consistentDesign": "与登录页保持一致的渐变设计",
+      "glassEffect": "毛玻璃效果和现代化UI组件",
+      "responsive": "完全响应式设计，支持各种设备",
+      "smoothTransition": "平滑的主题过渡动画",
+      "extensibleTheme": "可扩展的主题变量系统"
+    },
+    "guide": {
+      "title": "使用指南",
+      "step1": {
+        "title": "主题切换",
+        "description": "点击导航栏右上角的主题切换按钮，可以在浅色、深色和跟随系统三种模式间切换"
+      },
+      "step2": {
+        "title": "响应式布局",
+        "description": "系统会自动适配不同屏幕尺寸，在移动端提供优化的交互体验"
+      },
+      "step3": {
+        "title": "组件样式",
+        "description": "所有组件都使用主题变量，确保在任何主题下都有最佳的视觉效果"
+      }
+    }
   },
   "system": {
     "title": "系统管理",
     "user": "用户管理",
-    "role": "角色管理"
+    "role": "角色管理",
+    "apiTest": "API连接诊断"
   },
   "user": {
     "title": "用户管理",
+    "list": "用户列表",
     "username": "用户名",
     "name": "姓名",
     "email": "邮箱",
@@ -44,21 +101,64 @@
     "confirm": "确定",
     "deleteConfirm": "确定要删除这个用户吗？",
     "active": "启用",
-    "inactive": "禁用"
+    "inactive": "禁用",
+    "batchDelete": "批量删除",
+    "export": "导出",
+    "totalRecords": "共 {count} 条记录",
+    "viewDetails": "查看详情",
+    "resetPassword": "重置密码",
+    "resetPasswordConfirm": "确定重置该用户的密码吗？",
+    "resetPasswordSuccess": "密码重置成功",
+    "batchDeleteConfirm": "确定删除选中的用户吗？",
+    "exportInProgress": "导出功能开发中...",
+    "createSuccess": "创建成功",
+    "updateSuccess": "更新成功",
+    "deleteSuccess": "删除成功",
+    "validation": {
+      "usernameRequired": "用户名不能为空",
+      "nameRequired": "姓名不能为空",
+      "emailRequired": "邮箱不能为空",
+      "emailFormat": "请输入正确的邮箱格式",
+      "passwordRequired": "密码不能为空"
+    }
   },
   "role": {
     "title": "角色管理",
+    "list": "角色列表",
     "name": "角色名称",
     "code": "角色编码",
     "description": "描述",
-    "permissions": "权限",
     "createTime": "创建时间",
     "actions": "操作",
     "add": "新增角色",
     "edit": "编辑角色",
     "delete": "删除角色",
     "assign": "分配权限",
-    "deleteConfirm": "确定要删除这个角色吗？"
+    "deleteConfirm": "确定要删除这个角色吗？",
+    "assignPermissions": "分配权限",
+    "permissionAssignSuccess": "权限分配成功",
+    "totalRecords": "共 {count} 条记录",
+    "validation": {
+      "nameRequired": "角色名称不能为空",
+      "codeRequired": "角色编码不能为空"
+    },
+    "permissionTypes": {
+      "systemManagement": "系统管理",
+      "userManagement": "用户管理",
+      "roleManagement": "角色管理",
+      "menuManagement": "菜单管理",
+      "businessManagement": "业务管理",
+      "orderManagement": "订单管理",
+      "productManagement": "商品管理"
+    }
+  },
+  "permissions": {
+    "view": "查看",
+    "create": "新增",
+    "update": "修改",
+    "delete": "删除",
+    "export": "导出",
+    "import": "导入"
   },
   "common": {
     "search": "搜索",
@@ -79,6 +179,44 @@
     "refresh": "刷新",
     "close": "关闭",
     "closeOthers": "关闭其他",
-    "closeAll": "关闭全部"
+    "closeAll": "关闭全部",
+    "warning": "警告",
+    "success": "成功",
+    "error": "错误",
+    "info": "提示",
+    "total": "共 {count} 条",
+    "selected": "已选择 {count} 项",
+    "pleaseSelect": "请选择",
+    "more": "更多",
+    "back": "返回",
+    "next": "下一步",
+    "previous": "上一步",
+    "finish": "完成",
+    "expand": "展开",
+    "collapse": "收起"
+  },
+  "theme": {
+    "light": "浅色主题",
+    "dark": "深色主题",
+    "auto": "跟随系统",
+    "switchSuccess": "主题切换成功"
+  },
+  "errors": {
+    "401": "未授权",
+    "403": "禁止访问",
+    "404": "页面不存在",
+    "500": "服务器内部错误",
+    "networkError": "网络连接错误",
+    "unknownError": "未知错误",
+    "pageNotFoundDescription": "抱歉，您访问的页面不存在...",
+    "pageNotFoundMessage": "请检查您输入的网址是否正确，或点击下面的按钮返回首页。",
+    "backToHome": "返回首页"
+  },
+  "pagination": {
+    "total": "共 {total} 条",
+    "page": "第 {current} 页，共 {total} 页",
+    "itemsPerPage": "每页条数",
+    "jumper": "跳至",
+    "pageText": "页"
   }
 }

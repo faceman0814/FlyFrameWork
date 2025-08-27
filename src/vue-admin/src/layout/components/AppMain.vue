@@ -25,7 +25,7 @@ const cachedViews = computed(() => tagsViewStore.cachedViews)
   min-height: calc(100vh - 60px);
   width: 100%;
   position: relative;
-  background: var(--bg-main);
+  background: var(--bg-main) !important;
   transition: background-color 0.3s ease;
   overflow: hidden; // 防止外层滚动
   
@@ -34,6 +34,8 @@ const cachedViews = computed(() => tagsViewStore.cachedViews)
     overflow-y: auto;
     overflow-x: hidden;
     padding: 20px;
+    background: var(--bg-main) !important;
+    transition: background-color 0.3s ease;
     
     // 自定义滚动条样式
     &::-webkit-scrollbar {

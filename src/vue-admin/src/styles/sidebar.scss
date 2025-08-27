@@ -11,7 +11,7 @@
   .sidebar-container {
     transition: width 0.28s ease-in-out;
     width: vars.$sideBarWidth !important;
-    background-color: vars.$menuBg;
+    background: var(--sidebar-bg);
     height: 100%;
     position: fixed;
     font-size: 0px;
@@ -68,7 +68,7 @@
     .el-icon {
       margin-right: 12px;
       font-size: 16px;
-      color: #bfcbd9;
+      color: var(--sidebar-text);
       transition: color 0.3s ease;
     }
 
@@ -76,47 +76,46 @@
       border: none;
       height: 100%;
       width: 100% !important;
-      background-color: vars.$menuBg;
+      background: var(--sidebar-bg);
     }
 
     .el-menu-item {
       height: 48px;
       line-height: 48px;
-      color: #bfcbd9;
+      color: var(--sidebar-text);
       transition: all 0.3s ease;
       border-radius: 0;
       margin: 0 4px;
       
       &:hover {
-        background-color: rgba(255, 255, 255, 0.08) !important;
-        color: #fff;
+        background-color: var(--sidebar-hover-bg) !important;
+        color: var(--sidebar-active-text);
         
         .el-icon {
-          color: #409eff;
+          color: var(--sidebar-active-text);
         }
       }
 
-      &.is-active {
-        background-color: rgba(64, 158, 255, 0.1) !important;
-        color: #409eff;
-        
-        .el-icon {
-          color: #409eff;
-        }
-        
-        &::before {
-          content: '';
-          position: absolute;
-          left: 0;
-          top: 0;
-          bottom: 0;
-          width: 3px;
-          background-color: #409eff;
-          border-radius: 0 3px 3px 0;
-        }
-      }
-
-      span {
+        &.is-active {
+          background-color: var(--sidebar-active-bg) !important;
+          color: var(--sidebar-active-text);
+          
+          .el-icon {
+            color: var(--sidebar-active-text);
+          }
+          
+          &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 24px;
+            background-color: var(--sidebar-active-text);
+            border-radius: 0 3px 3px 0;
+          }
+        }      span {
         transition: opacity 0.3s ease;
       }
     }
@@ -125,31 +124,33 @@
       .el-submenu__title {
         height: 48px;
         line-height: 48px;
-        color: #bfcbd9;
+        color: var(--sidebar-text) !important;
         transition: all 0.3s ease;
         margin: 0 4px;
         
         &:hover {
-          background-color: rgba(255, 255, 255, 0.08) !important;
-          color: #fff;
+          background-color: var(--sidebar-hover-bg) !important;
+          color: var(--sidebar-active-text) !important;
           
           .el-icon {
-            color: #409eff;
+            color: var(--sidebar-active-text) !important;
           }
         }
 
         .el-icon {
           margin-right: 12px;
           font-size: 16px;
+          color: var(--sidebar-text) !important;
         }
 
         .el-submenu__icon-arrow {
-          color: #bfcbd9;
+          color: var(--sidebar-text) !important;
           font-size: 12px;
           transition: transform 0.3s ease, color 0.3s ease;
         }
 
         span {
+          color: var(--sidebar-text) !important;
           transition: opacity 0.3s ease;
         }
       }
@@ -161,11 +162,11 @@
           background-color: transparent !important;
           
           &:hover {
-            background-color: rgba(255, 255, 255, 0.08) !important;
+            background-color: var(--sidebar-hover-bg) !important;
           }
 
           &.is-active {
-            background-color: rgba(64, 158, 255, 0.15) !important;
+            background-color: var(--sidebar-active-bg) !important;
           }
         }
       }
@@ -182,10 +183,10 @@
     }
 
     .is-active > .el-submenu__title {
-      color: #409eff !important;
+      color: var(--sidebar-active-text) !important;
       
       .el-icon {
-        color: #409eff !important;
+        color: var(--sidebar-active-text) !important;
       }
     }
 
@@ -195,7 +196,7 @@
       line-height: 44px;
 
       &:hover {
-        background-color: rgba(255, 255, 255, 0.08) !important;
+        background-color: var(--sidebar-hover-bg) !important;
       }
     }
   }
@@ -216,26 +217,24 @@
       align-items: center;
       justify-content: center;
 
-      .el-tooltip {
-        padding: 0 !important;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        .el-tooltip {
+          padding: 0 !important;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
 
-        .el-icon {
-          margin: 0 !important;
-          font-size: 18px;
-          color: #bfcbd9;
-          transition: color 0.3s ease;
-        }
+          .el-icon {
+            margin: 0 !important;
+            font-size: 18px;
+            color: var(--sidebar-text);
+            transition: color 0.3s ease;
+          }
 
-        &:hover .el-icon {
-          color: #409eff;
-        }
-      }
-
-      span {
+          &:hover .el-icon {
+            color: var(--sidebar-active-text);
+          }
+        }      span {
         opacity: 0;
         width: 0;
         height: 0;
@@ -258,12 +257,12 @@
         .el-icon {
           margin: 0 !important;
           font-size: 18px;
-          color: #bfcbd9;
+          color: var(--sidebar-text);
           transition: color 0.3s ease;
         }
 
         &:hover .el-icon {
-          color: #409eff;
+          color: var(--sidebar-active-text);
         }
 
         .el-submenu__icon-arrow {
@@ -312,14 +311,14 @@
     .el-menu-item,
     .el-submenu__title {
       &:hover {
-        background-color: rgba(64, 158, 255, 0.1) !important;
+        background-color: var(--sidebar-hover-bg) !important;
       }
 
       &.is-active {
-        background-color: rgba(64, 158, 255, 0.15) !important;
+        background-color: var(--sidebar-active-bg) !important;
         
         .el-icon {
-          color: #409eff !important;
+          color: var(--sidebar-active-text) !important;
         }
       }
     }
@@ -404,6 +403,134 @@
     &::-webkit-scrollbar-thumb {
       background: #99a9bf;
       border-radius: 20px;
+    }
+  }
+}
+
+// 暗黑模式下侧边栏全面修复
+[data-theme="dark"] {
+  .sidebar-container {
+    // 背景颜色
+    background: var(--sidebar-bg) !important;
+    
+    // 所有菜单项文字颜色强制修复，包括嵌套子菜单
+    .el-menu,
+    .el-menu-item,
+    .el-submenu__title,
+    .sidebar-menu .el-menu-item,
+    .sidebar-menu .el-submenu__title,
+    .el-submenu .el-menu .el-menu-item,
+    .el-submenu .el-submenu__title {
+      color: var(--sidebar-text) !important;
+      
+      span,
+      .el-icon {
+        color: var(--sidebar-text) !important;
+      }
+      
+      &:hover {
+        color: var(--sidebar-active-text) !important;
+        
+        span,
+        .el-icon {
+          color: var(--sidebar-active-text) !important;
+        }
+      }
+      
+      &.is-active {
+        color: var(--sidebar-active-text) !important;
+        
+        span,
+        .el-icon {
+          color: var(--sidebar-active-text) !important;
+        }
+      }
+    }
+    
+    // 收缩状态下活跃菜单项左侧指示条居中
+    .el-menu--collapse .el-menu-item.is-active::before {
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      height: 24px !important;
+    }
+    
+    // 收缩状态下子菜单标题文字颜色修复
+    .el-menu--collapse {
+      .el-submenu__title {
+        color: var(--sidebar-text) !important;
+        
+        span,
+        .el-icon {
+          color: var(--sidebar-text) !important;
+        }
+        
+        &:hover {
+          color: var(--sidebar-active-text) !important;
+          
+          span,
+          .el-icon {
+            color: var(--sidebar-active-text) !important;
+          }
+        }
+      }
+      
+      .el-menu-item {
+        color: var(--sidebar-text) !important;
+        
+        span,
+        .el-icon {
+          color: var(--sidebar-text) !important;
+        }
+        
+        &:hover {
+          color: var(--sidebar-active-text) !important;
+          
+          span,
+          .el-icon {
+            color: var(--sidebar-active-text) !important;
+          }
+        }
+        
+        &.is-active {
+          color: var(--sidebar-active-text) !important;
+          
+          span,
+          .el-icon {
+            color: var(--sidebar-active-text) !important;
+          }
+        }
+      }
+    }
+    
+    // 额外的全覆盖样式，确保所有可能的菜单项都能正确显示
+    * {
+      &.el-menu-item,
+      &.el-submenu__title {
+        color: var(--sidebar-text) !important;
+        
+        span,
+        .el-icon {
+          color: var(--sidebar-text) !important;
+        }
+        
+        &:hover {
+          color: var(--sidebar-active-text) !important;
+          
+          span,
+          .el-icon {
+            color: var(--sidebar-active-text) !important;
+          }
+        }
+        
+        &.is-active {
+          color: var(--sidebar-active-text) !important;
+          
+          span,
+          .el-icon {
+            color: var(--sidebar-active-text) !important;
+          }
+        }
+      }
     }
   }
 }

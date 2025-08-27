@@ -5,7 +5,7 @@
         {{ $t('dashboard.welcome') }}
       </h1>
       <p class="page-subtitle">
-        {{ currentTime }} | FlyFramework 现代化管理后台
+        {{ currentTime }} | {{ $t('dashboard.welcome') }}
       </p>
     </div>
     
@@ -30,7 +30,7 @@
     <!-- 快捷操作和主题展示 -->
     <div class="feature-showcase">
       <div class="feature-card modern-card">
-        <h2>🚀 快捷操作</h2>
+        <h2>🚀 {{ $t('dashboard.quickActions.title') }}</h2>
         <div class="quick-actions-grid">
           <div 
             class="quick-action" 
@@ -49,40 +49,40 @@
       </div>
       
       <div class="feature-card glass-effect">
-        <h2>🎨 主题特性</h2>
+        <h2>🎨 {{ $t('dashboard.features.title') }}</h2>
         <ul class="feature-list">
-          <li>💡 智能白天/深夜模式切换</li>
-          <li>🌈 与登录页保持一致的渐变设计</li>
-          <li>🎪 毛玻璃效果和现代化UI组件</li>
-          <li>📱 完全响应式设计，支持各种设备</li>
-          <li>⚡ 平滑的主题过渡动画</li>
-          <li>🔧 可扩展的主题变量系统</li>
+          <li>💡 {{ $t('dashboard.features.smartTheme') }}</li>
+          <li>🌈 {{ $t('dashboard.features.consistentDesign') }}</li>
+          <li>🎪 {{ $t('dashboard.features.glassEffect') }}</li>
+          <li>📱 {{ $t('dashboard.features.responsive') }}</li>
+          <li>⚡ {{ $t('dashboard.features.smoothTransition') }}</li>
+          <li>🔧 {{ $t('dashboard.features.extensibleTheme') }}</li>
         </ul>
       </div>
     </div>
     
     <div class="usage-guide modern-card">
-      <h2>📖 使用指南</h2>
+      <h2>📖 {{ $t('dashboard.guide.title') }}</h2>
       <div class="guide-steps">
         <div class="step">
           <div class="step-number">1</div>
           <div class="step-content">
-            <h4>主题切换</h4>
-            <p>点击导航栏右上角的主题切换按钮，可以在浅色、深色和跟随系统三种模式间切换</p>
+            <h4>{{ $t('dashboard.guide.step1.title') }}</h4>
+            <p>{{ $t('dashboard.guide.step1.description') }}</p>
           </div>
         </div>
         <div class="step">
           <div class="step-number">2</div>
           <div class="step-content">
-            <h4>响应式布局</h4>
-            <p>系统会自动适配不同屏幕尺寸，在移动端提供优化的交互体验</p>
+            <h4>{{ $t('dashboard.guide.step2.title') }}</h4>
+            <p>{{ $t('dashboard.guide.step2.description') }}</p>
           </div>
         </div>
         <div class="step">
           <div class="step-number">3</div>
           <div class="step-content">
-            <h4>组件样式</h4>
-            <p>所有组件都使用主题变量，确保在任何主题下都有最佳的视觉效果</p>
+            <h4>{{ $t('dashboard.guide.step3.title') }}</h4>
+            <p>{{ $t('dashboard.guide.step3.description') }}</p>
           </div>
         </div>
       </div>
@@ -91,8 +91,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { 
   User, 
   UserFilled, 
@@ -105,32 +106,33 @@ import {
 } from '@element-plus/icons-vue'
 
 const router = useRouter()
+const { t } = useI18n()
 const currentTime = ref('')
 
 const stats = ref([
   {
-    title: '用户总数',
+    title: computed(() => t('dashboard.stats.totalUsers')),
     value: '1,024',
     trend: 12.5,
     color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     icon: User
   },
   {
-    title: '角色总数',
+    title: computed(() => t('dashboard.stats.totalRoles')),
     value: '12',
     trend: 8.2,
     color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
     icon: UserFilled
   },
   {
-    title: '在线用户',
+    title: computed(() => t('dashboard.stats.onlineUsers')),
     value: '89',
     trend: -2.1,
     color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
     icon: Tools
   },
   {
-    title: '今日访问',
+    title: computed(() => t('dashboard.stats.todayVisits')),
     value: '5,678',
     trend: 15.8,
     color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
@@ -140,37 +142,37 @@ const stats = ref([
 
 const quickActions = ref([
   {
-    title: '用户管理',
+    title: computed(() => t('dashboard.quickActions.userManagement')),
     color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     icon: User,
     onClick: () => router.push('/system/user')
   },
   {
-    title: '角色管理',
+    title: computed(() => t('dashboard.quickActions.roleManagement')),
     color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
     icon: UserFilled,
     onClick: () => router.push('/system/role')
   },
   {
-    title: '数据分析',
+    title: computed(() => t('dashboard.quickActions.dataAnalysis')),
     color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
     icon: DataAnalysis,
     onClick: () => console.log('数据分析')
   },
   {
-    title: '文档中心',
+    title: computed(() => t('dashboard.quickActions.documentCenter')),
     color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
     icon: Document,
     onClick: () => console.log('文档中心')
   },
   {
-    title: '系统设置',
+    title: computed(() => t('dashboard.quickActions.systemSettings')),
     color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     icon: Setting,
     onClick: () => console.log('系统设置')
   },
   {
-    title: '系统监控',
+    title: computed(() => t('dashboard.quickActions.systemMonitor')),
     color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
     icon: Monitor,
     onClick: () => console.log('系统监控')

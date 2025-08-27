@@ -161,7 +161,7 @@ import path from 'path-browserify'
       top: 0;
       bottom: 0;
       width: 2px;
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(233, 227, 227, 0.1);
     }
   }
 }

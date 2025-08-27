@@ -19,9 +19,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Sunny, Moon, Monitor } from '@element-plus/icons-vue'
 import { useThemeStore } from '@/stores/theme'
 
+const { t } = useI18n()
 const themeStore = useThemeStore()
 
 const currentTheme = computed(() => themeStore.currentTheme)
@@ -43,13 +45,13 @@ const getThemeIcon = () => {
 const getTooltipText = () => {
   switch (currentTheme.value) {
     case 'light':
-      return '当前: 浅色模式'
+      return t('theme.light')
     case 'dark':
-      return '当前: 深色模式'
+      return t('theme.dark')
     case 'auto':
-      return `当前: 跟随系统 (${isDark.value ? '深色' : '浅色'})`
+      return `${t('theme.auto')} (${isDark.value ? t('theme.dark') : t('theme.light')})`
     default:
-      return '切换主题'
+      return t('theme.light')
   }
 }
 

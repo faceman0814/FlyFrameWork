@@ -360,31 +360,71 @@ provide('sidebarCollapse', isCollapse)
       margin: 4px 6px; // 恢复较小的边距，确保图标完全居中
       justify-content: center;
       padding: 0;
+      color: var(--sidebar-text) !important; // 确保文字颜色正确
       
       .el-icon {
         margin-right: 0 !important;
         transform: scale(1.1);
+        color: var(--sidebar-text) !important; // 图标颜色
       }
       
       span {
         opacity: 0;
         transform: translateX(-10px);
+        color: var(--sidebar-text) !important; // 文字颜色
       }
       
       &:hover {
         transform: translateX(0) scale(1.02);
+        color: var(--sidebar-active-text) !important;
         
         .el-icon {
           transform: scale(1.2);
+          color: var(--sidebar-active-text) !important;
+        }
+        
+        span {
           color: var(--sidebar-active-text) !important;
         }
       }
       
       &.is-active {
         transform: translateX(0);
+        color: var(--sidebar-active-text) !important; // 活跃状态文字颜色
+        
+        .el-icon {
+          color: var(--sidebar-active-text) !important; // 活跃状态图标颜色
+        }
+        
+        span {
+          color: var(--sidebar-active-text) !important; // 活跃状态文字颜色
+        }
+        
+        // 收缩状态下隐藏右侧指示条，避免与图标重叠
+        &::after {
+          display: none !important;
+        }
+        
+        // 收缩状态下使用左侧指示条
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 50% !important;
+          bottom: unset !important;
+          transform: translateY(-50%);
+          width: 4px;
+          height: 28px;
+          background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.8) 100%);
+          border-radius: 0 3px 3px 0;
+          box-shadow: 0 0 8px rgba(255, 255, 255, 0.5), 0 2px 4px rgba(102, 126, 234, 0.3);
+          opacity: 1;
+          z-index: 2;
+        }
         
         .el-icon {
           transform: scale(1.25);
+          color: #ffffff !important;
         }
       }
     }

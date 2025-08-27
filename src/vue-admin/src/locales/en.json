@@ -3,7 +3,10 @@
     "dashboard": "Dashboard",
     "profile": "Profile",
     "settings": "Settings",
-    "logout": "Log Out"
+    "logout": "Log Out",
+    "language": "Language",
+    "switchLanguageSuccess": "Language switched successfully",
+    "logoutConfirm": "Are you sure you want to log out?"
   },
   "login": {
     "title": "Login Form",
@@ -14,19 +17,73 @@
     "usernameRequired": "Please input the username",
     "passwordRequired": "Please input the password",
     "loginSuccess": "Login success",
-    "loginError": "Username or password is incorrect"
+    "loginError": "Username or password is incorrect",
+    "subtitle": "Welcome back! Please sign in to your account",
+    "forgotPassword": "Forgot password?",
+    "signingIn": "Signing in...",
+    "demoAccount": "Demo Account",
+    "capsLockOn": "Caps lock is On",
+    "brand": {
+      "title": "FlyFrameWork",
+      "subtitle": "Modern Admin Dashboard",
+      "feature1": "Security First",
+      "feature2": "High Performance",
+      "feature3": "Easy Configuration"
+    }
   },
   "dashboard": {
     "title": "Dashboard",
-    "welcome": "Welcome to FlyFramework Admin System"
+    "welcome": "Welcome to FlyFramework Admin System",
+    "currentTime": "Current Time",
+    "stats": {
+      "totalUsers": "Total Users",
+      "totalRoles": "Total Roles",
+      "onlineUsers": "Online Users",
+      "todayVisits": "Today's Visits"
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "userManagement": "User Management",
+      "roleManagement": "Role Management",
+      "dataAnalysis": "Data Analysis",
+      "documentCenter": "Document Center",
+      "systemSettings": "System Settings",
+      "systemMonitor": "System Monitor"
+    },
+    "features": {
+      "title": "Theme Features",
+      "smartTheme": "Intelligent day/night mode switching",
+      "consistentDesign": "Consistent gradient design with login page",
+      "glassEffect": "Glass effect and modern UI components",
+      "responsive": "Fully responsive design, supports all devices",
+      "smoothTransition": "Smooth theme transition animations",
+      "extensibleTheme": "Extensible theme variable system"
+    },
+    "guide": {
+      "title": "Usage Guide",
+      "step1": {
+        "title": "Theme Switching",
+        "description": "Click the theme switch button in the top right corner of the navigation bar to switch between light, dark, and system modes"
+      },
+      "step2": {
+        "title": "Responsive Layout",
+        "description": "The system automatically adapts to different screen sizes and provides optimized interaction experience on mobile devices"
+      },
+      "step3": {
+        "title": "Component Styles",
+        "description": "All components use theme variables to ensure optimal visual effects under any theme"
+      }
+    }
   },
   "system": {
     "title": "System Management",
     "user": "User Management",
-    "role": "Role Management"
+    "role": "Role Management",
+    "apiTest": "API Connection Test"
   },
   "user": {
     "title": "User Management",
+    "list": "User List",
     "username": "Username",
     "name": "Name",
     "email": "Email",
@@ -44,21 +101,64 @@
     "confirm": "Confirm",
     "deleteConfirm": "Are you sure to delete this user?",
     "active": "Active",
-    "inactive": "Inactive"
+    "inactive": "Inactive",
+    "batchDelete": "Batch Delete",
+    "export": "Export",
+    "totalRecords": "Total {count} records",
+    "viewDetails": "View Details",
+    "resetPassword": "Reset Password",
+    "resetPasswordConfirm": "Are you sure to reset this user's password?",
+    "resetPasswordSuccess": "Password reset successfully",
+    "batchDeleteConfirm": "Are you sure to delete selected users?",
+    "exportInProgress": "Export feature is under development...",
+    "createSuccess": "Created successfully",
+    "updateSuccess": "Updated successfully",
+    "deleteSuccess": "Deleted successfully",
+    "validation": {
+      "usernameRequired": "Username is required",
+      "nameRequired": "Name is required",
+      "emailRequired": "Email is required",
+      "emailFormat": "Please enter a valid email",
+      "passwordRequired": "Password is required"
+    }
   },
   "role": {
     "title": "Role Management",
+    "list": "Role List",
     "name": "Role Name",
     "code": "Role Code",
     "description": "Description",
-    "permissions": "Permissions",
     "createTime": "Create Time",
     "actions": "Actions",
     "add": "Add Role",
     "edit": "Edit Role",
     "delete": "Delete Role",
     "assign": "Assign Permissions",
-    "deleteConfirm": "Are you sure to delete this role?"
+    "deleteConfirm": "Are you sure to delete this role?",
+    "assignPermissions": "Assign Permissions",
+    "permissionAssignSuccess": "Permissions assigned successfully",
+    "totalRecords": "Total {count} records",
+    "validation": {
+      "nameRequired": "Role name is required",
+      "codeRequired": "Role code is required"
+    },
+    "permissionTypes": {
+      "systemManagement": "System Management",
+      "userManagement": "User Management",
+      "roleManagement": "Role Management",
+      "menuManagement": "Menu Management",
+      "businessManagement": "Business Management",
+      "orderManagement": "Order Management",
+      "productManagement": "Product Management"
+    }
+  },
+  "permissions": {
+    "view": "View",
+    "create": "Create",
+    "update": "Update",
+    "delete": "Delete",
+    "export": "Export",
+    "import": "Import"
   },
   "common": {
     "search": "Search",
@@ -79,6 +179,44 @@
     "refresh": "Refresh",
     "close": "Close",
     "closeOthers": "Close Others",
-    "closeAll": "Close All"
+    "closeAll": "Close All",
+    "warning": "Warning",
+    "success": "Success",
+    "error": "Error",
+    "info": "Info",
+    "total": "Total {count} items",
+    "selected": "{count} items selected",
+    "pleaseSelect": "Please select",
+    "more": "More",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "finish": "Finish",
+    "expand": "Expand",
+    "collapse": "Collapse"
+  },
+  "theme": {
+    "light": "Light Theme",
+    "dark": "Dark Theme",
+    "auto": "Follow System",
+    "switchSuccess": "Theme switched successfully"
+  },
+  "errors": {
+    "401": "Unauthorized",
+    "403": "Forbidden",
+    "404": "Page Not Found",
+    "500": "Internal Server Error",
+    "networkError": "Network Connection Error",
+    "unknownError": "Unknown Error",
+    "pageNotFoundDescription": "Sorry, the page you visited does not exist...",
+    "pageNotFoundMessage": "Please check if the URL you entered is correct, or click the button below to return to the homepage.",
+    "backToHome": "Back to Home"
+  },
+  "pagination": {
+    "total": "Total {total} items",
+    "page": "Page {current} of {total}",
+    "itemsPerPage": "Items per page",
+    "jumper": "Go to",
+    "pageText": "page"
   }
 }

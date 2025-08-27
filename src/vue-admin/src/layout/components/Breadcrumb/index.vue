@@ -66,52 +66,52 @@ watch(route, getBreadcrumb, { immediate: true })
   line-height: 20px;
   height: 50px;
   margin-left: 8px;
-  color: #606266;
+  color: var(--text-regular);
 
   :deep(.el-breadcrumb__item) {
     display: flex;
     align-items: center;
     
     .el-breadcrumb__inner {
-      color: #606266;
+      color: var(--text-regular) !important;
       font-weight: 400;
       transition: color 0.3s ease;
       
       &:hover {
-        color: var(--el-color-primary);
+        color: var(--primary-color) !important;
       }
       
       a {
-        color: #606266;
+        color: var(--text-regular) !important;
         text-decoration: none;
         transition: color 0.3s ease;
         
         &:hover {
-          color: var(--el-color-primary);
+          color: var(--primary-color) !important;
         }
       }
     }
     
     .el-breadcrumb__separator {
-      color: #c0c4cc;
+      color: var(--text-placeholder) !important;
       margin: 0 8px;
       font-weight: 500;
     }
 
     &:last-child {
       .el-breadcrumb__inner {
-        color: #303133;
+        color: var(--text-primary) !important;
         font-weight: 500;
         
         &:hover {
-          color: #303133;
+          color: var(--text-primary) !important;
         }
       }
     }
   }
 
   .no-redirect {
-    color: #303133;
+    color: var(--text-primary) !important;
     cursor: text;
     font-weight: 500;
   }

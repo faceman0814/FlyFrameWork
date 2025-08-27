@@ -1,3 +1,465 @@
+// Element Plus 组件暗黑模式样式修复
 .app-container {
   padding: 20px;
+}
+
+// 侧边栏菜单项文字颜色强制修复
+.sidebar-menu {
+  .el-menu-item,
+  .el-submenu__title {
+    color: var(--sidebar-text) !important;
+    
+    span {
+      color: var(--sidebar-text) !important;
+    }
+    
+    &:hover {
+      color: var(--sidebar-active-text) !important;
+      
+      span {
+        color: var(--sidebar-active-text) !important;
+      }
+    }
+    
+    &.is-active {
+      color: #ffffff !important;
+      
+      span {
+        color: #ffffff !important;
+      }
+    }
+  }
+}
+
+// 深色模式下强制修复
+[data-theme="dark"] {
+  .sidebar-menu {
+    .el-menu-item,
+    .el-submenu__title {
+      color: #ffffff !important;
+      
+      span {
+        color: #ffffff !important;
+      }
+      
+      &:hover {
+        color: #94a3f7 !important;
+        
+        span {
+          color: #94a3f7 !important;
+        }
+      }
+      
+      &.is-active {
+        color: #ffffff !important;
+        
+        span {
+          color: #ffffff !important;
+        }
+      }
+    }
+  }
+}
+
+// 修复子菜单标题颜色
+.el-sub-menu__title,
+.el-submenu__title {
+  color: var(--sidebar-text) !important;
+  
+  &:hover {
+    color: var(--sidebar-active-text) !important;
+  }
+  
+  .el-icon {
+    color: var(--sidebar-text) !important;
+    
+    &:hover {
+      color: var(--sidebar-active-text) !important;
+    }
+  }
+  
+  span {
+    color: var(--sidebar-text) !important;
+  }
+  
+  .el-submenu__icon-arrow {
+    color: var(--sidebar-text) !important;
+  }
+}
+
+// 确保活跃状态的子菜单样式
+.is-active {
+  .el-submenu__title {
+    color: var(--sidebar-active-text) !important;
+    
+    .el-icon {
+      color: var(--sidebar-active-text) !important;
+    }
+    
+    span {
+      color: var(--sidebar-active-text) !important;
+    }
+    
+    .el-submenu__icon-arrow {
+      color: var(--sidebar-active-text) !important;
+    }
+  }
+}
+
+// 修复输入框在暗黑模式下的样式
+.el-input {
+  .el-input__wrapper {
+    background-color: var(--bg-container) !important;
+    border-color: var(--border-light) !important;
+    box-shadow: 0 0 0 1px var(--border-light) inset !important;
+    
+    .el-input__inner {
+      color: var(--text-primary) !important;
+      background-color: transparent !important;
+      
+      &::placeholder {
+        color: var(--text-placeholder) !important;
+      }
+    }
+    
+    &:hover {
+      border-color: var(--primary-color) !important;
+      box-shadow: 0 0 0 1px var(--primary-color) inset !important;
+    }
+    
+    &.is-focus {
+      border-color: var(--primary-color) !important;
+      box-shadow: 0 0 0 1px var(--primary-color) inset !important;
+    }
+  }
+}
+
+// 修复选择框在暗黑模式下的样式
+.el-select {
+  .el-select__wrapper {
+    background-color: var(--bg-container) !important;
+    border-color: var(--border-light) !important;
+    box-shadow: 0 0 0 1px var(--border-light) inset !important;
+    
+    .el-select__placeholder {
+      color: var(--text-placeholder) !important;
+    }
+    
+    .el-select__selected-item {
+      color: var(--text-primary) !important;
+    }
+    
+    .el-select__caret {
+      color: var(--text-regular) !important;
+    }
+    
+    &:hover {
+      border-color: var(--primary-color) !important;
+      box-shadow: 0 0 0 1px var(--primary-color) inset !important;
+    }
+    
+    &.is-focused {
+      border-color: var(--primary-color) !important;
+      box-shadow: 0 0 0 1px var(--primary-color) inset !important;
+    }
+  }
+}
+
+// 修复下拉框选项样式 - 全局
+.el-popper {
+  &.is-light {
+    background-color: var(--bg-container) !important;
+    border: 1px solid var(--border-light) !important;
+    box-shadow: var(--shadow-lg) !important;
+  }
+}
+
+.el-select-dropdown {
+  background-color: var(--bg-container) !important;
+  border: 1px solid var(--border-light) !important;
+  box-shadow: var(--shadow-lg) !important;
+  
+  .el-select-dropdown__item {
+    color: var(--text-primary) !important;
+    background-color: transparent !important;
+    
+    &:hover {
+      background-color: var(--bg-hover) !important;
+      color: var(--primary-color) !important;
+    }
+    
+    &.is-selected {
+      background-color: var(--bg-active) !important;
+      color: var(--primary-color) !important;
+    }
+    
+    &.is-disabled {
+      color: var(--text-disabled) !important;
+    }
+  }
+  
+  .el-select-dropdown__empty {
+    color: var(--text-placeholder) !important;
+  }
+}
+
+// 修复按钮样式
+.el-button {
+  &.el-button--default {
+    background-color: var(--bg-container) !important;
+    border-color: var(--border-light) !important;
+    color: var(--text-primary) !important;
+    
+    &:hover {
+      background-color: var(--bg-hover) !important;
+      border-color: var(--primary-color) !important;
+      color: var(--primary-color) !important;
+    }
+  }
+  
+  &.el-button--primary {
+    background: var(--primary-gradient) !important;
+    border-color: transparent !important;
+    
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}
+
+// 修复表单标签颜色
+.el-form-item {
+  .el-form-item__label {
+    color: var(--text-primary) !important;
+  }
+}
+
+// 修复卡片样式
+.el-card {
+  background-color: var(--bg-card) !important;
+  border: 1px solid var(--border-light) !important;
+  box-shadow: var(--shadow-card) !important;
+  
+  .el-card__header {
+    background-color: var(--bg-card) !important;
+    border-bottom: 1px solid var(--border-light) !important;
+    color: var(--text-primary) !important;
+    
+    h3 {
+      color: var(--text-primary) !important;
+    }
+  }
+  
+  .el-card__body {
+    background-color: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+  }
+}
+
+// 修复描述列表样式
+.el-descriptions {
+  .el-descriptions__header {
+    .el-descriptions__title {
+      color: var(--text-primary) !important;
+    }
+  }
+  
+  .el-descriptions__body {
+    .el-descriptions__table {
+      .el-descriptions__cell {
+        background-color: var(--bg-card) !important;
+        border: 1px solid var(--border-light) !important;
+        
+        .el-descriptions__label {
+          color: var(--text-primary) !important;
+          background-color: var(--bg-main) !important;
+        }
+        
+        .el-descriptions__content {
+          color: var(--text-regular) !important;
+        }
+      }
+    }
+  }
+}
+
+// 修复滚动条样式
+.el-scrollbar {
+  .el-scrollbar__wrap {
+    background-color: var(--bg-container) !important;
+  }
+  
+  .el-scrollbar__bar {
+    .el-scrollbar__thumb {
+      background-color: var(--text-placeholder) !important;
+      
+      &:hover {
+        background-color: var(--text-regular) !important;
+      }
+    }
+  }
+}
+
+// 修复对话框样式
+.el-dialog {
+  background-color: var(--bg-container) !important;
+  border: 1px solid var(--border-light) !important;
+  box-shadow: var(--shadow-heavy) !important;
+  
+  .el-dialog__header {
+    background-color: var(--bg-container) !important;
+    border-bottom: 1px solid var(--border-light) !important;
+    
+    .el-dialog__title {
+      color: var(--text-primary) !important;
+    }
+    
+    .el-dialog__headerbtn {
+      .el-dialog__close {
+        color: var(--text-regular) !important;
+        
+        &:hover {
+          color: var(--danger-color) !important;
+        }
+      }
+    }
+  }
+  
+  .el-dialog__body {
+    background-color: var(--bg-container) !important;
+    color: var(--text-primary) !important;
+  }
+  
+  .el-dialog__footer {
+    background-color: var(--bg-container) !important;
+    border-top: 1px solid var(--border-light) !important;
+  }
+}
+
+// 修复遮罩层样式
+.el-overlay {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+// 修复单选框样式
+.el-radio {
+  .el-radio__input {
+    .el-radio__inner {
+      background-color: var(--bg-container) !important;
+      border-color: var(--border-base) !important;
+      
+      &:hover {
+        border-color: var(--primary-color) !important;
+      }
+    }
+    
+    &.is-checked {
+      .el-radio__inner {
+        background-color: var(--primary-color) !important;
+        border-color: var(--primary-color) !important;
+      }
+    }
+  }
+  
+  .el-radio__label {
+    color: var(--text-primary) !important;
+  }
+}
+
+/* 暗黑模式下收缩状态侧边栏菜单项文字颜色强制修复 */
+[data-theme="dark"] {
+  .sidebar-container {
+    .el-menu--collapse {
+      .el-menu-item,
+      .el-submenu__title {
+        color: var(--sidebar-text) !important;
+        
+        span,
+        .el-icon {
+          color: var(--sidebar-text) !important;
+        }
+        
+        &:hover {
+          color: var(--sidebar-active-text) !important;
+          
+          span,
+          .el-icon {
+            color: var(--sidebar-active-text) !important;
+          }
+        }
+        
+        &.is-active {
+          color: var(--sidebar-active-text) !important;
+          
+          span,
+          .el-icon {
+            color: var(--sidebar-active-text) !important;
+          }
+        }
+      }
+    }
+    
+    // 进一步确保所有状态下的文字颜色，包括嵌套子菜单
+    .el-menu-item,
+    .el-submenu__title,
+    .el-submenu .el-menu-item,
+    .el-submenu .el-submenu__title {
+      color: var(--sidebar-text) !important;
+      
+      span,
+      .el-icon {
+        color: var(--sidebar-text) !important;
+      }
+      
+      &:hover {
+        color: var(--sidebar-active-text) !important;
+        
+        span,
+        .el-icon {
+          color: var(--sidebar-active-text) !important;
+        }
+      }
+      
+      &.is-active {
+        color: var(--sidebar-active-text) !important;
+        
+        span,
+        .el-icon {
+          color: var(--sidebar-active-text) !important;
+        }
+      }
+    }
+    
+    // 特别针对菜单组下的菜单项
+    .el-submenu {
+      .el-menu {
+        .el-menu-item {
+          color: var(--sidebar-text) !important;
+          
+          span,
+          .el-icon {
+            color: var(--sidebar-text) !important;
+          }
+          
+          &:hover {
+            color: var(--sidebar-active-text) !important;
+            
+            span,
+            .el-icon {
+              color: var(--sidebar-active-text) !important;
+            }
+          }
+          
+          &.is-active {
+            color: var(--sidebar-active-text) !important;
+            
+            span,
+            .el-icon {
+              color: var(--sidebar-active-text) !important;
+            }
+          }
+        }
+      }
+    }
+  }
 }

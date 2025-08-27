@@ -233,7 +233,7 @@ onMounted(() => {
   
   h4 {
     margin-bottom: 12px;
-    color: #303133;
+    color: var(--text-primary);
     font-size: 16px;
   }
 }
@@ -242,24 +242,25 @@ onMounted(() => {
   .log-item {
     margin-bottom: 12px;
     padding: 8px;
-    border: 1px solid #e4e7ed;
+    border: 1px solid var(--border-light);
     border-radius: 4px;
-    background-color: #fafafa;
+    background-color: var(--bg-card);
     
     .log-message {
       margin-left: 8px;
       font-size: 14px;
-      color: #606266;
+      color: var(--text-regular);
     }
     
     .log-data {
       margin: 8px 0 0 0;
       padding: 8px;
-      background-color: #f5f5f5;
+      background-color: var(--bg-main);
       border-radius: 4px;
       font-size: 12px;
-      color: #333;
+      color: var(--text-primary);
       overflow-x: auto;
+      border: 1px solid var(--border-light);
     }
   }
 }

@@ -81,21 +81,11 @@ export const asyncRoutes: RouteRecordRaw[] = [
         }
       },
       {
-        path: 'login-demo',
-        name: 'LoginFlowDemo',
-        component: () => import('@/views/system/user/LoginFlowDemo.vue'),
-        meta: {
-          title: 'NSwag登录演示',
-          icon: 'Monitor',
-          roles: ['admin']
-        }
-      },
-      {
         path: 'api-test',
         name: 'ApiTest',
         component: () => import('@/views/system/user/ApiTest.vue'),
         meta: {
-          title: 'API连接诊断',
+          title: 'system.apiTest',
           icon: 'Connection',
           roles: ['admin']
         }
