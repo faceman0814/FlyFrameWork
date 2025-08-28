@@ -481,7 +481,7 @@ export class RoleServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    getPaged(body?: GetRolesInput | undefined, cancelToken?: CancelToken): Promise<GetPagedResultApiResponse> {
+    getPaged(body?: GetRolesInput | undefined, cancelToken?: CancelToken): Promise<PagedResultDtoApiResponse> {
         let url_ = this.baseUrl + "/api/Role/GetPaged";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -509,7 +509,7 @@ export class RoleServiceProxy {
         });
     }
 
-    protected processGetPaged(response: AxiosResponse): Promise<GetPagedResultApiResponse> {
+    protected processGetPaged(response: AxiosResponse): Promise<PagedResultDtoApiResponse> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -523,14 +523,14 @@ export class RoleServiceProxy {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = GetPagedResultApiResponse.fromJS(resultData200);
-            return Promise.resolve<GetPagedResultApiResponse>(result200);
+            result200 = PagedResultDtoApiResponse.fromJS(resultData200);
+            return Promise.resolve<PagedResultDtoApiResponse>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<GetPagedResultApiResponse>(null as any);
+        return Promise.resolve<PagedResultDtoApiResponse>(null as any);
     }
 
     /**
@@ -829,7 +829,7 @@ export class UserServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    getPaged(body?: GetUsersInput | undefined, cancelToken?: CancelToken): Promise<GetPagedResultApiResponse2> {
+    getPaged(body?: GetUsersInput | undefined, cancelToken?: CancelToken): Promise<PagedResultDtoApiResponse2> {
         let url_ = this.baseUrl + "/api/User/GetPaged";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -857,7 +857,7 @@ export class UserServiceProxy {
         });
     }
 
-    protected processGetPaged(response: AxiosResponse): Promise<GetPagedResultApiResponse2> {
+    protected processGetPaged(response: AxiosResponse): Promise<PagedResultDtoApiResponse2> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -871,14 +871,14 @@ export class UserServiceProxy {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = GetPagedResultApiResponse2.fromJS(resultData200);
-            return Promise.resolve<GetPagedResultApiResponse2>(result200);
+            result200 = PagedResultDtoApiResponse2.fromJS(resultData200);
+            return Promise.resolve<PagedResultDtoApiResponse2>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<GetPagedResultApiResponse2>(null as any);
+        return Promise.resolve<PagedResultDtoApiResponse2>(null as any);
     }
 
     /**
@@ -1031,6 +1031,58 @@ export class UserServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * 获取字段列表
+     * @return Success
+     */
+    getColumns( cancelToken?: CancelToken): Promise<ListApiResponse4> {
+        let url_ = this.baseUrl + "/api/User/GetColumns";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processGetColumns(_response);
+        });
+    }
+
+    protected processGetColumns(response: AxiosResponse): Promise<ListApiResponse4> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = ListApiResponse4.fromJS(resultData200);
+            return Promise.resolve<ListApiResponse4>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<ListApiResponse4>(null as any);
     }
 }
 
@@ -1653,316 +1705,6 @@ export interface IListApiResponse {
     message: string | undefined;
 }
 
-export class ColumnFilters implements IColumnFilters {
-    text!: string | undefined;
-    value!: string | undefined;
-
-    constructor(data?: IColumnFilters) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.text = _data["text"];
-            this.value = _data["value"];
-        }
-    }
-
-    static fromJS(data: any): ColumnFilters {
-        data = typeof data === 'object' ? data : {};
-        let result = new ColumnFilters();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["text"] = this.text;
-        data["value"] = this.value;
-        return data;
-    }
-}
-
-export interface IColumnFilters {
-    text: string | undefined;
-    value: string | undefined;
-}
-
-export class ColumnDto implements IColumnDto {
-    /** 显示的标题 */
-    label!: string | undefined;
-    /** 字段名称 */
-    prop!: string | undefined;
-    /** 指定插槽 */
-    slot!: string | undefined;
-    /** 对应列的类型，
-如果设置了 `selection` 则显示多选框；
-如果设置了 `index` 则显示该行的索引（从 `1` 开始计算）；
-如果设置了 `expand` 则显示为一个可展开的按钮 */
-    type!: string | undefined;
-    /** 如果设置了 `type=index`，可以通过传递 `index` 属性来自定义索引 */
-    index!: number;
-    /** `column` 的 `key`， 如果需要使用 `filter-change` 事件，则需要此属性标识是哪个 `column` 的筛选条件 */
-    columnKey!: string | undefined;
-    /** 对应列的宽度 */
-    width!: string | undefined;
-    /** 对应列的最小宽度 */
-    minWidth!: string | undefined;
-    /** 对应列是否可以排序
-如果设置为 `'custom'`，则代表用户希望远程排序，需要监听 `Table` 的 `sort-change `事件
-默认值为 `false` */
-    sortable!: string | undefined;
-    /** 对应列是否可以通过拖动改变宽度（需要在 `el-table` 上设置 `border` 属性为真），默认值为 `true` */
-    resizable!: boolean;
-    /** 列标题 `Label` 区域渲染使用的 `Function` */
-    renderHeader!: string | undefined;
-    /** 指定数据按照哪个属性进行排序，仅当 `sortable` 设置为 `true` 的时候有效。应该如同 `Array.sort` 那样返回一个 `Number` */
-    sortMethod!: number;
-    /** 指定数据按照哪个属性进行排序，仅当 `sortable` 设置为 `true` 且没有设置 `sort-method` 的时候有效。
-如果 `sort-by` 为数组，则先按照第 `1` 个属性排序，
-如果第 `1` 个相等，再按照第 `2` 个排序，以此类推 */
-    sortBy!: string[] | undefined;
-    /** 数据在排序时所使用排序策略的轮转顺序，仅当 `sortable` 为 `true` 时有效。
-需传入一个数组，随着用户点击表头，该列依次按照数组中元素的顺序进行排序，
-默认值为 `['ascending', 'descending', null]` */
-    sortOrders!: string[] | undefined;
-    /** 用来格式化内容的函数，仅对当前列有效。 */
-    formatter!: string | undefined;
-    /** 当内容过长被隐藏时显示 `tooltip`，默认值为 `false` */
-    showOverflowTooltip!: boolean;
-    /** 对齐方式，可选值为 `left`、`center`、`right` */
-    align!: string | undefined;
-    /** 表头对齐方式，若不设置该项，则使用表格的对齐方式 */
-    headerAlign!: string | undefined;
-    /** 列的 `className` */
-    className!: string | undefined;
-    /** 当前列标题的自定义类名 */
-    labelClassName!: string | undefined;
-    /** 仅对 `type=selection` 的列有效，类型为 `Function`，`Function` 的返回值用来决定这一行的 `CheckBox` 是否可以勾选 */
-    selectable!: boolean;
-    /** 仅对 `type=selection` 的列有效，请注意，需指定 `row-key` 来让这个功能生效，默认值为 `false` */
-    reserveSelection!: string | undefined;
-    /** 数据过滤的选项，数组格式，数组中的元素需要有 `text` 和 `value` 属性。
-数组中的每个元素都需要有 `text` 和 `value` 属性 */
-    filters!: ColumnFilters[] | undefined;
-    /** 过滤弹出框的定位
-"top-start" |
-"top-end" | 
-"top" |
-"bottom-start" | 
-"bottom-end" | 
-"bottom" | 
-"left-start" | 
-"left-end" | 
-"left" | 
-"right-start" | 
-"right-end" | 
-"right"; */
-    filterPlacement!: string | undefined;
-    /** 过滤弹出框的 `className` */
-    filterClassName!: string | undefined;
-    /** 数据过滤的选项是否多选，默认值为 `true` */
-    filterMultiple!: boolean;
-    /** 选中的数据过滤项，如果需要自定义表头过滤的渲染方式，可能会需要此属性 */
-    filteredValue!: any[] | undefined;
-
-    constructor(data?: IColumnDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.label = _data["label"];
-            this.prop = _data["prop"];
-            this.slot = _data["slot"];
-            this.type = _data["type"];
-            this.index = _data["index"];
-            this.columnKey = _data["columnKey"];
-            this.width = _data["width"];
-            this.minWidth = _data["minWidth"];
-            this.sortable = _data["sortable"];
-            this.resizable = _data["resizable"];
-            this.renderHeader = _data["renderHeader"];
-            this.sortMethod = _data["sortMethod"];
-            if (Array.isArray(_data["sortBy"])) {
-                this.sortBy = [] as any;
-                for (let item of _data["sortBy"])
-                    this.sortBy!.push(item);
-            }
-            if (Array.isArray(_data["sortOrders"])) {
-                this.sortOrders = [] as any;
-                for (let item of _data["sortOrders"])
-                    this.sortOrders!.push(item);
-            }
-            this.formatter = _data["formatter"];
-            this.showOverflowTooltip = _data["showOverflowTooltip"];
-            this.align = _data["align"];
-            this.headerAlign = _data["headerAlign"];
-            this.className = _data["className"];
-            this.labelClassName = _data["labelClassName"];
-            this.selectable = _data["selectable"];
-            this.reserveSelection = _data["reserveSelection"];
-            if (Array.isArray(_data["filters"])) {
-                this.filters = [] as any;
-                for (let item of _data["filters"])
-                    this.filters!.push(ColumnFilters.fromJS(item));
-            }
-            this.filterPlacement = _data["filterPlacement"];
-            this.filterClassName = _data["filterClassName"];
-            this.filterMultiple = _data["filterMultiple"];
-            if (Array.isArray(_data["filteredValue"])) {
-                this.filteredValue = [] as any;
-                for (let item of _data["filteredValue"])
-                    this.filteredValue!.push(item);
-            }
-        }
-    }
-
-    static fromJS(data: any): ColumnDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ColumnDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["label"] = this.label;
-        data["prop"] = this.prop;
-        data["slot"] = this.slot;
-        data["type"] = this.type;
-        data["index"] = this.index;
-        data["columnKey"] = this.columnKey;
-        data["width"] = this.width;
-        data["minWidth"] = this.minWidth;
-        data["sortable"] = this.sortable;
-        data["resizable"] = this.resizable;
-        data["renderHeader"] = this.renderHeader;
-        data["sortMethod"] = this.sortMethod;
-        if (Array.isArray(this.sortBy)) {
-            data["sortBy"] = [];
-            for (let item of this.sortBy)
-                data["sortBy"].push(item);
-        }
-        if (Array.isArray(this.sortOrders)) {
-            data["sortOrders"] = [];
-            for (let item of this.sortOrders)
-                data["sortOrders"].push(item);
-        }
-        data["formatter"] = this.formatter;
-        data["showOverflowTooltip"] = this.showOverflowTooltip;
-        data["align"] = this.align;
-        data["headerAlign"] = this.headerAlign;
-        data["className"] = this.className;
-        data["labelClassName"] = this.labelClassName;
-        data["selectable"] = this.selectable;
-        data["reserveSelection"] = this.reserveSelection;
-        if (Array.isArray(this.filters)) {
-            data["filters"] = [];
-            for (let item of this.filters)
-                data["filters"].push(item ? item.toJSON() : undefined as any);
-        }
-        data["filterPlacement"] = this.filterPlacement;
-        data["filterClassName"] = this.filterClassName;
-        data["filterMultiple"] = this.filterMultiple;
-        if (Array.isArray(this.filteredValue)) {
-            data["filteredValue"] = [];
-            for (let item of this.filteredValue)
-                data["filteredValue"].push(item);
-        }
-        return data;
-    }
-}
-
-export interface IColumnDto {
-    /** 显示的标题 */
-    label: string | undefined;
-    /** 字段名称 */
-    prop: string | undefined;
-    /** 指定插槽 */
-    slot: string | undefined;
-    /** 对应列的类型，
-如果设置了 `selection` 则显示多选框；
-如果设置了 `index` 则显示该行的索引（从 `1` 开始计算）；
-如果设置了 `expand` 则显示为一个可展开的按钮 */
-    type: string | undefined;
-    /** 如果设置了 `type=index`，可以通过传递 `index` 属性来自定义索引 */
-    index: number;
-    /** `column` 的 `key`， 如果需要使用 `filter-change` 事件，则需要此属性标识是哪个 `column` 的筛选条件 */
-    columnKey: string | undefined;
-    /** 对应列的宽度 */
-    width: string | undefined;
-    /** 对应列的最小宽度 */
-    minWidth: string | undefined;
-    /** 对应列是否可以排序
-如果设置为 `'custom'`，则代表用户希望远程排序，需要监听 `Table` 的 `sort-change `事件
-默认值为 `false` */
-    sortable: string | undefined;
-    /** 对应列是否可以通过拖动改变宽度（需要在 `el-table` 上设置 `border` 属性为真），默认值为 `true` */
-    resizable: boolean;
-    /** 列标题 `Label` 区域渲染使用的 `Function` */
-    renderHeader: string | undefined;
-    /** 指定数据按照哪个属性进行排序，仅当 `sortable` 设置为 `true` 的时候有效。应该如同 `Array.sort` 那样返回一个 `Number` */
-    sortMethod: number;
-    /** 指定数据按照哪个属性进行排序，仅当 `sortable` 设置为 `true` 且没有设置 `sort-method` 的时候有效。
-如果 `sort-by` 为数组，则先按照第 `1` 个属性排序，
-如果第 `1` 个相等，再按照第 `2` 个排序，以此类推 */
-    sortBy: string[] | undefined;
-    /** 数据在排序时所使用排序策略的轮转顺序，仅当 `sortable` 为 `true` 时有效。
-需传入一个数组，随着用户点击表头，该列依次按照数组中元素的顺序进行排序，
-默认值为 `['ascending', 'descending', null]` */
-    sortOrders: string[] | undefined;
-    /** 用来格式化内容的函数，仅对当前列有效。 */
-    formatter: string | undefined;
-    /** 当内容过长被隐藏时显示 `tooltip`，默认值为 `false` */
-    showOverflowTooltip: boolean;
-    /** 对齐方式，可选值为 `left`、`center`、`right` */
-    align: string | undefined;
-    /** 表头对齐方式，若不设置该项，则使用表格的对齐方式 */
-    headerAlign: string | undefined;
-    /** 列的 `className` */
-    className: string | undefined;
-    /** 当前列标题的自定义类名 */
-    labelClassName: string | undefined;
-    /** 仅对 `type=selection` 的列有效，类型为 `Function`，`Function` 的返回值用来决定这一行的 `CheckBox` 是否可以勾选 */
-    selectable: boolean;
-    /** 仅对 `type=selection` 的列有效，请注意，需指定 `row-key` 来让这个功能生效，默认值为 `false` */
-    reserveSelection: string | undefined;
-    /** 数据过滤的选项，数组格式，数组中的元素需要有 `text` 和 `value` 属性。
-数组中的每个元素都需要有 `text` 和 `value` 属性 */
-    filters: ColumnFilters[] | undefined;
-    /** 过滤弹出框的定位
-"top-start" |
-"top-end" | 
-"top" |
-"bottom-start" | 
-"bottom-end" | 
-"bottom" | 
-"left-start" | 
-"left-end" | 
-"left" | 
-"right-start" | 
-"right-end" | 
-"right"; */
-    filterPlacement: string | undefined;
-    /** 过滤弹出框的 `className` */
-    filterClassName: string | undefined;
-    /** 数据过滤的选项是否多选，默认值为 `true` */
-    filterMultiple: boolean;
-    /** 选中的数据过滤项，如果需要自定义表头过滤的渲染方式，可能会需要此属性 */
-    filteredValue: any[] | undefined;
-}
-
 export class RoleListDto implements IRoleListDto {
     id!: string | undefined;
     name!: string | undefined;
@@ -2071,61 +1813,13 @@ export interface IPagedResultDto {
     items: RoleListDto[] | undefined;
 }
 
-export class GetPagedResult implements IGetPagedResult {
-    columns!: ColumnDto[] | undefined;
-    datas!: PagedResultDto | undefined;
-
-    constructor(data?: IGetPagedResult) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["columns"])) {
-                this.columns = [] as any;
-                for (let item of _data["columns"])
-                    this.columns!.push(ColumnDto.fromJS(item));
-            }
-            this.datas = _data["datas"] ? PagedResultDto.fromJS(_data["datas"]) : undefined as any;
-        }
-    }
-
-    static fromJS(data: any): GetPagedResult {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetPagedResult();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.columns)) {
-            data["columns"] = [];
-            for (let item of this.columns)
-                data["columns"].push(item ? item.toJSON() : undefined as any);
-        }
-        data["datas"] = this.datas ? this.datas.toJSON() : undefined as any;
-        return data;
-    }
-}
-
-export interface IGetPagedResult {
-    columns: ColumnDto[] | undefined;
-    datas: PagedResultDto | undefined;
-}
-
-export class GetPagedResultApiResponse implements IGetPagedResultApiResponse {
-    data!: GetPagedResult | undefined;
+export class PagedResultDtoApiResponse implements IPagedResultDtoApiResponse {
+    data!: PagedResultDto | undefined;
     code!: number;
     success!: boolean;
     message!: string | undefined;
 
-    constructor(data?: IGetPagedResultApiResponse) {
+    constructor(data?: IPagedResultDtoApiResponse) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -2136,16 +1830,16 @@ export class GetPagedResultApiResponse implements IGetPagedResultApiResponse {
 
     init(_data?: any) {
         if (_data) {
-            this.data = _data["Data"] ? GetPagedResult.fromJS(_data["Data"]) : undefined as any;
+            this.data = _data["Data"] ? PagedResultDto.fromJS(_data["Data"]) : undefined as any;
             this.code = _data["Code"];
             this.success = _data["Success"];
             this.message = _data["Message"];
         }
     }
 
-    static fromJS(data: any): GetPagedResultApiResponse {
+    static fromJS(data: any): PagedResultDtoApiResponse {
         data = typeof data === 'object' ? data : {};
-        let result = new GetPagedResultApiResponse();
+        let result = new PagedResultDtoApiResponse();
         result.init(data);
         return result;
     }
@@ -2160,8 +1854,8 @@ export class GetPagedResultApiResponse implements IGetPagedResultApiResponse {
     }
 }
 
-export interface IGetPagedResultApiResponse {
-    data: GetPagedResult | undefined;
+export interface IPagedResultDtoApiResponse {
+    data: PagedResultDto | undefined;
     code: number;
     success: boolean;
     message: string | undefined;
@@ -2686,7 +2380,7 @@ export class UserListDto implements IUserListDto {
     /** 是否管理员 */
     isSuperAdmin!: boolean;
     creationTime!: Date;
-    opertion!: string | undefined;
+    opertion!: string[] | undefined;
 
     constructor(data?: IUserListDto) {
         if (data) {
@@ -2713,7 +2407,11 @@ export class UserListDto implements IUserListDto {
             this.isActive = _data["IsActive"];
             this.isSuperAdmin = _data["IsSuperAdmin"];
             this.creationTime = _data["CreationTime"] ? new Date(_data["CreationTime"].toString()) : undefined as any;
-            this.opertion = _data["Opertion"];
+            if (Array.isArray(_data["Opertion"])) {
+                this.opertion = [] as any;
+                for (let item of _data["Opertion"])
+                    this.opertion!.push(item);
+            }
         }
     }
 
@@ -2740,7 +2438,11 @@ export class UserListDto implements IUserListDto {
         data["IsActive"] = this.isActive;
         data["IsSuperAdmin"] = this.isSuperAdmin;
         data["CreationTime"] = this.creationTime ? this.creationTime.toISOString() : undefined as any;
-        data["Opertion"] = this.opertion;
+        if (Array.isArray(this.opertion)) {
+            data["Opertion"] = [];
+            for (let item of this.opertion)
+                data["Opertion"].push(item);
+        }
         return data;
     }
 }
@@ -2758,7 +2460,7 @@ export interface IUserListDto {
     /** 是否管理员 */
     isSuperAdmin: boolean;
     creationTime: Date;
-    opertion: string | undefined;
+    opertion: string[] | undefined;
 }
 
 export class PagedResultDto2 implements IPagedResultDto2 {
@@ -2809,61 +2511,13 @@ export interface IPagedResultDto2 {
     items: UserListDto[] | undefined;
 }
 
-export class GetPagedResult2 implements IGetPagedResult2 {
-    columns!: ColumnDto[] | undefined;
-    datas!: PagedResultDto2 | undefined;
-
-    constructor(data?: IGetPagedResult2) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["columns"])) {
-                this.columns = [] as any;
-                for (let item of _data["columns"])
-                    this.columns!.push(ColumnDto.fromJS(item));
-            }
-            this.datas = _data["datas"] ? PagedResultDto2.fromJS(_data["datas"]) : undefined as any;
-        }
-    }
-
-    static fromJS(data: any): GetPagedResult2 {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetPagedResult2();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.columns)) {
-            data["columns"] = [];
-            for (let item of this.columns)
-                data["columns"].push(item ? item.toJSON() : undefined as any);
-        }
-        data["datas"] = this.datas ? this.datas.toJSON() : undefined as any;
-        return data;
-    }
-}
-
-export interface IGetPagedResult2 {
-    columns: ColumnDto[] | undefined;
-    datas: PagedResultDto2 | undefined;
-}
-
-export class GetPagedResultApiResponse2 implements IGetPagedResultApiResponse2 {
-    data!: GetPagedResult2 | undefined;
+export class PagedResultDtoApiResponse2 implements IPagedResultDtoApiResponse2 {
+    data!: PagedResultDto2 | undefined;
     code!: number;
     success!: boolean;
     message!: string | undefined;
 
-    constructor(data?: IGetPagedResultApiResponse2) {
+    constructor(data?: IPagedResultDtoApiResponse2) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -2874,16 +2528,16 @@ export class GetPagedResultApiResponse2 implements IGetPagedResultApiResponse2 {
 
     init(_data?: any) {
         if (_data) {
-            this.data = _data["Data"] ? GetPagedResult2.fromJS(_data["Data"]) : undefined as any;
+            this.data = _data["Data"] ? PagedResultDto2.fromJS(_data["Data"]) : undefined as any;
             this.code = _data["Code"];
             this.success = _data["Success"];
             this.message = _data["Message"];
         }
     }
 
-    static fromJS(data: any): GetPagedResultApiResponse2 {
+    static fromJS(data: any): PagedResultDtoApiResponse2 {
         data = typeof data === 'object' ? data : {};
-        let result = new GetPagedResultApiResponse2();
+        let result = new PagedResultDtoApiResponse2();
         result.init(data);
         return result;
     }
@@ -2898,8 +2552,8 @@ export class GetPagedResultApiResponse2 implements IGetPagedResultApiResponse2 {
     }
 }
 
-export interface IGetPagedResultApiResponse2 {
-    data: GetPagedResult2 | undefined;
+export interface IPagedResultDtoApiResponse2 {
+    data: PagedResultDto2 | undefined;
     code: number;
     success: boolean;
     message: string | undefined;
@@ -3134,6 +2788,144 @@ export class ListApiResponse3 implements IListApiResponse3 {
 
 export interface IListApiResponse3 {
     data: PermissionDto[] | undefined;
+    code: number;
+    success: boolean;
+    message: string | undefined;
+}
+
+export class ColumnDto implements IColumnDto {
+    /** 显示的标题 */
+    label!: string | undefined;
+    /** 字段名称 */
+    prop!: string | undefined;
+    /** 指定插槽 */
+    slot!: string | undefined;
+    /** 数据在排序时所使用排序策略的轮转顺序，仅当 `sortable` 为 `true` 时有效。
+需传入一个数组，随着用户点击表头，该列依次按照数组中元素的顺序进行排序，
+默认值为 `['ascending', 'descending', null]` */
+    sortOrders!: string[] | undefined;
+    /** 操作列按钮 */
+    operaitons!: string[] | undefined;
+
+    constructor(data?: IColumnDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.prop = _data["prop"];
+            this.slot = _data["slot"];
+            if (Array.isArray(_data["sortOrders"])) {
+                this.sortOrders = [] as any;
+                for (let item of _data["sortOrders"])
+                    this.sortOrders!.push(item);
+            }
+            if (Array.isArray(_data["operaitons"])) {
+                this.operaitons = [] as any;
+                for (let item of _data["operaitons"])
+                    this.operaitons!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): ColumnDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ColumnDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["prop"] = this.prop;
+        data["slot"] = this.slot;
+        if (Array.isArray(this.sortOrders)) {
+            data["sortOrders"] = [];
+            for (let item of this.sortOrders)
+                data["sortOrders"].push(item);
+        }
+        if (Array.isArray(this.operaitons)) {
+            data["operaitons"] = [];
+            for (let item of this.operaitons)
+                data["operaitons"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IColumnDto {
+    /** 显示的标题 */
+    label: string | undefined;
+    /** 字段名称 */
+    prop: string | undefined;
+    /** 指定插槽 */
+    slot: string | undefined;
+    /** 数据在排序时所使用排序策略的轮转顺序，仅当 `sortable` 为 `true` 时有效。
+需传入一个数组，随着用户点击表头，该列依次按照数组中元素的顺序进行排序，
+默认值为 `['ascending', 'descending', null]` */
+    sortOrders: string[] | undefined;
+    /** 操作列按钮 */
+    operaitons: string[] | undefined;
+}
+
+export class ListApiResponse4 implements IListApiResponse4 {
+    data!: ColumnDto[] | undefined;
+    code!: number;
+    success!: boolean;
+    message!: string | undefined;
+
+    constructor(data?: IListApiResponse4) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["Data"])) {
+                this.data = [] as any;
+                for (let item of _data["Data"])
+                    this.data!.push(ColumnDto.fromJS(item));
+            }
+            this.code = _data["Code"];
+            this.success = _data["Success"];
+            this.message = _data["Message"];
+        }
+    }
+
+    static fromJS(data: any): ListApiResponse4 {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListApiResponse4();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["Data"] = [];
+            for (let item of this.data)
+                data["Data"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["Code"] = this.code;
+        data["Success"] = this.success;
+        data["Message"] = this.message;
+        return data;
+    }
+}
+
+export interface IListApiResponse4 {
+    data: ColumnDto[] | undefined;
     code: number;
     success: boolean;
     message: string | undefined;

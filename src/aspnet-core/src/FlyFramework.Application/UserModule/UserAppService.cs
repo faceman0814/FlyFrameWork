@@ -90,12 +90,8 @@ namespace FlyFramework.UserModule
         /// <param name="input"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<GetPagedResult<UserListDto>> GetPaged(GetUsersInput input)
+        public async Task<PagedResultDto<UserListDto>> GetPaged(GetUsersInput input)
         {
-            var res = new GetPagedResult<UserListDto>()
-            {
-                columns = await _commonService.GetColumnList<UserListDto>()
-            };
             var query = from user in _userManager.QueryAsNoTracking
                         join org in _orgUnitNodeManager.QueryAsNoTracking on user.OrgUnitNodeId equals org.Id into oGroup
                         from org in oGroup.DefaultIfEmpty()
@@ -133,8 +129,8 @@ namespace FlyFramework.UserModule
             {
                 item.RoleName = roles.Where(t => t.UserId == item.Id).Select(t => t.DisplayName).ToList();
             }
-            res.datas = new PagedResultDto<UserListDto>(await query.CountAsync(), resDatas);
-            return res;
+
+            return new PagedResultDto<UserListDto>(await query.CountAsync(), resDatas);
         }
 
         /// <summary>
@@ -173,6 +169,63 @@ namespace FlyFramework.UserModule
                 provider.SetPermissions(_context);
             }
         }
+
+        ///// <summary>
+        ///// 获取字段列表
+        ///// </summary>
+        ///// <returns></returns>
+        //public async Task<List<ColumnDto>> GetColumns(string type)
+        //{
+        //    var res = new List<ColumnDto>();
+        //    if (type == "UserListDto")
+        //    {
+        //        //根据输入的字符串找到对应的类型
+
+        //        res = await _commonService.GetColumnList<UserListDto>();
+        //    }
+        //    var operation = res.FirstOrDefault(t => t.prop == "operation");
+        //    operation.operations.Add("edit");
+        //    return res;
+        //}
+
+        public async Task<List<ColumnDto>> GetColumns(string type)
+        {
+            if (string.IsNullOrEmpty(type))
+                throw new ArgumentNullException(nameof(type));
+
+            var columnDtos=new List<ColumnDto>();
+            Type dtoType = type switch
+            {
+                "UserListDto" => typeof(UserListDto),
+                // 可在此添加其他类型支持
+                _ => throw new NotSupportedException($"不支持的类型: {type}")
+            };
+
+            // 使用反射调用泛型方法
+            var method = typeof(ICommonAppService).GetMethod("GetColumnList");
+            var genericMethod = method.MakeGenericMethod(dtoType);
+            var task = (Task)genericMethod.Invoke(_commonService, null);
+            await task.ConfigureAwait(false);
+
+            // 获取结果
+            var resultProperty = task.GetType().GetProperty("Result");
+            var res = (List<ColumnDto>)resultProperty.GetValue(task);
+
+            var operationColumn = res.FirstOrDefault(t => t.prop == "operation");
+            if (operationColumn == null)
+            {
+                operationColumn = new ColumnDto
+                {
+                    prop = "operation",
+                    operations = new List<string>()
+                };
+                res.Add(operationColumn);
+            }
+
+            operationColumn.operations.Add("edit");
+            return res;
+        }
+
         #region 私有方法
         private async Task Create(CreateOrUpdateUserInput input)
         {

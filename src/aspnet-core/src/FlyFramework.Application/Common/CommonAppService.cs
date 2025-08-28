@@ -1,7 +1,6 @@
 ﻿using FlyFramework.ApplicationServices;
 using FlyFramework.Attributes;
 using FlyFramework.Dtos;
-using FlyFramework.UserModule.Dtos;
 using FlyFramework.Utilities.Redis;
 
 using System;
@@ -9,7 +8,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FlyFramework.Common

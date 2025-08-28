@@ -64,7 +64,7 @@ namespace FlyFramework.UserModule.Dtos
 
         [Column("操作")]
         [Sort(99)]
-        public String Opertion { get; set; }
+        public List<String> Opertion { get; set; }
     }
 
     public class GetUsersInput : GetListInput

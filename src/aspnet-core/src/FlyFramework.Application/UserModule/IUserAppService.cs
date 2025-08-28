@@ -17,7 +17,7 @@ namespace FlyFramework.UserModule
     {
         Task CreateOrUpdate(CreateOrUpdateUserInput input);
 
-        Task<GetPagedResult<UserListDto>> GetPaged(GetUsersInput input);
+        Task<PagedResultDto<UserListDto>> GetPaged(GetUsersInput input);
 
         Task<UserDto> GetForEdit(EntityDto<string> input);
 
@@ -26,5 +26,7 @@ namespace FlyFramework.UserModule
         Task<List<PermissionDto>> GetAllPermission();
 
         void InitPermission();
+
+        Task<List<ColumnDto>> GetColumns(string type);
     }
 }

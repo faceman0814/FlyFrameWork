@@ -9,6 +9,7 @@ using FlyFramework.PermissionModule.Dtos;
 using FlyFramework.RoleModule.Dtos;
 using FlyFramework.UserModule;
 using FlyFramework.UserModule.DomainService;
+using FlyFramework.UserModule.Dtos;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -34,21 +35,15 @@ namespace FlyFramework.RoleModule
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<GetPagedResult<RoleListDto>> GetPaged(GetRolesInput input)
+        public async Task<PagedResultDto<RoleListDto>> GetPaged(GetRolesInput input)
         {
-            var res = new GetPagedResult<RoleListDto>()
-            {
-                columns = await _commonService.GetColumnList<RoleListDto>()
-            };
-
             var datas = await _roleManager.QueryAsNoTracking
                 .PageBy(input)
                 .ToListAsync();
 
             var resDatas = ObjectMapper.Map<List<RoleListDto>>(datas);
 
-            res.datas = new PagedResultDto<RoleListDto>(await _roleManager.QueryAsNoTracking.CountAsync(), resDatas);
-            return res;
+            return new PagedResultDto<RoleListDto>(await _roleManager.QueryAsNoTracking.CountAsync(), resDatas);
         }
 
         /// <summary>
@@ -113,6 +108,18 @@ namespace FlyFramework.RoleModule
         public async Task AssignPermission(AssignPermissionInput input)
         {
             await _permissionManager.AssignPermission(input);
+        }
+
+        /// <summary>
+        /// 获取字段列表
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<ColumnDto>> GetColumns()
+        {
+            var res = await _commonService.GetColumnList<RoleListDto>();
+            var operation = res.FirstOrDefault(t => t.prop == "opertion");
+            operation.operations.Add("edit");
+            return res;
         }
 
         #region 私有方法

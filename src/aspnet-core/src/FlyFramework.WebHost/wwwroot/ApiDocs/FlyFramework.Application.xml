@@ -77,63 +77,6 @@
             指定插槽
             </summary>
         </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.type">
-            <summary>
-             对应列的类型，
-             如果设置了 `selection` 则显示多选框；
-             如果设置了 `index` 则显示该行的索引（从 `1` 开始计算）；
-             如果设置了 `expand` 则显示为一个可展开的按钮
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.index">
-            <summary>
-            如果设置了 `type=index`，可以通过传递 `index` 属性来自定义索引
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.columnKey">
-            <summary>
-            `column` 的 `key`， 如果需要使用 `filter-change` 事件，则需要此属性标识是哪个 `column` 的筛选条件
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.width">
-            <summary>
-            对应列的宽度
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.minWidth">
-            <summary>
-            对应列的最小宽度
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.sortable">
-            <summary>
-            对应列是否可以排序
-            如果设置为 `'custom'`，则代表用户希望远程排序，需要监听 `Table` 的 `sort-change `事件
-            默认值为 `false` 
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.resizable">
-            <summary>
-            对应列是否可以通过拖动改变宽度（需要在 `el-table` 上设置 `border` 属性为真），默认值为 `true`
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.renderHeader">
-            <summary>
-            列标题 `Label` 区域渲染使用的 `Function` 
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.sortMethod">
-            <summary>
-            指定数据按照哪个属性进行排序，仅当 `sortable` 设置为 `true` 的时候有效。应该如同 `Array.sort` 那样返回一个 `Number`
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.sortBy">
-            <summary>
-            指定数据按照哪个属性进行排序，仅当 `sortable` 设置为 `true` 且没有设置 `sort-method` 的时候有效。
-            如果 `sort-by` 为数组，则先按照第 `1` 个属性排序，
-            如果第 `1` 个相等，再按照第 `2` 个排序，以此类推 
-            </summary>
-        </member>
         <member name="P:FlyFramework.Dtos.ColumnDto.sortOrders">
             <summary>
             数据在排序时所使用排序策略的轮转顺序，仅当 `sortable` 为 `true` 时有效。
@@ -141,82 +84,9 @@
             默认值为 `['ascending', 'descending', null]` 
             </summary>
         </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.formatter">
+        <member name="P:FlyFramework.Dtos.ColumnDto.operations">
             <summary>
-            用来格式化内容的函数，仅对当前列有效。
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.showOverflowTooltip">
-            <summary>
-             当内容过长被隐藏时显示 `tooltip`，默认值为 `false`
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.align">
-            <summary>
-            对齐方式，可选值为 `left`、`center`、`right`
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.headerAlign">
-            <summary>
-            表头对齐方式，若不设置该项，则使用表格的对齐方式
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.className">
-            <summary>
-            列的 `className`
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.labelClassName">
-            <summary>
-            当前列标题的自定义类名
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.selectable">
-            <summary>
-            仅对 `type=selection` 的列有效，类型为 `Function`，`Function` 的返回值用来决定这一行的 `CheckBox` 是否可以勾选 
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.reserveSelection">
-            <summary>
-            仅对 `type=selection` 的列有效，请注意，需指定 `row-key` 来让这个功能生效，默认值为 `false`
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.filters">
-            <summary>
-            数据过滤的选项，数组格式，数组中的元素需要有 `text` 和 `value` 属性。
-            数组中的每个元素都需要有 `text` 和 `value` 属性 
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.filterPlacement">
-            <summary>
-            过滤弹出框的定位
-            "top-start" |
-            "top-end" | 
-            "top" |
-            "bottom-start" | 
-            "bottom-end" | 
-            "bottom" | 
-            "left-start" | 
-            "left-end" | 
-            "left" | 
-            "right-start" | 
-            "right-end" | 
-            "right";
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.filterClassName">
-            <summary>
-            过滤弹出框的 `className`
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.filterMultiple">
-            <summary>
-            数据过滤的选项是否多选，默认值为 `true`
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.filteredValue">
-            <summary>
-            选中的数据过滤项，如果需要自定义表头过滤的渲染方式，可能会需要此属性
+            操作列按钮
             </summary>
         </member>
         <member name="P:FlyFramework.Dtos.GetDropDownListInput.Ids">
@@ -414,6 +284,12 @@
         <member name="M:FlyFramework.RoleModule.RoleAppService.AssignPermission(FlyFramework.PermissionModule.Dtos.AssignPermissionInput)">
             <summary>
             分配权限
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.RoleModule.RoleAppService.GetColumns">
+            <summary>
+            获取字段列表
             </summary>
             <returns></returns>
         </member>

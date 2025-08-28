@@ -10,7 +10,7 @@ namespace FlyFramework.RoleModule
 {
     public interface IRoleAppService : IApplicationService
     {
-        Task<GetPagedResult<RoleListDto>> GetPaged(GetRolesInput input);
+        Task<PagedResultDto<RoleListDto>> GetPaged(GetRolesInput input);
 
         Task CreateOrUpdate(CreateOrUpdateRoleInput input);
 
