@@ -4,21 +4,12 @@
     <div class="search-wrapper">
       <el-card shadow="never" class="search-card">
         <el-form :model="queryParams" ref="queryRef" :inline="true" class="search-form">
-          <el-form-item :label="$t('role.name')" prop="name">
+          <el-form-item :label="$t('common.keyword')" prop="filterText">
             <el-input
-              v-model="queryParams.name"
-              :placeholder="$t('role.name')"
+              v-model="queryParams.filterText"
+              :placeholder="$t('role.searchPlaceholder')"
               clearable
-              style="width: 180px"
-              @keyup.enter="handleQuery"
-            />
-          </el-form-item>
-          <el-form-item :label="$t('role.code')" prop="code">
-            <el-input
-              v-model="queryParams.code"
-              :placeholder="$t('role.code')"
-              clearable
-              style="width: 180px"
+              style="width: 240px"
               @keyup.enter="handleQuery"
             />
           </el-form-item>
@@ -58,21 +49,53 @@
 
         <!-- 角色表格 -->
         <div class="table-content">
-          <el-table 
-            v-loading="loading" 
-            :data="roleList" 
+          <el-table
+            v-loading="loading"
+            :data="roleList"
             @selection-change="handleSelectionChange"
             class="modern-table"
             stripe
             border
             highlight-current-row
           >
+            <!-- 选择列 -->
             <el-table-column type="selection" width="50" align="center" />
-            <el-table-column :label="$t('role.name')" prop="name" min-width="120" />
-            <el-table-column :label="$t('role.code')" prop="code" min-width="120" />
-            <el-table-column :label="$t('role.description')" prop="description" min-width="200" />
-            <el-table-column :label="$t('role.createTime')" prop="createTime" width="180" />
-            <el-table-column :label="$t('role.actions')" width="220" align="center">
+
+            <!-- 动态渲染的列 -->
+            <template v-for="column in tableColumns" :key="column.prop">
+              <el-table-column
+                :label="column.label"
+                :prop="column.prop"
+                :width="column.width"
+                :min-width="column.minWidth || '120'"
+                :align="column.align || 'left'"
+                :sortable="column.sortable === 'true' || column.sortable === true"
+                :show-overflow-tooltip="column.showOverflowTooltip"
+              >
+                <template #default="scope" v-if="column.slot">
+                  <!-- 根据slot类型渲染不同内容 -->
+                  <template v-if="column.slot === 'tag'">
+                    <el-tag :type="getTagType(scope.row[column.prop], column.prop)">
+                      {{ getTagText(scope.row[column.prop], column.prop) }}
+                    </el-tag>
+                  </template>
+                  <template v-else-if="column.slot === 'date'">
+                    {{ formatDate(scope.row[column.prop]) }}
+                  </template>
+                  <template v-else>
+                    {{ scope.row[column.prop] }}
+                  </template>
+                </template>
+
+                <!-- 默认显示原始值 -->
+                <template #default="scope" v-else>
+                  {{ scope.row[column.prop] }}
+                </template>
+              </el-table-column>
+            </template>
+
+            <!-- 操作列 -->
+            <el-table-column :label="$t('role.actions')" width="220" align="center" fixed="right">
               <template #default="scope">
                 <div class="action-buttons">
                   <el-button
@@ -122,19 +145,14 @@
     <!-- 添加或修改角色对话框 -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
       <el-form ref="roleRef" :model="form" :rules="rules" label-width="80px">
-        <el-form-item :label="$t('role.name')" prop="name">
-          <el-input v-model="form.name" :placeholder="$t('role.name')" />
+        <el-form-item :label="$t('role.name')" prop="displayName">
+          <el-input v-model="form.displayName" :placeholder="$t('role.name')" />
         </el-form-item>
-        <el-form-item :label="$t('role.code')" prop="code">
-          <el-input v-model="form.code" :placeholder="$t('role.code')" />
+        <el-form-item :label="$t('role.code')" prop="name">
+          <el-input v-model="form.name" :placeholder="$t('role.code')" />
         </el-form-item>
-        <el-form-item :label="$t('role.description')" prop="description">
-          <el-input 
-            v-model="form.description" 
-            :placeholder="$t('role.description')"
-            type="textarea"
-            :rows="3"
-          />
+        <el-form-item :label="$t('role.isDefault')">
+          <el-switch v-model="form.isDefault" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -170,23 +188,26 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, Edit, Delete, Key, Search, Refresh } from '@element-plus/icons-vue'
-import { getRoleList, createRole, updateRole, deleteRole, getRolePermissions, updateRolePermissions } from '@/api/role'
+import { RoleServiceProxy, GetRolesInput, CreateOrUpdateRoleInput, RoleDto,EntityDto } from '@/api/service-proxies'
 import Pagination from '@/components/Pagination/index.vue'
 import type { FormInstance } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
+// NSwag生成的角色服务代理
+const roleService = new RoleServiceProxy()
+
 // 查询参数
 const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
-  name: '',
-  code: ''
+  filterText: '' // 合并原来的name和code搜索
 })
 
 // 表格数据
 const roleList = ref<any[]>([])
+const tableColumns = ref<any[]>([]) // 动态表格列配置
 const total = ref(0)
 const loading = ref(true)
 const ids = ref<string[]>([])
@@ -196,11 +217,14 @@ const multiple = ref(true)
 // 弹窗相关
 const open = ref(false)
 const title = ref('')
+const isEdit = ref(false) // 是否为编辑模式
+const originalRoleName = ref('') // 原始角色名称，用于编辑时的标识
 const form = reactive({
-  id: undefined,
-  name: '',
-  code: '',
-  description: ''
+  id: '', // 角色ID，编辑时使用
+  name: '', // 角色代码
+  displayName: '', // 角色显示名
+  isStatic: false,
+  isDefault: false
 })
 
 // 权限弹窗相关
@@ -211,8 +235,8 @@ const permissionRef = ref()
 
 // 表单验证
 const rules = reactive({
-  name: [{ required: true, message: () => t('role.validation.nameRequired'), trigger: 'blur' }],
-  code: [{ required: true, message: () => t('role.validation.codeRequired'), trigger: 'blur' }]
+  displayName: [{ required: true, message: () => t('role.validation.nameRequired'), trigger: 'blur' }],
+  name: [{ required: true, message: () => t('role.validation.codeRequired'), trigger: 'blur' }]
 })
 
 const queryRef = ref<FormInstance>()
@@ -223,29 +247,6 @@ const defaultProps = {
   children: 'children',
   label: 'name'
 }
-
-/** 查询角色列表 */
-const getList = async () => {
-  loading.value = true
-  try {
-    const response = await getRoleList(queryParams)
-    roleList.value = response.data.items || mockRoleData
-    total.value = response.data.total || mockRoleData.length
-  } catch (error) {
-    // 模拟数据，实际项目中应该处理错误
-    roleList.value = mockRoleData
-    total.value = mockRoleData.length
-  } finally {
-    loading.value = false
-  }
-}
-
-// 模拟数据
-const mockRoleData = [
-  { id: 1, name: '超级管理员', code: 'admin', description: '拥有系统所有权限', createTime: '2023-01-01 10:00:00' },
-  { id: 2, name: '普通管理员', code: 'manager', description: '拥有部分管理权限', createTime: '2023-01-02 10:00:00' },
-  { id: 3, name: '普通用户', code: 'user', description: '基础用户权限', createTime: '2023-01-03 10:00:00' }
-]
 
 // 模拟权限数据
 const mockPermissionData = [
@@ -267,6 +268,76 @@ const mockPermissionData = [
     ]
   }
 ]
+
+/** 获取标签类型 */
+const getTagType = (value: any, prop: string) => {
+  if (prop === 'isStatic' || prop === 'isDefault') {
+    return value ? (prop === 'isStatic' ? 'danger' : 'success') : (prop === 'isStatic' ? 'success' : 'info')
+  }
+  return 'info'
+}
+
+/** 获取标签文本 */
+const getTagText = (value: any, prop: string) => {
+  if (prop === 'isStatic' || prop === 'isDefault') {
+    return value ? t('common.yes') : t('common.no')
+  }
+  return value?.toString() || ''
+}
+
+/** 格式化日期 */
+const formatDate = (dateValue: any) => {
+  if (!dateValue) return ''
+
+  if (typeof dateValue === 'string') {
+    const date = new Date(dateValue)
+    return isNaN(date.getTime()) ? dateValue : date.toLocaleString()
+  }
+
+  if (dateValue instanceof Date) {
+    return dateValue.toLocaleString()
+  }
+
+  return dateValue.toString()
+}
+
+/** 查询角色列表 */
+const getList = async () => {
+  loading.value = true
+  try {
+    // 使用NSwag生成的接口
+    const input = new GetRolesInput({
+      filterText: queryParams.filterText,
+      sorting: '',
+      maxResultCount: queryParams.pageSize,
+      skipCount: (queryParams.pageNum - 1) * queryParams.pageSize
+    })
+
+    const response = await roleService.getPaged(input)
+
+    if (response.success && response.data) {
+      // 设置动态列配置
+      if (response.data.columns) {
+        tableColumns.value = response.data.columns
+      }
+
+      // 设置数据列表
+      if (response.data.datas) {
+        roleList.value = response.data.datas.items || []
+        total.value = response.data.datas.totalCount || 0
+      } else {
+        roleList.value = []
+        total.value = 0
+      }
+    }
+  } catch (error) {
+    console.error('获取角色列表失败:', error)
+    roleList.value = []
+    total.value = 0
+  } finally {
+    loading.value = false
+  }
+}
 
 /** 搜索按钮操作 */
 const handleQuery = () => {
@@ -290,32 +361,60 @@ const handleSelectionChange = (selection: any[]) => {
 /** 新增按钮操作 */
 const handleAdd = () => {
   reset()
+  isEdit.value = false
   open.value = true
   title.value = t('role.add')
 }
 
 /** 修改按钮操作 */
-const handleEdit = (row: any) => {
+const handleEdit = async (row: any) => {
   reset()
-  Object.assign(form, row)
+  isEdit.value = true
+
+  try {
+    // 优先使用id，如果没有id则使用name作为参数调用GetForEdit接口
+    const identifier = row.id || row.name
+    if (!identifier) {
+      ElMessage.error('无法获取角色标识符')
+      return
+    }
+    const input=new EntityDto({id:identifier});
+    const response = await roleService.getForEdit(input)
+
+    if (response.success && response.data) {
+      const roleData = response.data
+      form.id = roleData.id || ''
+      form.name = roleData.name || ''
+      form.displayName = roleData.displayName || ''
+      form.isStatic = roleData.isStatic || false
+      form.isDefault = roleData.isDefault || false
+      originalRoleName.value = roleData.name || ''
+    }
+  } catch (error) {
+    console.error('获取角色详情失败:', error)
+    ElMessage.error('获取角色详情失败')
+    return
+  }
+
   open.value = true
   title.value = t('role.edit')
 }
 
 /** 分配权限按钮操作 */
 const handlePermission = async (row: any) => {
-  currentRoleId.value = row.id
+  // 优先使用id，如果没有id则使用name
+  currentRoleId.value = row.id || row.name
   permissionList.value = mockPermissionData
-  
+
   try {
-    const response = await getRolePermissions(row.id)
+    const response = await getRolePermissions(currentRoleId.value)
     const checkedKeys = response.data || [11, 12] // 模拟已选权限
     permissionRef.value?.setCheckedKeys(checkedKeys)
   } catch (error) {
     // 模拟数据
     permissionRef.value?.setCheckedKeys([11, 12])
   }
-  
+
   openPermission.value = true
 }
 
@@ -323,15 +422,31 @@ const handlePermission = async (row: any) => {
 const submitForm = () => {
   roleRef.value?.validate(async (valid: boolean) => {
     if (valid) {
-      if (form.id) {
-        await updateRole(form.id, form)
-        ElMessage.success(t('user.updateSuccess'))
-      } else {
-        await createRole(form)
-        ElMessage.success(t('user.createSuccess'))
+      try {
+        // 创建RoleDto对象
+        const roleDto = new RoleDto({
+          id: isEdit.value ? form.id : undefined,
+          name: form.name,
+          displayName: form.displayName,
+          isStatic: form.isStatic,
+          isDefault: form.isDefault
+        })
+
+        // 创建CreateOrUpdateRoleInput对象
+        const input = new CreateOrUpdateRoleInput({
+          role: roleDto
+        })
+
+        // 调用CreateOrUpdate接口
+        await roleService.createOrUpdate(input)
+
+        ElMessage.success(isEdit.value ? t('user.updateSuccess') : t('user.createSuccess'))
+        open.value = false
+        getList()
+      } catch (error) {
+        console.error('保存角色失败:', error)
+        ElMessage.error('保存角色失败')
       }
-      open.value = false
-      getList()
     }
   })
 }
@@ -351,7 +466,8 @@ const submitPermission = async () => {
 
 /** 删除按钮操作 */
 const handleDelete = (row: any) => {
-  const roleIds = row.id || ids.value
+  // 优先使用id，如果没有id则使用name，如果单行操作失败则使用批量选择的ids
+  const roleIds = row.id || row.name || ids.value
   ElMessageBox.confirm(
     t('role.deleteConfirm'),
     t('common.warning'),
@@ -380,10 +496,13 @@ const cancelPermission = () => {
 
 /** 表单重置 */
 const reset = () => {
-  form.id = undefined
+  isEdit.value = false
+  originalRoleName.value = ''
+  form.id = ''
   form.name = ''
-  form.code = ''
-  form.description = ''
+  form.displayName = ''
+  form.isStatic = false
+  form.isDefault = false
   roleRef.value?.resetFields()
 }
 

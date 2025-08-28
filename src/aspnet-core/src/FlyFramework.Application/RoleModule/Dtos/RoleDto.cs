@@ -45,6 +45,8 @@ namespace FlyFramework.RoleModule.Dtos
 
     public class RoleListDto
     {
+        public string Id { get; set; }
+
         [Column("角色编码")]
         public string Name { get; set; }
 

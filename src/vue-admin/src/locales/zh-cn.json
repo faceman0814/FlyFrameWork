@@ -138,6 +138,9 @@
     "assignPermissions": "分配权限",
     "permissionAssignSuccess": "权限分配成功",
     "totalRecords": "共 {count} 条记录",
+    "isStatic": "静态角色",
+    "isDefault": "默认角色",
+    "searchPlaceholder": "请输入角色名称或编码",
     "validation": {
       "nameRequired": "角色名称不能为空",
       "codeRequired": "角色编码不能为空"
@@ -190,6 +193,9 @@
     "more": "更多",
     "back": "返回",
     "next": "下一步",
+    "keyword": "关键字",
+    "yes": "是",
+    "no": "否",
     "previous": "上一步",
     "finish": "完成",
     "expand": "展开",

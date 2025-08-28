@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace FlyFramework.Common
 {
-    public class CommonAppService: ApplicationService,ICommonAppService
+    public class CommonAppService : ApplicationService, ICommonAppService
     {
         private readonly ICacheManager _cacheManager;
         public CommonAppService(ICacheManager cacheManager)
@@ -61,7 +61,8 @@ namespace FlyFramework.Common
                         {
                             label = x.ColumnAttribute.Name ?? x.Property.Name,
                             prop = propName,
-                            slot = propName
+                            //获取字段类型
+                            slot = ToSlot(x.Property.PropertyType.Name?? propName),
                         };
                     })
                     .ToList();
@@ -88,6 +89,24 @@ namespace FlyFramework.Common
                 chars[0] = char.ToLowerInvariant(src[0]);  // 首字母小写
                 src.AsSpan(1).CopyTo(chars[1..]);          // 复制剩余字符
             });
+        }
+
+        private string ToSlot(string input)
+        {
+            //1、如果是布尔类型，则返回tag
+            //2、如果是时间类型，则返回date
+            if(input.Equals("Boolean", StringComparison.OrdinalIgnoreCase))
+            {
+                return "tag";
+            }
+            else if(input.Equals("DateTime", StringComparison.OrdinalIgnoreCase) || input.Equals("DateTimeOffset", StringComparison.OrdinalIgnoreCase))
+            {
+                return "date";
+            }
+            else
+            {
+                return input;
+            }
         }
     }
 }

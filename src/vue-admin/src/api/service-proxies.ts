@@ -325,21 +325,21 @@ export class OrgUnitNodeServiceProxy {
 
     /**
      * 获取组织机构节点编辑信息
-     * @param id (optional) 
+     * @param body (optional) 
      * @return Success
      */
-    getForEdit(id?: string | undefined, cancelToken?: CancelToken): Promise<OrgUnitNodeForEditOutputApiResponse> {
-        let url_ = this.baseUrl + "/api/OrgUnitNode/GetForEdit?";
-        if (id === null)
-            throw new globalThis.Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+    getForEdit(body?: EntityDto | undefined, cancelToken?: CancelToken): Promise<OrgUnitNodeForEditOutputApiResponse> {
+        let url_ = this.baseUrl + "/api/OrgUnitNode/GetForEdit";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_: AxiosRequestConfig = {
-            method: "GET",
+            data: content_,
+            method: "POST",
             url: url_,
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             },
             cancelToken
@@ -588,21 +588,21 @@ export class RoleServiceProxy {
 
     /**
      * 获取角色信息
-     * @param id (optional) 
+     * @param body (optional) 
      * @return Success
      */
-    getForEdit(id?: string | undefined, cancelToken?: CancelToken): Promise<RoleDtoApiResponse> {
-        let url_ = this.baseUrl + "/api/Role/GetForEdit?";
-        if (id === null)
-            throw new globalThis.Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+    getForEdit(body?: EntityDto | undefined, cancelToken?: CancelToken): Promise<RoleDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/Role/GetForEdit";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_: AxiosRequestConfig = {
-            method: "GET",
+            data: content_,
+            method: "POST",
             url: url_,
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             },
             cancelToken
@@ -769,21 +769,21 @@ export class UserServiceProxy {
 
     /**
      * 获取用户信息
-     * @param id (optional) 
+     * @param body (optional) 
      * @return Success
      */
-    getForEdit(id?: string | undefined, cancelToken?: CancelToken): Promise<UserDtoApiResponse> {
-        let url_ = this.baseUrl + "/api/User/GetForEdit?";
-        if (id === null)
-            throw new globalThis.Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+    getForEdit(body?: EntityDto | undefined, cancelToken?: CancelToken): Promise<UserDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/User/GetForEdit";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_: AxiosRequestConfig = {
-            method: "GET",
+            data: content_,
+            method: "POST",
             url: url_,
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             },
             cancelToken
@@ -1964,6 +1964,7 @@ export interface IColumnDto {
 }
 
 export class RoleListDto implements IRoleListDto {
+    id!: string | undefined;
     name!: string | undefined;
     displayName!: string | undefined;
     isStatic!: boolean;
@@ -1982,6 +1983,7 @@ export class RoleListDto implements IRoleListDto {
 
     init(_data?: any) {
         if (_data) {
+            this.id = _data["Id"];
             this.name = _data["Name"];
             this.displayName = _data["DisplayName"];
             this.isStatic = _data["IsStatic"];
@@ -2000,6 +2002,7 @@ export class RoleListDto implements IRoleListDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["Id"] = this.id;
         data["Name"] = this.name;
         data["DisplayName"] = this.displayName;
         data["IsStatic"] = this.isStatic;
@@ -2011,6 +2014,7 @@ export class RoleListDto implements IRoleListDto {
 }
 
 export interface IRoleListDto {
+    id: string | undefined;
     name: string | undefined;
     displayName: string | undefined;
     isStatic: boolean;
