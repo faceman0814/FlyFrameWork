@@ -21,6 +21,26 @@ namespace FlyFramework.Dtos
         /// </summary>
         public string slot { get; set; }
 
+        /// <summary>
+        /// 类型
+        /// </summary>
+        public string render { get; set; }
+
+        /// <summary>
+        /// 日期格式化,默认值为 'yyyy-MM-dd HH:mm:ss'
+        /// </summary>
+        public string dateFormat { get; set; } = "yyyy-MM-dd HH:mm:ss";
+
+        /// <summary>
+        /// 是否显示超出省略号，默认值为 true
+        /// </summary>
+        public bool showOverflowTooltip { get; set; } = true;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string linkType { get; set; }
+
         ///// <summary>
         /////  对应列的类型，
         /////  如果设置了 `selection` 则显示多选框；
@@ -39,10 +59,10 @@ namespace FlyFramework.Dtos
         ///// </summary>
         //public string columnKey { get; set; }
 
-        ///// <summary>
-        ///// 对应列的宽度
-        ///// </summary>
-        //public string width { get; set; }
+        /// <summary>
+        /// 对应列的宽度
+        /// </summary>
+        public string width { get; set; }
 
         ///// <summary>
         ///// 对应列的最小宽度
@@ -100,10 +120,10 @@ namespace FlyFramework.Dtos
         ///// </summary>
         //public bool showOverflowTooltip { get; set; }
 
-        ///// <summary>
-        ///// 对齐方式，可选值为 `left`、`center`、`right`
-        ///// </summary>
-        //public string align { get; set; } = "left";
+        /// <summary>
+        /// 对齐方式，可选值为 `left`、`center`、`right`
+        /// </summary>
+        public string align { get; set; } = "left";
 
         ///// <summary>
         ///// 表头对齐方式，若不设置该项，则使用表格的对齐方式

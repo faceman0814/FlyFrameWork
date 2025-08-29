@@ -62,7 +62,7 @@ namespace FlyFramework.Common
                             label = x.ColumnAttribute.Name ?? x.Property.Name,
                             prop = propName,
                             //获取字段类型
-                            slot = ToSlot(x.Property.PropertyType.Name ?? propName),
+                            render = ToRender(x.Property.PropertyType.Name ?? propName),
                         };
                     })
                     .ToList();
@@ -131,7 +131,7 @@ namespace FlyFramework.Common
             });
         }
 
-        private string ToSlot(string input)
+        private string ToRender(string input)
         {
             //1、如果是布尔类型，则返回tag
             //2、如果是时间类型，则返回date

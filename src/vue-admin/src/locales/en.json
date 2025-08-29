@@ -139,8 +139,11 @@
     "isDefault": "Default Role",
     "deleteConfirm": "Are you sure to delete this role?",
     "assignPermissions": "Assign Permissions",
+    "managePermissions": "Manage Permissions",
     "permissionAssignSuccess": "Permissions assigned successfully",
     "totalRecords": "Total {count} records",
+    "displayName": "Display Name",
+    "permissions": "Permissions",
     "validation": {
       "nameRequired": "Role name is required",
       "codeRequired": "Role code is required"
@@ -206,7 +209,11 @@
     "deleteSuccess": "Delete successful",
     "createSuccess": "Create successful",
     "updateSuccess": "Update successful",
-    "operationFailed": "Operation failed"
+    "operationFailed": "Operation failed",
+    "batchDelete": "Batch Delete",
+    "batchDeleteConfirm": "Are you sure to delete selected {count} items?",
+    "export": "Export",
+    "import": "Import"
   },
   "table": {
     "columns": "Columns",
