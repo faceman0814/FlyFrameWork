@@ -188,7 +188,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, Edit, Delete, Key, Search, Refresh } from '@element-plus/icons-vue'
-import { RoleServiceProxy, GetRolesInput, CreateOrUpdateRoleInput, RoleDto,EntityDto } from '@/api/service-proxies'
+import { RoleServiceProxy, GetRolesInput, CreateOrUpdateRoleInput, RoleDto, EntityDto, CommonServiceProxy } from '@/api/service-proxies'
 import Pagination from '@/components/Pagination/index.vue'
 import type { FormInstance } from 'element-plus'
 import { useI18n } from 'vue-i18n'
@@ -197,6 +197,8 @@ const { t } = useI18n()
 
 // NSwag生成的角色服务代理
 const roleService = new RoleServiceProxy()
+// 通用服务代理，用于获取列配置
+const commonService = new CommonServiceProxy()
 
 // 查询参数
 const queryParams = reactive({
@@ -301,6 +303,18 @@ const formatDate = (dateValue: any) => {
   return dateValue.toString()
 }
 
+/** 获取角色表格列配置 */
+const getTableColumns = async () => {
+  try {
+    const response = await commonService.getColumns('role')
+    if (response.success && response.data) {
+      tableColumns.value = response.data || []
+    }
+  } catch (error) {
+    console.error('获取角色表格列配置失败:', error)
+  }
+}
+
 /** 查询角色列表 */
 const getList = async () => {
   loading.value = true
@@ -316,19 +330,12 @@ const getList = async () => {
     const response = await roleService.getPaged(input)
 
     if (response.success && response.data) {
-      // 设置动态列配置
-      if (response.data.columns) {
-        tableColumns.value = response.data.columns
-      }
-
-      // 设置数据列表
-      if (response.data.datas) {
-        roleList.value = response.data.datas.items || []
-        total.value = response.data.datas.totalCount || 0
-      } else {
-        roleList.value = []
-        total.value = 0
-      }
+      // 直接使用分页数据
+      roleList.value = response.data.items || []
+      total.value = response.data.totalCount || 0
+    } else {
+      roleList.value = []
+      total.value = 0
     }
   } catch (error) {
     console.error('获取角色列表失败:', error)
@@ -398,6 +405,30 @@ const handleEdit = async (row: any) => {
 
   open.value = true
   title.value = t('role.edit')
+}
+
+/** 获取角色权限 (临时模拟实现) */
+const getRolePermissions = async (roleId: string) => {
+  // TODO: 替换为真实的权限获取API调用
+  console.log('获取角色权限:', roleId)
+  return Promise.resolve({
+    success: true,
+    data: [11, 12] // 模拟已选权限
+  })
+}
+
+/** 更新角色权限 (临时模拟实现) */
+const updateRolePermissions = async (roleId: string, permissionIds: any[]) => {
+  // TODO: 替换为真实的权限更新API调用
+  console.log('更新角色权限:', { roleId, permissionIds })
+  return Promise.resolve({ success: true })
+}
+
+/** 删除角色 (临时模拟实现) */
+const deleteRole = async (roleIds: string | string[]) => {
+  // TODO: 替换为真实的删除API调用
+  console.log('删除角色:', roleIds)
+  return Promise.resolve({ success: true })
 }
 
 /** 分配权限按钮操作 */
@@ -506,7 +537,9 @@ const reset = () => {
   roleRef.value?.resetFields()
 }
 
-onMounted(() => {
+onMounted(async () => {
+  // 先获取表格列配置，再获取数据
+  await getTableColumns()
   getList()
 })
 </script>

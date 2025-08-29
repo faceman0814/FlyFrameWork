@@ -1,6 +1,8 @@
 ﻿using FlyFramework.ApplicationServices;
 using FlyFramework.Attributes;
 using FlyFramework.Dtos;
+using FlyFramework.RoleModule.Dtos;
+using FlyFramework.UserModule.Dtos;
 using FlyFramework.Utilities.Redis;
 
 using System;
@@ -60,7 +62,7 @@ namespace FlyFramework.Common
                             label = x.ColumnAttribute.Name ?? x.Property.Name,
                             prop = propName,
                             //获取字段类型
-                            slot = ToSlot(x.Property.PropertyType.Name?? propName),
+                            slot = ToSlot(x.Property.PropertyType.Name ?? propName),
                         };
                     })
                     .ToList();
@@ -71,6 +73,46 @@ namespace FlyFramework.Common
             return res;
         }
 
+        /// <summary>
+        /// 获取指定类型的列信息
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="NotSupportedException"></exception>
+        public async Task<List<ColumnDto>> GetColumns(string type)
+        {
+            if (string.IsNullOrEmpty(type))
+                throw new ArgumentNullException(nameof(type));
+
+            var operations = new List<string>();
+            Type dtoType;
+
+            // 根据类型字符串确定目标类型和操作列表
+            switch (type)
+            {
+                case "user":
+                    dtoType = typeof(UserListDto);
+                    operations.AddRange(["edit", "delete"]);
+                    break;
+                case "role":
+                    dtoType = typeof(RoleListDto);
+                    operations.AddRange(["edit", "delete"]);
+                    break;
+                // 可在此添加其他类型支持
+                default:
+                    throw new NotSupportedException($"不支持的类型: {type}");
+            }
+
+            // 通过反射调用泛型方法
+            var method = typeof(CommonAppService).GetMethod(nameof(GetColumnList), BindingFlags.Instance | BindingFlags.Public);
+            var genericMethod = method.MakeGenericMethod(dtoType);
+            var task = (Task<List<ColumnDto>>)genericMethod.Invoke(this, null);
+            return await task.ConfigureAwait(false);
+        }
+
+
+        #region 私有方法
         // 高效的首字母小写转换方法
         private string ToCamelCase(string input)
         {
@@ -93,11 +135,11 @@ namespace FlyFramework.Common
         {
             //1、如果是布尔类型，则返回tag
             //2、如果是时间类型，则返回date
-            if(input.Equals("Boolean", StringComparison.OrdinalIgnoreCase))
+            if (input.Equals("Boolean", StringComparison.OrdinalIgnoreCase))
             {
                 return "tag";
             }
-            else if(input.Equals("DateTime", StringComparison.OrdinalIgnoreCase) || input.Equals("DateTimeOffset", StringComparison.OrdinalIgnoreCase))
+            else if (input.Equals("DateTime", StringComparison.OrdinalIgnoreCase) || input.Equals("DateTimeOffset", StringComparison.OrdinalIgnoreCase))
             {
                 return "date";
             }
@@ -106,5 +148,6 @@ namespace FlyFramework.Common
                 return input;
             }
         }
+        #endregion
     }
 }

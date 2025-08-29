@@ -61,10 +61,6 @@ namespace FlyFramework.RoleModule.Dtos
 
         [Column("创建时间")]
         public DateTime CreationTime { get; set; }
-
-        [Column("操作")]
-        [Sort(99)]
-        public String Opertion { get; set; }
     }
 
     public class GetRolesInput : GetListInput

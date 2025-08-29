@@ -11,6 +11,7 @@ using FlyFramework.PermissionModule;
 using FlyFramework.PermissionModule.DomainService;
 using FlyFramework.PermissionModule.Dtos;
 using FlyFramework.Repositories;
+using FlyFramework.RoleModule.Dtos;
 using FlyFramework.UserModule.DomainService;
 using FlyFramework.UserModule.Dtos;
 
@@ -99,6 +100,7 @@ namespace FlyFramework.UserModule
                         {
                             Id = user.Id,
                             UserName = user.UserName,
+                            FullName = user.FullName,
                             OrgUnitNodeName = org.Name,
                             Email = user.Email,
                             PhoneNumber = user.PhoneNumber,
@@ -170,60 +172,14 @@ namespace FlyFramework.UserModule
             }
         }
 
-        ///// <summary>
-        ///// 获取字段列表
-        ///// </summary>
-        ///// <returns></returns>
-        //public async Task<List<ColumnDto>> GetColumns(string type)
-        //{
-        //    var res = new List<ColumnDto>();
-        //    if (type == "UserListDto")
-        //    {
-        //        //根据输入的字符串找到对应的类型
-
-        //        res = await _commonService.GetColumnList<UserListDto>();
-        //    }
-        //    var operation = res.FirstOrDefault(t => t.prop == "operation");
-        //    operation.operations.Add("edit");
-        //    return res;
-        //}
-
-        public async Task<List<ColumnDto>> GetColumns(string type)
+        /// <summary>
+        /// 删除用户
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task Delete(EntityDto<string> input)
         {
-            if (string.IsNullOrEmpty(type))
-                throw new ArgumentNullException(nameof(type));
-
-            var columnDtos=new List<ColumnDto>();
-            Type dtoType = type switch
-            {
-                "UserListDto" => typeof(UserListDto),
-                // 可在此添加其他类型支持
-                _ => throw new NotSupportedException($"不支持的类型: {type}")
-            };
-
-            // 使用反射调用泛型方法
-            var method = typeof(ICommonAppService).GetMethod("GetColumnList");
-            var genericMethod = method.MakeGenericMethod(dtoType);
-            var task = (Task)genericMethod.Invoke(_commonService, null);
-            await task.ConfigureAwait(false);
-
-            // 获取结果
-            var resultProperty = task.GetType().GetProperty("Result");
-            var res = (List<ColumnDto>)resultProperty.GetValue(task);
-
-            var operationColumn = res.FirstOrDefault(t => t.prop == "operation");
-            if (operationColumn == null)
-            {
-                operationColumn = new ColumnDto
-                {
-                    prop = "operation",
-                    operations = new List<string>()
-                };
-                res.Add(operationColumn);
-            }
-
-            operationColumn.operations.Add("edit");
-            return res;
+            await _userManager.Delete(input.Id);
         }
 
         #region 私有方法

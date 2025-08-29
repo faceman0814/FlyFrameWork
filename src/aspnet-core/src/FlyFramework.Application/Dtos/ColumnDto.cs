@@ -90,11 +90,6 @@ namespace FlyFramework.Dtos
         /// </summary>
         public List<string> sortOrders { get; set; } = ["ascending", "descending", null];
 
-        /// <summary>
-        /// 操作列按钮
-        /// </summary>
-        public List<string> operations { get; set; }
-
         ///// <summary>
         ///// 用来格式化内容的函数，仅对当前列有效。
         ///// </summary>

@@ -11,6 +11,7 @@ using FlyFramework.UserModule;
 using FlyFramework.UserModule.DomainService;
 using FlyFramework.UserModule.Dtos;
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 using System.Collections.Generic;
@@ -110,18 +111,10 @@ namespace FlyFramework.RoleModule
             await _permissionManager.AssignPermission(input);
         }
 
-        /// <summary>
-        /// 获取字段列表
-        /// </summary>
-        /// <returns></returns>
-        public async Task<List<ColumnDto>> GetColumns()
+        public async Task Delete(EntityDto<string> input)
         {
-            var res = await _commonService.GetColumnList<RoleListDto>();
-            var operation = res.FirstOrDefault(t => t.prop == "opertion");
-            operation.operations.Add("edit");
-            return res;
+            await _roleManager.Delete(input.Id);
         }
-
         #region 私有方法
 
         private async Task Create(CreateOrUpdateRoleInput input)

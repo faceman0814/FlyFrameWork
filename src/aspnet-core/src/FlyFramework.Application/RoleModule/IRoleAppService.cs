@@ -17,5 +17,7 @@ namespace FlyFramework.RoleModule
         Task<RoleDto> GetForEdit(EntityDto<string> input);
 
         Task<List<DropDownListDto>> GetDropDownList(GetDropDownListInput input);
+
+        Task Delete(EntityDto<string> input);
     }
 }

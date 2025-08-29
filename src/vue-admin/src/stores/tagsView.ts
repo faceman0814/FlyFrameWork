@@ -33,8 +33,13 @@ export const useTagsViewStore = defineStore('tagsView', {
     },
 
     addCachedView(view: RouteLocationNormalized) {
-      if (this.cachedViews.includes(view.name as string)) return
-      if (view.meta?.noCache) return
+      if (this.cachedViews.includes(view.name as string)) {
+        return
+      }
+      if (view.meta?.noCache) {
+        return
+      }
+      
       this.cachedViews.push(view.name as string)
     },
 

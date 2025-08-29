@@ -216,7 +216,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, Edit, Delete, Search, Refresh, Download, MoreFilled, View, RefreshRight } from '@element-plus/icons-vue'
-import { UserServiceProxy, GetUsersInput, CreateOrUpdateUserInput, UserDto, EntityDto } from '@/api/service-proxies'
+import { UserServiceProxy, GetUsersInput, CreateOrUpdateUserInput, UserDto, EntityDto, CommonServiceProxy } from '@/api/service-proxies'
 import Pagination from '@/components/Pagination/index.vue'
 import type { FormInstance } from 'element-plus'
 import { useI18n } from 'vue-i18n'
@@ -225,6 +225,8 @@ const { t } = useI18n()
 
 // NSwag生成的用户服务代理
 const userService = new UserServiceProxy()
+// 通用服务代理，用于获取列配置
+const commonService = new CommonServiceProxy()
 
 // 查询参数
 const queryParams = reactive({
@@ -303,6 +305,18 @@ const formatDate = (dateValue: any) => {
   return dateValue.toString()
 }
 
+/** 获取用户表格列配置 */
+const getTableColumns = async () => {
+  try {
+    const response = await commonService.getColumns('user')
+    if (response.success && response.data) {
+      tableColumns.value = response.data || []
+    }
+  } catch (error) {
+    console.error('获取用户表格列配置失败:', error)
+  }
+}
+
 /** 查询用户列表 */
 const getList = async () => {
   loading.value = true
@@ -318,19 +332,12 @@ const getList = async () => {
     const response = await userService.getPaged(input)
 
     if (response.success && response.data) {
-      // 设置动态列配置
-      if (response.data.columns) {
-        tableColumns.value = response.data.columns
-      }
-
-      // 设置数据列表
-      if (response.data.datas) {
-        userList.value = response.data.datas.items || []
-        total.value = response.data.datas.totalCount || 0
-      } else {
-        userList.value = []
-        total.value = 0
-      }
+      // 直接使用分页数据
+      userList.value = response.data.items || []
+      total.value = response.data.totalCount || 0
+    } else {
+      userList.value = []
+      total.value = 0
     }
   } catch (error) {
     console.error('获取用户列表失败:', error)
@@ -543,7 +550,9 @@ const handleCommand = (command: string) => {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
+  // 先获取表格列配置，再获取数据
+  await getTableColumns()
   getList()
 })
 </script>

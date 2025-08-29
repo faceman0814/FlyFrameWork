@@ -138,6 +138,77 @@ export class AccountClientServiceProxy {
     }
 }
 
+export class CommonServiceProxy {
+    protected instance: AxiosInstance;
+    protected baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, instance?: AxiosInstance) {
+
+        this.instance = instance || axios.create();
+
+        this.baseUrl = baseUrl ?? "";
+
+    }
+
+    /**
+     * 获取指定类型的列信息
+     * @param type (optional) 
+     * @return Success
+     */
+    getColumns(type?: string | undefined, cancelToken?: CancelToken): Promise<ListApiResponse> {
+        let url_ = this.baseUrl + "/api/Common/GetColumns?";
+        if (type === null)
+            throw new globalThis.Error("The parameter 'type' cannot be null.");
+        else if (type !== undefined)
+            url_ += "type=" + encodeURIComponent("" + type) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processGetColumns(_response);
+        });
+    }
+
+    protected processGetColumns(response: AxiosResponse): Promise<ListApiResponse> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = ListApiResponse.fromJS(resultData200);
+            return Promise.resolve<ListApiResponse>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<ListApiResponse>(null as any);
+    }
+}
+
 export class FileServiceProxy {
     protected instance: AxiosInstance;
     protected baseUrl: string;
@@ -390,7 +461,7 @@ export class OrgUnitNodeServiceProxy {
      * @param skipCount (optional) 
      * @return Success
      */
-    getTree(orgUnitNodeId?: string | undefined, parentOrgUnitNodeId?: string | undefined, filterText?: string | undefined, sorting?: string | undefined, maxResultCount?: number | undefined, skipCount?: number | undefined, cancelToken?: CancelToken): Promise<ListApiResponse> {
+    getTree(orgUnitNodeId?: string | undefined, parentOrgUnitNodeId?: string | undefined, filterText?: string | undefined, sorting?: string | undefined, maxResultCount?: number | undefined, skipCount?: number | undefined, cancelToken?: CancelToken): Promise<ListApiResponse2> {
         let url_ = this.baseUrl + "/api/OrgUnitNode/GetTree?";
         if (orgUnitNodeId === null)
             throw new globalThis.Error("The parameter 'orgUnitNodeId' cannot be null.");
@@ -438,7 +509,7 @@ export class OrgUnitNodeServiceProxy {
         });
     }
 
-    protected processGetTree(response: AxiosResponse): Promise<ListApiResponse> {
+    protected processGetTree(response: AxiosResponse): Promise<ListApiResponse2> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -452,14 +523,14 @@ export class OrgUnitNodeServiceProxy {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = ListApiResponse.fromJS(resultData200);
-            return Promise.resolve<ListApiResponse>(result200);
+            result200 = ListApiResponse2.fromJS(resultData200);
+            return Promise.resolve<ListApiResponse2>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ListApiResponse>(null as any);
+        return Promise.resolve<ListApiResponse2>(null as any);
     }
 }
 
@@ -648,7 +719,7 @@ export class RoleServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    getDropDownList(body?: GetDropDownListInput | undefined, cancelToken?: CancelToken): Promise<ListApiResponse2> {
+    getDropDownList(body?: GetDropDownListInput | undefined, cancelToken?: CancelToken): Promise<ListApiResponse3> {
         let url_ = this.baseUrl + "/api/Role/GetDropDownList";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -676,7 +747,7 @@ export class RoleServiceProxy {
         });
     }
 
-    protected processGetDropDownList(response: AxiosResponse): Promise<ListApiResponse2> {
+    protected processGetDropDownList(response: AxiosResponse): Promise<ListApiResponse3> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -690,14 +761,14 @@ export class RoleServiceProxy {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = ListApiResponse2.fromJS(resultData200);
-            return Promise.resolve<ListApiResponse2>(result200);
+            result200 = ListApiResponse3.fromJS(resultData200);
+            return Promise.resolve<ListApiResponse3>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ListApiResponse2>(null as any);
+        return Promise.resolve<ListApiResponse3>(null as any);
     }
 }
 
@@ -938,7 +1009,7 @@ export class UserServiceProxy {
      * 获取所有权限
      * @return Success
      */
-    getAllPermission( cancelToken?: CancelToken): Promise<ListApiResponse3> {
+    getAllPermission( cancelToken?: CancelToken): Promise<ListApiResponse4> {
         let url_ = this.baseUrl + "/api/User/GetAllPermission";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -962,7 +1033,7 @@ export class UserServiceProxy {
         });
     }
 
-    protected processGetAllPermission(response: AxiosResponse): Promise<ListApiResponse3> {
+    protected processGetAllPermission(response: AxiosResponse): Promise<ListApiResponse4> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -976,14 +1047,14 @@ export class UserServiceProxy {
             const _responseText = response.data;
             let result200: any = null;
             let resultData200  = _responseText;
-            result200 = ListApiResponse3.fromJS(resultData200);
-            return Promise.resolve<ListApiResponse3>(result200);
+            result200 = ListApiResponse4.fromJS(resultData200);
+            return Promise.resolve<ListApiResponse4>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<ListApiResponse3>(null as any);
+        return Promise.resolve<ListApiResponse4>(null as any);
     }
 
     /**
@@ -1031,58 +1102,6 @@ export class UserServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Promise.resolve<void>(null as any);
-    }
-
-    /**
-     * 获取字段列表
-     * @return Success
-     */
-    getColumns( cancelToken?: CancelToken): Promise<ListApiResponse4> {
-        let url_ = this.baseUrl + "/api/User/GetColumns";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processGetColumns(_response);
-        });
-    }
-
-    protected processGetColumns(response: AxiosResponse): Promise<ListApiResponse4> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = ListApiResponse4.fromJS(resultData200);
-            return Promise.resolve<ListApiResponse4>(result200);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<ListApiResponse4>(null as any);
     }
 }
 
@@ -1333,6 +1352,144 @@ export class AuthenticateResultModelApiResponse implements IAuthenticateResultMo
 
 export interface IAuthenticateResultModelApiResponse {
     data: AuthenticateResultModel | undefined;
+    code: number;
+    success: boolean;
+    message: string | undefined;
+}
+
+export class ColumnDto implements IColumnDto {
+    /** 显示的标题 */
+    label!: string | undefined;
+    /** 字段名称 */
+    prop!: string | undefined;
+    /** 指定插槽 */
+    slot!: string | undefined;
+    /** 数据在排序时所使用排序策略的轮转顺序，仅当 `sortable` 为 `true` 时有效。
+需传入一个数组，随着用户点击表头，该列依次按照数组中元素的顺序进行排序，
+默认值为 `['ascending', 'descending', null]` */
+    sortOrders!: string[] | undefined;
+    /** 操作列按钮 */
+    operations!: string[] | undefined;
+
+    constructor(data?: IColumnDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.label = _data["label"];
+            this.prop = _data["prop"];
+            this.slot = _data["slot"];
+            if (Array.isArray(_data["sortOrders"])) {
+                this.sortOrders = [] as any;
+                for (let item of _data["sortOrders"])
+                    this.sortOrders!.push(item);
+            }
+            if (Array.isArray(_data["operations"])) {
+                this.operations = [] as any;
+                for (let item of _data["operations"])
+                    this.operations!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): ColumnDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ColumnDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["prop"] = this.prop;
+        data["slot"] = this.slot;
+        if (Array.isArray(this.sortOrders)) {
+            data["sortOrders"] = [];
+            for (let item of this.sortOrders)
+                data["sortOrders"].push(item);
+        }
+        if (Array.isArray(this.operations)) {
+            data["operations"] = [];
+            for (let item of this.operations)
+                data["operations"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IColumnDto {
+    /** 显示的标题 */
+    label: string | undefined;
+    /** 字段名称 */
+    prop: string | undefined;
+    /** 指定插槽 */
+    slot: string | undefined;
+    /** 数据在排序时所使用排序策略的轮转顺序，仅当 `sortable` 为 `true` 时有效。
+需传入一个数组，随着用户点击表头，该列依次按照数组中元素的顺序进行排序，
+默认值为 `['ascending', 'descending', null]` */
+    sortOrders: string[] | undefined;
+    /** 操作列按钮 */
+    operations: string[] | undefined;
+}
+
+export class ListApiResponse implements IListApiResponse {
+    data!: ColumnDto[] | undefined;
+    code!: number;
+    success!: boolean;
+    message!: string | undefined;
+
+    constructor(data?: IListApiResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["Data"])) {
+                this.data = [] as any;
+                for (let item of _data["Data"])
+                    this.data!.push(ColumnDto.fromJS(item));
+            }
+            this.code = _data["Code"];
+            this.success = _data["Success"];
+            this.message = _data["Message"];
+        }
+    }
+
+    static fromJS(data: any): ListApiResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListApiResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["Data"] = [];
+            for (let item of this.data)
+                data["Data"].push(item ? item.toJSON() : undefined as any);
+        }
+        data["Code"] = this.code;
+        data["Success"] = this.success;
+        data["Message"] = this.message;
+        return data;
+    }
+}
+
+export interface IListApiResponse {
+    data: ColumnDto[] | undefined;
     code: number;
     success: boolean;
     message: string | undefined;
@@ -1649,13 +1806,13 @@ export interface IOrgUnitNodeListDto {
     totalChild: number;
 }
 
-export class ListApiResponse implements IListApiResponse {
+export class ListApiResponse2 implements IListApiResponse2 {
     data!: OrgUnitNodeListDto[] | undefined;
     code!: number;
     success!: boolean;
     message!: string | undefined;
 
-    constructor(data?: IListApiResponse) {
+    constructor(data?: IListApiResponse2) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -1677,9 +1834,9 @@ export class ListApiResponse implements IListApiResponse {
         }
     }
 
-    static fromJS(data: any): ListApiResponse {
+    static fromJS(data: any): ListApiResponse2 {
         data = typeof data === 'object' ? data : {};
-        let result = new ListApiResponse();
+        let result = new ListApiResponse2();
         result.init(data);
         return result;
     }
@@ -1698,7 +1855,7 @@ export class ListApiResponse implements IListApiResponse {
     }
 }
 
-export interface IListApiResponse {
+export interface IListApiResponse2 {
     data: OrgUnitNodeListDto[] | undefined;
     code: number;
     success: boolean;
@@ -2098,13 +2255,13 @@ export interface IDropDownListDto {
     value: string | undefined;
 }
 
-export class ListApiResponse2 implements IListApiResponse2 {
+export class ListApiResponse3 implements IListApiResponse3 {
     data!: DropDownListDto[] | undefined;
     code!: number;
     success!: boolean;
     message!: string | undefined;
 
-    constructor(data?: IListApiResponse2) {
+    constructor(data?: IListApiResponse3) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -2126,9 +2283,9 @@ export class ListApiResponse2 implements IListApiResponse2 {
         }
     }
 
-    static fromJS(data: any): ListApiResponse2 {
+    static fromJS(data: any): ListApiResponse3 {
         data = typeof data === 'object' ? data : {};
-        let result = new ListApiResponse2();
+        let result = new ListApiResponse3();
         result.init(data);
         return result;
     }
@@ -2147,7 +2304,7 @@ export class ListApiResponse2 implements IListApiResponse2 {
     }
 }
 
-export interface IListApiResponse2 {
+export interface IListApiResponse3 {
     data: DropDownListDto[] | undefined;
     code: number;
     success: boolean;
@@ -2380,7 +2537,6 @@ export class UserListDto implements IUserListDto {
     /** 是否管理员 */
     isSuperAdmin!: boolean;
     creationTime!: Date;
-    opertion!: string[] | undefined;
 
     constructor(data?: IUserListDto) {
         if (data) {
@@ -2407,11 +2563,6 @@ export class UserListDto implements IUserListDto {
             this.isActive = _data["IsActive"];
             this.isSuperAdmin = _data["IsSuperAdmin"];
             this.creationTime = _data["CreationTime"] ? new Date(_data["CreationTime"].toString()) : undefined as any;
-            if (Array.isArray(_data["Opertion"])) {
-                this.opertion = [] as any;
-                for (let item of _data["Opertion"])
-                    this.opertion!.push(item);
-            }
         }
     }
 
@@ -2438,11 +2589,6 @@ export class UserListDto implements IUserListDto {
         data["IsActive"] = this.isActive;
         data["IsSuperAdmin"] = this.isSuperAdmin;
         data["CreationTime"] = this.creationTime ? this.creationTime.toISOString() : undefined as any;
-        if (Array.isArray(this.opertion)) {
-            data["Opertion"] = [];
-            for (let item of this.opertion)
-                data["Opertion"].push(item);
-        }
         return data;
     }
 }
@@ -2460,7 +2606,6 @@ export interface IUserListDto {
     /** 是否管理员 */
     isSuperAdmin: boolean;
     creationTime: Date;
-    opertion: string[] | undefined;
 }
 
 export class PagedResultDto2 implements IPagedResultDto2 {
@@ -2737,146 +2882,8 @@ export interface IPermissionDto {
     children: PermissionDto[] | undefined;
 }
 
-export class ListApiResponse3 implements IListApiResponse3 {
-    data!: PermissionDto[] | undefined;
-    code!: number;
-    success!: boolean;
-    message!: string | undefined;
-
-    constructor(data?: IListApiResponse3) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["Data"])) {
-                this.data = [] as any;
-                for (let item of _data["Data"])
-                    this.data!.push(PermissionDto.fromJS(item));
-            }
-            this.code = _data["Code"];
-            this.success = _data["Success"];
-            this.message = _data["Message"];
-        }
-    }
-
-    static fromJS(data: any): ListApiResponse3 {
-        data = typeof data === 'object' ? data : {};
-        let result = new ListApiResponse3();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["Data"] = [];
-            for (let item of this.data)
-                data["Data"].push(item ? item.toJSON() : undefined as any);
-        }
-        data["Code"] = this.code;
-        data["Success"] = this.success;
-        data["Message"] = this.message;
-        return data;
-    }
-}
-
-export interface IListApiResponse3 {
-    data: PermissionDto[] | undefined;
-    code: number;
-    success: boolean;
-    message: string | undefined;
-}
-
-export class ColumnDto implements IColumnDto {
-    /** 显示的标题 */
-    label!: string | undefined;
-    /** 字段名称 */
-    prop!: string | undefined;
-    /** 指定插槽 */
-    slot!: string | undefined;
-    /** 数据在排序时所使用排序策略的轮转顺序，仅当 `sortable` 为 `true` 时有效。
-需传入一个数组，随着用户点击表头，该列依次按照数组中元素的顺序进行排序，
-默认值为 `['ascending', 'descending', null]` */
-    sortOrders!: string[] | undefined;
-    /** 操作列按钮 */
-    operaitons!: string[] | undefined;
-
-    constructor(data?: IColumnDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.label = _data["label"];
-            this.prop = _data["prop"];
-            this.slot = _data["slot"];
-            if (Array.isArray(_data["sortOrders"])) {
-                this.sortOrders = [] as any;
-                for (let item of _data["sortOrders"])
-                    this.sortOrders!.push(item);
-            }
-            if (Array.isArray(_data["operaitons"])) {
-                this.operaitons = [] as any;
-                for (let item of _data["operaitons"])
-                    this.operaitons!.push(item);
-            }
-        }
-    }
-
-    static fromJS(data: any): ColumnDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ColumnDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["label"] = this.label;
-        data["prop"] = this.prop;
-        data["slot"] = this.slot;
-        if (Array.isArray(this.sortOrders)) {
-            data["sortOrders"] = [];
-            for (let item of this.sortOrders)
-                data["sortOrders"].push(item);
-        }
-        if (Array.isArray(this.operaitons)) {
-            data["operaitons"] = [];
-            for (let item of this.operaitons)
-                data["operaitons"].push(item);
-        }
-        return data;
-    }
-}
-
-export interface IColumnDto {
-    /** 显示的标题 */
-    label: string | undefined;
-    /** 字段名称 */
-    prop: string | undefined;
-    /** 指定插槽 */
-    slot: string | undefined;
-    /** 数据在排序时所使用排序策略的轮转顺序，仅当 `sortable` 为 `true` 时有效。
-需传入一个数组，随着用户点击表头，该列依次按照数组中元素的顺序进行排序，
-默认值为 `['ascending', 'descending', null]` */
-    sortOrders: string[] | undefined;
-    /** 操作列按钮 */
-    operaitons: string[] | undefined;
-}
-
 export class ListApiResponse4 implements IListApiResponse4 {
-    data!: ColumnDto[] | undefined;
+    data!: PermissionDto[] | undefined;
     code!: number;
     success!: boolean;
     message!: string | undefined;
@@ -2895,7 +2902,7 @@ export class ListApiResponse4 implements IListApiResponse4 {
             if (Array.isArray(_data["Data"])) {
                 this.data = [] as any;
                 for (let item of _data["Data"])
-                    this.data!.push(ColumnDto.fromJS(item));
+                    this.data!.push(PermissionDto.fromJS(item));
             }
             this.code = _data["Code"];
             this.success = _data["Success"];
@@ -2925,7 +2932,7 @@ export class ListApiResponse4 implements IListApiResponse4 {
 }
 
 export interface IListApiResponse4 {
-    data: ColumnDto[] | undefined;
+    data: PermissionDto[] | undefined;
     code: number;
     success: boolean;
     message: string | undefined;

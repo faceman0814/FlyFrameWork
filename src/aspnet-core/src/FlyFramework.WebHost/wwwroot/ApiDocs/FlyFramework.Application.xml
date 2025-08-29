@@ -62,6 +62,15 @@
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
+        <member name="M:FlyFramework.Common.CommonAppService.GetColumns(System.String)">
+            <summary>
+            获取指定类型的列信息
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.NotSupportedException"></exception>
+        </member>
         <member name="P:FlyFramework.Dtos.ColumnDto.label">
             <summary>
             显示的标题
@@ -82,11 +91,6 @@
             数据在排序时所使用排序策略的轮转顺序，仅当 `sortable` 为 `true` 时有效。
             需传入一个数组，随着用户点击表头，该列依次按照数组中元素的顺序进行排序，
             默认值为 `['ascending', 'descending', null]` 
-            </summary>
-        </member>
-        <member name="P:FlyFramework.Dtos.ColumnDto.operations">
-            <summary>
-            操作列按钮
             </summary>
         </member>
         <member name="P:FlyFramework.Dtos.GetDropDownListInput.Ids">
@@ -284,12 +288,6 @@
         <member name="M:FlyFramework.RoleModule.RoleAppService.AssignPermission(FlyFramework.PermissionModule.Dtos.AssignPermissionInput)">
             <summary>
             分配权限
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:FlyFramework.RoleModule.RoleAppService.GetColumns">
-            <summary>
-            获取字段列表
             </summary>
             <returns></returns>
         </member>
@@ -512,6 +510,13 @@
             <summary>
             获取所有权限
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FlyFramework.UserModule.UserAppService.Delete(FlyFramework.Dtos.EntityDto{System.String})">
+            <summary>
+            删除用户
+            </summary>
+            <param name="input"></param>
             <returns></returns>
         </member>
     </members>

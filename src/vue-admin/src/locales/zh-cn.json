@@ -114,6 +114,7 @@
     "createSuccess": "创建成功",
     "updateSuccess": "更新成功",
     "deleteSuccess": "删除成功",
+    "searchPlaceholder": "请输入用户名、姓名或邮箱",
     "validation": {
       "usernameRequired": "用户名不能为空",
       "nameRequired": "姓名不能为空",
@@ -175,6 +176,7 @@
     "loading": "加载中...",
     "noData": "暂无数据",
     "operation": "操作",
+    "actions": "操作",
     "status": "状态",
     "createTime": "创建时间",
     "updateTime": "更新时间",
@@ -188,6 +190,7 @@
     "error": "错误",
     "info": "提示",
     "total": "共 {count} 条",
+    "totalRecords": "共 {count} 条记录",
     "selected": "已选择 {count} 项",
     "pleaseSelect": "请选择",
     "more": "更多",
@@ -199,7 +202,12 @@
     "previous": "上一步",
     "finish": "完成",
     "expand": "展开",
-    "collapse": "收起"
+    "collapse": "收起",
+    "deleteConfirm": "确定要删除吗？",
+    "deleteSuccess": "删除成功",
+    "createSuccess": "创建成功",
+    "updateSuccess": "更新成功",
+    "operationFailed": "操作失败"
   },
   "theme": {
     "light": "浅色主题",

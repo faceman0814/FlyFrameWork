@@ -13,6 +13,6 @@ namespace FlyFramework.Common
     public interface ICommonAppService: IApplicationService
     {
         Task<List<ColumnDto>> GetColumnList<T>() where T : class;
-
+        Task<List<ColumnDto>> GetColumns(string type);
     }
 }

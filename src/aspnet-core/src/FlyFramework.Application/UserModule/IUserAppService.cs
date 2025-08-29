@@ -27,6 +27,6 @@ namespace FlyFramework.UserModule
 
         void InitPermission();
 
-        Task<List<ColumnDto>> GetColumns(string type);
+        Task Delete(EntityDto<string> input);
     }
 }

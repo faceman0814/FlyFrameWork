@@ -62,9 +62,6 @@ namespace FlyFramework.UserModule.Dtos
         [Column("创建时间")]
         public DateTime CreationTime { get; set; }
 
-        [Column("操作")]
-        [Sort(99)]
-        public List<String> Opertion { get; set; }
     }
 
     public class GetUsersInput : GetListInput
